@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<context:component-scan base-package="com.sejong">
+   	    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    
+	<context:annotation-config/>
+	
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+			<list>
+                <value>classpath:application/property/db.properties</value>
+                <value>classpath:application/property/env.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
+	<import resource="classpath:application/ibatis/dataSourceConfig.xml"/>
+	
+	<bean id="ibatis_TransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_ibatis" />
+	</bean> 
+	
+
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:application/ibatis/sql-map-config.xml"/>
+	    <property name="mappingLocations" value="classpath:com/sejong/data/**/sql/*.sqlmap.xml"/>
+		<property name="dataSource">
+			<ref bean="dataSource_ibatis" />
+		</property>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="ibatis_TransactionManager"/>
+	
+	<!-- Message (CP사)용도 시작 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:application/message/system.message</value>
+				<value>classpath:application/message/error.message</value>
+			</list>
+		</property>
+		<property name="cacheSeconds" value="5"/>
+	</bean>
+	
+	<bean id="messageSourceAccessor"
+		class="org.springframework.context.support.MessageSourceAccessor">
+		<constructor-arg>
+			<ref local="messageSource" />
+		</constructor-arg>
+	</bean>
+	
+	<!-- Configuration (CP사)용도 -->	
+	<bean id="configurationService" class="tframe.common.configuration.ConfigurationReader">
+		<property name="configLocation" value="/application/property/config.xml"/>
+		<property name="reloadable" value="true"/>
+	</bean>
+		
+</beans>

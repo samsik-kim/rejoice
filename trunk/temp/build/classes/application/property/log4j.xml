@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration debug="true" xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Level :  OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL  -->
+
+
+    <!-- #################################################################################### -->
+    <!-- Framework, Library, System 관련 Appender 및 Logger 설정 부분 시작!!                  -->
+    <!-- #################################################################################### -->
+    
+	<appender name="OMC_LOG_APPENDER" class="tframe.common.log.DirFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="ImmediateFlush" value="true"/>
+        <param name="Directory" value="/software/dnc/omc/log/if"/>
+        <param name="Prefix" value="${server.name}_interface"/>
+        <param name="Suffix" value=""/>
+        <param name="DirectoryPattern" value="MMdd"/>
+        <param name="FileNamePattern" value="'.'HH"/>
+        <param name="Append" value="true"/>
+	    <layout class="org.apache.log4j.PatternLayout">
+	        <param name="ConversionPattern" value="%m%n"/>
+	    </layout>
+	</appender>		    
+    
+	<appender name="IDP_INBOUND_APPENDER" class="tframe.common.log.DirFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="ImmediateFlush" value="true"/>
+        <param name="Directory" value="/log/dnc/was/logs/idpInbound/idpInbound"/>
+        <param name="Prefix" value="${server.name}_interface"/>
+        <param name="Suffix" value=""/>
+        <param name="DirectoryPattern" value="MMdd"/>
+        <param name="FileNamePattern" value="'.'HH"/>
+        <param name="Append" value="true"/>
+	    <layout class="org.apache.log4j.PatternLayout">
+	        <param name="ConversionPattern" value="%m%n"/>
+	    </layout>
+	</appender>	
+    
+    <!-- Console 용 Appender 설정 -->
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %c{1} - %m%n"/>
+        </layout>
+    </appender>
+    
+    
+    <!-- Monitoring DEBUG 용 Appender 설정 -->
+    <appender name="STDOUT" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/log/dnc/was/logs/idp/Monitoring.log" />
+        <param name="Encoding" value="UTF-8" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <param name="ImmediateFlush" value="true" />
+        <param name="Append" value="true" />
+		<param name="MaxFileSize" value="1000KB"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%p [%C.%M():%L] %m%n"/>
+        </layout>
+    </appender>
+    
+    <!-- #################################################################################### -->
+    <!-- Application 관련 Appender 및 Logger 설정 부분 끝!!                                   -->
+    <!-- #################################################################################### -->
+
+    <!-- OMC Loggger -->
+    <logger name="OMC_LOG">
+        <level value="INFO" />
+        <appender-ref ref="OMC_LOG_APPENDER" />
+    </logger>    
+
+    <!-- IDP Loggger -->
+    <logger name="IDP_LOG">
+        <level value="INFO" />
+        <appender-ref ref="IDP_INBOUND_APPENDER" />
+    </logger>
+
+    <!-- 아파치 프로젝트 관련 Library 들의 전체 로깅 설정 -->
+    <logger name="org.apache">
+        <level value="ERROR" />
+    </logger>
+
+    <logger name="com.skt.dnc">
+    	<level value="ERROR" />
+    </logger>
+
+    <!-- #################################################################################### -->
+    <!-- Library, System 관련 Appender 및 Logger 설정 부분 시작!!                  -->
+    <!-- #################################################################################### -->
+    
+    <!-- tframe-core.jar -->
+    <logger name="tframe.common">
+    	<level value="DEBUG" />
+    </logger>
+    <logger name="tframe.core">
+    	<level value="DEBUG" />
+    </logger>
+    <!-- tframe-web.jar -->
+    <logger name="tframe.web">
+    	<level value="DEBUG" />
+    </logger>
+
+    <!-- Spring Framework 로깅 -->
+    
+    <logger name="org.springframework">
+    	<level value="DEBUG" />
+    </logger>
+    <logger name="org.springframework.web.servlet.DispatcherServlet">
+    	<level value="DEBUG" />
+    </logger>
+    <logger name="org.springframework.core">
+        <level value="DEBUG" />
+    </logger>
+    <logger name="org.springframework.context">
+        <level value="DEBUG" />
+    </logger>
+    <logger name="org.springframework.transaction">
+        <level value="DEBUG" />
+    </logger>
+    <logger name="org.springframework.beans">
+        <level value="DEBUG" />
+    </logger>
+    <logger name="org.springframework.aop">
+        <level value="DEBUG" />
+    </logger>
+    <logger name="org.springframework.ui">
+        <level value="DEBUG" />
+    </logger>
+    <logger name="org.springframework.security">
+        <level value="DEBUG" />
+    </logger>
+    
+
+    <!-- iBATIS 로깅 설정 -->
+    <logger name="java.sql.Connection">
+    	<level value="DEBUG" />
+    </logger>
+    <logger name="java.sql.Statement">
+    	<level value="DEBUG" />
+    </logger>
+    <logger name="java.sql.PreparedStatement">
+    	<level value="DEBUG" />
+    </logger>
+    <logger name="java.sql.ResultSet">
+    	<level value="DEBUG" />
+    </logger>
+
+    <!-- Root Logger 로깅 설정. -->
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+    <!-- #################################################################################### -->
+    <!-- Framework, Library, System 관련 Appender 및 Logger 설정 부분 끝!!                    -->
+    <!-- #################################################################################### -->
+
+
+</log4j:configuration>
