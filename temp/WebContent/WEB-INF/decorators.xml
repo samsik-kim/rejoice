@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<decorators defaultdir="/decorators/layout">
+    <excludes>
+        <pattern>**/ajax*</pattern>
+        <pattern>**/sign*</pattern>
+        <pattern>**/index.jsp</pattern>
+        <pattern>**/adminLogin*</pattern>
+        <pattern>**/adminLogOut*</pattern>
+        <pattern>**/user/*</pattern>
+    </excludes>
+
+    <decorator name="layout" page="layout.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+
+    <decorator name="empty" page="empty.jsp" >
+    	<pattern>**/certifymgr/detailHistoryByAjax.omp</pattern>
+    </decorator>
+    
+    <decorator name="pop" page="popLayout.jsp" >
+    	<pattern>**/pop*</pattern>
+    </decorator>
+</decorators>
