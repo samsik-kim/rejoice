@@ -1,0 +1,62 @@
+@charset "utf-8";
+
+/* Reset */
+html, body, h1, h2, h3, h4, h5, h6, div, p, blockquote, pre, code, address, ul, ol, li, 
+dl, dt, dd, table, caption, th, td, form, fieldset, legend, hr, input, button, textarea {margin:0;padding:0;}
+ul, ol ,li{list-style:none;}
+table {border-spacing:0;border:0;}
+table img, label {vertical-align:middle;}
+img, fieldset, abbr, button {border:0;}
+img {vertical-align:top;border:0;padding:0;}
+address, caption, cite, code, em {font-style:normal;font-weight:normal;}
+input, textarea, button {font-size:100%;vertical-align:middle;font-family:Dotum, Gulim, Arial, AppleGothic, Sans-serif;}
+
+/* Base */
+body {width:100%;height:100%;font-size:75%;font-family:Dotum, Gulim, Arial, AppleGothic, Sans-serif;color:#8b8a8a;background:#fff;}
+hr {display:none;}
+caption, legend {visibility:hidden;width:0;height:0;line-height:0;font-size:0;overflow:hidden;}
+
+/* Link_Style */
+a:link {color:#565656;text-decoration:none;}
+a:visited {color:#565656;text-decoration:none;}
+a:hover {color:#ff6600;text-decoration:none;}
+a:active {color:#565656;text-decoration:none;}
+
+/* Align_Style */
+.cb {clear:both;}
+.cl {clear:left;}
+.fltl {float:left;}
+.fltr {float:right;}
+.txtl {text-align:left;}
+.txtr {text-align:right;}
+.txtc {text-align:center;}
+.vt {vertical-align:top;}
+.vm {vertical-align:middle;}
+
+/* None_Style */
+.none_mar {margin:0;}
+.none_pad {padding:0;}
+.none_bor {border:none;}
+.none_bg {background:none !important;}
+.none_dis {display:none;}
+.hide {position:absolute;visibility:hidden;width:0;height:0;font-size:0;line-height:0;overflow:hidden;}
+
+/* Font_style */
+.txt_90 {font-size:90%;}
+.txt_nor {font-weight:normal;}
+.txt_bold {font-weight:bold;}
+.uline{text-decoration:underline}
+.txt_ls {letter-spacing:0;}
+.txt_lsm {letter-spacing:-0.1em;}
+
+/* Heading */
+h1 {font-size:200%;}
+h2 {font-size:180%;}
+
+/* Skip_Navigation */
+#skipnavigation {position:absolute;left:0;top:0;z-index:1;}
+#skipnavi {position:relative;left:0;height:40px;}
+#skipnavi li{float:left;}
+#skipnavi a {width:110px;position:absolute;top:-50px;height:1px;width:1px;margin-bottom:-1px;overflow:hidden;text-align:center;}
+#skipnavi a:focus,
+#skipnavi a:active {position:absolute;top:0;height:auto;width:130px;padding:5px;font-weight:bold;border:solid 1px #01614c;color:#01614c;z-index:2;} 
