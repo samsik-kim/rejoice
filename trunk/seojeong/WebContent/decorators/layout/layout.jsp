@@ -14,7 +14,7 @@
 <meta http-equiv="Pragma" content="no-cache"> 
 <meta http-equiv="Cache-Control" content="no-cache">
 <!-- CSS -->
-<link rel="stylesheet" type="text/css" href="<c:url value="/js/jquery/ui/css/redmond/jquery-ui-1.8.10.custom.css"/>" >
+<link rel="stylesheet" type="text/css" href="<c:url value="/resource/jquery-ui-1.8.17.custom/css/cupertino/jquery-ui-1.8.17.custom.css"/>" >
 <style type="text/css">
 	.ui-datepicker-trigger{ margin-left:3px;cursor:pointer; }
 	.ui-datepicker { width:200px; }

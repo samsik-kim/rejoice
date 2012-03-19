@@ -14,28 +14,18 @@
 <meta http-equiv="Pragma" content="no-cache"> 
 <meta http-equiv="Cache-Control" content="no-cache">
 <!-- CSS -->
-<link rel="stylesheet" type="text/css" href="<c:url value="/js/jquery/ui/css/redmond/jquery-ui-1.8.10.custom.css"/>" >
-<link rel="shortcut icon" href="${pageContext.request.contextPath}/${ThreadSession.serviceLocale.language}/images/whoopy.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/resource/jquery-ui-1.8.17.custom/css/cupertino/jquery-ui-1.8.17.custom.css"/>" >
 <style type="text/css">
 	.ui-datepicker-trigger{ margin-left:3px;cursor:pointer; }
 	.ui-datepicker { width:200px; }
 	body{margin:0;padding:0}
 </style>
-<link rel="stylesheet" href="<c:url value="/${ThreadSession.serviceLocale.language}/css/base.css"/>" type="text/css">
-<link rel="stylesheet" href="<c:url value="/${ThreadSession.serviceLocale.language}/css/common.css"/>" type="text/css">
-<link rel="stylesheet" href="<c:url value="/${ThreadSession.serviceLocale.language}/css/popup.css"/>" type="text/css">
+<link rel="stylesheet" href="<c:url value="/resource/css/base.css"/>" type="text/css">
+<link rel="stylesheet" href="<c:url value="/resource/css/common.css"/>" type="text/css">
+<link rel="stylesheet" href="<c:url value="/resource/css/popup.css"/>" type="text/css">
 <!-- JAVASCRIPT -->
-<script type="text/javascript" src="<c:url value="/js/jquery/1.5.1/jquery.min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery/ui/jquery-ui-1.8.10.custom.min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery/plugin/jquery.bgiframe-2.1.2.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery/ui/jquery-ui-i18n.min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery/plugin/jquery.blockUI.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery/plugin/jquery.cookie.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery/plugin/jquery.form.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery/plugin/jquery.metadata.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery/plugin/jquery.MultiFile.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/common/common.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/validate.js"/>"></script>
+<script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-ui-1.8.17.custom.min.js"></script>
 <script type="text/javascript">
 //<![CDATA[
     // set context path
