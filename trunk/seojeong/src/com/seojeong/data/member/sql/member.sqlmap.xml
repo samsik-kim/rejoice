@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="member">
+
+	<insert id="insert" parameterClass="com.seojeong.data.member.info.MemberInfo">
+		INSERT INTO MEMBER(
+			MEMBER_SEQ,
+			MEMBER_NM,
+			CONTANCT1,
+			CONTANCT2,
+			ADDR,
+			EMAIL,
+			VST_CNT,
+			REG_DT,
+			UP_DT,
+			WIN_CNT
+		) VALUES (
+			#MEMBER_SEQ#,
+			#MEMBER_NM#,
+			#CONTANCT1#,
+			#CONTANCT2#,
+			#ADDR#,
+			#EMAIL#,
+			#VST_CNT#,
+			SYSDATE,
+			SYSDATE,
+			#WIN_CNT#
+		)
+	</insert>
+	
+	<update id="update" parameterClass="com.seojeong.data.member.info.MemberInfo">
+		UPDATE MEMBER
+			SET  
+				MEMBER_NM	= #MEMBER_NM#,
+				CONTANCT1	= #CONTANCT1#,
+				CONTANCT2	= #CONTANCT2#,
+				ADDR		= #ADDR#,	
+				EMAIL		= #EMAIL#,
+				VST_CNT		= #VST_CNT#,
+				UP_DT		= SYSDATE
+			WHERE MEMBER_SEQ = ##
+	</update>
+	
+</sqlMap>
