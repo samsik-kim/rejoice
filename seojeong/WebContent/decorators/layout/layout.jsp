@@ -56,9 +56,6 @@
 	<div id="header">
 		<page:applyDecorator  page="/decorators/common/include/gnb.jsp" name="empty" />
 	</div><!-- //header -->
-	<div id="sitemap_area">
-		<decorator:body />
-	</div><!-- //contents -->
 	<div id="contents_area">
 		<div id="left_area">
 			<page:applyDecorator  page="/decorators/common/include/leftMenu.jsp" name="empty" />
