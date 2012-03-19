@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sejong.service.custom.TestService;
+import com.seojeong.service.custom.TestService;
 
 @Controller
 public class TestController {
