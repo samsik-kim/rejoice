@@ -1,4 +1,4 @@
-package com.sejong.service.custom;
+package com.seojeong.service.custom;
 
 public interface TestService {
 	

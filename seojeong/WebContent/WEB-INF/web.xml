@@ -55,12 +55,12 @@
 
 	<!-- Default DispatcherServlet -->
 	<servlet>
-		<servlet-name>dnc</servlet-name>
+		<servlet-name>seojeong</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>dnc</servlet-name>
+		<servlet-name>seojeong</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 

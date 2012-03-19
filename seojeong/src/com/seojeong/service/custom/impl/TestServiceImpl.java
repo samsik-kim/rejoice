@@ -1,11 +1,11 @@
-package com.sejong.service.custom.impl;
+package com.seojeong.service.custom.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sejong.service.custom.TestService;
 import com.seojeong.data.custom.dao.TestDao;
+import com.seojeong.service.custom.TestService;
 
 @Service
 @Transactional(readOnly=true, rollbackFor = Exception.class)
