@@ -1,4 +1,4 @@
-package com.sejong.web.controller.test;
+package com.seojeong.web.controller.test;
 
 import javax.servlet.http.HttpServletRequest;
 

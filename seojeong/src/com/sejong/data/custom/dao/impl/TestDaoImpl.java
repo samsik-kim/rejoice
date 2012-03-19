@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import tframe.core.dao.IBatisAbstractDao;
 
-import com.sejong.data.custom.dao.TestDao;
+import com.seojeong.data.custom.dao.TestDao;
 
 @Repository
 public class TestDaoImpl extends IBatisAbstractDao implements TestDao {

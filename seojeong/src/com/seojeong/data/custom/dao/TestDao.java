@@ -1,4 +1,4 @@
-package com.sejong.data.custom.dao;
+package com.seojeong.data.custom.dao;
 
 public interface TestDao {
 	
