@@ -1,0 +1,131 @@
+<? 
+		$conn = mysql_connect("222.239.227.22","common","common") or die ("CONNECTION FAIL");
+		mysql_select_db("common");
+		
+		$query = "select * from ZIPCODE where INSTR(LOWER(DONG),LOWER('$_POST[address]')) > 0 order by ZIPCODE";
+		$sel = mysql_query($query) or die (mysql_error());
+
+	if ($frm){
+		$form=$frm;
+	}else{
+		$form="join";
+	}
+?>  
+<HTML>
+<HEAD>
+<TITLE>:: 우편번호찾기 ::</TITLE>
+<link rel="stylesheet" href="/utill/css/css.css" type="text/css">
+<link rel="stylesheet" href="/utill/css/font01.css" type="text/css">
+<META content='text/html; charset=euc-kr' http-equiv='Content-Type'>
+<META HTTP-EQUIV='Content-Type' CONTENT='text/html; charset=euc-kr'>
+<META content='우편번호찾기' name=keywords>
+<META content='우편번호찾기' name=description>
+<META content='shalom331.cafe24.com' name=Author>
+<meta http-equiv="imagetoolbar" content="no">
+<script>
+function _reload()
+{
+  var x = 430;
+  var y = document.body.scrollHeight + 55;
+  window.resizeTo(x,y);
+  document.srch_form.address.focus();
+}
+
+function _chk_form(obj)
+{
+    var obj = eval(obj);
+    var cnt = obj.elements.length;
+    for (i = 0; i < cnt; i++)
+    {
+        if (obj.elements[i].must == 'Y' && obj.elements[i].value == '')
+        {
+            alert(obj.elements[i].mustval+' 필수항목입니다');
+            obj.elements[i].focus();
+            return;
+        }
+    }
+    obj.submit();
+}
+
+function _change_zip(arg,arg1,arg2)
+{
+	opener.document.<?=$form?>.<?=$in?>post1.value = arg;
+	opener.document.<?=$form?>.<?=$in?>post2.value = arg1;
+	opener.document.<?=$form?>.<?=$in?>addr.value = arg2;
+	opener.document.<?=$form?>.<?=$in?>addr_detail.value = '';
+	opener.document.<?=$form?>.<?=$in?>addr_detail.focus();
+	self.close();	
+}
+</script>
+<style type=text/css>
+body {overflow-y:scroll;overflow-x:hidden}
+</style>
+</head>
+<!-- 팝업 로드 -->
+<body leftmargin='0' topmargin='0' scroll='auto'>
+<table width="400" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<td align='center'><img src="/utill/images/title_post.gif"></td>
+  </tr>							  
+  <tr>
+	<td align='center' valign='top' height='293' background='../img/popup/bg1.gif'>
+		<table width="250" border="0" cellspacing="0" cellpadding="0">
+		<form name=srch_form method=post action="<?=$PHP_SELF?>">
+		<input type="hidden" name="frm" value="<?=$frm?>">
+		<input type="hidden" name="gb" value="<?=$gb?>">
+		<input type="hidden" name="in" value="<?=$in?>">
+			<tr> 	
+	          <td colspan='3'>&nbsp;</td>
+			 </tr>
+			  <td width='50'>지역명</td>			
+			  <td><input name="address" type="text" class="unnamed1" size="20" id="search" maxlength=12 value="<?=$address?>"></td>
+			  <td style='padding:10px;'><div align="right"> <a href="javascript:_chk_form(document.srch_form)"><img src="/utill/images/joongbok_btn.gif" border="0"></a></div></td>
+			</tr>
+			<tr>
+				
+          <td colspan='3'style='padding:10px;padding-left:55px;'>동을 입력하세요.<br>
+            (예:압구정동, 2글자 이상입력) </td>
+			</tr>
+		  </table>
+		  
+      <table width="250" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td>&nbsp;</td>
+        </tr>
+          <td height='1' bgcolor='#cccccc'></td>
+        </tr>
+<?
+if ($address){
+		while ($rs = mysql_fetch_assoc($sel))
+		{
+			$zip_ext = explode("-",$rs[ZIPCODE]);
+			$result_address = $rs[SIDO]." ".$rs[GUGUN]." ".$rs[DONG]." ".$rs[BUNJI];
+?>		
+        <tr> 
+          <td style='padding:10px;' height="10">
+<a href="javascript:_change_zip('<?=$zip_ext[0]?>','<?=$zip_ext[1]?>','<?=$result_address?>');">
+		  <?=$rs[ZIPCODE]?> <?=$result_address?></a>
+		  </td>
+        </tr>
+<?
+		}
+}else{
+?>    
+        <tr> 
+          <td style='padding:10px;' align='center'>검색하실 동을 입력해 주십시요.</td>
+        </tr>
+<?}?>
+      </table>
+		  
+	 </td>
+  </tr>
+  <tr>
+	<td height='46' align='center' valign='bottom' background='../img/popup/bg1.gif' class="table3"><a href='#' onClick='window.close();' onfocus='this.blur();'><img src="/utill/images/close_btn.gif"></a></td>
+  </tr>  							    
+  <tr>
+	<td align='center'><img src="/utill/images/bottom1.gif"></td>
+  </tr>							  
+  
+</table>
+</body>
+</html>

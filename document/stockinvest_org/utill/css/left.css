@@ -1,0 +1,68 @@
+a {text-decoration:none; color: #222222}
+a:hover {text-decoration:none; color: navy}
+
+td {
+	font-family: "µ¸¿ò";
+	font-size: 9pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	line-height: normal;
+	color: white;
+}
+
+A:link    {color:white;text-decoration:none;}
+A:visited {color:white;text-decoration:none;}
+A:active  {color:white;text-decoration:none;}
+A:hover  {color:white;text-decoration:underline}
+
+BODY {
+	font-size:9pt; color:white; font-family:µ¸¿ò;
+	SCROLLBAR-FACE-COLOR: #cfcfcf; FONT-SIZE: 9pt; 
+	SCROLLBAR-SHADOW-COLOR: #333333; 
+	SCROLLBAR-3DLIGHT-COLOR: #333333; 
+	SCROLLBAR-ARROW-COLOR: #ffffff; FONT-FAMILY: verdana, ±¼¸², Seoul, Gulim; 
+	SCROLLBAR-DARKSHADOW-COLOR: #ffffff; 
+	SCROLLBAR-BASE-COLOR: #cfcfcf; LETTER-SPACING: -1px
+}
+
+.tte {height:18px; background-color:white; border:1px solid #9c9a9c ; font-family:µ¸¿ò; font-size:8pt;}
+.text {border:1px solid #9C9A9C ; font-family:µ¸¿ò; font-size:8pt;}
+.search {background-color:; border:solid 1 gray; height:18px}
+.button {background-color:#808080; border:solid 0 #999999; color:ffffff; font-family:µ¸¿ò; font-size:9pt;  height:19px}
+.new {
+	font-family: "µ¸¿ò";
+	font-size: 8pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	line-height: 150%;
+	color: #666666;
+}
+.board {
+	font-family: "µ¸¿ò";
+	font-size: 9pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	line-height: normal;
+	color: #D9A76A;
+}
+.top {
+	font-family: "µ¸¿ò";
+	font-size: 8pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	line-height: normal;
+	color: #595959;
+}
+.gal {
+	font-family: "µ¸¿ò";
+	font-size: 9pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	line-height: 150%;
+	color: #595959;
+}

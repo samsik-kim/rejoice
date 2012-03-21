@@ -1,0 +1,61 @@
+<?
+	include "setup.php";
+?>
+<link rel="stylesheet" type="text/css" href="/utill/css/left.css">
+<BODY topmargin='0'  leftmargin='0' marginwidth='0' marginheight='0' bgcolor="#3399FF">
+<table border=0 cellpadding=0 cellspacing=0 width="100%">
+<tr height="30">
+<td align="center">
+<br>
+	<img src="/images/admin_logo.jpg">
+</td>
+</tr>
+
+<tr height="30">
+<td align="center">
+&nbsp;
+</td>
+</tr>
+<tr>
+	<td style="padding-left:5px;"><table border=0 cellpadding=0 cellspacing=1 width="150" bgcolor="white">
+<tr height="30" bgcolor="#3399FF" onMouseOver="this.style.backgroundColor='#A0A0A0'; return true;" onMouseOut="this.style.backgroundColor='#3399FF'; return true;">
+<td style="padding-left:5px;">
+ <B> ● </B><a href="/security/admin_logout.php" target="_top" ><b>로그아웃</b></a>
+</td>
+</tr>
+
+<tr height="30" bgcolor="#3399FF" onMouseOver="this.style.backgroundColor='#A0A0A0'; return true;" onMouseOut="this.style.backgroundColor='#3399FF'; return true;">
+<td style="padding-left:5px;">
+ <B> ● </B><a href="/security/admin.php" target="amain" ><b>관리자설정</b></a>
+</td>
+</tr>
+
+<tr height="30" bgcolor="#3399FF" onMouseOver="this.style.backgroundColor='#A0A0A0'; return true;" onMouseOut="this.style.backgroundColor='#3399FF'; return true;">
+<td style="padding-left:5px;">
+ <B> ● </B><a href="/security/code_cate/list.php" target="amain" ><b>코드설정</b></a>
+</td>
+</tr>
+
+<tr height="30" bgcolor="#3399FF" onMouseOver="this.style.backgroundColor='#A0A0A0'; return true;" onMouseOut="this.style.backgroundColor='#3399FF'; return true;">
+<td style="padding-left:5px;">
+ <B> ● </B><a href="/security/board_manager/board_manager.php" target="amain"><b>게시판관리</b></a>
+</td>
+</tr>
+<?
+	$board_sql = "select * from board_manager";
+	$board_result = mysql_query($board_sql);
+	
+	while ($board_data = mysql_fetch_array($board_result)){
+?>
+<tr height="30" bgcolor="#3399FF" onMouseOver="this.style.backgroundColor='#A0A0A0'; return true;" onMouseOut="this.style.backgroundColor='#3399FF'; return true;">
+<td style="padding-left:30px;">
+ <B> ▷ </B><a href="/security/board/list.php?keyg=<?=$keyg?>&key=<?=$key?>&bbs_cd=<?=$board_data[bbs_cd]?>" target="amain" ><b><?=$board_data[board_name]?></b></a>
+</td>
+</tr>
+<?
+	}
+?>
+</table></td>
+</tr>
+</table>
+</body>

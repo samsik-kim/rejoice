@@ -1,0 +1,76 @@
+<?
+	include "../dbconnect.php";
+	include "../lib.php";
+
+	$id_yn = num_rows("member", "where user_id='$uid'");
+?>
+<HTML>
+<HEAD>
+<TITLE>아이디 중복확인</TITLE>
+<link rel="stylesheet" href="/utill/css/css.css" type="text/css">
+<link rel="stylesheet" href="/utill/css/font01.css" type="text/css">
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function useid(){
+	opener.document.all.chkid_yn.value = "true";
+	opener.document.all.user_id.value = "<?=$uid?>";
+	self.close();
+}
+function subid(){
+	if (!chkid.uid.value || chkid.uid.value == ""){
+		alert("중복확인 할 아이디를 입력해주십시요.");
+		chkid.uid.focus();
+		return;
+	}
+	chkid.submit();
+}
+//-->
+</SCRIPT>
+</head>
+<!-- 팝업 로드 -->
+<body leftmargin='0' topmargin='0'>
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<td align='center'><img src="/utill/images/title_joongbok.gif" width="300" height="46"></td>
+  </tr>							  
+  <tr>
+	<td align='center' height='93' background='../img/popup/bg.gif'> 
+		<table width="170" border="0" cellspacing="0" cellpadding="0">
+		<form name="chkid" method="post" action="<?=$PHP_SELF?>">
+        <tr> 
+          <td><input name="uid" type="text" class="unnamed1" size="15" value="<?=$uid?>"></td>
+          <td><div align="right"><a href="javascript:subid();"><img src="/utill/images/joongbok_btn.gif" border="0"></a></div></td>
+		  <input type="hidden" name="mode" value="search">
+        </tr>
+		</form>
+        <tr> 
+          <td>
+<? if ($id_yn > 0){?>
+	<span class="style1"><?=$uid?></span> 사용불가 <br> <br>
+<?}else{?>
+	<span class="style1"><?=$uid?></span> 사용가능 <br>
+<?}?>
+		  </td>
+        </tr>
+        <tr> 
+          <td align="center">
+<? if ($id_yn < 1){?>
+<a href="javascript:useid();">사용하기</a> &nbsp;&nbsp;&nbsp;&nbsp;
+<?}else{?>	
+&nbsp;&nbsp;
+<?}?>
+		  </td>
+        </tr>
+      </table>
+	  </td>
+  </tr>							    
+  <tr>
+	<td height='46' align='center' valign='bottom' background='../img/popup/bg.gif' class="table3"><a href='#' onClick='window.close();' onfocus='this.blur();'><img src="/utill/images/close_btn.gif"></a></td>
+  </tr>							    
+  <tr>
+	<td align='center'><img src="/utill/images/bottom.gif" width="300" height="15"></td>
+  </tr>							  
+  
+</table>
+</body>
+</html>
