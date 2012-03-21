@@ -1,0 +1,150 @@
+.text01 {
+	font-family: "µ¸¿ò";
+	font-size: 11px;
+	color: #7C7C7C;
+	line-height: 200%;
+}
+.text01b {
+	font-family: "µ¸¿ò";
+	font-size: 11px;
+	color: #7C7C7C;
+	line-height: 200%;
+	font-weight: bold;
+
+}
+.text02 {
+
+	font-family: "µ¸¿ò";
+	font-size: 11px;
+	color: #7C7C7C;
+	line-height: 150%;
+}
+.text03 {
+
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #7C7C7C;
+	line-height: 170%;
+}
+.text03_blue {
+
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #1C4E87;
+	line-height: 170%;
+}
+.text03b {
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #7C7C7C;
+	line-height: 170%;
+	font-weight: bold;
+
+}
+.text03center {
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #7C7C7C;
+	line-height: 170%;
+	text-align: center;
+
+}
+.text03centerB {
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #7C7C7C;
+	line-height: 170%;
+	text-align: center;
+	font-weight: bold;
+
+}
+.text03bb {
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #7C7C7C;
+	line-height: 170%;
+	font-weight: bold;
+	text-indent: 13px;
+
+}
+.text03c {
+
+
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #7E7454;
+	line-height: 170%;
+}
+.text03bb1 {
+
+	font-family: "µ¸¿ò";
+	font-size: 13px;
+	color: #7C7C7C;
+	line-height: 150%;
+	font-weight: bold;
+}
+.text03borange {
+
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #FF6600;
+	line-height: 150%;
+	font-weight: bold;
+}
+.text03bsalgu {
+
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #DD8A6C;
+	line-height: 150%;
+	font-weight: bold;
+}
+.text03a {
+
+
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #666666;
+	line-height: 130%;
+}
+.text01sit {
+	font-family: "µ¸¿ò";
+	font-size: 12px;
+	color: #7C7C7C;
+	line-height: 130%;
+
+}
+/* member */
+.table {
+	border-top:1px solid;
+	border-color:#d1d1d1;
+	color: #7C7C7C;
+	padding-left:10px;
+	height:28px;
+}
+/* ¸¸³²ÀÇÀå¼Ò Á¦¸ñ */
+.table1 {
+	border-top:1px solid;
+	border-color:#d1d1d1;
+	padding-left:10px;
+	height:30px;
+	font-size: 14px;
+	color: #5E4C78;
+	line-height: 170%;
+	font-weight: bold;
+
+}
+.table2 {
+	border-top:1px solid;
+	border-color:#d1d1d1;
+	color: #7C7C7C;
+	padding-left:10px;
+	
+}
+.table3 {
+	border-top:1px solid;
+	border-color:#d1d1d1;
+	color: #7C7C7C;
+	padding-left:10px;
+	line-height: 170%;	
+}
