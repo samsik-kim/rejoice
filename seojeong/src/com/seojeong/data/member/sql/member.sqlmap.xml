@@ -2,8 +2,41 @@
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="member">
-
-	<insert id="insert" parameterClass="com.seojeong.data.member.info.MemberInfo">
+	
+	<typeAlias alias="info" type="com.seojeong.data.member.info.MemberInfo"/>
+	
+	<select id="selectMemberList" parameterClass="info" resultClass="info">
+		SELECT y.* FROM(
+			SELECT 
+				ROWNUM as rnum, x.*
+			FROM(
+				SELECT 
+					MEMBER_SEQ	AS SEQ,
+					MEMBER_NM	AS MEMBER_NM,
+					CONTANCT1	AS CONTANCT1,
+					CONTANCT2	AS CONTANCT2,
+					ADDR		AS ADDR,
+					EMAIL		AS EMAIL,
+					VST_CNT		AS VST_CNT,
+					REG_DT		AS REG_DT,
+					WIN_CNT		AS WIN_CNT
+				FROM MEMBER
+				ORDER BY MEMBER_SEQ
+			) x
+		<![CDATA[
+			WHERE ROWNUM <= #endNum#
+		) y
+		WHERE rnum >= #startNum#
+		]]>
+	</select>
+	
+	<select id="selectMemberListCount" parameterClass="info" resultClass="int">
+		SELECT 
+			COUNT(*)
+		FROM MEMBER
+	</select>
+	
+	<insert id="insert" parameterClass="info">
 		INSERT INTO MEMBER(
 			MEMBER_SEQ,
 			MEMBER_NM,
@@ -29,7 +62,7 @@
 		)
 	</insert>
 	
-	<update id="update" parameterClass="com.seojeong.data.member.info.MemberInfo">
+	<update id="update" parameterClass="info">
 		UPDATE MEMBER
 			SET  
 				MEMBER_NM	= #MEMBER_NM#,

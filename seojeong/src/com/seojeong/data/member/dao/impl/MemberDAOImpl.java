@@ -1,9 +1,11 @@
 package com.seojeong.data.member.dao.impl;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import tframe.common.exception.TFrameSQLException;
 import tframe.core.dao.IBatisAbstractDao;
 
 import com.seojeong.data.member.dao.MemberDAO;
@@ -38,6 +40,29 @@ public class MemberDAOImpl extends IBatisAbstractDao implements MemberDAO{
 	@Override
 	public int updateMember(MemberInfo info) throws SQLException {
 		return getSqlMapClient().update(NAME_SPACE + ".update", info);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.data.member.dao.MemberDAO#selectMemberList(com.seojeong.data.member.info.MemberInfo)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MemberInfo> selectMemberList(MemberInfo info) throws SQLException {
+		return getSqlMapClient().queryForList(NAME_SPACE + ".selectMemberList", info);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.data.member.dao.MemberDAO#selectMemberListCount(com.seojeong.data.member.info.MemberInfo)
+	 */
+	@Override
+	public int selectMemberListCount(MemberInfo info) throws SQLException {
+		int result = 0;
+		try {
+			result = (Integer)getSqlMapClient().queryForObject(NAME_SPACE + ".selectMemberListCount", info);
+		} catch (TFrameSQLException e) {
+			throw new TFrameSQLException(e);
+		}		
+		return result;
 	}
 	
 }
