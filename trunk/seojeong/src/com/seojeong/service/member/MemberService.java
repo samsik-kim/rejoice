@@ -2,6 +2,8 @@ package com.seojeong.service.member;
 
 import java.sql.SQLException;
 
+import tframe.web.page.PageInfo;
+
 import com.seojeong.data.member.info.MemberInfo;
 
 public interface MemberService {
@@ -11,4 +13,6 @@ public interface MemberService {
 	public void insertMember(MemberInfo info)throws SQLException;
 	
 	public int updateMember(MemberInfo info)throws SQLException;
+	
+	public PageInfo selectMemberList(PageInfo pageInfo, MemberInfo info) throws SQLException;
 }

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tframe.web.page.PageInfo;
+
 import com.seojeong.data.member.dao.MemberDAO;
 import com.seojeong.data.member.info.MemberInfo;
 import com.seojeong.service.member.MemberService;
@@ -39,4 +41,17 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updateMember(info);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.seojeong.service.member.MemberService#selectMemberList(tframe.web.page.PageInfo, com.seojeong.data.member.info.MemberInfo)
+	 */
+	@Override
+	public PageInfo selectMemberList(PageInfo pageInfo, MemberInfo info) throws SQLException {
+		pageInfo.setTotalCount(dao.selectMemberListCount(info));
+		if(pageInfo.getTotalCount() > 0){
+			info.setStartNum(pageInfo.getStartNum());
+			info.setEndNum(pageInfo.getEndNum());
+			pageInfo.setDataList(dao.selectMemberList(info));
+		}
+		return pageInfo;
+	}
 }
