@@ -4,6 +4,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript">
 <!--
+$(document).ready(function(){
+	$("table").tablesorter({
+		// sort on the first column and third column, order asc         
+		sortList: [[0,0],[2,0]]     
+	}); 
+});
+
+
 //목록
 function goList(currentPage){
 	location.href="/member/list.do?currentPage="+currentPage;
@@ -21,13 +29,13 @@ function goList(currentPage){
 	<input type="image" id="searchBtn" src="/resource/images/common/btn_board_search.gif" alt="검색" />
 </div>
 <div class="tstyleE">
-<table width="600">
+<table width="600"  class="tablesorter">
 	<caption>고객 리스트</caption>
 	<colgroup>
 		<col width="50" />
-		<col width="100"/>
-		<col width="200" />
-		<col width="200" />
+		<col width="150"/>
+		<col width="300" />
+		<col width="100" />
 		<col width="" />
 	</colgroup>
 	<thead>
@@ -52,7 +60,7 @@ function goList(currentPage){
 			<td><div>${list.rnum}</div></td>
 			<td>${list.MEMBER_NM}</td>
 			<td>${list.CONTANCT1}</td>
-			<td>${list.VST_CNT}</td>
+			<td>${list.WIN_CNT}</td>
 			<td>${list.REG_DT}</td>
 		</tr>
 		</c:forEach>
@@ -61,10 +69,10 @@ function goList(currentPage){
 </div>
 <div class="pagination"><!-- pagination -->
 		<dnc:PageNavigation pages="${pageInfo}" link="goList" pageIndexName="currentPage" styleClass="paging" 
-			firstImg="/resource/images/common/btn_page_first.gif"  
-			prevImg="/resource/images/common/btn_page_prev.gif" 
-			nextImg="/resource/images/common/btn_page_next.gif" 
-			lastImg="/resource/images/common/btn_page_last.gif"
+			firstImg="/resource/images/common/btn_ppre.gif"  
+			prevImg="/resource/images/common/btn_pre.gif" 
+			nextImg="/resource/images/common/btn_next.gif" 
+			lastImg="/resource/images/common/btn_nnext.gif"
 			image="true" linkScript="true" 
 		/>					
 </div><!-- // pagination -->
