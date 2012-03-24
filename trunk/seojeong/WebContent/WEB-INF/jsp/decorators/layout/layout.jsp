@@ -22,9 +22,13 @@
 	form{clear:both;}
 </style>
 <link href="<c:url value="/resource/css/content.css"/>" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/resource/ets/blue/style.css" type="text/css" id="" media="print, projection, screen" />
+
 <link type="text/css" href="/resource/jquery-ui-1.8.17.custom/css/cupertino/jquery-ui-1.8.17.custom.css" rel="stylesheet" />	
 <script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="/resource/ets/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="/resource/ets/validate.js"></script>
 
 <decorator:head />
 </head>
