@@ -28,7 +28,8 @@
         </property>
     </bean>
 
-
+	<bean id="jsonView" class="com.seojeong.common.util.JSonView" />
+	
 	<import resource="classpath:application/ibatis/dataSourceConfig.xml"/>
 	
 	<bean id="ibatis_TransactionManager"

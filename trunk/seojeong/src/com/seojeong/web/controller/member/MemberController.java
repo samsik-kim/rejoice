@@ -1,7 +1,9 @@
 package com.seojeong.web.controller.member;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,6 +26,11 @@ public class MemberController {
 	@RequestMapping("/member/main.do")
 	public String membermain(){
 		return "member/main";
+	}
+	
+	@RequestMapping("/member/insertForm.do")
+	public String insertForm(){
+		return "member/insert";
 	}
 	
 	/**
@@ -53,12 +60,20 @@ public class MemberController {
 	 */
 	@RequestMapping("/member/insert.do")
 	public ModelAndView memberInsert(HttpServletRequest request, @ModelAttribute("setMemberInfo") MemberInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView("member/insert");
-		//service.insertMember(info);
-		
+		ModelAndView mav = new ModelAndView("redirect:/member/list.do");
+		service.insertMember(info);
 		return mav;
 	}
-	
+
+	@RequestMapping("/member/updateForm.do")
+	public ModelAndView memberUpdateForm(HttpServletRequest request, @ModelAttribute("setMemberInfo") MemberInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView("member/update");
+		if(info.getMdn() != null || info.getSeq() != null){
+			info = service.selectMemberInfo(info);
+		}
+		mav.addObject("info", info);
+		return mav;
+	}
 	
 	/**
 	 * @param request
@@ -68,7 +83,18 @@ public class MemberController {
 	@RequestMapping("/member/update.do")
 	public ModelAndView memberUpdate(HttpServletRequest request, @ModelAttribute("setMemberInfo") MemberInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView("member/update");
-		//service.updateMember(info);
+//		ModelAndView mav = new ModelAndView("redirect:/member/list.do");
+		service.updateMember(info);
+		return mav;
+	}
+	
+	@RequestMapping("/member/mdnCheck.do")
+	public ModelAndView findBestProdJson(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String mdn = StringUtils.nvlStr(request.getParameter("mdn"));
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", service.selectMdnCheck(mdn));
+		mav.addObject("jsonObject", jsonObject);
 		return mav;
 	}
 }

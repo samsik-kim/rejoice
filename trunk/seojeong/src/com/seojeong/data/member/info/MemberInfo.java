@@ -3,295 +3,162 @@ package com.seojeong.data.member.info;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class MemberInfo implements Serializable{
+public class MemberInfo extends CommonInfo implements Serializable{
 
-	// 페이징, 검색 관련
-	/** 페이징 시작 번호 */
-	private int startNum;
-	/** 페이징 끝 번호 */
-	private int endNum;
-	/** 총 갯수 */
-	private int totalCount;
-	/** 현재페이지 */
-	private String currentPage;
-	/** 검색구분 */
-	private String searchKey;
-	/** 검색어 */
-	private String searchValue;
-
-	// 이전글, 다음글 관련
-	/** 다음글번호 */
-	private String nextSeq;
-	/** 이전글번호 */
-	private String prevSeq;
-	/** 다음글제목 */
-	private String nextNm;
-	/** 이전글제목 */
-	private String prevNm;
-	
-	private String rnum;
-	
-	private String MEMBER_SEQ;
-	private String MEMBER_NM;
-	private String CONTANCT1;
-	private String CONTANCT2;
-	private String ADDR;
-	private String EMAIL;
-	private String VST_CNT;
-	private String REG_DT;
-	private String UP_DT;
-	private String WIN_CNT;
+	/** SEQ */
+	private String seq;
+	/** 이름 */
+	private String memberNm;
+	/** 휴대폰 */
+	private String mdn;
+	/** 전화번호 */
+	private String contanct;
+	/** 주소 */
+	private String addr;
+	/** 이메일 */
+	private String email;
+	/** 당첨횟수 */
+	private String winCnt;
+	/** 방문횟수 */
+	private String vstCnt;
+	/** 등록일 */
+	private String regDt;
+	/** 수정일 */
+	private String upDt;
+	/** 방문일 */
+	private String vstDt;
 	/**
-	 * @return the mEMBER_SEQ
+	 * @return the seq
 	 */
-	public String getMEMBER_SEQ() {
-		return MEMBER_SEQ;
+	public String getSeq() {
+		return seq;
 	}
 	/**
-	 * @param mEMBER_SEQ the mEMBER_SEQ to set
+	 * @param seq the seq to set
 	 */
-	public void setMEMBER_SEQ(String mEMBER_SEQ) {
-		MEMBER_SEQ = mEMBER_SEQ;
+	public void setSeq(String seq) {
+		this.seq = seq;
 	}
 	/**
-	 * @return the mEMBER_NM
+	 * @return the memberNm
 	 */
-	public String getMEMBER_NM() {
-		return MEMBER_NM;
+	public String getMemberNm() {
+		return memberNm;
 	}
 	/**
-	 * @param mEMBER_NM the mEMBER_NM to set
+	 * @param memberNm the memberNm to set
 	 */
-	public void setMEMBER_NM(String mEMBER_NM) {
-		MEMBER_NM = mEMBER_NM;
+	public void setMemberNm(String memberNm) {
+		this.memberNm = memberNm;
 	}
 	/**
-	 * @return the cONTANCT1
+	 * @return the mdn
 	 */
-	public String getCONTANCT1() {
-		return CONTANCT1;
+	public String getMdn() {
+		return mdn;
 	}
 	/**
-	 * @param cONTANCT1 the cONTANCT1 to set
+	 * @param mdn the mdn to set
 	 */
-	public void setCONTANCT1(String cONTANCT1) {
-		CONTANCT1 = cONTANCT1;
+	public void setMdn(String mdn) {
+		this.mdn = mdn;
 	}
 	/**
-	 * @return the cONTANCT2
+	 * @return the contanct
 	 */
-	public String getCONTANCT2() {
-		return CONTANCT2;
+	public String getContanct() {
+		return contanct;
 	}
 	/**
-	 * @param cONTANCT2 the cONTANCT2 to set
+	 * @param contanct the contanct to set
 	 */
-	public void setCONTANCT2(String cONTANCT2) {
-		CONTANCT2 = cONTANCT2;
+	public void setContanct(String contanct) {
+		this.contanct = contanct;
 	}
 	/**
-	 * @return the aDDR
+	 * @return the addr
 	 */
-	public String getADDR() {
-		return ADDR;
+	public String getAddr() {
+		return addr;
 	}
 	/**
-	 * @param aDDR the aDDR to set
+	 * @param addr the addr to set
 	 */
-	public void setADDR(String aDDR) {
-		ADDR = aDDR;
+	public void setAddr(String addr) {
+		this.addr = addr;
 	}
 	/**
-	 * @return the eMAIL
+	 * @return the email
 	 */
-	public String getEMAIL() {
-		return EMAIL;
+	public String getEmail() {
+		return email;
 	}
 	/**
-	 * @param eMAIL the eMAIL to set
+	 * @param email the email to set
 	 */
-	public void setEMAIL(String eMAIL) {
-		EMAIL = eMAIL;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	/**
-	 * @return the vST_CNT
+	 * @return the winCnt
 	 */
-	public String getVST_CNT() {
-		return VST_CNT;
+	public String getWinCnt() {
+		return winCnt;
 	}
 	/**
-	 * @param vST_CNT the vST_CNT to set
+	 * @param winCnt the winCnt to set
 	 */
-	public void setVST_CNT(String vST_CNT) {
-		VST_CNT = vST_CNT;
+	public void setWinCnt(String winCnt) {
+		this.winCnt = winCnt;
 	}
 	/**
-	 * @return the rEG_DT
+	 * @return the vstCnt
 	 */
-	public String getREG_DT() {
-		return REG_DT;
+	public String getVstCnt() {
+		return vstCnt;
 	}
 	/**
-	 * @param rEG_DT the rEG_DT to set
+	 * @param vstCnt the vstCnt to set
 	 */
-	public void setREG_DT(String rEG_DT) {
-		REG_DT = rEG_DT;
+	public void setVstCnt(String vstCnt) {
+		this.vstCnt = vstCnt;
 	}
 	/**
-	 * @return the uP_DT
+	 * @return the regDt
 	 */
-	public String getUP_DT() {
-		return UP_DT;
+	public String getRegDt() {
+		return regDt;
 	}
 	/**
-	 * @param uP_DT the uP_DT to set
+	 * @param regDt the regDt to set
 	 */
-	public void setUP_DT(String uP_DT) {
-		UP_DT = uP_DT;
+	public void setRegDt(String regDt) {
+		this.regDt = regDt;
 	}
 	/**
-	 * @return the wIN_CNT
+	 * @return the upDt
 	 */
-	public String getWIN_CNT() {
-		return WIN_CNT;
+	public String getUpDt() {
+		return upDt;
 	}
 	/**
-	 * @param wIN_CNT the wIN_CNT to set
+	 * @param upDt the upDt to set
 	 */
-	public void setWIN_CNT(String wIN_CNT) {
-		WIN_CNT = wIN_CNT;
+	public void setUpDt(String upDt) {
+		this.upDt = upDt;
 	}
 	/**
-	 * @return the startNum
+	 * @return the vstDt
 	 */
-	public int getStartNum() {
-		return startNum;
+	public String getVstDt() {
+		return vstDt;
 	}
 	/**
-	 * @param startNum the startNum to set
+	 * @param vstDt the vstDt to set
 	 */
-	public void setStartNum(int startNum) {
-		this.startNum = startNum;
-	}
-	/**
-	 * @return the endNum
-	 */
-	public int getEndNum() {
-		return endNum;
-	}
-	/**
-	 * @param endNum the endNum to set
-	 */
-	public void setEndNum(int endNum) {
-		this.endNum = endNum;
-	}
-	/**
-	 * @return the totalCount
-	 */
-	public int getTotalCount() {
-		return totalCount;
-	}
-	/**
-	 * @param totalCount the totalCount to set
-	 */
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-	}
-	/**
-	 * @return the currentPage
-	 */
-	public String getCurrentPage() {
-		return currentPage;
-	}
-	/**
-	 * @param currentPage the currentPage to set
-	 */
-	public void setCurrentPage(String currentPage) {
-		this.currentPage = currentPage;
-	}
-	/**
-	 * @return the searchKey
-	 */
-	public String getSearchKey() {
-		return searchKey;
-	}
-	/**
-	 * @param searchKey the searchKey to set
-	 */
-	public void setSearchKey(String searchKey) {
-		this.searchKey = searchKey;
-	}
-	/**
-	 * @return the searchValue
-	 */
-	public String getSearchValue() {
-		return searchValue;
-	}
-	/**
-	 * @param searchValue the searchValue to set
-	 */
-	public void setSearchValue(String searchValue) {
-		this.searchValue = searchValue;
-	}
-	/**
-	 * @return the nextSeq
-	 */
-	public String getNextSeq() {
-		return nextSeq;
-	}
-	/**
-	 * @param nextSeq the nextSeq to set
-	 */
-	public void setNextSeq(String nextSeq) {
-		this.nextSeq = nextSeq;
-	}
-	/**
-	 * @return the prevSeq
-	 */
-	public String getPrevSeq() {
-		return prevSeq;
-	}
-	/**
-	 * @param prevSeq the prevSeq to set
-	 */
-	public void setPrevSeq(String prevSeq) {
-		this.prevSeq = prevSeq;
-	}
-	/**
-	 * @return the nextNm
-	 */
-	public String getNextNm() {
-		return nextNm;
-	}
-	/**
-	 * @param nextNm the nextNm to set
-	 */
-	public void setNextNm(String nextNm) {
-		this.nextNm = nextNm;
-	}
-	/**
-	 * @return the prevNm
-	 */
-	public String getPrevNm() {
-		return prevNm;
-	}
-	/**
-	 * @param prevNm the prevNm to set
-	 */
-	public void setPrevNm(String prevNm) {
-		this.prevNm = prevNm;
-	}
-	/**
-	 * @return the rnum
-	 */
-	public String getRnum() {
-		return rnum;
-	}
-	/**
-	 * @param rnum the rnum to set
-	 */
-	public void setRnum(String rnum) {
-		this.rnum = rnum;
+	public void setVstDt(String vstDt) {
+		this.vstDt = vstDt;
 	}
 	
+		
 }

@@ -54,4 +54,20 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return pageInfo;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.service.member.MemberService#selectMdnCheck(java.lang.String)
+	 */
+	@Override
+	public String selectMdnCheck(String mdn) throws SQLException {
+		return dao.selectMdnCheck(mdn) > 0 ? "FAIL" : "SUCCESS";
+	}
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.service.member.MemberService#selectMemberInfo(com.seojeong.data.member.info.MemberInfo)
+	 */
+	@Override
+	public MemberInfo selectMemberInfo(MemberInfo info) throws SQLException {
+		return dao.selectMemberInfo(info);
+	}
 }

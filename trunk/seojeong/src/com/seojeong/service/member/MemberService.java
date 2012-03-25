@@ -15,4 +15,8 @@ public interface MemberService {
 	public int updateMember(MemberInfo info)throws SQLException;
 	
 	public PageInfo selectMemberList(PageInfo pageInfo, MemberInfo info) throws SQLException;
+	
+	public String selectMdnCheck(String mdn)throws SQLException;
+	
+	public MemberInfo selectMemberInfo(MemberInfo info)throws SQLException;
 }

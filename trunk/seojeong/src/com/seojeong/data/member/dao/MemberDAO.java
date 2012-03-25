@@ -18,4 +18,7 @@ public interface MemberDAO {
 	
 	public int selectMemberListCount(MemberInfo info)throws SQLException;
 	
+	public int selectMdnCheck(String mdn)throws SQLException;
+	
+	public MemberInfo selectMemberInfo(MemberInfo info)throws SQLException;
 }
