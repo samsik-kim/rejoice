@@ -507,7 +507,7 @@ function showValidate(target, showtype, extraComment, exfns) {
 				autoOpen	: false,
 				buttons		: {"Ok": function() { $(this).dialog("close");}},
 				minHeight	: 100,
-				width		: "40%",
+				width		: "50%",
 				modal		: false
 				});
 		}
@@ -528,6 +528,7 @@ function showValidate(target, showtype, extraComment, exfns) {
 		divDialog.dialog("option", "width", '100%');
 		divDialog.dialog("option", "height", '768');
 		divDialog.dialog("option", "position", 'center');
+		
 		maxWidth	= 0;
 		height		= 0;
 		$("._invalidMessageDialogSpan").each(function (idx, obj) {
@@ -542,7 +543,7 @@ function showValidate(target, showtype, extraComment, exfns) {
 			//height	+= tobj.outerHeight() + 6;
 		});
 		height	= $("#_innerInvalidMessageDialog").outerHeight() + 15;
-		divDialog.dialog("option", "width", (maxWidth + 55));
+		divDialog.dialog("option", "width", (maxWidth + 200));
 		divDialog.dialog("option", "height", (height + 100));
 		divDialog.dialog("option", "position", 'center');
 	} else {

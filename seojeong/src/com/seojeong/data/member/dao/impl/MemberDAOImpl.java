@@ -64,5 +64,20 @@ public class MemberDAOImpl extends IBatisAbstractDao implements MemberDAO{
 		}		
 		return result;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.data.member.dao.MemberDAO#selectMdnCheck(java.lang.String)
+	 */
+	@Override
+	public int selectMdnCheck(String mdn) throws SQLException {
+		return (Integer) getSqlMapClient().queryForObject(NAME_SPACE+".selectMdnCheck", mdn);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.data.member.dao.MemberDAO#selectMemberInfo(com.seojeong.data.member.info.MemberInfo)
+	 */
+	@Override
+	public MemberInfo selectMemberInfo(MemberInfo info) throws SQLException {
+		return (MemberInfo) getSqlMapClient().queryForObject(NAME_SPACE + ".selectMemberInfo", info);
+	}
 }

@@ -11,33 +11,33 @@
     <!-- Framework, Library, System 관련 Appender 및 Logger 설정 부분 시작!!                  -->
     <!-- #################################################################################### -->
     
-	<appender name="OMC_LOG_APPENDER" class="tframe.common.log.DirFileAppender">
-		<param name="Encoding" value="UTF-8" />
-		<param name="ImmediateFlush" value="true"/>
-        <param name="Directory" value="/software/dnc/omc/log/if"/>
-        <param name="Prefix" value="${server.name}_interface"/>
-        <param name="Suffix" value=""/>
-        <param name="DirectoryPattern" value="MMdd"/>
-        <param name="FileNamePattern" value="'.'HH"/>
-        <param name="Append" value="true"/>
-	    <layout class="org.apache.log4j.PatternLayout">
-	        <param name="ConversionPattern" value="%m%n"/>
-	    </layout>
-	</appender>		    
+<!-- 	<appender name="OMC_LOG_APPENDER" class="tframe.common.log.DirFileAppender"> -->
+<!-- 		<param name="Encoding" value="UTF-8" /> -->
+<!-- 		<param name="ImmediateFlush" value="true"/> -->
+<!--         <param name="Directory" value="/software/dnc/omc/log/if"/> -->
+<!--         <param name="Prefix" value="${server.name}_interface"/> -->
+<!--         <param name="Suffix" value=""/> -->
+<!--         <param name="DirectoryPattern" value="MMdd"/> -->
+<!--         <param name="FileNamePattern" value="'.'HH"/> -->
+<!--         <param name="Append" value="true"/> -->
+<!-- 	    <layout class="org.apache.log4j.PatternLayout"> -->
+<!-- 	        <param name="ConversionPattern" value="%m%n"/> -->
+<!-- 	    </layout> -->
+<!-- 	</appender>		     -->
     
-	<appender name="IDP_INBOUND_APPENDER" class="tframe.common.log.DirFileAppender">
-		<param name="Encoding" value="UTF-8" />
-		<param name="ImmediateFlush" value="true"/>
-        <param name="Directory" value="/log/dnc/was/logs/idpInbound/idpInbound"/>
-        <param name="Prefix" value="${server.name}_interface"/>
-        <param name="Suffix" value=""/>
-        <param name="DirectoryPattern" value="MMdd"/>
-        <param name="FileNamePattern" value="'.'HH"/>
-        <param name="Append" value="true"/>
-	    <layout class="org.apache.log4j.PatternLayout">
-	        <param name="ConversionPattern" value="%m%n"/>
-	    </layout>
-	</appender>	
+<!-- 	<appender name="IDP_INBOUND_APPENDER" class="tframe.common.log.DirFileAppender"> -->
+<!-- 		<param name="Encoding" value="UTF-8" /> -->
+<!-- 		<param name="ImmediateFlush" value="true"/> -->
+<!--         <param name="Directory" value="/log/dnc/was/logs/idpInbound/idpInbound"/> -->
+<!--         <param name="Prefix" value="${server.name}_interface"/> -->
+<!--         <param name="Suffix" value=""/> -->
+<!--         <param name="DirectoryPattern" value="MMdd"/> -->
+<!--         <param name="FileNamePattern" value="'.'HH"/> -->
+<!--         <param name="Append" value="true"/> -->
+<!-- 	    <layout class="org.apache.log4j.PatternLayout"> -->
+<!-- 	        <param name="ConversionPattern" value="%m%n"/> -->
+<!-- 	    </layout> -->
+<!-- 	</appender>	 -->
     
     <!-- Console 용 Appender 설정 -->
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
@@ -65,16 +65,16 @@
     <!-- #################################################################################### -->
 
     <!-- OMC Loggger -->
-    <logger name="OMC_LOG">
-        <level value="INFO" />
-        <appender-ref ref="OMC_LOG_APPENDER" />
-    </logger>    
+<!--     <logger name="OMC_LOG"> -->
+<!--         <level value="INFO" /> -->
+<!--         <appender-ref ref="OMC_LOG_APPENDER" /> -->
+<!--     </logger>     -->
 
     <!-- IDP Loggger -->
-    <logger name="IDP_LOG">
-        <level value="INFO" />
-        <appender-ref ref="IDP_INBOUND_APPENDER" />
-    </logger>
+<!--     <logger name="IDP_LOG"> -->
+<!--         <level value="INFO" /> -->
+<!--         <appender-ref ref="IDP_INBOUND_APPENDER" /> -->
+<!--     </logger> -->
 
     <!-- 아파치 프로젝트 관련 Library 들의 전체 로깅 설정 -->
     <logger name="org.apache">

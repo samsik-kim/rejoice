@@ -11,16 +11,32 @@
 				ROWNUM as rnum, x.*
 			FROM(
 				SELECT 
-					MEMBER_SEQ	AS SEQ,
-					MEMBER_NM	AS MEMBER_NM,
-					NVL2(CONTANCT1, SUBSTR(CONTANCT1, 0, 3) || '-' || SUBSTR(CONTANCT1, 3, 4)|| '-' || SUBSTR(CONTANCT1, 8), '')AS CONTANCT1,
-					CONTANCT2	AS CONTANCT2,
-					ADDR		AS ADDR,
-					EMAIL		AS EMAIL,
-					VST_CNT		AS VST_CNT,
-					TO_CHAR(REG_DT,'YYYY-MM-DD')AS REG_DT,
-					WIN_CNT		AS WIN_CNT
+					MEMBER_SEQ	AS seq,
+					MEMBER_NM	AS memberNm,
+					NVL2(MDN, SUBSTR(MDN, 0, 3) || '-' || SUBSTR(MDN, 3, 4)|| '-' || SUBSTR(MDN, 8), '')AS mdn,
+					CONTANCT	AS contanct,
+					ADDR		AS addr,
+					EMAIL		AS email,
+					VST_CNT		AS vstCnt,
+					WIN_CNT		AS winCnt,
+					TO_CHAR(REG_DT,'YYYY-MM-DD')AS regDt,
+					VST_DT AS vstDt
 				FROM MEMBER
+				WHERE 1=1
+				<dynamic>
+					<isNotEmpty property="searchKey">
+						<isEqual property="searchKey" compareValue="nm">
+							<isNotEmpty property="searchValue">
+								AND MEMBER_NM LIKE '%'||#searchValue#||'%'
+							</isNotEmpty>
+						</isEqual>
+						<isEqual property="searchKey" compareValue="mdn">
+							<isNotEmpty property="searchValue">
+								AND MDN LIKE '%'||#searchValue#||'%'
+							</isNotEmpty>
+						</isEqual>
+					</isNotEmpty>
+				</dynamic>	
 				ORDER BY MEMBER_SEQ
 			) x
 		<![CDATA[
@@ -36,43 +52,77 @@
 		FROM MEMBER
 	</select>
 	
+	<select id="selectMdnCheck" resultClass="int" parameterClass="java.lang.String">
+		SELECT 
+			COUNT(*)
+		FROM MEMBER 
+		WHERE MDN = #mdn#
+	</select>
+	
+	<select id="selectMemberInfo" parameterClass="info" resultClass="info">
+		SELECT 
+			MEMBER_SEQ	AS seq,
+			MEMBER_NM	AS memberNm,
+			MDN			AS mdn,
+			CONTANCT	AS contanct,
+			ADDR		AS addr,
+			EMAIL		AS email,
+			VST_CNT		AS vstCnt,
+			WIN_CNT		AS winCnt,
+			VST_DT		AS vstDt
+		FROM MEMBER
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty property="mdn">
+				AND MDN = #mdn#
+			</isNotEmpty>
+			<isNotEmpty property="seq">
+				AND MEMBER_SEQ = #seq#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
 	<insert id="insert" parameterClass="info">
+		<selectKey keyProperty="seq" resultClass="java.lang.String">
+		SELECT TO_CHAR(MEMBER_SEQ.NEXTVAL, 'FM0000000000') FROM DUAL
+		</selectKey>
 		INSERT INTO MEMBER(
 			MEMBER_SEQ,
 			MEMBER_NM,
-			CONTANCT1,
-			CONTANCT2,
+			MDN,
+			CONTANCT,
 			ADDR,
 			EMAIL,
 			VST_CNT,
 			REG_DT,
 			UP_DT,
-			WIN_CNT
+			VST_DT
 		) VALUES (
-			#MEMBER_SEQ#,
-			#MEMBER_NM#,
-			#CONTANCT1#,
-			#CONTANCT2#,
-			#ADDR#,
-			#EMAIL#,
-			#VST_CNT#,
+			#seq#,
+			#memberNm#,
+			#mdn#,
+			#contanct#,
+			#addr#,
+			#email#,
+			'1',
 			SYSDATE,
 			SYSDATE,
-			#WIN_CNT#
+			#vstDt#
 		)
 	</insert>
 	
 	<update id="update" parameterClass="info">
 		UPDATE MEMBER
 			SET  
-				MEMBER_NM	= #MEMBER_NM#,
-				CONTANCT1	= #CONTANCT1#,
-				CONTANCT2	= #CONTANCT2#,
-				ADDR		= #ADDR#,	
-				EMAIL		= #EMAIL#,
-				VST_CNT		= #VST_CNT#,
+				MEMBER_NM	= #memberNm#,
+				CONTANCT	= #contanct#,
+				ADDR		= #addr#,	
+				EMAIL		= #email#,
+				VST_CNT		= #vstCnt#,
+				WIN_CNT		= #winCnt#,
 				UP_DT		= SYSDATE
-			WHERE MEMBER_SEQ = ##
+				VST_DT		= #vstDt#
+		WHERE MEMBER_SEQ	= #seq#
 	</update>
 	
 </sqlMap>
