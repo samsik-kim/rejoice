@@ -25,6 +25,13 @@ function searchList(){
 function goList(currentPage){
 	location.href="/member/list.do?currentPage="+currentPage;
 }
+
+//상세
+function fn_detail(seq){
+	$("#seq").val(seq);
+	$("#detailFrm").attr('action','/member/updateForm.do') ;
+	$("#detailFrm").submit();
+}
 //-->
 </script>
 <div class="pmbox mar_b22">
@@ -37,8 +44,12 @@ function goList(currentPage){
 	</div>
 	<input type="text" id="searchValue" name="searchValue" class="w410" value="${info.searchValue }" v:required='trim' m:required="검색어를 입력하십시오." />
 	<a href="#"><img id="searchBtn" src="/resource/images/common/btn_board_search.gif" alt="검색" onclick="javascript:searchList();"/></a>
-</form>	
+</form>
 </div>
+<form name="detailFrm" id="detailFrm" method="post">
+	<input type="hidden" name="seq" id="seq" />
+	<input type="hidden" name="currentPage" value="${pageInfo.currentPage}" />
+</form>
 <div class="tstyleC">
 <table width="600"   id="options" class="tablesorter">
 	<caption>고객 리스트</caption>
@@ -53,7 +64,7 @@ function goList(currentPage){
 	</colgroup>
 	<thead>
 		<tr>
-			<th scope="col">No</th>
+			<th scope="col">순번</th>
 			<th scope="col">고객명</th>
 			<th scope="col">휴대폰</th>
 			<th scope="col">당첨횟수</th>
@@ -71,8 +82,8 @@ function goList(currentPage){
 		<c:forEach var="list" items="${pageInfo.dataList}" varStatus="i">
 		<tr>
 			<td><div>${list.rnum}</div></td>
-			<td>${list.memberNm}</td>
-			<td>${list.mdn}</td>
+			<td><a href="#" onclick="javascript:fn_detail('${list.seq}');">${list.memberNm}</a></td>
+			<td><a href="#" onclick="javascript:fn_detail('${list.seq}');">${list.mdn}</a></td>
 			<td>${list.winCnt}</td>
 			<td>${list.vstCnt}</td>
 			<td>${list.vstDt}</td>

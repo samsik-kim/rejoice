@@ -2,6 +2,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	$("#vstDt").datepicker();
+	
 	//취소 -> 목록
 	$("#cancelBtn").click(function(){
 		$("#regFrm").attr('action','/member/list.do') ;
@@ -12,6 +14,10 @@ $(document).ready(function(){
 	// 등록 -> 목록
 	$('#regBtn').click(function(){
 		if(showValidate('regFrm', 'default', "입력오류를 확인하십시오.")){
+			if($("#mdnCk").val() == "N"){
+				alert("휴대폰 중복확인을 해주세요.");
+				return;
+			}
 			$("#regFrm").attr('action','/member/insert.do') ;
 			$("#regFrm").submit();
 		}
@@ -30,6 +36,7 @@ $(document).ready(function(){
 				success: function(json){
 					if(json.result == "SUCCESS"){
 						alert("등록 가능한 번호입니다.");
+						$("#mdnCk").val("Y");
 					}else{
 						if(confirm("이미 등록된 번호입니다. \n수정화면으로 이동하시겠습니까?")){
 							$("#regFrm").attr("action", "/member/updateForm.do");
@@ -56,7 +63,7 @@ $(document).ready(function(){
 		</colgroup>
 		<tbody>
 			<tr>
-				<th scope="row"><span>*</span>이름</th>
+				<th scope="row"><span>*</span> 이름</th>
 				<td>
 					<input type="text" id="memberNm" name="memberNm" class="w180"
 					v:required='trim' m:required="이름을 입력하십시오."/>
@@ -65,6 +72,7 @@ $(document).ready(function(){
 			<tr>
 				<th scope="row"><span>*</span> <label for="moblenum">휴대폰 번호</label></th>
 				<td>
+					<input type="hidden" name="mdnCk" id="mdnCk" value="N">
 					<input type="text" id="mdn" name="mdn" class="w180"
 					v:required='trim' m:required="휴대폰번호를 입력하십시오." 
 					v:mustnum m:mustnum="휴대폰번호는 숫자로 입력하세요."/>&nbsp;
@@ -73,12 +81,10 @@ $(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" class="tit03">방문일</th>
+				<th scope="row"><span>*</span> 방문일</th>
 				<td>
-					<input type="text" id="vstDt" name="vstDt" class="w180"
-					v:required='trim' m:required="방문일을 입력하십시오."
-					v:mustnum m:mustnum="방문일은 숫자로 입력하세요."/>&nbsp;
-					<span class="txtcolor01"> &nbsp;* 8자리 숫자로만 입력해 주세요. [yyyymmdd]</span>
+					<input type="text" id="vstDt" name="vstDt" class="w180" readonly="readonly"
+					v:required='trim' m:required="방문일을 입력하십시오."/>
 				</td>
 			</tr>
 			<tr>
