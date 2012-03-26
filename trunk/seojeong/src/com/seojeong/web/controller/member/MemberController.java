@@ -16,6 +16,10 @@ import tframe.web.page.PageInfo;
 import com.seojeong.data.member.info.MemberInfo;
 import com.seojeong.service.member.MemberService;
 
+/**
+ * @author Administrator
+ *
+ */
 @Controller
 public class MemberController {
 
@@ -52,9 +56,10 @@ public class MemberController {
 		mav.setViewName("member/list");
 		return mav;
 	}
-	
+
 	/**
 	 * @param request
+	 * @param info
 	 * @return
 	 * @throws Exception
 	 */
@@ -65,29 +70,46 @@ public class MemberController {
 		return mav;
 	}
 
+	/**
+	 * @param request
+	 * @param info
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/member/updateForm.do")
 	public ModelAndView memberUpdateForm(HttpServletRequest request, @ModelAttribute("setMemberInfo") MemberInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView("member/update");
+		info.setCurrentPage(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
 		if(info.getMdn() != null || info.getSeq() != null){
 			info = service.selectMemberInfo(info);
 		}
 		mav.addObject("info", info);
 		return mav;
 	}
-	
+
 	/**
 	 * @param request
+	 * @param info
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/member/update.do")
 	public ModelAndView memberUpdate(HttpServletRequest request, @ModelAttribute("setMemberInfo") MemberInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView("member/update");
-//		ModelAndView mav = new ModelAndView("redirect:/member/list.do");
-		service.updateMember(info);
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonObject = new JSONObject();
+		int result = service.updateMember(info);
+		info.setResultCode(result > 0 ? "SUCCESS" : "FAIL");
+		jsonObject.put("result", info.getResultCode());
+		mav.addObject("jsonObject", jsonObject);
 		return mav;
 	}
 	
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/member/mdnCheck.do")
 	public ModelAndView findBestProdJson(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String mdn = StringUtils.nvlStr(request.getParameter("mdn"));

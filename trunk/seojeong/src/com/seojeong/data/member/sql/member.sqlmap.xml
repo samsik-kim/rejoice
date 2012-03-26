@@ -120,7 +120,7 @@
 				EMAIL		= #email#,
 				VST_CNT		= #vstCnt#,
 				WIN_CNT		= #winCnt#,
-				UP_DT		= SYSDATE
+				UP_DT		= SYSDATE,
 				VST_DT		= #vstDt#
 		WHERE MEMBER_SEQ	= #seq#
 	</update>
