@@ -25,7 +25,7 @@ public class CodeController {
 	@Autowired
 	CodeService service;
 	
-	@RequestMapping("/stockinvest/main.do")
+	@RequestMapping("/stockinvest/index.do")
 	public String membermain(){
 		return "stockinvest/index";
 	}

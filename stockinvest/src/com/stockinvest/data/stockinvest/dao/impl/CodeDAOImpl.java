@@ -3,12 +3,15 @@ package com.stockinvest.data.stockinvest.dao.impl;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import tframe.common.exception.TFrameSQLException;
 import tframe.core.dao.IBatisAbstractDao;
 
 import com.stockinvest.data.stockinvest.dao.CodeDAO;
 import com.stockinvest.data.stockinvest.info.CodeInfo;
 
+@Repository
 public class CodeDAOImpl extends IBatisAbstractDao implements CodeDAO{
 	
 	private static final String NAME_SPACE = "code";
