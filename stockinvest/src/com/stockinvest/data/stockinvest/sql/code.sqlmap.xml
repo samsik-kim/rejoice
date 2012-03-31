@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="code">
+	
+	<typeAlias alias="info" type="com.stockinvest.data.stockinvest.info.CodeInfo"/>
+	
+	<select id="selectCodeList" parameterClass="info" resultClass="info">
+		SELECT y.* FROM(
+			SELECT 
+				 x.*
+			FROM(
+				SELECT * 
+				FROM CODE_CATE
+				WHERE 1=1
+				<dynamic>
+					<isNotEmpty property="searchKey">
+						<isEqual property="searchKey" compareValue="codeName">
+							<isNotEmpty property="searchValue">
+								AND CODE_NAME LIKE ''|| #searchValue#||'%'
+							</isNotEmpty>
+						</isEqual>
+						<isEqual property="searchKey" compareValue="codeNumber">
+							<isNotEmpty property="searchValue">
+								AND CODE_NUM LIKE '%'||#searchValue#||'%'
+							</isNotEmpty>
+						</isEqual>
+					</isNotEmpty>
+				</dynamic>	
+				ORDER BY SEQ_NO DESC
+			) x
+		) y
+	</select>
+	
+	<select id="selectCodeListCount" parameterClass="info" resultClass="int">
+		SELECT 
+			COUNT(*)
+		FROM CODE_CATE
+	</select>
+	
+	<select id="selectCodeInfo" parameterClass="info" resultClass="info">
+		SELECT 
+			SEQ_NO		AS seqNo,
+			CODE_NAME	AS codeName,
+			CODE_NUM	AS codeNum,
+			JUJU		AS juju,
+			TEL			AS tel,
+			TEL1		AS tel1,
+			TEL2		AS tel2,
+			TEL3		AS tel3,
+			BOYUJIBUN	AS holdShare,			
+			INFO_TEL	AS 
+			INFO_TEL1
+			INFO_TEL2
+			INFO_TEL3
+			CRT_DATE
+		FROM CODE_CATE
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty property="seqNo">
+				AND SEQ_NO = #seqNo#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	<insert id="insert" parameterClass="info">
+		INSERT INTO CODE_CATE(
+		) VALUES (
+		)
+	</insert>
+	
+	<update id="update" parameterClass="info">
+		UPDATE CODE_CATE
+			SET  
+		WHERE SEQ_NO	= #seqNo#
+	</update>
+	
+</sqlMap>
