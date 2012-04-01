@@ -21,7 +21,7 @@
 	#blockUI{display:none;height:30px;font-weight:bold;font-size: 16px;padding-top:10px}
 	form{clear:both;}
 </style>
-<link rel="stylesheet" href="<c:url value="/resource/css/base.css"/>" type="text/css">
+<link rel="stylesheet" href="<c:url value="/resource/css/admin.css"/>" type="text/css">
 <link rel="stylesheet" href="<c:url value="/resource/css/common.css"/>" type="text/css">
 <link type="text/css" href="/resource/jquery-ui-1.8.17.custom/css/cupertino/jquery-ui-1.8.17.custom.css" rel="stylesheet" />	
 <script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-1.7.1.min.js"></script>
