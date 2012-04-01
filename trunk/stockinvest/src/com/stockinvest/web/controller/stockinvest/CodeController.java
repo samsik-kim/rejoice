@@ -2,6 +2,8 @@ package com.stockinvest.web.controller.stockinvest;
 
 import javax.servlet.http.HttpServletRequest;
 
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,13 +27,13 @@ public class CodeController {
 	@Autowired
 	CodeService service;
 	
-	@RequestMapping("/stockinvest/index.do")
-	public String membermain(){
-		return "stockinvest/index";
-	}
-	
+	/**
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */	
 	@RequestMapping("/stockinvest/codeList.do")
-	public ModelAndView testDB(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
+	public ModelAndView codeList(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView();
 		int currentPage = Integer.parseInt(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
 		int pageUnit = 10; // 페이지를 보여줄 갯수
@@ -44,4 +46,56 @@ public class CodeController {
 		mav.setViewName("code_cate/list");
 		return mav;
 	}	
+	
+	@RequestMapping("/stockinvest/insertCodeForm.do")
+	public String insertForm(){
+		return "code_cate/write";
+	}
+	
+	/**
+	 * @param request
+	 * @param info
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/stockinvest/codeDetail.do")
+	public ModelAndView codeDetailForm(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView("code_cate/view");
+		info.setCurrentPage(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
+		if(info.getSeqNo() != null){
+			info = service.selectCodeInfo(info);
+		}
+		mav.addObject("info", info);
+		return mav;
+	}	
+	
+	@RequestMapping("/stockinvest/codeInsert.do")
+	public ModelAndView insertCode(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView("redirect:/stockinvest/codeList.do");
+		service.insertCodeInfo(info);
+		return mav;
+	}
+	
+	@RequestMapping("/stockinvest/codeUpdate.do")
+	public ModelAndView updateCode(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonObject = new JSONObject();
+		int result = service.updateCodeInfo(info);
+		info.setResultCode(result > 0 ? "SUCCESS" : "FAIL");
+		jsonObject.put("result", info.getResultCode());
+		mav.addObject("jsonObject", jsonObject);
+		return mav;
+	}	
+	
+	@RequestMapping("/stockinvest/codeDelete.do")
+	public ModelAndView deleteCode(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView("jsonView");
+		JSONObject jsonObject = new JSONObject();
+		int result = service.deleteCodeInfo(info);
+		info.setResultCode(result > 0 ? "SUCCESS" : "FAIL");
+		jsonObject.put("result", info.getResultCode());
+		mav.addObject("jsonObject", jsonObject);
+		return mav;
+	}
+	
 }
