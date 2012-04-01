@@ -30,4 +30,24 @@ public class CodeServiceImpl implements CodeService {
 		return pageInfo;
 	}
 
+	@Override
+	public CodeInfo selectCodeInfo(CodeInfo info) throws SQLException {
+		return dao.selectCodeInfo(info);
+	}
+
+	@Override
+	public int updateCodeInfo(CodeInfo info) throws SQLException {
+		return dao.updateCodeInfo(info);
+	}
+
+	@Override
+	public int deleteCodeInfo(CodeInfo info) throws SQLException {
+		return dao.deleteCodeInfo(info);
+	}
+
+	@Override
+	public void insertCodeInfo(CodeInfo info) throws SQLException {
+		dao.insertCodeInfo(info);
+	}
+
 }
