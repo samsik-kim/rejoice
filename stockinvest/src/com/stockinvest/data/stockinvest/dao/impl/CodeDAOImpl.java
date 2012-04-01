@@ -32,4 +32,25 @@ public class CodeDAOImpl extends IBatisAbstractDao implements CodeDAO{
 	public List<CodeInfo> selectCodeList(CodeInfo info) throws SQLException {
 		return getSqlMapClient().queryForList(NAME_SPACE + ".selectCodeList",info);
 	}
+	
+	@Override
+	public CodeInfo selectCodeInfo(CodeInfo info) throws SQLException {
+		return (CodeInfo)getSqlMapClient().queryForObject(NAME_SPACE + ".selectCodeInfo",info);
+	}
+
+	@Override
+	public int updateCodeInfo(CodeInfo info) throws SQLException {
+		return getSqlMapClient().update(NAME_SPACE + ".update", info);
+	}
+
+	@Override
+	public int deleteCodeInfo(CodeInfo info) throws SQLException {
+		return getSqlMapClient().update(NAME_SPACE + ".delete", info);
+	}
+
+	@Override
+	public void insertCodeInfo(CodeInfo info) throws SQLException {
+		getSqlMapClient().insert(NAME_SPACE + ".insert", info);
+	}
+ 
 }
