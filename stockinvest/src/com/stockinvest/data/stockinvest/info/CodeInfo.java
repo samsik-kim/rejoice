@@ -14,10 +14,10 @@ public class CodeInfo extends CommonInfo implements Serializable{
 	private String tel2;		//
 	private String tel3;		//
 	private String holdShare;	//보유지분 boyujibun
-	private String info_tel;	//전화번호
-	private String info_tel1;	//
-	private String info_tel2;	//
-	private String info_tel3;	//
+	private String infoTel;	//전화번호
+	private String infoTel1;	//
+	private String infoTel2;	//
+	private String infoTel3;	//
 	private String crtDate;		//생성일
 	/**
 	 * @return the seqNo
@@ -128,52 +128,52 @@ public class CodeInfo extends CommonInfo implements Serializable{
 		this.holdShare = holdShare;
 	}
 	/**
-	 * @return the info_tel
+	 * @return the infoTel
 	 */
-	public String getInfo_tel() {
-		return info_tel;
+	public String getInfoTel() {
+		return infoTel;
 	}
 	/**
-	 * @param info_tel the info_tel to set
+	 * @param infoTel the infoTel to set
 	 */
-	public void setInfo_tel(String info_tel) {
-		this.info_tel = info_tel;
+	public void setInfoTel(String infoTel) {
+		this.infoTel = infoTel;
 	}
 	/**
-	 * @return the info_tel1
+	 * @return the infoTel1
 	 */
-	public String getInfo_tel1() {
-		return info_tel1;
+	public String getInfoTel1() {
+		return infoTel1;
 	}
 	/**
-	 * @param info_tel1 the info_tel1 to set
+	 * @param infoTel1 the infoTel1 to set
 	 */
-	public void setInfo_tel1(String info_tel1) {
-		this.info_tel1 = info_tel1;
+	public void setInfoTel1(String infoTel1) {
+		this.infoTel1 = infoTel1;
 	}
 	/**
-	 * @return the info_tel2
+	 * @return the infoTel2
 	 */
-	public String getInfo_tel2() {
-		return info_tel2;
+	public String getInfoTel2() {
+		return infoTel2;
 	}
 	/**
-	 * @param info_tel2 the info_tel2 to set
+	 * @param infoTel2 the infoTel2 to set
 	 */
-	public void setInfo_tel2(String info_tel2) {
-		this.info_tel2 = info_tel2;
+	public void setInfoTel2(String infoTel2) {
+		this.infoTel2 = infoTel2;
 	}
 	/**
-	 * @return the info_tel3
+	 * @return the infoTel3
 	 */
-	public String getInfo_tel3() {
-		return info_tel3;
+	public String getInfoTel3() {
+		return infoTel3;
 	}
 	/**
-	 * @param info_tel3 the info_tel3 to set
+	 * @param infoTel3 the infoTel3 to set
 	 */
-	public void setInfo_tel3(String info_tel3) {
-		this.info_tel3 = info_tel3;
+	public void setInfoTel3(String infoTel3) {
+		this.infoTel3 = infoTel3;
 	}
 	/**
 	 * @return the crtDate

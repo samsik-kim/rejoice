@@ -10,7 +10,20 @@
 			SELECT 
 				 x.*
 			FROM(
-				SELECT * 
+				SELECT SEQ_NO		AS seqNo,
+			           CODE_NAME	AS codeName,
+			           CODE_NUM		AS codeNum,
+			           JUJU			AS juju,
+			           TEL			AS tel,
+			           TEL1			AS tel1,
+			           TEL2			AS tel2,
+			           TEL3			AS tel3,
+			           BOYUJIBUN	AS holdShare,			
+			           INFO_TEL		AS infoTel, 
+			           INFO_TEL1	AS infoTel1,
+			           INFO_TEL2	AS infoTel2,
+			           INFO_TEL3	AS infoTel3,
+			           CRT_DATE 	AS crtDate 
 				FROM CODE_CATE
 				WHERE 1=1
 				<dynamic>
@@ -48,12 +61,12 @@
 			TEL1		AS tel1,
 			TEL2		AS tel2,
 			TEL3		AS tel3,
-			BOYUJIBUN	AS holdShare,			
-			INFO_TEL	AS 
-			INFO_TEL1
-			INFO_TEL2
-			INFO_TEL3
-			CRT_DATE
+            BOYUJIBUN	AS holdShare,			
+			INFO_TEL	AS infoTel, 
+			INFO_TEL1	AS infoTel1,
+			INFO_TEL2	AS infoTel2,
+			INFO_TEL3	AS infoTel3,
+			CRT_DATE	AS crtDate
 		FROM CODE_CATE
 		WHERE 1=1
 		<dynamic>
@@ -64,15 +77,31 @@
 	</select>
 	
 	<insert id="insert" parameterClass="info">
-		INSERT INTO CODE_CATE(
-		) VALUES (
+		INSERT INTO CODE_CATE(SEQ_NO, CODE_NAME, CODE_NUM, JUJU, TEL, TEL1, TEL2, TEL3, BOYUJIBUNM, INFO_TEL, INFO_TEL1, INFO_TEL2, INFO_TEL3, CRT_DATE
+		) VALUES ((SELECT IFNULL(MAX(SEQ_NO),0)+1 FROM CODE_CATE),#codeName#,#codeNum#,#juju#,#tel#,#tel1#,#tel2#,#tel3#,#holdShare#
+		           ,#infoTel#,#infoTel1#,#infoTel2#,#infoTel3#,DATE_FORMAT(NOW(), '%Y%m%d%H%i%S')
 		)
 	</insert>
 	
 	<update id="update" parameterClass="info">
 		UPDATE CODE_CATE
-			SET  
+			SET CODE_NAME =  #codeName#,
+			    CODE_NUM  = #codeNum#,
+			    JUJU	  = #juju#,
+			    TEL		  = #tel#,
+			    TEL1	  = #tel1#,
+			    TEL2	  =	#tel2#,
+			    TEL3	  = #tel3#,
+                BOYUJIBUN = #holdShare#,			
+			    INFO_TEL  =	#infoTel#, 
+			    INFO_TEL1 =	#infoTel1#,
+			    INFO_TEL2 =	#infoTel2#,
+			    INFO_TEL3 = #infoTel3#,
 		WHERE SEQ_NO	= #seqNo#
 	</update>
 	
+	<delete id="delete" parameterClass="info">
+		DELETE FROM CODE_CATE
+		WHERE SEQ_NO = #seqNo#
+	</delete>
 </sqlMap>
