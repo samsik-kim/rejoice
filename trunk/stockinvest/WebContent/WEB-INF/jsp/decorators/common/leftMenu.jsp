@@ -27,6 +27,7 @@ function initMenu() {
 	$('#leftmenu li a').click(function() {
 		var checkElement = $(this).next();
 		if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+			$('#leftmenu ul:visible').slideUp('normal');
 			return false;
 		}
 		if ((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
