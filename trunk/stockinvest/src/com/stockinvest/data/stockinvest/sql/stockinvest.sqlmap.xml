@@ -7,36 +7,4 @@
 		SELECT COUNT(*) FROM EMP
 	</select>
 
-
-<!-- MySql 용 페이징 -->	
-	<select id="testPaging" resultClass="HashMap">
-		<isNotEmpty property="currentPage">
-			<isNotEqual property="currentPage" compareValue="0">
-				<include refid="pagingHeader"/>
-			</isNotEqual>
-		</isNotEmpty>
-				SELECT * FROM EMP
-		<isNotEmpty property="currentPage">
-			<isNotEqual property="currentPage" compareValue="0">
-				<include refid="pagingFooter"/>
-			</isNotEqual>
-		</isNotEmpty>
-	</select>
-	
-	<sql id="pagingHeader">
-		SELECT  
-			y.*
-		FROM (
-			SELECT 
-			 x.*,@rnum:=@rnum+1 as num
-			FROM (
-	</sql>
-	
-	<sql id="pagingFooter">
-		<![CDATA[	
-			) x,(select @rnum:=0) N 
-		) y
-		WHERE num >=#startNum# AND num <= #endNum#
-		]]>
-	</sql>
 </sqlMap>

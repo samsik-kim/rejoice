@@ -15,7 +15,7 @@
     </decorator>
 
     <decorator name="empty" page="empty.jsp" >
-    	<pattern>/member/detail.do</pattern>
+    	<pattern>/code/codeDetail.do</pattern>
     </decorator>
     
     <decorator name="pop" page="popLayout.jsp" >

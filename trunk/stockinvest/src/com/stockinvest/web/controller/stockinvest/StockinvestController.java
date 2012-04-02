@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import tframe.web.page.PageInfo;
 import tframe.common.util.StringUtils;
 
-import com.stockinvest.data.stockinvest.info.CodeInfo;
 import com.stockinvest.data.stockinvest.info.MemberInfo;
 import com.stockinvest.service.stockinvest.StockinvestService;
 
@@ -24,7 +23,7 @@ public class StockinvestController {
 	
 	@RequestMapping("/stockinvest/main.do")
 	public String membermain(){
-		return "stockinvest/index";
+		return "stockinvest/login";
 	}
 	
 	@RequestMapping("/stockinvest/testDBConnect.do")
