@@ -1,6 +1,7 @@
-package com.stockinvest.data.stockinvest.info;
+package com.stockinvest.data.code.info;
 
 import java.io.Serializable;
+import com.stockinvest.common.info.CommonInfo;
 
 @SuppressWarnings("serial")
 public class CodeInfo extends CommonInfo implements Serializable{
@@ -14,7 +15,7 @@ public class CodeInfo extends CommonInfo implements Serializable{
 	private String tel2;		//
 	private String tel3;		//
 	private String holdShare;	//보유지분 boyujibun
-	private String infoTel;	//전화번호
+	private String infoTel;		//전화번호
 	private String infoTel1;	//
 	private String infoTel2;	//
 	private String infoTel3;	//

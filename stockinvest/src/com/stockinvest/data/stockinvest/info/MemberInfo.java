@@ -1,6 +1,7 @@
 package com.stockinvest.data.stockinvest.info;
 
 import java.io.Serializable;
+import com.stockinvest.common.info.CommonInfo;
 
 @SuppressWarnings("serial")
 public class MemberInfo extends CommonInfo implements Serializable{
