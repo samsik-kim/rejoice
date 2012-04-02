@@ -38,16 +38,26 @@ $(document).ready(function(){
 </tr>
 <tr height="20%">
 	<td width="30%" bgcolor="#336600">&nbsp;<br><br><br><br><br><br><br><br><br><br><br></td>
-	<td width="40%"><table width="400" cellpadding="0" cellspacing="0">
-		<tr>
-			<td rowspan="2"><img src="/resource/images/admin_logo.jpg"></td>
-			<td align="center" width="100">아이디</td><td><input type="text" name="admin_id" id="admin_id" style="width:100px;height:20px;" v:required='trim' m:required="ID를 입력하십시오."/></td>
-			<td align="center" rowspan="2">&nbsp;&nbsp;	<img src="/resource/images/common/login.gif" id="loginCheck" alt="로그인" />&nbsp;&nbsp;</td>
-		</tr>
-		<tr>
-			<td align="center">비밀번호</td><td><input type="password" name="password" id="password" style="width:100px;height:20px;" v:required='trim' m:required="암호를 입력하십시오."/></td>
-		</tr>	
-	</table></td>
+	<td width="40%">
+		<table width="400" cellpadding="0" cellspacing="0">
+			<tr>
+				<td rowspan="2"><img src="/resource/images/admin_logo.jpg"></td>
+				<td align="center" width="100">아이디</td>
+				<td>
+					<input type="text" name="admin_id" id="admin_id" style="width:100px;height:20px;"
+					v:required='trim' m:required="이름을 입력하십시오."/>
+				</td>
+				<td align="center" rowspan="2">&nbsp;&nbsp;	<img src="/resource/images/common/login.gif" id="loginCheck" alt="로그인" />&nbsp;&nbsp;</td>
+			</tr>
+			<tr>
+				<td align="center">비밀번호</td>
+				<td>
+					<input type="password" name="password" id="password" style="width:100px;height:20px;"
+					v:required='trim' m:required="암호를 입력하십시오."/>
+				</td>
+			</tr>	
+		</table>
+	</td>
 	<td width="30%" bgcolor="#336600">&nbsp;</td>
 </tr>
 <tr height="40%">
