@@ -1,71 +1,88 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="dnc" uri="/WEB-INF/tld/dnc.tld"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<SCRIPT LANGUAGE="JavaScript">
-<!--
-function delchk(){
-	if (confirm("삭제된 데이타는 복구가 불가능합니다. \n\n정말 삭제하시겠습니까?")){
-		fn_delete('${info.seqNo}');
-	}
-}
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	//취소 -> 목록
+	$("#listBtn").click(function(){
+		$("#regFrm").attr('action','/code/codeList.do') ;
+		$("#regFrm").submit();
+	});
+	
+		
+	// 등록 -> 목록
+	$('#modifyBtn').click(function(){
+		if(!confirm('정말 수정하시겠습니까?')) return;
+		
+		if(showValidate('regFrm', 'default', "입력오류를 확인하십시오.")){
+			if($("#codeName").val() == ""){
+				alert("종목명을 확인 해주세요.");
+				return;
+			}
 
-//상세
-function fn_delete(seqNo){
-	$("#seqNo").val(seqNo);
-	$("#detailFrm").attr('action','/code/codeDelete.do') ;
-	$("#detailFrm").submit();
-}
-//-->
-</SCRIPT>
-<br><br>
-<table width="600" border="0" cellpadding="0" cellspacing="0" align="center">
-  <tr height="30"> 
-     <td><font color="#AE0000"><B>[ 코드관리 ]</B></font></td>
-  </tr>
-  <tr>
-	<td>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#330066">
-<tr height="30" bgcolor="white">
-	<td class="subject" width="100">종 목 명</td>
-	<td class="object" style="padding-left:5px;">${info.codeName}</td>
-	<td class="subject" width="100">종목코드</td>
-	<td class="object" style="padding-left:5px;">${info.codeNum}</td>
-</tr>
- <tr height="30" bgcolor="white">
-	<td class="subject">전화번호</td>
-	<td class="object" style="padding-left:5px;">
-	${info.tel}
-	</td>
-	<td class="subject">정보연락처</td>
-	<td class="object" style="padding-left:5px;">
-	${info.infoTel}
-	</td>
-</tr>
-<tr height="30" bgcolor="white">
-	<td class="subject">지분보유</td>
-	<td class="object" style="padding-left:5px;">${info.holdShare}</td>
-	<td class="subject">주주</td>
-	<td class="object" style="padding-left:5px;">${info.juju}</td>
-</tr>
-</table>
-
-</td>
-</tr>
-<tr height="30">
-	<td align="right">
-
-<a href="">[ 수 정 ]</a>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="javascript:delchk();">[ 삭 제 ]</a>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="">[ 목 록 ]</a>
-
-	</td>
-</tr>
-</table>
-<form name="detailFrm" id="detailFrm" method="post">
-	<input type="hidden" name="seqNo" id="seqNo" />
-	<input type="hidden" name="currentPage" value="${pageInfo.currentPage}" />
-</form>
+			if($("#codeNum").val() == ""){
+				alert("종목코드를 확인 해주세요.");
+				return;
+			}
+			
+			$("#regFrm").attr('action','/code/codeUpdate.do') ;
+			$("#regFrm").submit();
+		}
+	});
+	
+});
+</script>
+<div class="tstyleA">
+<form id="regFrm" name="regFrm" method="post" >
+	<table summary="종목코드 기본정보 입력 항목입니다">
+		<caption>종목코드 입력 항목</caption>
+		<colgroup>
+			<col width="15%" />
+			<col />
+		</colgroup>
+		<tbody>
+			<tr>
+				<th scope="row"><span>*</span> 종목명</th>
+				<td>
+					<input type="text" id="codeName" name="codeName" class="w180"
+					v:required='trim' m:required="종목명을 입력하십시오."  value="${info.codeName}"/>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><span>*</span> <label for="moblenum">종목코드</label></th>
+				<td>
+					<input type="text" id="codeNum" name="codeNum" class="w180"
+					v:required='trim' m:required="종목코드를 입력하십시오." 
+					v:mustnum m:mustnum="종목코드는 숫자로 입력하세요." value="${info.codeNum}" maxlength="6"/>&nbsp;
+					<span class="txtcolor01"> &nbsp;* “ㅡ” 을 생략하고 숫자로만 입력해 주세요.</span>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="moblenum">전화번호</label></th>
+				<td>
+					<input type="text" id="tel" name="tel" class="w180" value="${info.tel}"/>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="moblenum">정보연락처</label></th>
+				<td>
+					<input type="text" id="infoTel" name="infoTel" class="w180" value="${info.infoTel}"/>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" class="tit03">지분보유</th>
+				<td><input type="text" id="holdShare" name="holdShare" class="w376" value="${info.holdShare}"/></td>
+			</tr>
+			<tr>
+				<th scope="row" class="tit03">주주</th>
+				<td><input type="text" id="juju" name="juju" class="w376" value="${info.juju}"/></td>
+			</tr>
+			<input type="hidden" id="seqNo" name="seqNo" value="${info.seqNo}"/>
+		</tbody>
+	</table>
+	<br/>
+	<div class="btnarea">
+		<a href="#"><img id="modifyBtn" src="/resource/images/common/btn_inner_ok3.gif" alt="수정" /></a>
+		<a href="#"><img id="listBtn" src="/resource/images/common/btn_cancel2.gif" alt="목록" /></a>
+	</div>
+</form>				
+</div>

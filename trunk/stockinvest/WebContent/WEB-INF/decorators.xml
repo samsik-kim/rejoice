@@ -14,7 +14,6 @@
     </decorator>
 
     <decorator name="empty" page="empty.jsp" >
-    	<pattern>/code/codeDetail.do</pattern>
     </decorator>
     
     <decorator name="pop" page="popLayout.jsp" >

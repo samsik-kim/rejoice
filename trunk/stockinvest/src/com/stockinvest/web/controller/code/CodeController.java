@@ -102,12 +102,8 @@ public class CodeController {
 	
 	@RequestMapping("/code/codeUpdate.do")
 	public ModelAndView updateCode(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView("jsonView");
-		JSONObject jsonObject = new JSONObject();
-		int result = service.updateCodeInfo(info);
-		info.setResultCode(result > 0 ? "SUCCESS" : "FAIL");
-		jsonObject.put("result", info.getResultCode());
-		mav.addObject("jsonObject", jsonObject);
+		ModelAndView mav = new ModelAndView("redirect:/code/codeList.do");
+		service.updateCodeInfo(info);
 		return mav;
 	}	
 	
