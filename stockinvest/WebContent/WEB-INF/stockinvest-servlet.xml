@@ -43,7 +43,7 @@
 		<property name="alwaysUseFullPath" value="true"/>
 	</bean>	
 
-	<!-- Interceptor 적용 할 URL -->
+	<!-- Interceptor 제외할 URL -->
 	<bean id="securityMapper" class="org.springplugins.web.IgnoreSelectedAnnotationHandlerMapping">
 		<property name="order">
 			<value>0</value>

@@ -1,5 +1,7 @@
 package com.stockinvest.common.interceptor;
 
+import java.util.Enumeration;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,7 +76,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 		String andstring = "";
 		String paramdata = "";
 		
-		for (java.util.Enumeration hparam = request.getParameterNames(); hparam
+		for (Enumeration hparam = request.getParameterNames(); hparam
 			.hasMoreElements(); k++) {
 			String paramname = (String) hparam.nextElement();
 			String[] paramvalue = request.getParameterValues(paramname);
@@ -93,11 +95,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 		}
 		
 		String returi = uriinfo + paramdata;
-//		if(logger.isDebugEnabled()){
-//			logger.debug("[Member Debug] returi:"+returi);
-//			logger.debug("[Member Debug] CipherAES.encrypt(returi)"+CipherAES.encrypt(returi));
-//		}
-//		returi=CipherAES.encrypt(returi);
+		
 		/* Session 유무 확인 */
 		if(member == null){
 			if(logger.isDebugEnabled()){
@@ -106,11 +104,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 				logger.debug("===========================================================");
 			}			
 			
-			if(returi.indexOf("Iframe.do")>=0){
-				session.setAttribute("RETURIIFRAME", returi);
-	        	response.sendRedirect(contextPath+config.getString("url.dnc.loginIframe"));
-				return false;
-	        }else if (!isAjaxRequest(request)) {// Ajax 호출이 아닐 경우
+			if (!isAjaxRequest(request)) {// Ajax 호출이 아닐 경우
 
 				/* Return URL */
 				session.setAttribute("RETURI", returi);
@@ -134,11 +128,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 				logger.debug("Login Check Interceptor - Login Fail(LOGIN_SESSION == " + loginSession + ")");
 				logger.debug("==========================================================");
 			}
-			if(returi.indexOf("Iframe.do")>=0){
-				session.setAttribute("RETURIIFRAME", returi);
-	        	response.sendRedirect(contextPath+config.getString("url.dnc.loginIframe"));
-				return false;
-	        }else if (!isAjaxRequest(request)) {// Ajax 호출이 아닐 경우
+			
+			if (!isAjaxRequest(request)) {// Ajax 호출이 아닐 경우
 
 				/* Return URL */
 				session.setAttribute("RETURI", returi);
