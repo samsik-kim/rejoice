@@ -43,6 +43,23 @@
 		<property name="alwaysUseFullPath" value="true"/>
 	</bean>	
 
+	<!-- Interceptor 적용 할 URL -->
+	<bean id="securityMapper" class="org.springplugins.web.IgnoreSelectedAnnotationHandlerMapping">
+		<property name="order">
+			<value>0</value>
+		</property>
+		<property name="urls">
+			<list>
+				<value>/loginForm.do</value>
+			</list>
+		</property>
+		<property name="interceptors">
+			<list>
+				<bean class="com.stockinvest.common.interceptor.LoginInterceptor" />
+			</list>
+		</property>
+	</bean>
+
     <bean id="configurationLoader" class="org.springmodules.validation.bean.conf.loader.annotation.AnnotationBeanValidationConfigurationLoader"/>  
     <bean id="validator" class="org.springmodules.validation.bean.BeanValidator" p:configurationLoader-ref="configurationLoader"/> 
 
