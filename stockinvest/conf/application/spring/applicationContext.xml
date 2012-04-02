@@ -29,7 +29,7 @@
     </bean>
 
 	<!-- JSON -->
-	<bean id="jsonView" class="com.seojeong.common.util.JSonView" />
+	<bean id="jsonView" class="com.stockinvest.common.util.JSonView" />
 
 	<import resource="classpath:application/ibatis/dataSourceConfig.xml"/>
 	
