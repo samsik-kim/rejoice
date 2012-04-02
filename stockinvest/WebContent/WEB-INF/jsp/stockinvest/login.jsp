@@ -15,12 +15,12 @@ $(document).ready(function(){
 				cache : false,	
 				success: function(json){
 					if(json.result == "SUCCESS"){
-						$("#regFrm").attr("action", "/stockinvest/main.do");
-						$("#regFrm").submit();
+						$("#login").attr("action", "/stockinvest/main.do");
+						$("#login").submit();
 					} else {
 						alert("로그인 정보가 잘못되었습니다.\n다시입력해주세요.");
-							$("#regFrm").attr("action", "/stockinvest/logInForm.do");
-							$("#regFrm").submit();
+							$("#login").attr("action", "/stockinvest/logInForm.do");
+							$("#login").submit();
 					}
 				},
 				error: function(xhr, textStatus, errorThrown){

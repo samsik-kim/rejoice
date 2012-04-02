@@ -104,4 +104,6 @@
 		DELETE FROM CODE_CATE
 		WHERE SEQ_NO = #seqNo#
 	</delete>
+	
+	
 </sqlMap>

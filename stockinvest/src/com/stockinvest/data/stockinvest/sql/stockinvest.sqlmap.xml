@@ -2,9 +2,22 @@
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="stockinvest">
-
+	<typeAlias alias="memberInfo" type="com.stockinvest.data.stockinvest.info.MemberInfo"/>
+	
 	<select id="selectEmp" resultClass="java.lang.Integer">
 		SELECT COUNT(*) FROM EMP
 	</select>
 
+	<select id="selectMemberInfo" resultClass="memberInfo">
+		SELECT SEQ_NO AS seqNo
+		        , ADMIN_ID AS adminId
+		        , PASSWD AS passWd
+		FROM ADMIN 
+	</select>
+	
+	<update id="update" parameterClass="memberInfo">
+		UPDATE ADMIN SET PASSWD = #passWd#
+		WHERE SEQ_NO	= #seqNo#
+	</update>	
+	
 </sqlMap>
