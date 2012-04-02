@@ -45,7 +45,17 @@
 		</property>
 	</bean>
 	
-	<tx:annotation-driven transaction-manager="ibatis_TransactionManager"/>
+	<tx:advice  id="ibatis_TransactionAdvice" transaction-manager="ibatis_TransactionManager">
+		<tx:attributes>
+			<tx:method name="update*" rollback-for="Exception" propagation="REQUIRED"/>
+			<tx:method name="insert*" rollback-for="Exception" propagation="REQUIRED"/>
+			<tx:method name="create*" rollback-for="Exception" propagation="REQUIRED"/>
+			<tx:method name="get*" read-only="true" propagation="REQUIRED"/>
+			<tx:method name="del*" read-only="true" propagation="REQUIRED"/>
+			<tx:method name="find*" read-only="true" propagation="REQUIRED"/>
+			<tx:method name="*" 	read-only="true" isolation="READ_COMMITTED" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
 	
 	<!-- Message (CP사)용도 시작 -->
 	<bean id="messageSource"
