@@ -1,48 +1,68 @@
 <%@ page language="java" isELIgnored="false" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<link rel="stylesheet" type="text/css" href="/resource/ets/sildmenu/sildmenu.css" />
+<script type="text/javascript" src="/resource/ets/sildmenu/sildemenu.js"></script>
 
-<script>
-$(function() {
-$( "#accordion" ).accordion();
-	$( ".selector" ).accordion({ collapsible: true });
-	
-	//getter
-	var collapsible = $( ".selector" ).accordion( "option", "collapsible" );
-	//setter
-	$( ".selector" ).accordion( "option", "collapsible", true );
+<c:set var="uri" value="${pageContext.request.requestURI}"/>
+<c:choose>
+	<c:when test="${fn:contains(uri, '/admin/')}">
+		<c:set var="leftMenuId" value="1"/>
+	</c:when>   
+	<c:when test="${fn:contains(uri, '/code/')}">		
+		<c:set var="leftMenuId" value="2"/>
+	</c:when>
+	<c:when test="${fn:contains(uri, '/stockinvest/')}">
+		<c:set var="leftMenuId" value="3"/>
+	</c:when>
+</c:choose>
+
+<script type="text/javascript">
+/*
+ * Slide Menu
+ */
+function initMenu() {
+	$('#leftmenu ul').hide();
+	$('#leftmenu ul:eq(${leftMenuId})').show();
+	$('#leftmenu li a').click(function() {
+		var checkElement = $(this).next();
+		if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+			return false;
+		}
+		if ((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+			$('#leftmenu ul:visible').slideUp('normal');
+			checkElement.slideDown('normal');
+			return false;
+		}
+	});
+}
+$(document).ready(function() {
+	initMenu();
 });
-
 </script>
 
-<div id="accordion">
-	<h3><a href="#">Section 1</a></h3>
-	<div>
-	</div>
-	<h3><a href="#">Section 2</a></h3>
-	<div>
-	</div>
-	<h3><a href="#">Section 3</a></h3>
-	<div>
-		<ul>
-			<li>List item one</li>
-			<li>List item two</li>
-			<li>List item three</li>
-		</ul>
-	</div>
-	<h3><a href="#">Section 4</a></h3>
-	<div>
-	</div>
-</div>
-
-<!-- <div id="accordion"> -->
-<!--     <h3><a href="">계정관리</a></h3> -->
-<!--     <div></div> -->
-<!--     <h3><a href="">코드관리</a></h3> -->
-<!--     <div></div> -->
-<!--     <h3><a href="">게시판관리</a></h3> -->
-<!--     <div> -->
-<!-- 		<ul> -->
-<!-- 			<li class="depon"><a href="/member/insertForm.do"></a></li> -->
-<!-- 			<li class="depon"><a href="/member/list.do"></a></li> -->
-<!-- 		</ul> -->
-<!-- 	</div> -->
-<!-- </div> -->
+<fieldset style="width: 230px; height: 680px;">
+	<legend>목록</legend>
+	<ul id="leftmenu">
+		<c:choose>
+			<c:when test="${leftMenuId eq 0}">
+			</c:when>
+			<c:when test="${leftMenuId eq 1}">
+			</c:when>
+			<c:when test="${leftMenuId eq 2}">
+			</c:when>
+			<c:when test="${leftMenuId eq 3}">
+				<li><a href="#">계정관리</a></li>
+				<li><a href="#">코드관리</a></li>
+				<li>
+					<a href="#">게시판관리</a>
+					<ul>
+						<li><a href="#">종합정보</a></li>
+						<li><a href="#">문재인</a></li>
+						<li><a href="#">턴어라운드</a></li>
+					</ul>
+				</li>
+			</c:when>
+		</c:choose>
+	</ul>
+</fieldset>
