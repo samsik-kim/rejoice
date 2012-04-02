@@ -43,6 +43,7 @@ public class LoginController {
 			SessionInfo ss = new SessionInfo();
 			ss.setMemId(adminInfo.getAdminId());
 			SessionHandler<SessionInfo> sh = new SessionHandler<SessionInfo>();
+			sh.setLoginInfo(request, ss); //로그인정보를 SessionHandler에 담음
 		}
 		
 		ModelAndView mav = new ModelAndView("jsonView");
@@ -54,7 +55,8 @@ public class LoginController {
 	
 	@RequestMapping("/logOut.do")
 	public ModelAndView logOut(HttpServletRequest request)throws Exception{
-		ModelAndView mav = new ModelAndView("redirect:/stockinvest/index.jsp");
+		SessionHandler.getInstance().invalidateSession(request);
+		ModelAndView mav = new ModelAndView("redirect:/loginForm.do");
 		return mav;
 	}
 }

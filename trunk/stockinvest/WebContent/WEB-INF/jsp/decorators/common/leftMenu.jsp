@@ -30,7 +30,7 @@ $(document).ready(function() {
 	<legend>목록</legend>
 	<ul id="leftmenu">
 		<li><a href="#">계정관리</a></li>
-		<li><a href="#">코드관리</a></li>
+		<li><a href="/code/codeList.do">코드관리</a></li>
 		<li>
 			<a href="#">게시판관리</a>
 			<ul>

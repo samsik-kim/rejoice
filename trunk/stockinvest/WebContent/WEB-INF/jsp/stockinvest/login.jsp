@@ -39,7 +39,7 @@ $(document).ready(function(){
 		if(showValidate("login", 'default', "입력오류를 확인하십시오.")){
 			var data = $("#login").serialize();
 			$.ajax({
-				url: '/stockinvest/loginCheck.do',
+				url: '/loginCheck.do',
 				dataType: 'json',
 				type: "POST",
 				data: data,
@@ -51,7 +51,7 @@ $(document).ready(function(){
 						$("#login").submit();
 					} else {
 						alert("로그인 정보가 잘못되었습니다.\n다시입력해주세요.");
-							$("#login").attr("action", "/stockinvest/logInForm.do");
+							$("#login").attr("action", "/stockinvest/loginForm.do");
 							$("#login").submit();
 					}
 				},
