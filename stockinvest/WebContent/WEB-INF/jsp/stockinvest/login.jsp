@@ -1,6 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script type="text/javascript" src="/resource/ets/validate.js"></script>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="dnc" uri="/WEB-INF/tld/dnc.tld"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>STOCKINVEST</title>
+	<link rel="stylesheet" type="text/css" href="/resource/css/base.css" />
+	<style type="text/css">
+		*{margin:0; padding:0;}
+		body{background:#f7f7f7; font-size:12px; font-family:dotum, Tahoma;}
+		.login{width:530px; height:180px; margin:0 auto; margin-top:15%; padding:0;}
+		.login_txt{text-align:right; font-size:11px; color:#989898; margin-bottom:5px;}
+		.copy_txt{text-align:center; color:#8e8e8e; font-weight:bold;}
+		
+		.fieldset{height:100px; background:#fff url(/resource/images/mb/admin_logo.jpg) no-repeat 25px 40px; border:1px solid #ccc; padding:43px 0 0 210px; margin-bottom:13px; position:relative;}
+		fieldset{border:0 none;}
+		legend{display:none;}
+		label{display:inline-block; width:65px; font-weight:bold;}
+		.id{margin-bottom:6px;}
+		.pw{}
+		.loginBtn{position:absolute; top:41px; right:20px;}
+
+		.textType{width:150px; height:16px; padding:2px; border:1px solid #cdcdcd;}
+	</style>
+	<link type="text/css" href="/resource/jquery-ui-1.8.17.custom/css/cupertino/jquery-ui-1.8.17.custom.css" rel="stylesheet" />	
+	<script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-ui-1.8.17.custom.min.js"></script>
+	<script type="text/javascript" src="/resource/ets/validate.js"></script>
+</head>
+<body>
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#loginCheck").click(function(){
@@ -32,36 +64,27 @@ $(document).ready(function(){
 });
 </script>
 <form name="login" id="login" method="post">
-<table width="100%" height="100%" cellpadding="0" cellspacing="0">
-<tr height="40%">
-	<td colspan=3>&nbsp;<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></td>
-</tr>
-<tr height="20%">
-	<td width="30%" bgcolor="#336600">&nbsp;<br><br><br><br><br><br><br><br><br><br><br></td>
-	<td width="40%">
-		<table width="400" cellpadding="0" cellspacing="0">
-			<tr>
-				<td rowspan="2"><img src="/resource/images/admin_logo.jpg"></td>
-				<td align="center" width="100">아이디</td>
-				<td>
-					<input type="text" name="admin_id" id="admin_id" style="width:100px;height:20px;"
-					v:required='trim' m:required="이름을 입력하십시오."/>
-				</td>
-				<td align="center" rowspan="2">&nbsp;&nbsp;	<img src="/resource/images/common/login.gif" id="loginCheck" alt="로그인" />&nbsp;&nbsp;</td>
-			</tr>
-			<tr>
-				<td align="center">비밀번호</td>
-				<td>
-					<input type="password" name="password" id="password" style="width:100px;height:20px;"
-					v:required='trim' m:required="암호를 입력하십시오."/>
-				</td>
-			</tr>	
-		</table>
-	</td>
-	<td width="30%" bgcolor="#336600">&nbsp;</td>
-</tr>
-<tr height="40%">
-	<td colspan=3><br><br><br><br><br><br><br>&nbsp;</td>
-</tr>
-</table>
+	<div class="login">
+		<p class="login_txt">
+		</p>
+		<div class="fieldset">
+		<fieldset>
+			<legend>로그인 영역</legend>
+			<div class="id">
+				<label for="identify">아이디</label>
+				<input type="text" name="admin_id" id="admin_id" class="textType" value="samsung" 
+				v:required='trim' m:required="아이디를 입력하십시오."/>
+			</div>
+			<div class="pw">
+				<label for="pw">비밀번호</label>
+				<input  type="password" name="password" id="password" class="textType" value="2542"
+				v:required='trim' m:required="비밀번호를 입력하십시오."/>
+			</div>
+			<a href="#"><img id="loginCheck" src="/resource/images/common/login.gif" class="loginBtn" alt="login" /></a>
+		</fieldset>
+		</div>
+		<p class="copy_txt">Copyright © 2011 stockinvest. All Right Reserved</p>
+	</div>
 </form>
+</body>
+</html>

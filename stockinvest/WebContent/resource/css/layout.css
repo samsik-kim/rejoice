@@ -31,17 +31,6 @@
 
 /*--- Left ---*/
 #left_area {float:left;width:164px;padding-bottom:50px;}
-#left_area h3 {width:177px;height:41px;padding-top:29px;background:url('../images/common/left_h3_bg.gif') no-repeat left top;}
-#left_area ul.fmenu {width:164px;margin-top:8px;vertical-align:top;}
-#left_area ul.fmenu li {width:155px;padding-bottom:11px;font-size:14px;}
-#left_area ul.fmenu li a {display:block;padding:2px 0;color:#555;text-decoration:none;font-weight:bold;background:url('../images/common/left_dot01_off.gif') no-repeat left 4px;}
-#left_area ul.fmenu li a:hover {color:#ff6600;font-weight:bold;text-decoration:none;background:url('../images/common/left_dot01_on.gif') no-repeat left 4px;}
-#left_area ul.fmenu li.on a {color:#ff6600;font-weight:bold;background:url('../images/common/left_dot01_on.gif') no-repeat left 3px;}
-#left_area ul.smenu {padding:8px 0 8px 13px;margin-top:6px;border-top:1px solid #e8e8e8;border-bottom:1px solid #e8e8e8;background:#f9f9f9;}
-#left_area ul.smenu li {width:138px;padding:0 0 3px 0;font-size:12px;}
-#left_area ul.smenu li a {width:130px;padding-left:7px;color:#666 !important;font-weight:normal !important;text-decoration:none;background:url('../images/common/left_dot.gif') no-repeat left 8px !important;}
-#left_area ul.smenu li a:hover {color:#666;font-weight:bold !important;text-decoration:none;}
-#left_area ul.smenu li.depon a {width:130px;padding-left:7px;color:#666;font-weight:bold !important;text-decoration:none;background:url('../images/common/left_dot.gif') no-repeat left 8px;}
 
 /*--- Contents ---*/
 #contents_area {float:right;width:792px;margin-bottom:80px;min-height:670px;_height:670px;line-height:140%;}
