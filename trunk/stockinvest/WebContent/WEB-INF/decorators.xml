@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<decorators defaultdir="/decorators/layout">
+<decorators defaultdir="/WEB-INF/jsp/decorators/layout">
     <excludes>
         <pattern>**/ajax*</pattern>
         <pattern>**/sign*</pattern>
