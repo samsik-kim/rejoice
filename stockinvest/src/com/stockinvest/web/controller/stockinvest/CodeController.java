@@ -37,7 +37,7 @@ public class CodeController {
 	 * @return
 	 * @throws Exception
 	 */	
-	@RequestMapping("/stockinvest/codeList.do")
+	@RequestMapping("/code/codeList.do")
 	public ModelAndView codeList(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView();
 		int currentPage = Integer.parseInt(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
@@ -48,36 +48,20 @@ public class CodeController {
 		mav.addObject("pageInfo", pageInfo);
 		
 		mav.addObject("info", info);
-		mav.setViewName("code_cate/list");
+		mav.setViewName("code/list");
 		return mav;
 	}	
 	
-	@RequestMapping("/stockinvest/codeListExcel.do")
+	@RequestMapping("/code/codeListExcel.do")
 	 public ModelAndView excelExportForm(HttpServletRequest req) throws Exception {
 	  CodeInfo info = new CodeInfo();
-//	  info.setStDt(req.getParameter("stDt"));
-//	  info.setEnDt(req.getParameter("enDt"));
+	  info.setStDt(req.getParameter("stDt"));
+	  info.setEnDt(req.getParameter("enDt"));
 	  List list = service.selectCodeListExcel(info);
 	  Map model = new HashMap();
-	  String[] header = {"종목코드명", "전화번호"};
+	  String[] header = {"순번","종목명", "종목코드명" , "지분보유" , "전화번호" ,"정보연락처" , "등록일"};
 	  //출력할 Column 목록 
-	  
-/*		SELECT SEQ_NO		AS seqNo,
-        CODE_NAME	AS codeName,
-        CODE_NUM		AS codeNum,
-        JUJU			AS juju,
-        TEL			AS tel,
-        TEL1			AS tel1,
-        TEL2			AS tel2,
-        TEL3			AS tel3,
-        BOYUJIBUN	AS holdShare,			
-        INFO_TEL		AS infoTel, 
-        INFO_TEL1	AS infoTel1,
-        INFO_TEL2	AS infoTel2,
-        INFO_TEL3	AS infoTel3,
-        CRT_DATE 	AS crtDate */
-        
-	  String[] columnList = {"MEMBERNM","MDN"};
+	  String[] columnList = {"SEQNO","CODENAME","CODENUM","HOLDSHARE","TEL","INFOTEL","CRTDATE"};
 	  model.put(ExcelExportView.HEADER, header); //헤더정보
 	  model.put(ExcelExportView.DATA_LIST, list); // 목록
 	  model.put(ExcelExportView.COLUMN, columnList); // 컬럼
@@ -86,9 +70,9 @@ public class CodeController {
 	  return new ModelAndView("excelExportView","excelExportView",model);
 	 }	
 	
-	@RequestMapping("/stockinvest/insertCodeForm.do")
+	@RequestMapping("/code/insertCodeForm.do")
 	public String insertForm(){
-		return "code_cate/write";
+		return "code/write";
 	}
 	
 	/**
@@ -97,9 +81,9 @@ public class CodeController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/stockinvest/codeDetail.do")
+	@RequestMapping("/code/codeDetail.do")
 	public ModelAndView codeDetailForm(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView("code_cate/view");
+		ModelAndView mav = new ModelAndView("code/view");
 		info.setCurrentPage(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
 		if(info.getSeqNo() != null){
 			info = service.selectCodeInfo(info);
@@ -108,15 +92,15 @@ public class CodeController {
 		return mav;
 	}	
 	
-	@RequestMapping("/stockinvest/codeInsert.do")
+	@RequestMapping("/code/codeInsert.do")
 	public ModelAndView insertCode(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView("redirect:/stockinvest/codeList.do");
+		ModelAndView mav = new ModelAndView("redirect:/code/codeList.do");
 		info = setCode(info);
 		service.insertCodeInfo(info);
 		return mav;
 	}
 	
-	@RequestMapping("/stockinvest/codeUpdate.do")
+	@RequestMapping("/code/codeUpdate.do")
 	public ModelAndView updateCode(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView("jsonView");
 		JSONObject jsonObject = new JSONObject();
@@ -127,7 +111,7 @@ public class CodeController {
 		return mav;
 	}	
 	
-	@RequestMapping("/stockinvest/codeDelete.do")
+	@RequestMapping("/code/codeDelete.do")
 	public ModelAndView deleteCode(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView("jsonView");
 		JSONObject jsonObject = new JSONObject();

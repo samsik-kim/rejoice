@@ -19,6 +19,9 @@ public class CodeInfo extends CommonInfo implements Serializable{
 	private String infoTel2;	//
 	private String infoTel3;	//
 	private String crtDate;		//생성일
+	private String stDt;
+	private String enDt;
+
 	/**
 	 * @return the seqNo
 	 */
@@ -186,6 +189,18 @@ public class CodeInfo extends CommonInfo implements Serializable{
 	 */
 	public void setCrtDate(String crtDate) {
 		this.crtDate = crtDate;
+	}
+	public String getStDt() {
+		return stDt;
+	}
+	public void setStDt(String stDt) {
+		this.stDt = stDt;
+	}
+	public String getEnDt() {
+		return enDt;
+	}
+	public void setEnDt(String enDt) {
+		this.enDt = enDt;
 	}
 		
 }

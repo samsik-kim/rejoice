@@ -48,14 +48,20 @@
 					<isNotEmpty property="searchKey">
 						<isEqual property="searchKey" compareValue="codeName">
 							<isNotEmpty property="searchValue">
-								AND CODE_NAME LIKE ''|| #searchValue#||'%'
+								AND CODE_NAME LIKE CONCAT(#searchValue#,'%')
 							</isNotEmpty>
 						</isEqual>
-						<isEqual property="searchKey" compareValue="codeNumber">
+						<isEqual property="searchKey" compareValue="codeNum">
 							<isNotEmpty property="searchValue">
-								AND CODE_NUM LIKE '%'||#searchValue#||'%'
+								AND CODE_NUM LIKE CONCAT(#searchValue#,'%')
 							</isNotEmpty>
 						</isEqual>
+					</isNotEmpty>
+					<isNotEmpty property="stDt">
+					<![CDATA[	AND CRT_DATE >= #stDt# ]]> 
+					</isNotEmpty>
+					<isNotEmpty property="enDt">
+					<![CDATA[	AND CRT_DATE <= #enDt# ]]>
 					</isNotEmpty>
 				</dynamic>	
 				ORDER BY SEQ_NO DESC
@@ -81,14 +87,20 @@
 			<isNotEmpty property="searchKey">
 				<isEqual property="searchKey" compareValue="codeName">
 					<isNotEmpty property="searchValue">
-						AND CODE_NAME LIKE ''|| #searchValue#||'%'
+						AND CODE_NAME LIKE CONCAT(#searchValue#,'%')
 					</isNotEmpty>
 				</isEqual>
-				<isEqual property="searchKey" compareValue="codeNumber">
+				<isEqual property="searchKey" compareValue="codeNum">
 					<isNotEmpty property="searchValue">
-						AND CODE_NUM LIKE '%'||#searchValue#||'%'
+						AND CODE_NUM LIKE CONCAT(#searchValue#,'%')
 					</isNotEmpty>
 				</isEqual>
+			</isNotEmpty>
+			<isNotEmpty property="stDt">
+			<![CDATA[	AND CRT_DATE >= #stDt# ]]> 
+			</isNotEmpty>
+			<isNotEmpty property="enDt">
+			<![CDATA[	AND CRT_DATE <= #enDt# ]]>
 			</isNotEmpty>
 		</dynamic>	
 		ORDER BY SEQ_NO DESC	
@@ -98,6 +110,27 @@
 		SELECT 
 			COUNT(*)
 		FROM CODE_CATE
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty property="searchKey">
+				<isEqual property="searchKey" compareValue="codeName">
+					<isNotEmpty property="searchValue">
+						AND CODE_NAME LIKE CONCAT(#searchValue#,'%')
+					</isNotEmpty>
+				</isEqual>
+				<isEqual property="searchKey" compareValue="codeNum">
+					<isNotEmpty property="searchValue">
+						AND CODE_NUM LIKE CONCAT(#searchValue#,'%')
+					</isNotEmpty>
+				</isEqual>
+			</isNotEmpty>
+			<isNotEmpty property="stDt">
+			<![CDATA[	AND CRT_DATE >= #stDt# ]]> 
+			</isNotEmpty>
+			<isNotEmpty property="enDt">
+			<![CDATA[	AND CRT_DATE <= #enDt# ]]>
+			</isNotEmpty>
+		</dynamic>			
 	</select>
 	
 	<select id="selectCodeInfo" parameterClass="info" resultClass="info">
