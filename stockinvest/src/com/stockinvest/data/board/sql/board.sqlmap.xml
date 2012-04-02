@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
-<sqlMap namespace="code">
+<sqlMap namespace="board">
 	
 	<sql id="pagingHeader">
 		SELECT  
@@ -20,30 +20,22 @@
 		]]>
 	</sql>	
 			
-	<typeAlias alias="info" type="com.stockinvest.data.code.info.CodeInfo"/>
+	<typeAlias alias="boardboardInfo" type="com.stockinvest.data.board.boardInfo.BoardboardInfo"/>
 	
-	<select id="selectCodeList" parameterClass="info" resultClass="info">
+	<select id="selectBoardList" parameterClass="boardInfo" resultClass="boardInfo">
 		<isNotEmpty property="currentPage">
 			<isNotEqual property="currentPage" compareValue="0">
 				<include refid="pagingHeader"/>
 			</isNotEqual>
 		</isNotEmpty>
 				SELECT SEQ_NO		AS SEQNO,
+			           CRT_DATE 	AS CRTDATE,
+			           SUBJECT		AS SUBJECT,
 			           CODE_NAME	AS CODENAME,
 			           CODE_NUM		AS CODENUM,
-			           JUJU			AS JUJU,
-			           TEL			AS TEL,
-			           TEL1			AS TEL1,
-			           TEL2			AS TEL2,
-			           TEL3			AS TEL3,
-			           BOYUJIBUN	AS HOLDSHARE,			
-			           INFO_TEL		AS INFOTEL, 
-			           INFO_TEL1	AS INFOTEL1,
-			           INFO_TEL2	AS INFOTEL2,
-			           INFO_TEL3	AS INFOTEL3,
-			           CRT_DATE 	AS CRTDATE 
-				FROM CODE_CATE
+				FROM BOARD
 				WHERE 1=1
+				AND BBS_CD = #bbsCd#
 				<dynamic>
 					<isNotEmpty property="searchKey">
 						<isEqual property="searchKey" compareValue="codeName">
@@ -56,6 +48,16 @@
 								AND CODE_NUM LIKE CONCAT(#searchValue#,'%')
 							</isNotEmpty>
 						</isEqual>
+						<isEqual property="searchKey" compareValue="subject">
+							<isNotEmpty property="searchValue">
+								AND SUBJECT LIKE CONCAT(#searchValue#,'%')
+							</isNotEmpty>
+						</isEqual>
+						<isEqual property="searchKey" compareValue="content">
+							<isNotEmpty property="searchValue">
+								AND CONTENT LIKE CONCAT(#searchValue#,'%')
+							</isNotEmpty>
+						</isEqual>												
 					</isNotEmpty>
 					<isNotEmpty property="stDt">
 					<![CDATA[	AND CRT_DATE >= #stDt# ]]> 
@@ -72,17 +74,15 @@
 		</isNotEmpty>
 	</select>
 	
-	<select id="selectCodeListExcel" parameterClass="info" resultClass="java.util.HashMap">
+	<select id="selectBoardListExcel" parameterClass="boardInfo" resultClass="java.util.HashMap">
 		SELECT SEQ_NO		AS SEQNO,
+	           CRT_DATE 	AS CRTDATE,
+	           SUBJECT		AS SUBJECT,
 	           CODE_NAME	AS CODENAME,
 	           CODE_NUM		AS CODENUM,
-	           JUJU			AS JUJU,
-	           TEL			AS TEL,
-	           BOYUJIBUN	AS HOLDSHARE,			
-	           INFO_TEL		AS INFOTEL, 
-	           CRT_DATE 	AS CRTDATE 
-		FROM CODE_CATE
+ 		FROM BOARD
 		WHERE 1=1
+		AND BBS_CD = #bbsCd#
 		<dynamic>
 			<isNotEmpty property="searchKey">
 				<isEqual property="searchKey" compareValue="codeName">
@@ -95,6 +95,16 @@
 						AND CODE_NUM LIKE CONCAT(#searchValue#,'%')
 					</isNotEmpty>
 				</isEqual>
+				<isEqual property="searchKey" compareValue="subject">
+					<isNotEmpty property="searchValue">
+						AND SUBJECT LIKE CONCAT(#searchValue#,'%')
+					</isNotEmpty>
+				</isEqual>
+				<isEqual property="searchKey" compareValue="content">
+					<isNotEmpty property="searchValue">
+						AND CONTENT LIKE CONCAT(#searchValue#,'%')
+					</isNotEmpty>
+				</isEqual>		
 			</isNotEmpty>
 			<isNotEmpty property="stDt">
 			<![CDATA[	AND CRT_DATE >= #stDt# ]]> 
@@ -106,7 +116,7 @@
 		ORDER BY SEQ_NO DESC	
 	</select>
 	
-	<select id="selectCodeListCount" parameterClass="info" resultClass="int">
+	<select id="selectBoardListCount" parameterClass="boardInfo" resultClass="int">
 		SELECT 
 			COUNT(*)
 		FROM CODE_CATE
@@ -123,6 +133,16 @@
 						AND CODE_NUM LIKE CONCAT(#searchValue#,'%')
 					</isNotEmpty>
 				</isEqual>
+				<isEqual property="searchKey" compareValue="subject">
+					<isNotEmpty property="searchValue">
+						AND SUBJECT LIKE CONCAT(#searchValue#,'%')
+					</isNotEmpty>
+				</isEqual>
+				<isEqual property="searchKey" compareValue="content">
+					<isNotEmpty property="searchValue">
+						AND CONTENT LIKE CONCAT(#searchValue#,'%')
+					</isNotEmpty>
+				</isEqual>		
 			</isNotEmpty>
 			<isNotEmpty property="stDt">
 			<![CDATA[	AND CRT_DATE >= #stDt# ]]> 
@@ -133,24 +153,17 @@
 		</dynamic>			
 	</select>
 	
-	<select id="selectCodeInfo" parameterClass="info" resultClass="info">
+	<select id="selectBoardInfo" parameterClass="boardInfo" resultClass="boardInfo">
 		SELECT 
 			SEQ_NO		AS SEQNO,
 			CODE_NAME	AS CODENAME,
 			CODE_NUM	AS CODENUM,
-			JUJU		AS JUJU,
-			TEL			AS TEL,
-			TEL1		AS TEL1,
-			TEL2		AS TEL2,
-			TEL3		AS TEL3,
-            BOYUJIBUN	AS HOLDSHARE,			
-			INFO_TEL	AS INFOTEL, 
-			INFO_TEL1	AS INFOTEL1,
-			INFO_TEL2	AS INFOTEL2,
-			INFO_TEL3	AS INFOTEL3,
+			SUBJECT		AS SUBJECT,
+			CONTENT		AS CONTENT,
 			CRT_DATE	AS CRTDATE
-		FROM CODE_CATE
+		FROM BOARD
 		WHERE 1=1
+		AND BBS_CD = #bbsCd#
 		<dynamic>
 			<isNotEmpty property="seqNo">
 				AND SEQ_NO = #seqNo#
@@ -158,26 +171,23 @@
 		</dynamic>
 	</select>
 	
-	<insert id="insert" parameterClass="info">
-		INSERT INTO CODE_CATE(SEQ_NO, CODE_NAME, CODE_NUM, JUJU, TEL, TEL1, TEL2, TEL3, BOYUJIBUN, INFO_TEL, INFO_TEL1, INFO_TEL2, INFO_TEL3, CRT_DATE
-		) VALUES ((SELECT IFNULL(MAX(SEQ_NO),0)+1 FROM CODE_CATE),#codeName#,#codeNum#,#juju#,#tel#,#tel1#,#tel2#,#tel3#,#holdShare#
-		           ,#infoTel#,#infoTel1#,#infoTel2#,#infoTel3#,DATE_FORMAT(NOW(), '%Y%m%d%H%i%S')
+	<insert id="insert" parameterClass="boardInfo">
+		INSERT INTO BOARD(SEQ_NO, CRT_DATE
+		) VALUES ((SELECT IFNULL(MAX(SEQ_NO),0)+1 FROM BOARD),DATE_FORMAT(NOW(), '%Y%m%d%H%i%S')
 		)
 	</insert>
 	
-	<update id="update" parameterClass="info">
-		UPDATE CODE_CATE
-			SET CODE_NAME =  #codeName#,
+	<update id="update" parameterClass="boardInfo">
+		UPDATE BOARD
+			SET CODE_NAME = #codeName#,
 			    CODE_NUM  = #codeNum#,
-			    JUJU	  = #juju#,
-			    TEL		  = #tel#,
-                BOYUJIBUN = #holdShare#,			
-			    INFO_TEL  =	#infoTel# 
+				SUBJECT	  = #subject#,
+				CONTENT   = #content#
 		WHERE SEQ_NO	= #seqNo#
 	</update>
 	
-	<delete id="delete" parameterClass="info">
-		DELETE FROM CODE_CATE
+	<delete id="delete" parameterClass="boardInfo">
+		DELETE FROM BOARD
 		WHERE SEQ_NO = #seqNo#
 	</delete>
 	

@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	$("#vstDt").datepicker();
-	
 	//취소 -> 목록
 	$("#cancelBtn").click(function(){
 		$("#regFrm").attr('action','/code/codeList.do') ;
@@ -59,17 +56,13 @@ $(document).ready(function(){
 			<tr>
 				<th scope="row"><label for="moblenum">전화번호</label></th>
 				<td>
-					<input type="text" id="tel" name="tel" class="w180"
-					v:mustnum m:mustnum="전화번호는 숫자로 입력하세요."/>&nbsp;
-					<span class="txtcolor01"> &nbsp;* “ㅡ” 을 생략하고 숫자로만 입력해 주세요.</span>
+					<input type="text" id="tel" name="tel" class="w180"/>&nbsp;
 				</td>
 			</tr>
 			<tr>
 				<th scope="row"><label for="moblenum">정보연락처</label></th>
 				<td>
-					<input type="text" id="infoTel" name="infoTel" class="w180"				 
-					v:mustnum m:mustnum="정보연락처는 숫자로 입력하세요."/>&nbsp;
-					<span class="txtcolor01"> &nbsp;* “ㅡ” 을 생략하고 숫자로만 입력해 주세요.</span>
+					<input type="text" id="infoTel" name="infoTel" class="w180"/>
 				</td>
 			</tr>
 			<tr>
