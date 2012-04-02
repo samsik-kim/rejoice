@@ -1,4 +1,4 @@
-package com.stockinvest.web.controller.stockinvest;
+package com.stockinvest.web.controller.code;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +18,8 @@ import tframe.common.util.StringUtils;
 import tframe.web.mvc.support.views.ExcelExportView;
 import tframe.web.page.PageInfo;
 
-import com.stockinvest.data.stockinvest.info.CodeInfo;
-import com.stockinvest.service.stockinvest.CodeService;
+import com.stockinvest.data.code.info.CodeInfo;
+import com.stockinvest.service.code.CodeService;
 
 /**
  * 종목코드 관리

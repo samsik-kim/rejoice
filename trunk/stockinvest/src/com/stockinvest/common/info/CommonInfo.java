@@ -1,4 +1,4 @@
-package com.stockinvest.data.stockinvest.info;
+package com.stockinvest.common.info;
 
 import java.io.Serializable;
 

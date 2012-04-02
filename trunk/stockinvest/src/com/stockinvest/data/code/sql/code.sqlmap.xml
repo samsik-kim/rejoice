@@ -20,7 +20,7 @@
 		]]>
 	</sql>	
 			
-	<typeAlias alias="info" type="com.stockinvest.data.stockinvest.info.CodeInfo"/>
+	<typeAlias alias="info" type="com.stockinvest.data.code.info.CodeInfo"/>
 	
 	<select id="selectCodeList" parameterClass="info" resultClass="info">
 		<isNotEmpty property="currentPage">
@@ -28,20 +28,20 @@
 				<include refid="pagingHeader"/>
 			</isNotEqual>
 		</isNotEmpty>
-				SELECT SEQ_NO		AS seqNo,
-			           CODE_NAME	AS codeName,
-			           CODE_NUM		AS codeNum,
-			           JUJU			AS juju,
-			           TEL			AS tel,
-			           TEL1			AS tel1,
-			           TEL2			AS tel2,
-			           TEL3			AS tel3,
-			           BOYUJIBUN	AS holdShare,			
-			           INFO_TEL		AS infoTel, 
-			           INFO_TEL1	AS infoTel1,
-			           INFO_TEL2	AS infoTel2,
-			           INFO_TEL3	AS infoTel3,
-			           CRT_DATE 	AS crtDate 
+				SELECT SEQ_NO		AS SEQNO,
+			           CODE_NAME	AS CODENAME,
+			           CODE_NUM		AS CODENUM,
+			           JUJU			AS JUJU,
+			           TEL			AS TEL,
+			           TEL1			AS TEL1,
+			           TEL2			AS TEL2,
+			           TEL3			AS TEL3,
+			           BOYUJIBUN	AS HOLDSHARE,			
+			           INFO_TEL		AS INFOTEL, 
+			           INFO_TEL1	AS INFOTEL1,
+			           INFO_TEL2	AS INFOTEL2,
+			           INFO_TEL3	AS INFOTEL3,
+			           CRT_DATE 	AS CRTDATE 
 				FROM CODE_CATE
 				WHERE 1=1
 				<dynamic>
@@ -73,14 +73,14 @@
 	</select>
 	
 	<select id="selectCodeListExcel" parameterClass="info" resultClass="java.util.HashMap">
-		SELECT SEQ_NO		AS seqNo,
-	           CODE_NAME	AS codeName,
-	           CODE_NUM		AS codeNum,
-	           JUJU			AS juju,
-	           TEL			AS tel,
-	           BOYUJIBUN	AS holdShare,			
-	           INFO_TEL		AS infoTel, 
-	           CRT_DATE 	AS crtDate 
+		SELECT SEQ_NO		AS SEQNO,
+	           CODE_NAME	AS CODENAME,
+	           CODE_NUM		AS CODENUM,
+	           JUJU			AS JUJU,
+	           TEL			AS TEL,
+	           BOYUJIBUN	AS HOLDSHARE,			
+	           INFO_TEL		AS INFOTEL, 
+	           CRT_DATE 	AS CRTDATE 
 		FROM CODE_CATE
 		WHERE 1=1
 		<dynamic>
@@ -135,20 +135,20 @@
 	
 	<select id="selectCodeInfo" parameterClass="info" resultClass="info">
 		SELECT 
-			SEQ_NO		AS seqNo,
-			CODE_NAME	AS codeName,
-			CODE_NUM	AS codeNum,
-			JUJU		AS juju,
-			TEL			AS tel,
-			TEL1		AS tel1,
-			TEL2		AS tel2,
-			TEL3		AS tel3,
-            BOYUJIBUN	AS holdShare,			
-			INFO_TEL	AS infoTel, 
-			INFO_TEL1	AS infoTel1,
-			INFO_TEL2	AS infoTel2,
-			INFO_TEL3	AS infoTel3,
-			CRT_DATE	AS crtDate
+			SEQ_NO		AS SEQNO,
+			CODE_NAME	AS CODENAME,
+			CODE_NUM	AS CODENUM,
+			JUJU		AS JUJU,
+			TEL			AS TEL,
+			TEL1		AS TEL1,
+			TEL2		AS TEL2,
+			TEL3		AS TEL3,
+            BOYUJIBUN	AS HOLDSHARE,			
+			INFO_TEL	AS INFOTEL, 
+			INFO_TEL1	AS INFOTEL1,
+			INFO_TEL2	AS INFOTEL2,
+			INFO_TEL3	AS INFOTEL3,
+			CRT_DATE	AS CRTDATE
 		FROM CODE_CATE
 		WHERE 1=1
 		<dynamic>

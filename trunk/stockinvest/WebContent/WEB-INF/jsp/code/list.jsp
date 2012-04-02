@@ -10,7 +10,12 @@ $(document).ready(function(){
 	$("#options").tablesorter({
 		sortList: [[0,0]], 
 	});
-	
+
+	$("#excelBtn").click(function(){
+		$("#stDt").val($("#stDt").val().replace(/-/g, ''));
+		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
+		location.href = "/code/codeListExcel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
+	});	
 });
 
 //검색
@@ -46,20 +51,23 @@ function fn_detail(seqNo){
 	<a href="#"><img id="searchBtn" src="/resource/images/common/btn_board_search.gif" alt="검색" onclick="javascript:searchList();"/></a>
 </form>
 </div>
+	<div class="fltr mar_trl20">
+		<a href="#"><img id="excelBtn" src="/resource/images/common/btn_excel.gif" alt="excel" /></a>
+	</div>
 <form name="detailFrm" id="detailFrm" method="post">
 	<input type="hidden" name="seq" id="seq" />
 	<input type="hidden" name="currentPage" value="${pageInfo.currentPage}" />
 </form>
 <div class="tstyleC">
-<table width="550"   id="options" class="tablesorter">
-	<caption>고객 리스트</caption>
+<table width="600"   id="options" class="tablesorter">
+	<caption>종목 코드 리스트</caption>
 	<colgroup>
-		<col width="150"/>
-		<col width="200" />
-		<col width="100" />
-		<col width="100" />
-		<col width="100" />
+		<col width="100"/>
+		<col width="80" />
 		<col width="" />
+		<col width="100" />
+		<col width="100" />
+		<col width="80" />
 	</colgroup>
 	<thead>
 		<tr>
