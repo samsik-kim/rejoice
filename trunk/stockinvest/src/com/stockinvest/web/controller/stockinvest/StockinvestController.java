@@ -36,7 +36,7 @@ public class StockinvestController {
 		
 		MemberInfo adminInfo = service.selectAdminInfo();
 		String returnValue = "FAIL";
-		
+
 		if ( admin_id.equals(adminInfo.getAdminId()) && passWd.equals(adminInfo.getPassWd()) ) {
 			returnValue = "SUCCESS";
 			
