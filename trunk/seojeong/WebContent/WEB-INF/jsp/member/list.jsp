@@ -128,7 +128,7 @@ function fn_detail(seq){
 <table align="right">
 	<tr>
 		<td align="right">
-			<a href="#"><img id="delBtn" src="${pageContext.request.contextPath }/resource/images/common/btn_del.gif" alt="삭제하기" /></a>	
+			<a href="#"><img id="delBtn" src="/resource/images/common/btn_del.gif" alt="삭제하기" /></a>	
 		</td>
 	</tr>
 </table>
