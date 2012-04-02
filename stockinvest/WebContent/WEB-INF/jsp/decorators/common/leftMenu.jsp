@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <link rel="stylesheet" type="text/css" href="/resource/ets/sildmenu/sildmenu.css" />
-<script type="text/javascript" src="/resource/ets/sildmenu/sildemenu.js"></script>
 
 <c:set var="uri" value="${pageContext.request.requestURI}"/>
 <c:choose>
@@ -27,12 +26,11 @@ function initMenu() {
 	$('#leftmenu li a').click(function() {
 		var checkElement = $(this).next();
 		if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
-			$('#leftmenu ul:visible').slideUp('normal');
+			$('#leftmenu ul:visible').slideUp('slow');
 			return false;
 		}
 		if ((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
-			$('#leftmenu ul:visible').slideUp('normal');
-			checkElement.slideDown('normal');
+			checkElement.slideDown('slow');
 			return false;
 		}
 	});
