@@ -1,6 +1,7 @@
 package com.seojeong.service.member;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import tframe.web.page.PageInfo;
 
@@ -19,4 +20,8 @@ public interface MemberService {
 	public String selectMdnCheck(String mdn)throws SQLException;
 	
 	public MemberInfo selectMemberInfo(MemberInfo info)throws SQLException;
+	
+	public void deleteMember(MemberInfo info)throws SQLException;
+	
+	public List<MemberInfo> selectExcel(MemberInfo info)throws SQLException;
 }

@@ -80,4 +80,20 @@ public class MemberDAOImpl extends IBatisAbstractDao implements MemberDAO{
 	public MemberInfo selectMemberInfo(MemberInfo info) throws SQLException {
 		return (MemberInfo) getSqlMapClient().queryForObject(NAME_SPACE + ".selectMemberInfo", info);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.data.member.dao.MemberDAO#deleteMember(com.seojeong.data.member.info.MemberInfo)
+	 */
+	@Override
+	public void deleteMember(MemberInfo info) throws SQLException {
+		getSqlMapClient().delete(NAME_SPACE + ".deleteMember", info);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.data.member.dao.MemberDAO#selectExcel(com.seojeong.data.member.info.MemberInfo)
+	 */
+	@Override
+	public List<MemberInfo> selectExcel(MemberInfo info) throws SQLException {
+		return getSqlMapClient().queryForList(NAME_SPACE + ".selectExcel", info);
+	}
 }

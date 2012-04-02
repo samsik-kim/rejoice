@@ -21,4 +21,8 @@ public interface MemberDAO {
 	public int selectMdnCheck(String mdn)throws SQLException;
 	
 	public MemberInfo selectMemberInfo(MemberInfo info)throws SQLException;
+	
+	public void deleteMember(MemberInfo info)throws SQLException;
+	
+	public List<MemberInfo> selectExcel(MemberInfo info)throws SQLException;
 }
