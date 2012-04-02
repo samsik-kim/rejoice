@@ -77,8 +77,8 @@
 	</select>
 	
 	<insert id="insert" parameterClass="info">
-		INSERT INTO CODE_CATE(SEQ_NO, CODE_NAME, CODE_NUM, JUJU, TEL, TEL1, TEL2, TEL3, BOYUJIBUNM, INFO_TEL, INFO_TEL1, INFO_TEL2, INFO_TEL3, CRT_DATE
-		) VALUES ((SELECT IFNULL(MAX(SEQ_NO),0)+1 FROM CODE_CATE),#codeName#,#codeNum#,#juju#,#tel#,#tel1#,#tel2#,#tel3#,#holdShare#
+		INSERT INTO CODE_CATE(SEQ_NO, CODE_NAME, CODE_NUM, JUJU, TEL, TEL1, TEL2, TEL3, BOYUJIBUN, INFO_TEL, INFO_TEL1, INFO_TEL2, INFO_TEL3, CRT_DATE
+		) VALUES (2795,#codeName#,#codeNum#,#juju#,#tel#,#tel1#,#tel2#,#tel3#,#holdShare#
 		           ,#infoTel#,#infoTel1#,#infoTel2#,#infoTel3#,DATE_FORMAT(NOW(), '%Y%m%d%H%i%S')
 		)
 	</insert>
