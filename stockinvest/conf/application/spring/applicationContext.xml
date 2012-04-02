@@ -31,6 +31,9 @@
 	<!-- JSON -->
 	<bean id="jsonView" class="com.stockinvest.common.util.JSonView" />
 
+	<!-- ExcelExportView -->
+ 	<bean id = "excelExportView" class="tframe.web.mvc.support.views.ExcelExportView"/>
+ 	
 	<import resource="classpath:application/ibatis/dataSourceConfig.xml"/>
 	
 	<bean id="ibatis_TransactionManager"
