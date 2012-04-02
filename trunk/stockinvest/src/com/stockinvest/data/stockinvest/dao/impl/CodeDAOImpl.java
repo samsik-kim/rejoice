@@ -52,5 +52,10 @@ public class CodeDAOImpl extends IBatisAbstractDao implements CodeDAO{
 	public void insertCodeInfo(CodeInfo info) throws SQLException {
 		getSqlMapClient().insert(NAME_SPACE + ".insert", info);
 	}
+
+	@Override
+	public List selectCodeListExcel(CodeInfo info) throws SQLException {
+		return getSqlMapClient().queryForList(NAME_SPACE + ".selectCodeListExcel",info);
+	}
  
 }

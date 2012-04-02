@@ -3,13 +3,31 @@
 
 <sqlMap namespace="code">
 	
+	<sql id="pagingHeader">
+		SELECT  
+			y.*
+		FROM (
+			SELECT 
+			 x.*,@rnum:=@rnum+1 as num
+			FROM (
+	</sql>	
+		
+	<sql id="pagingFooter">
+		<![CDATA[	
+			) x,(select @rnum:=0) N 
+		) y
+		WHERE num >=#startNum# AND num <= #endNum#
+		]]>
+	</sql>	
+			
 	<typeAlias alias="info" type="com.stockinvest.data.stockinvest.info.CodeInfo"/>
 	
 	<select id="selectCodeList" parameterClass="info" resultClass="info">
-		SELECT y.* FROM(
-			SELECT 
-				 x.*
-			FROM(
+		<isNotEmpty property="currentPage">
+			<isNotEqual property="currentPage" compareValue="0">
+				<include refid="pagingHeader"/>
+			</isNotEqual>
+		</isNotEmpty>
 				SELECT SEQ_NO		AS seqNo,
 			           CODE_NAME	AS codeName,
 			           CODE_NUM		AS codeNum,
@@ -41,8 +59,39 @@
 					</isNotEmpty>
 				</dynamic>	
 				ORDER BY SEQ_NO DESC
-			) x
-		) y
+		<isNotEmpty property="currentPage">
+			<isNotEqual property="currentPage" compareValue="0">
+				<include refid="pagingFooter"/>
+			</isNotEqual>
+		</isNotEmpty>
+	</select>
+	
+	<select id="selectCodeListExcel" parameterClass="info" resultClass="java.util.HashMap">
+		SELECT SEQ_NO		AS seqNo,
+	           CODE_NAME	AS codeName,
+	           CODE_NUM		AS codeNum,
+	           JUJU			AS juju,
+	           TEL			AS tel,
+	           BOYUJIBUN	AS holdShare,			
+	           INFO_TEL		AS infoTel, 
+	           CRT_DATE 	AS crtDate 
+		FROM CODE_CATE
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty property="searchKey">
+				<isEqual property="searchKey" compareValue="codeName">
+					<isNotEmpty property="searchValue">
+						AND CODE_NAME LIKE ''|| #searchValue#||'%'
+					</isNotEmpty>
+				</isEqual>
+				<isEqual property="searchKey" compareValue="codeNumber">
+					<isNotEmpty property="searchValue">
+						AND CODE_NUM LIKE '%'||#searchValue#||'%'
+					</isNotEmpty>
+				</isEqual>
+			</isNotEmpty>
+		</dynamic>	
+		ORDER BY SEQ_NO DESC	
 	</select>
 	
 	<select id="selectCodeListCount" parameterClass="info" resultClass="int">
@@ -104,6 +153,5 @@
 		DELETE FROM CODE_CATE
 		WHERE SEQ_NO = #seqNo#
 	</delete>
-	
 	
 </sqlMap>
