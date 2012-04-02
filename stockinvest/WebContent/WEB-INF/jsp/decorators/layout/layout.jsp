@@ -14,13 +14,13 @@
 <meta http-equiv="Pragma" content="no-cache"> 
 <meta http-equiv="Cache-Control" content="no-cache">
 <!-- CSS -->
-<link rel="stylesheet" type="text/css" href="<c:url value="/resource/jquery-ui-1.8.17.custom/css/cupertino/jquery-ui-1.8.17.custom.css"/>" >
 <style type="text/css">
 	.ui-datepicker-trigger{ margin-left:3px;cursor:pointer; }
 	.ui-datepicker { width:200px; }
 	#blockUI{display:none;height:30px;font-weight:bold;font-size: 16px;padding-top:10px}
 	form{clear:both;}
 </style>
+
 <link href="<c:url value="/resource/css/content.css"/>" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="/resource/ets/blue/style.css" type="text/css" id="" media="print, projection, screen" />
 
@@ -29,6 +29,7 @@
 <script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-ui-1.8.17.custom.min.js"></script>
 <script type="text/javascript" src="/resource/ets/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="/resource/ets/validate.js"></script>
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 $(function() {
 	$.datepicker.regional['ko']= {
