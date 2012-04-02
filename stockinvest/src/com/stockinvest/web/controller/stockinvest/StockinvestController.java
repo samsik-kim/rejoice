@@ -24,7 +24,7 @@ public class StockinvestController {
 	@Autowired
 	StockinvestService service;
 	
-	@RequestMapping("/stockinvest/logInForm.do")
+	@RequestMapping("/stockinvest/loginForm.do")
 	public String main(){
 		return "stockinvest/login";
 	}
