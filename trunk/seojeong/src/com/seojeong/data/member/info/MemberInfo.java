@@ -27,6 +27,11 @@ public class MemberInfo extends CommonInfo implements Serializable{
 	private String upDt;
 	/** 방문일 */
 	private String vstDt;
+	/** 체크 삭제 */
+	private String delVal;
+	private String[] delArr;
+	private String stDt;
+	private String enDt;
 	/**
 	 * @return the seq
 	 */
@@ -159,6 +164,53 @@ public class MemberInfo extends CommonInfo implements Serializable{
 	public void setVstDt(String vstDt) {
 		this.vstDt = vstDt;
 	}
-	
-		
+	/**
+	 * @return the delVal
+	 */
+	public String getDelVal() {
+		return delVal;
+	}
+	/**
+	 * @param delVal the delVal to set
+	 */
+	public void setDelVal(String delVal) {
+		this.delVal = delVal;
+	}
+	/**
+	 * @return the delArr
+	 */
+	public String[] getDelArr() {
+		return delArr;
+	}
+	/**
+	 * @param delArr the delArr to set
+	 */
+	public void setDelArr(String[] delArr) {
+		this.delArr = delArr;
+	}
+	/**
+	 * @return the stDt
+	 */
+	public String getStDt() {
+		return stDt;
+	}
+	/**
+	 * @param stDt the stDt to set
+	 */
+	public void setStDt(String stDt) {
+		this.stDt = stDt;
+	}
+	/**
+	 * @return the enDt
+	 */
+	public String getEnDt() {
+		return enDt;
+	}
+	/**
+	 * @param enDt the enDt to set
+	 */
+	public void setEnDt(String enDt) {
+		this.enDt = enDt;
+	}
+
 }

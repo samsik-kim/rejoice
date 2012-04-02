@@ -6,19 +6,41 @@
 <script type="text/javascript">
 <!--
 $(document).ready(function(){
+	$("#stDt").datepicker();
+	$("#enDt").datepicker();
 	$("#options").tablesorter({
-		sortList: [[0,0]], 
-		headers: { 2:{sorter: false}, 6:{sorter: false}}
+		sortList: [[1,0]], 
+		headers: { 0:{sorter: false}, 3:{sorter: false}, 7:{sorter: false}}
 	});
 	
+	$("#delBtn").click(function(){
+		var delArr = document.getElementsByName("delch");
+		var delValues = "";
+		for(var i=0; i<delArr.length; i++){
+			delValues += delArr[i].value + ",";
+		}
+		if(confirm("삭제 하시겠습니까?")){
+			$("#delVal").val(delValues);
+			$("#frm").attr('action','/member/delete.do') ;
+			$("#frm").submit();
+		}
+	});
+	
+	$("#excelBtn").click(function(){
+		$("#stDt").val($("#stDt").val().replace(/-/g, ''));
+		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
+		location.href = "/member/excel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
+	});
 });
 
 //검색
 function searchList(){
-	if(showValidate("searchFrm", 'default', "입력 오류가 있습니다.")){
+		if($("#stDt").val() == "시작일") $("#stDt").val('');
+		if($("#enDt").val() == "종료일") $("#enDt").val('');
+		$("#stDt").val($("#stDt").val().replace(/-/g, ''));
+		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
 		$("#searchFrm").attr('action','/member/list.do') ;
 		$("#searchFrm").submit();
-	}
 }
 
 //목록
@@ -29,34 +51,42 @@ function goList(currentPage){
 //상세
 function fn_detail(seq){
 	$("#seq").val(seq);
-	$("#detailFrm").attr('action','/member/updateForm.do') ;
-	$("#detailFrm").submit();
+	$("#frm").attr('action','/member/updateForm.do') ;
+	$("#frm").submit();
 }
+
 //-->
 </script>
 <div class="pmbox mar_b22">
-<form name="searchFrm" id="searchFrm" method="post" onsubmit="return showValidate('searchFrm', 'default', '입력 오류가 있습니다.')">
+<form name="searchFrm" id="searchFrm" method="post">
 	<div class="fltl mar_trl20">
-		<select id="searchKey" name="searchKey" class="w145" title="검색조건선택">
+		시작일:<input type="text" name="stDt" id="stDt" class="w70" value="${info.stDt }"/>&nbsp;~
+		종료일:<input type="text" name="enDt" id="enDt" class="w70" value="${info.enDt }"/>&nbsp;&nbsp;
+		<select id="searchKey" name="searchKey" class="w128" title="검색조건선택">
 			<option value="nm" <c:if test="${info.searchKey eq 'nm' }">selected</c:if>>고객명</option>
 			<option value="mdn" <c:if test="${info.searchKey eq 'mdn' }">selected</c:if>>휴대폰</option>
-		</select>
+		</select>&nbsp;
 	</div>
-	<input type="text" id="searchValue" name="searchValue" class="w410" value="${info.searchValue }" v:required='trim' m:required="검색어를 입력하십시오." />
+	<input type="text" id="searchValue" name="searchValue" class="w150" value="${info.searchValue }" v:required='trim' m:required="검색어를 입력하십시오." />
 	<a href="#"><img id="searchBtn" src="/resource/images/common/btn_board_search.gif" alt="검색" onclick="javascript:searchList();"/></a>
 </form>
 </div>
-<form name="detailFrm" id="detailFrm" method="post">
+	<div class="fltr mar_trl20">
+		<a href="#"><img id="excelBtn" src="/resource/images/common/btn_excel.gif" alt="excel" /></a>
+	</div>
+<form name="frm" id="frm" method="post">
 	<input type="hidden" name="seq" id="seq" />
 	<input type="hidden" name="currentPage" value="${pageInfo.currentPage}" />
+	<input type="hidden" name="delVal" id="delVal"/>
 </form>
 <div class="tstyleC">
 <table width="600"   id="options" class="tablesorter">
 	<caption>고객 리스트</caption>
 	<colgroup>
 		<col width="50" />
+		<col width="50" />
 		<col width="150"/>
-		<col width="200" />
+		<col width="150" />
 		<col width="100" />
 		<col width="100" />
 		<col width="100" />
@@ -64,6 +94,7 @@ function fn_detail(seq){
 	</colgroup>
 	<thead>
 		<tr>
+			<th scope="col">선택</th>
 			<th scope="col">순번</th>
 			<th scope="col">고객명</th>
 			<th scope="col">휴대폰</th>
@@ -75,12 +106,13 @@ function fn_detail(seq){
 	</thead>
 	<tbody>
 		<c:if test="${pageInfo.totalCount<=0}">
-			<tr class="no-list"><td colspan="7">								
+			<tr class="no-list"><td colspan="8">
 				조회 내용이 없습니다.
 			</td></tr>
 		</c:if>
 		<c:forEach var="list" items="${pageInfo.dataList}" varStatus="i">
 		<tr>
+			<td><input type="checkbox" name="delch" value="${list.seq}"></td>
 			<td><div>${list.rnum}</div></td>
 			<td><a href="#" onclick="javascript:fn_detail('${list.seq}');">${list.memberNm}</a></td>
 			<td><a href="#" onclick="javascript:fn_detail('${list.seq}');">${list.mdn}</a></td>
@@ -93,6 +125,13 @@ function fn_detail(seq){
 	</tbody>
 </table>
 </div>
+<table align="right">
+	<tr>
+		<td align="right">
+			<a href="#"><img id="delBtn" src="${pageContext.request.contextPath }/resource/images/common/btn_del.gif" alt="삭제하기" /></a>	
+		</td>
+	</tr>
+</table>
 <div class="pagination"><!-- pagination -->
 		<dnc:PageNavigation pages="${pageInfo}" link="goList" pageIndexName="currentPage" styleClass="paging" 
 			firstImg="${pageContext.request.contextPath }/resource/images/common/btn_ppre.gif"  

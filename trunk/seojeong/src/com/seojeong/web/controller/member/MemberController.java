@@ -1,5 +1,9 @@
 package com.seojeong.web.controller.member;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,7 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import tframe.common.util.DateUtils;
 import tframe.common.util.StringUtils;
+import tframe.web.mvc.support.views.ExcelExportView;
 import tframe.web.page.PageInfo;
 
 import com.seojeong.data.member.info.MemberInfo;
@@ -51,12 +57,33 @@ public class MemberController {
 		PageInfo pageInfo = new PageInfo(request, currentPage, pageUnit, pageSize);
 		pageInfo = service.selectMemberList(pageInfo, info);
 		mav.addObject("pageInfo", pageInfo);
-		
+//		if(info.getStDt() != null || !"".equals(info.getStDt())){
+//			String stDt = info.getStDt().substring(0,4) + "-" + info.getStDt().substring(4,6) +"-"+info.getStDt().substring(6);
+//			info.setStDt(stDt);
+//		}
+//		if(info.getEnDt() != null || !"".equals(info.getEnDt())){
+//			String enDt = info.getEnDt().substring(0,4) + "-" + info.getEnDt().substring(4,6) +"-"+info.getEnDt().substring(6);
+//			info.setEnDt(enDt);
+//		}
 		mav.addObject("info", info);
 		mav.setViewName("member/list");
 		return mav;
 	}
 
+	/**
+	 * @param request
+	 * @param info
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/member/delete.do")
+	public ModelAndView memberDelete(HttpServletRequest request, @ModelAttribute MemberInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView("redirect:/member/list.do");
+		info.setDelArr(info.getDelVal().split(","));
+		service.deleteMember(info);
+		return mav;
+	}
+	
 	/**
 	 * @param request
 	 * @param info
@@ -119,4 +146,23 @@ public class MemberController {
 		mav.addObject("jsonObject", jsonObject);
 		return mav;
 	}
+	
+	@RequestMapping("/member/excel.do")
+	public ModelAndView excelExportForm(HttpServletRequest req) throws Exception {
+		MemberInfo info = new MemberInfo();
+		info.setStDt(req.getParameter("stDt"));
+		info.setEnDt(req.getParameter("enDt"));
+		List list = service.selectExcel(info);
+		Map model = new HashMap();
+		String[] header = {"고객명", "전화번호"};
+		//출력할 Column 목록 
+		String[] columnList = {"MEMBERNM","MDN"};
+		model.put(ExcelExportView.HEADER, header); //헤더정보
+		model.put(ExcelExportView.DATA_LIST, list); // 목록
+		model.put(ExcelExportView.COLUMN, columnList); // 컬럼
+		model.put(ExcelExportView.FILE_NAME, DateUtils.getToday("yyyy-MM-dd.HH:mm")+".xls"); //파일정보
+		model.put(ExcelExportView.SHEET_NAME, "SHEET TEST 1"); //Excel 시트 명
+		return new ModelAndView("excelExportView","excelExportView",model);
+	}
+	
 }

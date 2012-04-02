@@ -28,10 +28,14 @@
         </property>
     </bean>
 
+	<!-- JSON -->
 	<bean id="jsonView" class="com.seojeong.common.util.JSonView" />
+
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"	p:order="0"/>
+ 	<!-- ExcelExportView -->
+ 	<bean id = "excelExportView" class="tframe.web.mvc.support.views.ExcelExportView"/>
 	
 	<import resource="classpath:application/ibatis/dataSourceConfig.xml"/>
-	
 	<bean id="ibatis_TransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource_ibatis" />

@@ -1,6 +1,7 @@
 package com.seojeong.service.member.impl;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,5 +70,21 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberInfo selectMemberInfo(MemberInfo info) throws SQLException {
 		return dao.selectMemberInfo(info);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.service.member.MemberService#deleteMember(com.seojeong.data.member.info.MemberInfo)
+	 */
+	@Override
+	public void deleteMember(MemberInfo info) throws SQLException {
+		dao.deleteMember(info);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.seojeong.service.member.MemberService#selectExcel(com.seojeong.data.member.info.MemberInfo)
+	 */
+	@Override
+	public List<MemberInfo> selectExcel(MemberInfo info) throws SQLException {
+		return dao.selectExcel(info);
 	}
 }
