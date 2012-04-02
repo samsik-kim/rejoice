@@ -47,8 +47,12 @@ $(document).ready(function(){
 				cache : false,	
 				success: function(json){
 					if(json.result == "SUCCESS"){
-						$("#login").attr("action", "/stockinvest/main.do");
-						$("#login").submit();
+						if(json.returnUrl != ""){
+							$("#login").attr("action", json.returnUrl);
+						}else{
+							$("#login").attr("action", "/stockinvest/main.do");
+						}
+							$("#login").submit();
 					} else {
 						alert("로그인 정보가 잘못되었습니다.\n다시입력해주세요.");
 							$("#login").attr("action", "/stockinvest/loginForm.do");
