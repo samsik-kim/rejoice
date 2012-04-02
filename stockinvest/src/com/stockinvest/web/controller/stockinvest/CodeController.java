@@ -72,6 +72,7 @@ public class CodeController {
 	@RequestMapping("/stockinvest/codeInsert.do")
 	public ModelAndView insertCode(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView("redirect:/stockinvest/codeList.do");
+		info = setCode(info);
 		service.insertCodeInfo(info);
 		return mav;
 	}
@@ -96,6 +97,20 @@ public class CodeController {
 		jsonObject.put("result", info.getResultCode());
 		mav.addObject("jsonObject", jsonObject);
 		return mav;
+	}
+	
+	public CodeInfo setCode(CodeInfo info) {
+		info.setJuju(StringUtils.nvlStr(info.getJuju(),""));
+		info.setTel(StringUtils.nvlStr(info.getTel(),""));
+		info.setTel1(StringUtils.nvlStr(info.getTel1(),""));
+		info.setTel2(StringUtils.nvlStr(info.getTel2(),""));
+		info.setTel3(StringUtils.nvlStr(info.getTel3(),""));
+		info.setHoldShare(StringUtils.nvlStr(info.getHoldShare(),""));
+		info.setInfoTel(StringUtils.nvlStr(info.getInfoTel(),""));
+		info.setInfoTel1(StringUtils.nvlStr(info.getInfoTel1(),""));
+		info.setInfoTel2(StringUtils.nvlStr(info.getInfoTel2(),""));
+		info.setInfoTel3(StringUtils.nvlStr(info.getInfoTel3(),""));
+		return info;
 	}
 	
 }
