@@ -5,6 +5,6 @@
 		<ul>
 			<li class="lat"></li>
 		</ul>
-		<p class="copyright">Copyright ⓒ 2012 seojeong Co. Ltd All Rights Reserved.</p> <!-- 0524 수정 -->
+		<p class="copyright">Copyright ⓒ 2012 stockinvest Co. Ltd All Rights Reserved.</p> 
 	</div>  
 <!-- //Copyright E -->

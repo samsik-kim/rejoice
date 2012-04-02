@@ -4,7 +4,7 @@
 		<h1 align="center"><a href="/main/main.do" title=""></a></h1>
 		<h2 class="hide">사용자메뉴영역</h2>
 		<ul id="utility"> 
-			<li><h3><a href="#" >서정가든</a></h3></li>
+			<li><h3><a href="#" >main page</a></h3></li>
 			<li><a href="#" ></a></li>
 		</ul>
 	
