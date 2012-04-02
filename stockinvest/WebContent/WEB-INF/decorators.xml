@@ -5,10 +5,6 @@
         <pattern>**/ajax*</pattern>
         <pattern>**/sign*</pattern>
         <pattern>**/index.jsp</pattern>
-        <pattern>**/adminLogin*</pattern>
-        <pattern>**/adminLogOut*</pattern>
-        <pattern>**/user/*</pattern>
-        <pattern>/stockinvest/loginForm.do</pattern>
     </excludes>
 
     <decorator name="layout" page="layout.jsp">
@@ -16,6 +12,8 @@
     </decorator>
 
     <decorator name="empty" page="empty.jsp" >
+    	<pattern>**/login*</pattern>
+        <pattern>**/logOut*</pattern>
     	<pattern>/code/codeDetail.do</pattern>
     </decorator>
     
