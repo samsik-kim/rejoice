@@ -48,7 +48,7 @@
 #ctitle_area .history span {font-weight:bold;color:#994c18;}
 
 /*--- Copyright ---*/
-#footer_wrap {width:100%;position:relative;clear:both;background:#131313;line-height:140%;}
+#footer_wrap {width:100%;position:relative;clear:both;line-height:140%;padding-top: 30px;}
 #footer_area {width:998px;height:61px;margin:0px auto;background:url('../images/common/footer_logo.gif') no-repeat left top;}
 #footer_area ul {float:right;margin:12px 0 4px 0;}
 #footer_area li {float:left;padding:0 10px;font-size:90%;letter-spacing:-0.1em;color:#616161;background:url('../images/common/footer_sideline.gif') no-repeat right 2px;}
