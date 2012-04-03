@@ -51,11 +51,13 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<!-- 사이트 메쉬 설정 -->
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+<!-- 	<listener> -->
+<!-- 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> -->
+<!-- 	</listener> -->
 
-
+  <listener>
+    <listener-class>com.stockinvest.common.util.CommonInitializer</listener-class>
+  </listener>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
