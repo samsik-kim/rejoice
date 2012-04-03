@@ -39,6 +39,18 @@ public class CodeController {
 	 */	
 	@RequestMapping("/code/codeList.do")
 	public ModelAndView codeList(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView("code/list");
+		return mav;
+	}	
+	
+	/**
+	 * @param request
+	 * @param info
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/code/ajaxCodeListinner.do")
+	public ModelAndView codeListinner(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView();
 		int currentPage = Integer.parseInt(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
 		int pageUnit = 10; // 페이지를 보여줄 갯수
@@ -48,9 +60,10 @@ public class CodeController {
 		mav.addObject("pageInfo", pageInfo);
 		
 		mav.addObject("info", info);
-		mav.setViewName("code/list");
+		mav.setViewName("code/listInner");
 		return mav;
-	}	
+	}
+	
 	
 	@RequestMapping("/code/codeListExcel.do")
 	 public ModelAndView excelExportForm(HttpServletRequest req) throws Exception {
