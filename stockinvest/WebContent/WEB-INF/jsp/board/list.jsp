@@ -13,6 +13,8 @@ $(document).ready(function(){
 		headers: { 0:{sorter: false} }		
 	});
 	
+	pageLoadAjaxListInner("searchFrm", "bbsListType", "/board/list.do"); // 리스트 호출
+	
 	$("#delBtn").click(function(){
 		var delArr = document.getElementsByName("delch");
 		var delValues = "";
@@ -73,14 +75,11 @@ function fn_detail(seq){
 	<a href="#"><img id="searchBtn" src="/resource/images/common/btn_board_search.gif" alt="검색" onclick="javascript:searchList();"/></a>
 </form>
 </div>
-	<div class="fltr mar_trl20">
-		<a href="#"><img id="excelBtn" src="/resource/images/common/btn_excel.gif" alt="excel" /></a>
-	</div>
-<form name="frm" id="frm" method="post">
-	<input type="hidden" name="seq" id="seq" />
-	<input type="hidden" name="currentPage" value="${pageInfo.currentPage}" />
-	<input type="hidden" name="delVal" id="delVal"/>
-</form>
+<!-- Excel Download -->
+<div class="fltr mar_trl20">
+	<a href="#"><img id="excelBtn" src="/resource/images/common/btn_excel.gif" alt="excel" /></a>
+</div>
+<div></div>
 <div class="tstyleC">
 <table width="600"   id="options" class="tablesorter">
 	<caption>고객 리스트</caption>
