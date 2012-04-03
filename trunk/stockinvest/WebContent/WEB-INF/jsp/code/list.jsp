@@ -4,18 +4,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript">
 <!--
-var CURRENT_PAGE = "";
+var CURRENT_PAGE = '${info.currentPage}';
 $(document).ready(function(){
 	$("#stDt").datepicker();
 	$("#enDt").datepicker();
-	
-	pageLoadAjaxListInner("searchFrm", "innerList", "/code/ajaxCodeListinner.do"); // 리스트 호출
-	
+
 	$("#excelBtn").click(function(){
 		$("#stDt").val($("#stDt").val().replace(/-/g, ''));
 		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
 		location.href = "/code/codeListExcel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
 	});	
+	
+	$("#regBtn").click(function(){
+		$("#searchFrm").attr('action','/code/insertCodeForm.do') ;
+		$("#searchFrm").submit();
+	});
+	
+	pageLoadAjaxListInner("searchFrm", "innerList", "/code/ajaxCodeListinner.do"); // 리스트 호출
+
 });
 
 //검색
@@ -40,7 +46,7 @@ function fn_detail(seqNo){
 </script>
 <div class="pmbox mar_b22">
 <form name="searchFrm" id="searchFrm" method="post" enctype="application/x-www-form-urlencoded">
-	<input type="hidden" name="currentPage" id="currentPage" value="${pageInfo.currentPage}" />
+	<input type="hidden" name="currentPage" id="currentPage" value="${info.currentPage}" />
 	<input type="hidden" name="seqNo" id="seqNo"/>
 	<div class="fltl mar_trl20">
 		시작일:<input type="text" name="stDt" id="stDt" class="w70" value="${info.stDt }"/>&nbsp;~
@@ -62,7 +68,7 @@ function fn_detail(seqNo){
 <table align="right">
 	<tr>
 		<td align="right">
-			<a href="#"><img id="regBtn" src="/resource/images/board/btn_regist.gif" alt="등록" /></a>
+			<a href="#"><img id="regBtn" src="/resource/images/board/btn_regist.jpg" alt="등록" /></a>
 		</td>
 	</tr>
 </table>

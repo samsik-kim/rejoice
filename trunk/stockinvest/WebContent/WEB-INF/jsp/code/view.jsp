@@ -77,6 +77,11 @@ $(document).ready(function(){
 				<td><input type="text" id="juju" name="juju" class="w376" value="${info.juju}"/></td>
 			</tr>
 			<input type="hidden" id="seqNo" name="seqNo" value="${info.seqNo}"/>
+			<input type="hidden" name="currentPage" id="currentPage" value="${info.currentPage}" />
+			<input type="hidden" name="stDt" id="stDt" value="${info.stDt}" />
+			<input type="hidden" name="enDt" id="enDt" value="${info.enDt}" />	
+			<input type="hidden" name="searchKey" id="searchKey" value="${info.searchKey}" />								
+			<input type="hidden" name="searchValue" id="searchValue" value="${info.searchValue}" />
 		</tbody>
 	</table>
 	<br/>

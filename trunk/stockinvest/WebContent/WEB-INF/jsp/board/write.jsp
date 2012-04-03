@@ -1,62 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-</SCRIPT>
-<link rel="stylesheet" type="text/css" href="/utill/css/admin.css">
 <br><br>
-<table width="800" border="0" cellpadding="0" cellspacing="0" align="center">
-<form name="board" method="post" action="/security/board/board_ok.php" enctype="multipart/form-data">
-<input type="hidden" name="mode" value="<?=$mode?>">
-<input type="hidden" name="bno" value="<?=$bno?>">
-<input type="hidden" name="rbno" value="<?=$rbno?>">
-<input type="hidden" name="reply" value="<?=$reply?>">
-<input type="hidden" name="page" value="<?=$page?>">
-<input type="hidden" name="bbs_cd" value="<?=$bbs_cd?>">
-  <tr>
-		  <td><?=$title?></td>
-		</tr>
-<?
-	if ($keyg=="code_num"){
-		$code_data = fetch_array("code_cate", "where code_num='$key'");
-?>
-  <tr> 
-      <td colspan="2" align="center" valign="top">&nbsp;</td>
-  </tr>
-  <tr> 
-      <td colspan="2" align="center" valign="top">
-<table width="800" border="0" cellpadding="0" cellspacing="1" bgcolor="#330066">
-<tr height="30" bgcolor="white">
-	<td class="subject" width="100">종 목 명</td>
-	<td class="object" style="padding-left:5px;"><?=$code_data[code_name]?></td>
-	<td class="subject" width="100">종목코드</td>
-	<td class="object" style="padding-left:5px;"><?=$code_data[code_num]?></td>
-</tr>
- <tr height="30" bgcolor="white">
-	<td class="subject">전화번호</td>
-	<td class="object" style="padding-left:5px;">
-	<?=$code_data[tel1]?>-<?=$code_data[tel2]?>-<?=$code_data[tel3]?>
-	</td>
-	<td class="subject">정보연락처</td>
-	<td class="object" style="padding-left:5px;">
-	<?=$code_data[info_tel1]?>-<?=$code_data[info_tel2]?>-<?=$code_data[info_tel3]?>
-	</td>
-</tr>
-<tr height="30" bgcolor="white">
-	<td class="subject">지분보유</td>
-	<td class="object" style="padding-left:5px;"><?=number_format($code_data[boyujibun])?></td>
-	<td class="subject">주주</td>
-	<td class="object" style="padding-left:5px;"><?=number_format($code_data[juju])?></td>
-</tr>
-</table>
-	  </td>
-  </tr>
-  <tr> 
-      <td colspan="2" align="center" valign="top">&nbsp;</td>
-  </tr>
-<?}?>
-		<tr>
-		   <td>
-
+<form name="board" method="post" enctype="multipart/form-data">
+<input name="currentPage" id="currentPage" value="${info.currentPage}"/>
+<input type="hidden" name="bbs_cd" value="${boardManagerInfo.bbsCd}>">
+${boardManagerInfo.boardName}>
 <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#330066">
 <tr height="30" bgcolor="white">
 	<td class="subject">코드번호</td>

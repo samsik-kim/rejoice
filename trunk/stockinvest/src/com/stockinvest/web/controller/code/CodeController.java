@@ -40,6 +40,7 @@ public class CodeController {
 	@RequestMapping("/code/codeList.do")
 	public ModelAndView codeList(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView("code/list");
+		mav.addObject("info", info);
 		return mav;
 	}	
 	
@@ -84,8 +85,10 @@ public class CodeController {
 	 }	
 	
 	@RequestMapping("/code/insertCodeForm.do")
-	public String insertForm(){
-		return "code/write";
+	public ModelAndView insertForm(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView("code/write");
+		mav.addObject("info", info);
+		return mav;
 	}
 	
 	/**
@@ -98,8 +101,11 @@ public class CodeController {
 	public ModelAndView codeDetailForm(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView("code/view");
 		info.setCurrentPage(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
+		CodeInfo searchInfo = info;
+
 		if(info.getSeqNo() != null){
 			info = service.selectCodeInfo(info);
+			info = setSearchInfo(info,searchInfo);
 		}
 		mav.addObject("info", info);
 		return mav;
@@ -142,6 +148,21 @@ public class CodeController {
 		info.setInfoTel1(StringUtils.nvlStr(info.getInfoTel1(),""));
 		info.setInfoTel2(StringUtils.nvlStr(info.getInfoTel2(),""));
 		info.setInfoTel3(StringUtils.nvlStr(info.getInfoTel3(),""));
+		return info;
+	}
+	
+	/**
+	 * searchInfo에 담긴 내용 셋팅
+	 * @param info
+	 * @param searchInfo
+	 * @return
+	 */
+	public CodeInfo setSearchInfo(CodeInfo info, CodeInfo searchInfo) {
+		info.setCurrentPage(StringUtils.nvlStr(searchInfo.getCurrentPage(),"1"));
+		info.setStDt(StringUtils.nvlStr(searchInfo.getStDt(),""));
+		info.setEnDt(StringUtils.nvlStr(searchInfo.getEnDt(),""));
+		info.setSearchKey(StringUtils.nvlStr(searchInfo.getSearchKey(),""));
+		info.setSearchValue(StringUtils.nvlStr(searchInfo.getSearchValue(),""));
 		return info;
 	}
 	
