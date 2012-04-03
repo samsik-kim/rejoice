@@ -20,7 +20,7 @@
 		]]>
 	</sql>	
 			
-	<typeAlias alias="boardboardInfo" type="com.stockinvest.data.board.boardInfo.BoardboardInfo"/>
+	<typeAlias alias="boardInfo" type="com.stockinvest.data.board.boardInfo.BoardInfo"/>
 	
 	<select id="selectBoardList" parameterClass="boardInfo" resultClass="boardInfo">
 		<isNotEmpty property="currentPage">
