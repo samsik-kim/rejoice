@@ -59,3 +59,10 @@ function fn_detail(seqNo){
 	<a href="#"><img id="excelBtn" src="/resource/images/common/btn_excel.gif" alt="excel" /></a>
 </div>
 <div id="innerList"></div>
+<table align="right">
+	<tr>
+		<td align="right">
+			<a href="#"><img id="regBtn" src="/resource/images/board/btn_regist.gif" alt="등록" /></a>
+		</td>
+	</tr>
+</table>
