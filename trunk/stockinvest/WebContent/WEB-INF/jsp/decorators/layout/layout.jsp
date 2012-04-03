@@ -21,15 +21,29 @@
 	form{clear:both;}
 </style>
 
+
 <link href="<c:url value="/resource/css/content.css"/>" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="/resource/js/jquery-ui-1.8.17.custom/ets/blue/style.css" type="text/css" id="" media="print, projection, screen" />
-<link type="text/css" href="/resource/js/jquery-ui-1.8.17.custom/css/cupertino/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="<c:url value="/resource/js/jquery/ui/css/cupertino/jquery-ui-1.8.10.custom.css"/>" rel="stylesheet" />
+<link rel="stylesheet" href="/resource/js/jquery/plugin/tablesorter/style.css" type="text/css" id="" media="print, projection, screen" />
+
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/1.5.1/jquery.min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/ui/jquery-ui-1.8.10.custom.min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/jsTree/jquery.jstree.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/plugin/jquery.cookie.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/plugin/jquery.blockUI.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/plugin/jquery.form.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/plugin/jquery.metadata.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/plugin/jquery.MultiFile.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/plugin/jquery.selectbox-1.2.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/ui/jquery-ui-i18n.min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/validate.js"/>"></script>
+<script type="text/javascript" src="<c:url value='/resource/js/xtractor_cookie.js'/>"></script>
+<script type="text/javascript" src="<c:url value="/resource/js/jquery/plugin/jquery.tablesorter.js"/>"></script>
+
 	
-<script type="text/javascript" src="/resource/js/validate.js"></script>
+<script type="text/javascript" src="/resource/js/common.js"></script>
 <script type="text/javascript" src="/resource/js/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="/resource/js/jquery-ui-1.8.17.custom/ets/jquery.tablesorter"></script>
-<script type="text/javascript" src="/resource/js/jquery-ui-1.8.17.custom/js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="/resource/js/jquery-ui-1.8.17.custom/js/jquery-ui-1.8.17.custom.min.js"></script>
+
 <script type="text/javascript">
 $(function() {
 	$.datepicker.regional['ko']= {
