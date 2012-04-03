@@ -19,6 +19,7 @@ import tframe.web.mvc.support.views.ExcelExportView;
 import tframe.web.page.PageInfo;
 
 import com.stockinvest.data.board.info.BoardInfo;
+import com.stockinvest.data.board.info.BoardManageInfo;
 import com.stockinvest.service.board.BoardService;
 
 /**
@@ -55,15 +56,16 @@ public class BoardController {
 	}	
 	
 	@RequestMapping("/board/boardListExcel.do")
-	 public ModelAndView excelExportForm(HttpServletRequest req) throws Exception {
+	 public ModelAndView excelBoardExportForm(HttpServletRequest req) throws Exception {
 	  BoardInfo info = new BoardInfo();
 	  info.setStDt(req.getParameter("stDt"));
 	  info.setEnDt(req.getParameter("enDt"));
 	  List list = service.selectBoardListExcel(info);
 	  Map model = new HashMap();
-	  String[] header = {"순번","종목명", "종목코드명" , "지분보유" , "전화번호" ,"정보연락처" , "등록일"};
+	  String[] header = {"순번","작성일", "제목" , "종목명" , "종목코드" };
 	  //출력할 Column 목록 
-	  String[] columnList = {"SEQNO","CODENAME","CODENUM","HOLDSHARE","TEL","INFOTEL","CRTDATE"};
+      
+	  String[] columnList = {"SEQNO","CRTDATE","SUBJECT","CODENAME","CODENUM"};
 	  model.put(ExcelExportView.HEADER, header); //헤더정보
 	  model.put(ExcelExportView.DATA_LIST, list); // 목록
 	  model.put(ExcelExportView.COLUMN, columnList); // 컬럼
@@ -124,5 +126,20 @@ public class BoardController {
 
 		return info;
 	}
+	
+	/**
+	 * @param request
+	 * @param info
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/board/ajaxBoardListinner.do")
+	public ModelAndView boardManageListinner(HttpServletRequest request, @ModelAttribute BoardManageInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView();
+		List<BoardManageInfo> list = service.selectBoardManageList();
+		mav.addObject("boardManageList", list);
+		mav.setViewName("board/manageListInner");
+		return mav;
+	}	
 	
 }

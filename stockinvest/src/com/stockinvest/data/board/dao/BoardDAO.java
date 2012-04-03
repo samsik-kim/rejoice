@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.stockinvest.data.board.info.BoardInfo;
+import com.stockinvest.data.board.info.BoardManageInfo;
 
 public interface BoardDAO {
 	public int selectBoardListCount(BoardInfo info)throws SQLException;
@@ -13,4 +14,5 @@ public interface BoardDAO {
 	public int updateBoardInfo(BoardInfo info) throws  SQLException;
 	public int deleteBoardInfo(BoardInfo info) throws SQLException;
 	public void insertBoardInfo(BoardInfo info) throws SQLException;
+	public List<BoardManageInfo> selectBoardManageList() throws SQLException;
 }

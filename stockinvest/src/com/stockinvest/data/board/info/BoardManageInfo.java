@@ -5,7 +5,7 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class BoardManageInfo implements Serializable{
 	private String seqNo;		//순번
-	private String boardNum;
+	private String boardName;
 	private String bbsCd;
 	/**
 	 * @return the seqNo
@@ -20,16 +20,16 @@ public class BoardManageInfo implements Serializable{
 		this.seqNo = seqNo;
 	}
 	/**
-	 * @return the boardNum
+	 * @return the boardName
 	 */
-	public String getBoardNum() {
-		return boardNum;
+	public String getBoardName() {
+		return boardName;
 	}
 	/**
-	 * @param boardNum the boardNum to set
+	 * @param boardName the boardName to set
 	 */
-	public void setBoardNum(String boardNum) {
-		this.boardNum = boardNum;
+	public void setBoardName(String boardName) {
+		this.boardName = boardName;
 	}
 	/**
 	 * @return the bbsCd
@@ -43,4 +43,5 @@ public class BoardManageInfo implements Serializable{
 	public void setBbsCd(String bbsCd) {
 		this.bbsCd = bbsCd;
 	}
+
 }

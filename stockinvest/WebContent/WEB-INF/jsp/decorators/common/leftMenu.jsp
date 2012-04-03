@@ -10,18 +10,28 @@
 	<c:when test="${fn:contains(uri, '/code/')}">		
 		<c:set var="leftMenuId" value="2"/>
 	</c:when>
-	<c:when test="${fn:contains(uri, '/stockinvest/')}">
+	<c:when test="${fn:contains(uri, '/board/')}">
 		<c:set var="leftMenuId" value="3"/>
 	</c:when>
+	<c:otherwise>
+		<c:set var="leftMenuId" value="4"/>
+	</c:otherwise>
 </c:choose>
 <script type="text/javascript">
+var getLeftMenuId = '${leftMenuId}';
 /*
  * Slide Menu
  */
 $(document).ready(function() {
+	pageLoadAjaxListInner("menuFrm", "innerBoardList", "/board/ajaxBoardListinner.do"); // 리스트 호출
 	$('#leftmenu ul').hide();
+ 
+	if (getLeftMenuId == '2') {
+		$('#depth2').show();
+	} else if (getLeftMenuId == '3') {
+		$('#depth3').show();
+	}
 	
-	$('#leftmenu ul:eq(${leftMenuId})').show();
 	$('#leftmenu li a').click(function() {
 		var checkElement = $(this).next();
 		if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
@@ -35,16 +45,6 @@ $(document).ready(function() {
 	});
 });
 </script>
-
-<ul id="leftmenu">
-	<li><a href="#">계정관리</a></li>
-	<li><a href="/code/codeList.do">코드관리</a></li>
-	<li>
-		<a href="#">게시판관리</a>
-		<ul>
-			<li><a href="#">종합정보</a></li>
-			<li><a href="#">문재인</a></li>
-			<li><a href="#">턴어라운드</a></li>
-		</ul>
-	</li>
-</ul>
+<form id="menuFrm" method="post">
+</form>
+<div id="innerBoardList"></div>

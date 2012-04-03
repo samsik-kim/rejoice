@@ -29,9 +29,8 @@ $(document).ready(function(){
 	$("#excelBtn").click(function(){
 		$("#stDt").val($("#stDt").val().replace(/-/g, ''));
 		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
-		location.href = "/member/excel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
-	});
-	
+		location.href = "/board/boardListExcel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
+	});		
 	
 	$("#regBtn").click(function(){
 		$("#searchFrm").attr('action','/board/insertBoardForm.do') ;
@@ -65,6 +64,7 @@ function fn_detail(seq){
 </script>
 <div class="pmbox mar_b22">
 <form name="searchFrm" id="searchFrm" method="post">
+<input type="hidden" name="bbsCd" id="bbsCd" value="${info.bbsCd}">
 	<div class="fltl mar_trl20">
 		시작일:<input type="text" name="stDt" id="stDt" class="w70" value="${info.stDt }"/>&nbsp;~
 		종료일:<input type="text" name="enDt" id="enDt" class="w70" value="${info.enDt }"/>&nbsp;&nbsp;
