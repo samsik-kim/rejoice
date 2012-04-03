@@ -7,7 +7,7 @@ $(document).ready(function() {
 	});
 });
 </script>
-<form name="testFrm" id="testFrm" method="post">
+<form name="testFrm" id="testFrm" method="post" enctype="multipart/form-data">
 <div>
 <textarea  name="CONTENT" cols="150" rows="50"></textarea>
 
@@ -20,4 +20,6 @@ CKEDITOR.replace('CONTENT');
 	<div class="fltr mar_t10">
 		<a href="#"><img id="okBtn" src="/resource/images/common/btn_inner_ok3.gif" alt="OK" /></a>
 	</div>
+	<input type="hidden" name="atchFileNm" value=""/>
+	<input type="file" id="atchFile" name="atchFile"/>
 </form>

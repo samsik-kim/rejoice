@@ -39,7 +39,7 @@ function fn_detail(seqNo){
 //-->
 </script>
 <div class="pmbox mar_b22">
-<form name="searchFrm" id="searchFrm" method="post">
+<form name="searchFrm" id="searchFrm" method="post" enctype="application/x-www-form-urlencoded">
 	<input type="hidden" name="currentPage" id="currentPage" value="${pageInfo.currentPage}" />
 	<input type="hidden" name="seqNo" id="seqNo"/>
 	<div class="fltl mar_trl20">
