@@ -65,7 +65,7 @@
 	<!-- multipart resolver -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize">
-			<value>2048</value> <!-- 2M -->
+			<value>52428800</value> <!-- 2M -->
 		</property>
 		<property name="uploadTempDir" value="uploadDirResource" />
 	</bean>

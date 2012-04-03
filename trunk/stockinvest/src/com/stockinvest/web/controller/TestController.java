@@ -34,14 +34,43 @@ public class TestController {
 	
 	@RequestMapping("/test/edit.do")
 	public ModelAndView testEdit(HttpServletRequest request){
-		ModelAndView mav = new ModelAndView();
+		ModelAndView mav = new ModelAndView("board/test");
 		
 		String content = request.getParameter("CONTENT");
 		String dir = config.getString("uploadTempDir");
 		System.out.println("#################");
 		System.out.println(content);
 		System.out.println("#################");
-		System.out.println(dir);
+//		System.out.println(dir);
+		String savePath = config.getString("board.dir");
+		String allowExt = "swf,gif,jpg,png,jpeg";
+		
+		ArrayList<HashMap> fileData = new FileUpload().upload(request, savePath, allowExt);
+		// 파일 업로드 관련 변수
+		String resultCode = ""; // 00 성공
+		String resultMessage = ""; // 
+		String inputName = "";// input 태그 이름
+		String fileRealName = ""; // 저장된 파일명
+		String fileOrgName = ""; // 원본 파일명
+		String fileSize = ""; // 파일용량
+		for (int i = 0; i < fileData.size(); i++) {
+			HashMap<String, String> row = fileData.get(i);
+			resultCode = row.get("resultCode"); // 00 성공
+			resultMessage = row.get("resultMessage");
+			inputName = row.get("inputName"); // input 태그 이름
+			fileRealName = row.get("fileRealName"); // 저장된 파일명
+			fileOrgName = row.get("fileOrgName"); // 원본 파일명
+			fileSize = row.get("fileSize"); // 파일용량
+
+			logger.debug("==========================================================");
+			logger.debug(resultCode);
+			logger.debug(resultMessage);
+			logger.debug(inputName);
+			logger.debug(fileRealName);
+			logger.debug(fileOrgName);
+			logger.debug(fileSize);
+			logger.debug("==========================================================");
+		}
 		return mav;
 	}
 	
