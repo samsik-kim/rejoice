@@ -13,8 +13,6 @@ $(document).ready(function(){
 		headers: { 0:{sorter: false} }		
 	});
 	
-	pageLoadAjaxListInner("searchFrm", "bbsListType", "/board/list.do"); // 리스트 호출
-	
 	$("#delBtn").click(function(){
 		var delArr = document.getElementsByName("delch");
 		var delValues = "";
@@ -33,6 +31,12 @@ $(document).ready(function(){
 		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
 		location.href = "/member/excel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
 	});
+	
+	
+	$("#regBtn").click(function(){
+		$("#searchFrm").attr('action','/board/insertBoardForm.do') ;
+		$("#searchFrm").submit();
+	});	
 });
 
 //검색
@@ -41,7 +45,7 @@ function searchList(){
 		if($("#enDt").val() == "종료일") $("#enDt").val('');
 		$("#stDt").val($("#stDt").val().replace(/-/g, ''));
 		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
-		$("#searchFrm").attr('action','/board/list.do') ;
+		$("#searchFrm").attr('action','/board/boardList.do') ;
 		$("#searchFrm").submit();
 }
 
@@ -53,7 +57,7 @@ function goList(currentPage){
 //상세
 function fn_detail(seq){
 	$("#seq").val(seq);
-	$("#frm").attr('action','/board/updateForm.do') ;
+	$("#frm").attr('action','/board/boardDetail.do') ;
 	$("#frm").submit();
 }
 
@@ -117,7 +121,8 @@ function fn_detail(seq){
 <table align="right">
 	<tr>
 		<td align="right">
-			<a href="#"><img id="delBtn" src="/resource/images/common/btn_del.gif" alt="삭제하기" /></a>	
+			<a href="#"><img id="regBtn" src="/resource/images/board/btn_regist.jpg" alt="등록" /></a>
+			<a href="#"><img id="delBtn" src="/resource/images/board/btn_delete.jpg" alt="삭제하기" /></a>	
 		</td>
 	</tr>
 </table>

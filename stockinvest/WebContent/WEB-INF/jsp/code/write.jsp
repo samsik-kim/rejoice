@@ -10,6 +10,7 @@ $(document).ready(function(){
 		
 	// 등록 -> 목록
 	$('#regBtn').click(function(){
+		alert('22222');
 		if(showValidate('regFrm', 'default', "입력오류를 확인하십시오.")){
 			if($("#codeName").val() == ""){
 				alert("종목명을 확인 해주세요.");
@@ -30,6 +31,11 @@ $(document).ready(function(){
 </script>
 <div class="tstyleA">
 <form id="regFrm" name="regFrm" method="post" >
+	<input type="hidden" name="currentPage" id="currentPage" value="${info.currentPage}" />
+	<input type="hidden" name="stDt" id="stDt" value="${info.stDt}" />
+	<input type="hidden" name="enDt" id="enDt" value="${info.enDt}" />	
+	<input type="hidden" name="searchKey" id="searchKey" value="${info.searchKey}" />								
+	<input type="hidden" name="searchValue" id="searchValue" value="${info.searchValue}" />
 	<table summary="종목코드 기본정보 입력 항목입니다">
 		<caption>종목코드 입력 항목</caption>
 		<colgroup>

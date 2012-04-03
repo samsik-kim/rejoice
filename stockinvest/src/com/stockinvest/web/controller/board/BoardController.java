@@ -44,7 +44,9 @@ public class BoardController {
 		int pageUnit = 10; // 페이지를 보여줄 갯수
 		int pageSize = 20; // 한페이지에 보여줄 게시물수
 		PageInfo pageInfo = new PageInfo(request, currentPage, pageUnit, pageSize);
-		pageInfo = service.selectBoardList(pageInfo, info);
+		if (info.getBbsCd()!= null) {
+			pageInfo = service.selectBoardList(pageInfo, info);
+		}
 		mav.addObject("pageInfo", pageInfo);
 		
 		mav.addObject("info", info);
