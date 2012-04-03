@@ -6,6 +6,19 @@
 <script type="text/javascript">
 <!--
 $(document).ready(function(){
+	$("#regBtn").click(function(){
+		$("#searchFrm").attr('action','/board/insertBoardForm.do') ;
+		$("#searchFrm").submit();
+	});
+
+	$("#excelBtn").click(function(){
+		$("#stDt").val($("#stDt").val().replace(/-/g, ''));
+		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
+		$("#searchFrm").attr('action','/board/boardListExcel.do') ;
+		$("#searchFrm").submit();		
+//		location.href = "/board/boardListExcel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
+	});	
+	
 	$("#stDt").datepicker();
 	$("#enDt").datepicker();
 	$("#options").tablesorter({
@@ -21,21 +34,11 @@ $(document).ready(function(){
 		}
 		if(confirm("삭제 하시겠습니까?")){
 			$("#delVal").val(delValues);
-			$("#frm").attr('action','/board/delete.do') ;
-			$("#frm").submit();
+			$("#searchFrm").attr('action','/board/delete.do') ;
+			$("#searchFrm").submit();
 		}
 	});
-	
-	$("#excelBtn").click(function(){
-		$("#stDt").val($("#stDt").val().replace(/-/g, ''));
-		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
-		location.href = "/board/boardListExcel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
-	});		
-	
-	$("#regBtn").click(function(){
-		$("#searchFrm").attr('action','/board/insertBoardForm.do') ;
-		$("#searchFrm").submit();
-	});	
+
 });
 
 //검색
@@ -54,10 +57,10 @@ function goList(currentPage){
 }
 
 //상세
-function fn_detail(seq){
-	$("#seq").val(seq);
-	$("#frm").attr('action','/board/boardDetail.do') ;
-	$("#frm").submit();
+function fn_detail(seqNo){
+	$("#seqNo").val(seqNo);
+	$("#searchFrm").attr('action','/board/boardDetail.do') ;
+	$("#searchFrm").submit();
 }
 
 //-->
@@ -65,6 +68,7 @@ function fn_detail(seq){
 <div class="pmbox mar_b22">
 <form name="searchFrm" id="searchFrm" method="post">
 <input type="hidden" name="bbsCd" id="bbsCd" value="${info.bbsCd}">
+<input type="hidden" name="seqNo" id="seqNo">
 	<div class="fltl mar_trl20">
 		시작일:<input type="text" name="stDt" id="stDt" class="w70" value="${info.stDt }"/>&nbsp;~
 		종료일:<input type="text" name="enDt" id="enDt" class="w70" value="${info.enDt }"/>&nbsp;&nbsp;
@@ -111,7 +115,7 @@ function fn_detail(seq){
 		<tr>
 			<td><input type="checkbox" name="delch" value="${list.seqNo}"></td>
 			<td><div>${list.crtDate}</div></td>
-			<td><a href="#" onclick="javascript:fn_detail('${list.seqNo}');">${list.subject}</a></td>
+			<td style="text-align: left;"><a href="#" onclick="javascript:fn_detail('${list.seqNo}');">${list.subject}</a></td>
 			<td><a href="#" onclick="javascript:fn_detail('${list.seqNo}');">${list.codeName}(${list.codeNum})</a></td>
 		</tr>
 		</c:forEach>

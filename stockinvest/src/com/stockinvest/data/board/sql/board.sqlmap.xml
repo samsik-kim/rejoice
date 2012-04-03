@@ -179,9 +179,16 @@
 		</dynamic>
 	</select>
 	
+	<select id="selectMaxSeqNo" parameterClass="java.lang.String" resultClass="java.lang.String">
+		SELECT IFNULL(MAX(SEQ_NO),0)+1 AS MAX_NUM FROM BOARD WHERE BBS_CD =#bbsCd#	
+	</select>
+	
 	<insert id="insert" parameterClass="boardInfo">
-		INSERT INTO BOARD(SEQ_NO, CRT_DATE
-		) VALUES ((SELECT IFNULL(MAX(SEQ_NO),0)+1 FROM BOARD),DATE_FORMAT(NOW(), '%Y%m%d%H%i%S')
+		INSERT INTO BOARD(SEQ_NO , CRT_DATE, BBS_CD, CODE_NUM, CODE_NAME, 
+		                  SUBJECT, CONTENT, FILE2,    DEL_YN,  VCOUNTER, 
+		                 LIST_NUM, REF, RE_LEVEL, PAR_NO, EMAIL,FILE3
+		) VALUES (#seqNo#,DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),#bbsCd#,#codeNum#,#codeName#,#subject#,#content#,'','N',0,
+		0,0,0,0,'',''	
 		)
 	</insert>
 	
@@ -196,7 +203,10 @@
 	
 	<delete id="delete" parameterClass="boardInfo">
 		DELETE FROM BOARD
-		WHERE SEQ_NO = #seqNo#
+		WHERE 1=1
+		<iterate property="delArr"  prepend="AND SEQ_NO IN" open="(" close=")" conjunction=",">
+             #delArr[]#
+		</iterate>
 	</delete>
 	
 
