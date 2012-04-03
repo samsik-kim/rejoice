@@ -1,10 +1,12 @@
 package com.stockinvest.web.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import tframe.common.configuration.ConfigurationService;
+import tframe.common.util.StringUtils;
 
 import com.stockinvest.common.util.FileUpload;
 
@@ -92,6 +95,46 @@ public class TestController {
 			mav.addObject("uploadFileNo", request.getParameter("uploadFileNo"));
 		}
 		
+		return mav;
+	}
+	
+	/** 
+	 * <pre>
+	 * 파일 다운로드
+	 * 다운로드 요청된 파일의 정보를 서비스 객체를 통해 얻어오고,
+	 * 얻어온 파일정보 객체를 ModelAndView에 셋팅해서 리턴한다.
+	 * </pre>
+	 * @param request HttpServletRequest 객체
+	 * @param response HttpServletResponse 객체
+	 * @return 다운로드 요청된 파일과 다운로드View 정보를 가진 ModelAndView객체
+	 */
+	@RequestMapping("/display/fileDownload.do")
+	public ModelAndView fileDown(HttpServletRequest request, HttpServletResponse response){
+		String fileType = StringUtils.nvlStr(request.getParameter("fileType"), "xls");
+		String fileName = StringUtils.nvlStr(request.getParameter("fileName"), "");
+		//파일의 경로 지정
+		String filePath = config.getString("upload.img.dir"); 
+		filePath += config.getString("upload.file.display.event." + fileType + ".path") + "/";	
+		
+		ModelAndView mav =new ModelAndView();
+		if(!"".equals(fileName)){	
+			//파일 객체에 다운받을 파일의 경로와 파일의 이름을 넣어서 생성
+			File downFile = new File(filePath,fileName);	
+			mav.setViewName("fileDownload");	
+			mav.addObject("downloadFile", downFile);
+			mav.addObject("fileName", fileName);	
+			
+			if(logger.isDebugEnabled()){
+				logger.debug(">>>File DownLoad :  " + fileName + " : " + downFile.getPath() );
+			}	
+		}
+		/*
+		 * JSP Script
+		 */
+//		//파일 다운로드
+//		function fileDown(fileName){
+//			location.href = PageVariable.URL.FILEDOWNLOAD + "?fileType=xls&fileName=" + fileName;
+//		}	
 		return mav;
 	}
 }
