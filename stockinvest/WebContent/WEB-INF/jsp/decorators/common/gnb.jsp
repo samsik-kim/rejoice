@@ -6,8 +6,14 @@
 		<h1 align="center"><a href="/stockinvest/main.do" title=""><img src="/resource/images/mb/admin_logo.jpg"></a></h1>
 		<h2 class="hide">사용자메뉴영역</h2>
 		<ul id="utility">
-			<li><h3><c:if test="${LOGIN_SESSION.memId != ''}">${LOGIN_SESSION.memId}님 환영합니다.</c:if><a href="/logOut.do" >logOut</a></h3></li>
-			<li><a href="#" ></a></li>
+			<li>
+				<h3>
+				<c:if test="${LOGIN_SESSION.memId != ''}">
+					<span style="color:#ff6600;line-height:110%;">${LOGIN_SESSION.memId}</span> 님 환영합니다.
+				&nbsp;<a href="/logOut.do"><img src="/resource/images/common/FBtn_logout.gif" alt="logout"  style="vertical-align:middle;"/></a>
+				</c:if>
+				</h3>
+			</li>
 		</ul>
 		<!-- 상단주메뉴(GNB) S -->
 		<h2 class="hide">주메뉴영역</h2>
