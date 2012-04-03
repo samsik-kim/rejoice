@@ -87,11 +87,11 @@ function fn_detail(seqNo){
 		</c:if>
 		<c:forEach var="list" items="${pageInfo.dataList}" varStatus="i">
 		<tr>
-			<td><a href="#" onclick="javascript:fn_detail('${list.seqNo}');">${list.codeName}</a></td>
+			<td style="text-align: left;"><a href="#" onclick="javascript:fn_detail('${list.seqNo}');">${list.codeName}</a></td>
 			<td><a href="#" onclick="javascript:fn_detail('${list.seqNo}');">${list.codeNum}</a></td>
-			<td>${list.holdShare}</td>
-			<td>${list.tel}</td>
-			<td>${list.infoTel}</td>
+			<td style="text-align: left;">${list.holdShare}</td>
+			<td style="text-align: left;">${list.tel}</td>
+			<td style="text-align: left;">${list.infoTel}</td>
 			<td>${list.crtDate}</td>
 		</tr>
 		</c:forEach>
