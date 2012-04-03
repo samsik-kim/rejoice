@@ -118,7 +118,7 @@ public class FileUpload {
 		ArrayList<HashMap> aList = new ArrayList<HashMap>();
 
 		// 업로드 폴더
-		String uploadDir = config.getString("upload.img.dir");
+		String uploadDir = config.getString("uploadTempDir");
 
 		// 업로드 폴더 경로가 없다면
 		if (uploadDir == null || uploadDir.equals("")) {
@@ -278,7 +278,7 @@ public class FileUpload {
 		ArrayList<HashMap> aList = new ArrayList<HashMap>();
 
 		// 업로드 폴더
-		String uploadDir = config.getString("upload.img.dir");
+		String uploadDir = config.getString("uploadTempDir");
 		// 업로드 폴더 경로가 없다면
 		if (uploadDir == null || uploadDir.equals("")) {
 			HashMap<String, String> hMap = new HashMap<String, String>();

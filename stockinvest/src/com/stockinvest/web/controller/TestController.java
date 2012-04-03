@@ -37,9 +37,11 @@ public class TestController {
 		ModelAndView mav = new ModelAndView();
 		
 		String content = request.getParameter("CONTENT");
+		String dir = config.getString("uploadTempDir");
 		System.out.println("#################");
 		System.out.println(content);
 		System.out.println("#################");
+		System.out.println(dir);
 		return mav;
 	}
 	
@@ -51,7 +53,7 @@ public class TestController {
 	@RequestMapping("/display/banner/saveBannerFile.do")
 	public ModelAndView saveBannerFile(HttpServletRequest request) throws Exception {		
 		
-		String savePath = config.getString("upload.img.display.bnr.path");
+		String savePath = config.getString("uploadTempDir");
 		String allowExt = "swf,gif,jpg,png,jpeg";
 		
 		ArrayList<HashMap> fileData = new FileUpload().upload(request, savePath, allowExt);
