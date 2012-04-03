@@ -20,7 +20,7 @@
 		]]>
 	</sql>	
 			
-	<typeAlias alias="boardInfo" type="com.stockinvest.data.board.boardInfo.BoardInfo"/>
+	<typeAlias alias="boardInfo" type="com.stockinvest.data.board.info.BoardInfo"/>
 	
 	<select id="selectBoardList" parameterClass="boardInfo" resultClass="boardInfo">
 		<isNotEmpty property="currentPage">
@@ -29,10 +29,10 @@
 			</isNotEqual>
 		</isNotEmpty>
 				SELECT SEQ_NO		AS SEQNO,
-			           CRT_DATE 	AS CRTDATE,
+					   DATE_FORMAT(CRT_DATE,'%Y-%m-%d') AS CRTDATE,				
 			           SUBJECT		AS SUBJECT,
 			           CODE_NAME	AS CODENAME,
-			           CODE_NUM		AS CODENUM,
+			           CODE_NUM		AS CODENUM
 				FROM BOARD
 				WHERE 1=1
 				AND BBS_CD = #bbsCd#
@@ -119,7 +119,7 @@
 	<select id="selectBoardListCount" parameterClass="boardInfo" resultClass="int">
 		SELECT 
 			COUNT(*)
-		FROM CODE_CATE
+		FROM BOARD
 		WHERE 1=1
 		<dynamic>
 			<isNotEmpty property="searchKey">

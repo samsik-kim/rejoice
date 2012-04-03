@@ -10,6 +10,7 @@ $(document).ready(function(){
 	$("#enDt").datepicker();
 	$("#options").tablesorter({
 		sortList: [[0,0]], 
+		headers: { 0:{sorter: false} }		
 	});
 	
 	$("#delBtn").click(function(){

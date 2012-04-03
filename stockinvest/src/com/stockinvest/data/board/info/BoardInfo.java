@@ -9,11 +9,11 @@ public class BoardInfo extends CommonInfo implements Serializable{
 	private String seqNo;		//순번
 	private String listNum;
 	private String ref;
-	private String re_level;
-	private String par_no;
+	private String reLevel;
+	private String parNo;
 	private String name;
-	private String code_num;
-	private String code_name;
+	private String codeNum;
+	private String codeName;
 	private String subject;
 	private String content;
 	private String file1;
@@ -25,6 +25,9 @@ public class BoardInfo extends CommonInfo implements Serializable{
 	private String delYn;
 	private String vcounter;
 	private String bbsCd;
+	private String stDt;
+	private String enDt;
+	
 	/**
 	 * @return the seqNo
 	 */
@@ -62,28 +65,28 @@ public class BoardInfo extends CommonInfo implements Serializable{
 		this.ref = ref;
 	}
 	/**
-	 * @return the re_level
+	 * @return the reLevel
 	 */
-	public String getRe_level() {
-		return re_level;
+	public String getReLevel() {
+		return reLevel;
 	}
 	/**
-	 * @param re_level the re_level to set
+	 * @param reLevel the reLevel to set
 	 */
-	public void setRe_level(String re_level) {
-		this.re_level = re_level;
+	public void setReLevel(String reLevel) {
+		this.reLevel = reLevel;
 	}
 	/**
-	 * @return the par_no
+	 * @return the parNo
 	 */
-	public String getPar_no() {
-		return par_no;
+	public String getParNo() {
+		return parNo;
 	}
 	/**
-	 * @param par_no the par_no to set
+	 * @param parNo the parNo to set
 	 */
-	public void setPar_no(String par_no) {
-		this.par_no = par_no;
+	public void setParNo(String parNo) {
+		this.parNo = parNo;
 	}
 	/**
 	 * @return the name
@@ -98,28 +101,28 @@ public class BoardInfo extends CommonInfo implements Serializable{
 		this.name = name;
 	}
 	/**
-	 * @return the code_num
+	 * @return the codeNum
 	 */
-	public String getCode_num() {
-		return code_num;
+	public String getCodeNum() {
+		return codeNum;
 	}
 	/**
-	 * @param code_num the code_num to set
+	 * @param codeNum the codeNum to set
 	 */
-	public void setCode_num(String code_num) {
-		this.code_num = code_num;
+	public void setCodeNum(String codeNum) {
+		this.codeNum = codeNum;
 	}
 	/**
-	 * @return the code_name
+	 * @return the codeName
 	 */
-	public String getCode_name() {
-		return code_name;
+	public String getCodeName() {
+		return codeName;
 	}
 	/**
-	 * @param code_name the code_name to set
+	 * @param codeName the codeName to set
 	 */
-	public void setCode_name(String code_name) {
-		this.code_name = code_name;
+	public void setCodeName(String codeName) {
+		this.codeName = codeName;
 	}
 	/**
 	 * @return the subject
@@ -253,7 +256,28 @@ public class BoardInfo extends CommonInfo implements Serializable{
 	public void setBbsCd(String bbsCd) {
 		this.bbsCd = bbsCd;
 	}
-	
-	
-
+	/**
+	 * @return the stDt
+	 */
+	public String getStDt() {
+		return stDt;
+	}
+	/**
+	 * @param stDt the stDt to set
+	 */
+	public void setStDt(String stDt) {
+		this.stDt = stDt;
+	}
+	/**
+	 * @return the enDt
+	 */
+	public String getEnDt() {
+		return enDt;
+	}
+	/**
+	 * @param enDt the enDt to set
+	 */
+	public void setEnDt(String enDt) {
+		this.enDt = enDt;
+	}
 }
