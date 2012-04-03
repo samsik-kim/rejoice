@@ -8,9 +8,6 @@ var CURRENT_PAGE = "";
 $(document).ready(function(){
 	$("#stDt").datepicker();
 	$("#enDt").datepicker();
-	$("#options").tablesorter({
-// 		sortList: [[0,0]],
-	});
 	
 	pageLoadAjaxListInner("searchFrm", "innerList", "/code/ajaxCodeListinner.do"); // 리스트 호출
 	
