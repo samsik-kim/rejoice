@@ -67,7 +67,7 @@ public class CodeController {
 	
 	
 	@RequestMapping("/code/codeListExcel.do")
-	 public ModelAndView excelExportForm(HttpServletRequest req) throws Exception {
+	 public ModelAndView excelCodeExportForm(HttpServletRequest req) throws Exception {
 	  CodeInfo info = new CodeInfo();
 	  info.setStDt(req.getParameter("stDt"));
 	  info.setEnDt(req.getParameter("enDt"));

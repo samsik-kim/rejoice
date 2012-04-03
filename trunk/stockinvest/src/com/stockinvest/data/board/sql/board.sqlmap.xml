@@ -87,7 +87,7 @@
 	           CRT_DATE 	AS CRTDATE,
 	           SUBJECT		AS SUBJECT,
 	           CODE_NAME	AS CODENAME,
-	           CODE_NUM		AS CODENUM,
+	           CODE_NUM		AS CODENUM
  		FROM BOARD
 		WHERE 1=1
 		AND BBS_CD = #bbsCd#

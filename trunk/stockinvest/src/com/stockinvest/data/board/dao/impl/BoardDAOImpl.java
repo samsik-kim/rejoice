@@ -10,6 +10,7 @@ import tframe.core.dao.IBatisAbstractDao;
 
 import com.stockinvest.data.board.dao.BoardDAO;
 import com.stockinvest.data.board.info.BoardInfo;
+import com.stockinvest.data.board.info.BoardManageInfo;
 
 @Repository
 public class BoardDAOImpl extends IBatisAbstractDao implements BoardDAO{
@@ -55,7 +56,12 @@ public class BoardDAOImpl extends IBatisAbstractDao implements BoardDAO{
 
 	@Override
 	public List selectBoardListExcel(BoardInfo info) throws SQLException {
-		return getSqlMapClient().queryForList(NAME_SPACE + ".selectCodeListExcel",info);
+		return getSqlMapClient().queryForList(NAME_SPACE + ".selectBoardListExcel",info);
 	}
- 
+	
+	@Override
+	public List<BoardManageInfo> selectBoardManageList() throws SQLException {
+		return getSqlMapClient().queryForList(NAME_SPACE + ".selectBoardManageList");
+	} 
+	
 }

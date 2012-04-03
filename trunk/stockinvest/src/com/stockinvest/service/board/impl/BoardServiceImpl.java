@@ -11,6 +11,7 @@ import tframe.web.page.PageInfo;
 
 import com.stockinvest.data.board.dao.BoardDAO;
 import com.stockinvest.data.board.info.BoardInfo;
+import com.stockinvest.data.board.info.BoardManageInfo;
 import com.stockinvest.service.board.BoardService;
 
 @Service
@@ -57,4 +58,8 @@ public class BoardServiceImpl implements BoardService {
 		return dao.selectBoardListExcel(info);
 	}
 
+	@Override
+	public List<BoardManageInfo> selectBoardManageList() throws SQLException {
+		return dao.selectBoardManageList();
+	}	
 }
