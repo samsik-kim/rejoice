@@ -51,6 +51,8 @@ public class BoardDAOImpl extends IBatisAbstractDao implements BoardDAO{
 
 	@Override
 	public void insertBoardInfo(BoardInfo info) throws SQLException {
+		String getMaxSeqNo = (String)getSqlMapClient().queryForObject(NAME_SPACE + ".selectMaxSeqNo",info.getBbsCd());
+		info.setSeqNo(getMaxSeqNo);
 		getSqlMapClient().insert(NAME_SPACE + ".insert", info);
 	}
 

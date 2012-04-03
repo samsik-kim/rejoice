@@ -60,13 +60,13 @@ $(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="moblenum">전화번호</label></th>
+				<th scope="row"><label for="moblenum">&nbsp;&nbsp;전화번호</label></th>
 				<td>
 					<input type="text" id="tel" name="tel" class="w180"/>&nbsp;
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="moblenum">정보연락처</label></th>
+				<th scope="row"><label for="moblenum">&nbsp;&nbsp;정보연락처</label></th>
 				<td>
 					<input type="text" id="infoTel" name="infoTel" class="w180"/>
 				</td>

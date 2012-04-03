@@ -14,7 +14,7 @@
 		<ul id="depth3">
 			<li><a href="/board/boardManageList.do">게시판목록</a></li>		
 		<c:forEach var="list" items="${boardManageList}" varStatus="i">
-			<li><a href="/board/boardList.do?bbsCd=${list.bbsCd}">${list.boardName}</a></li>
+			<li><a href="/board/boardList.do?bbsCd=${list.bbsCd}&boardName=${list.boardName}">${list.boardName}</a></li>
 		</c:forEach>
 		</ul>		
 	</li>

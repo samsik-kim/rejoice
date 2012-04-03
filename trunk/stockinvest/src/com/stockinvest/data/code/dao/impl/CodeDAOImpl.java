@@ -50,6 +50,8 @@ public class CodeDAOImpl extends IBatisAbstractDao implements CodeDAO{
 
 	@Override
 	public void insertCodeInfo(CodeInfo info) throws SQLException {
+		String getMaxSeqNo = (String)getSqlMapClient().queryForObject(NAME_SPACE + ".selectMaxSeqNo");
+		info.setSeqNo(getMaxSeqNo);
 		getSqlMapClient().insert(NAME_SPACE + ".insert", info);
 	}
 

@@ -1,71 +1,61 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<br><br>
-<form name="board" method="post" enctype="multipart/form-data">
-<input name="currentPage" id="currentPage" value="${info.currentPage}"/>
-<input type="hidden" name="bbs_cd" value="${boardManagerInfo.bbsCd}>">
-${boardManagerInfo.boardName}>
-<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#330066">
-<tr height="30" bgcolor="white">
-	<td class="subject">코드번호</td>
-	<td class="object" style="padding-left:5px;"><input name="code_num" type="text" size="30" maxlength="30" value="<?=$code_num?>" onkeyup="chkcode();">
-<input type="hidden" name="code_name" value="<?=$code_name?>">
-&nbsp;&nbsp;&nbsp;
-<font color="#FF6600">
-<span id="cvname"><?=$code_name?></span>
-</font>
-	</td>
-</tr>
-<tr height="30" bgcolor="white">
-	<td class="subject" width="100">제 목</td>
-	<td class="object" style="padding-left:5px;"><input name="subject" type="text" size="100" maxlength="100" value="<?=$data[subject]?>"></td>
-</tr>
-<tr height="30" bgcolor="white">
-	<td class="subject">내 용</td>
-	<td class="object" style="padding-left:5px;">
-<!-----------  편집기...  ----------->
-<script language="Javascript1.2">
-<!-- // load htmlarea
-_editor_url = "/security/board/";                     // URL to htmlarea files
-var win_ie_ver = parseFloat(navigator.appVersion.split("MSIE")[1]);
-if (navigator.userAgent.indexOf('Mac')        >= 0) { win_ie_ver = 0; }
-if (navigator.userAgent.indexOf('Windows CE') >= 0) { win_ie_ver = 0; }
-if (navigator.userAgent.indexOf('Opera')      >= 0) { win_ie_ver = 0; }
-if (win_ie_ver >= 5.5) {
-  document.write('<scr' + 'ipt src="' +_editor_url+ 'editor.js"');
-  document.write(' language="Javascript1.2"></scr' + 'ipt>');  
-} else { document.write('<scr'+'ipt>function editor_generate() { return false; }</scr'+'ipt>'); }
-// -->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#okBtn").click(function(){
+		$("#boardform").attr("action", "/board/boardInsert.do");
+		$("#boardform").submit();
+	});
+});
 </script>
-<textarea name="content" style="width:100%; height:300px; border:0;"  id="contant"><?=$data[content]?></textarea>
 
-<script language='javascript1.2'>
-editor_generate('content');
-</script>
-<!-----------  편집기...  ----------->		
-	</td>
-</tr>
-<tr height="30" bgcolor="white">
-	<td class="subject">첨부파일</td>
-	<td class="object" style="padding-left:5px;"><input type="file" name="file1" size="80"></td>
-</tr>
-</table>
-</td>
-</tr>
-<tr height="30">
-	<td align="right">
-
-<a href="">[ 완 료 ]</a>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="">[ 목 록 ]</a>
-
-	</td>
-</tr>
+<form name="boardform" id="boardform" method="post" enctype="multipart/form-data">
+<input type="hidden" name="currentPage" id="currentPage" value="${info.currentPage}" />
+<input type="hidden" name="stDt" id="stDt" value="${info.stDt}" />
+<input type="hidden" name="enDt" id="enDt" value="${info.enDt}" />	
+<input type="hidden" name="searchKey" id="searchKey" value="${info.searchKey}" />								
+<input type="hidden" name="searchValue" id="searchValue" value="${info.searchValue}" />
+<input type="hidden" name="bbsCd" id="bbsCd" value="${info.bbsCd}" />
+	<table summary="게시판 기본정보 입력 항목입니다" border="2">
+		<caption>게시판 입력 항목</caption>
+		<colgroup>
+			<col width="15%" />
+			<col />
+		</colgroup>
+		<tbody>
+			<tr>
+				<th scope="row" align="left"><span>*</span> 코드번호</th>
+				<td>
+					<input type="text" id="codeNum" name="codeNum" class="w180"/>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" align="left"><span>*</span> 제목</th>
+				<td>
+					<input type="text" id="subject" name="subject" class="w280" 
+					v:required='trim' m:required="제목을 입력하십시오."/>&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td colspan=2>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan=2>
+					<div>
+					<textarea  name="CONTENT" cols="150" rows="50"></textarea>
+					
+					<script type="text/javascript">
+					//<![CDATA[
+					CKEDITOR.replace('CONTENT');
+					//]]
+					</script>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+<div class="fltr mar_t10">
+	<a href="#"><img id="okBtn" src="/resource/images/common/btn_inner_ok3.gif" alt="OK" /></a>
+</div>
+	<input type="hidden" name="atchFileNm" value=""/>
+	<input type="file" id="atchFile" name="atchFile"/>
 </form>
-</table>
-<SCRIPT LANGUAGE="JavaScript">
-<!--
-	focusauto();
-//-->
-</SCRIPT>

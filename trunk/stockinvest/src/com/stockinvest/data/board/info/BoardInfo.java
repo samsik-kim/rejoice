@@ -27,6 +27,10 @@ public class BoardInfo extends CommonInfo implements Serializable{
 	private String bbsCd;
 	private String stDt;
 	private String enDt;
+	private String boardName;
+	private String delVal;
+	private String[] delArr;
+
 	
 	/**
 	 * @return the seqNo
@@ -280,4 +284,42 @@ public class BoardInfo extends CommonInfo implements Serializable{
 	public void setEnDt(String enDt) {
 		this.enDt = enDt;
 	}
+	/**
+	 * @return the boardName
+	 */
+	public String getBoardName() {
+		return boardName;
+	}
+	/**
+	 * @param boardName the boardName to set
+	 */
+	public void setBoardName(String boardName) {
+		this.boardName = boardName;
+	}
+	/**
+	 * @return the delVal
+	 */
+	public String getDelVal() {
+		return delVal;
+	}
+	/**
+	 * @param delVal the delVal to set
+	 */
+	public void setDelVal(String delVal) {
+		this.delVal = delVal;
+	}
+	/**
+	 * @return the delArr
+	 */
+	public String[] getDelArr() {
+		return delArr;
+	}
+	/**
+	 * @param delArr the delArr to set
+	 */
+	public void setDelArr(String[] delArr) {
+		this.delArr = delArr;
+	}
+	
+	
 }

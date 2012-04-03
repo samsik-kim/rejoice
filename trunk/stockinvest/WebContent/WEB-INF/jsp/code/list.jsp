@@ -12,7 +12,9 @@ $(document).ready(function(){
 	$("#excelBtn").click(function(){
 		$("#stDt").val($("#stDt").val().replace(/-/g, ''));
 		$("#enDt").val($("#enDt").val().replace(/-/g, ''));
-		location.href = "/code/codeListExcel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
+		$("#searchFrm").attr('action','/code/codeListExcel.do') ;
+		$("#searchFrm").submit();
+//		location.href = "/code/codeListExcel.do?stDt="+$("#stDt").val()+"&enDt="+$("#enDt").val();
 	});	
 	
 	$("#regBtn").click(function(){
