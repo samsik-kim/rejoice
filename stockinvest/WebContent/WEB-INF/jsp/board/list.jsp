@@ -22,7 +22,7 @@ $(document).ready(function(){
 	$("#stDt").datepicker();
 	$("#enDt").datepicker();
 	$("#options").tablesorter({
-		sortList: [[0,0]], 
+		sortList: [[1,0]], 
 		headers: { 0:{sorter: false} }		
 	});
 	
@@ -69,6 +69,7 @@ function fn_detail(seqNo){
 <form name="searchFrm" id="searchFrm" method="post">
 <input type="hidden" name="bbsCd" id="bbsCd" value="${info.bbsCd}">
 <input type="hidden" name="seqNo" id="seqNo">
+<input type="hidden" name="delVal" id="delVal"/>
 	<div class="fltl mar_trl20">
 		시작일:<input type="text" name="stDt" id="stDt" class="w70" value="${info.stDt }"/>&nbsp;~
 		종료일:<input type="text" name="enDt" id="enDt" class="w70" value="${info.enDt }"/>&nbsp;&nbsp;
