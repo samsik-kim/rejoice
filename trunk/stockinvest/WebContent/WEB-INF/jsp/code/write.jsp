@@ -10,7 +10,6 @@ $(document).ready(function(){
 		
 	// 등록 -> 목록
 	$('#regBtn').click(function(){
-		alert('22222');
 		if(showValidate('regFrm', 'default', "입력오류를 확인하십시오.")){
 			if($("#codeName").val() == ""){
 				alert("종목명을 확인 해주세요.");

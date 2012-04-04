@@ -4,7 +4,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#options").tablesorter({
-		sortList: [[0,0]], 
+		sortList: [[5,1]] 
 	});
 });
 </script>
