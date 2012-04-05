@@ -23,7 +23,7 @@ var getLeftMenuId = '${leftMenuId}';
  * Slide Menu
  */
 $(document).ready(function() {
-	pageLoadAjaxListInner("menuFrm", "innerBoardList", "/board/ajaxBoardListinner.do"); // 리스트 호출
+	pageLoadAjaxListInner("menuFrm", "innerBoardList", "/stockinvest/ajaxBoardListinner.do"); // 리스트 호출
 	$('#leftmenu ul').hide();
  
 	if (getLeftMenuId == '2') {

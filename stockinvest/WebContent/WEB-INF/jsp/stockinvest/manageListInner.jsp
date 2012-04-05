@@ -2,7 +2,7 @@
 <%@ taglib prefix="dnc" uri="/WEB-INF/tld/dnc.tld"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <ul id="leftmenu">
-	<li><a href="#">계정관리</a></li>
+	<li><a href="/admin/adminDetail.do">계정관리</a></li>
 	<li><a href="#">코드관리</a>
 		<ul id="depth2">
 			<li><a href="/code/codeList.do">코드목록</a></li>

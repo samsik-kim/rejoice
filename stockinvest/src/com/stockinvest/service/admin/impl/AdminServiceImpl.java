@@ -1,30 +1,22 @@
-package com.stockinvest.service.stockinvest.impl;
+package com.stockinvest.service.admin.impl;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.stockinvest.data.board.info.BoardManageInfo;
-import com.stockinvest.data.stockinvest.dao.StockinvestDAO;
+import com.stockinvest.data.admin.dao.AdminDAO;
 import com.stockinvest.data.stockinvest.info.MemberInfo;
-import com.stockinvest.service.stockinvest.StockinvestService;
+import com.stockinvest.service.admin.AdminService;
 
 @Service
 @Transactional(readOnly=true, rollbackFor = Exception.class)
-public class StockinvestServiceImpl implements StockinvestService {
+public class AdminServiceImpl implements AdminService{
 
-	
 	@Autowired
-	StockinvestDAO dao;
+	AdminDAO dao;
 	
-	@Override
-	public int selectEmp() throws SQLException {
-		return dao.selectEmp();
-	}
-
 	@Override
 	public MemberInfo selectAdminInfo() throws SQLException {
 		return dao.selectAdminInfo();
@@ -33,12 +25,5 @@ public class StockinvestServiceImpl implements StockinvestService {
 	@Override
 	public int updatePassword(MemberInfo info) throws SQLException {
 		return dao.updatePassword(info);
-	}
-	
-	@Override
-	public List<BoardManageInfo> selectBoardManageList() throws SQLException {
-		return dao.selectBoardManageList();
 	}	
-	
-
 }

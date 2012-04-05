@@ -14,5 +14,4 @@ public interface BoardDAO {
 	public int updateBoardInfo(BoardInfo info) throws  SQLException;
 	public int deleteBoardInfo(BoardInfo info) throws SQLException;
 	public void insertBoardInfo(BoardInfo info) throws SQLException;
-	public List<BoardManageInfo> selectBoardManageList() throws SQLException;
 }

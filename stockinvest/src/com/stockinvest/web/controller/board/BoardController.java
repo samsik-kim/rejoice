@@ -174,19 +174,4 @@ public class BoardController {
 		return info;
 	}
 	
-	/**
-	 * @param request
-	 * @param info
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping("/board/ajaxBoardListinner.do")
-	public ModelAndView boardManageListinner(HttpServletRequest request, @ModelAttribute BoardManageInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView();
-		List<BoardManageInfo> list = service.selectBoardManageList();
-		mav.addObject("boardManageList", list);
-		mav.setViewName("board/manageListInner");
-		return mav;
-	}	
-	
 }
