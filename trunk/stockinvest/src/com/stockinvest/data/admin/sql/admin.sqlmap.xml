@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
-<sqlMap namespace="stockinvest">
+<sqlMap namespace="admin">
 	<typeAlias alias="memberInfo" type="com.stockinvest.data.stockinvest.info.MemberInfo"/>
-	<typeAlias alias="boardManageInfo" type="com.stockinvest.data.board.info.BoardManageInfo"/>
-
-	<select id="selectEmp" resultClass="java.lang.Integer">
-		SELECT COUNT(*) FROM EMP
-	</select>
-
+	
 	<select id="selectMemberInfo" resultClass="memberInfo">
 		SELECT SEQ_NO AS seqNo
 		        , ADMIN_ID AS adminId
@@ -20,12 +15,5 @@
 		UPDATE ADMIN SET PASSWD = #passWd#
 		WHERE SEQ_NO	= #seqNo#
 	</update>	
-	
-	<select id="selectBoardManageList" resultClass="boardManageInfo">
-		SELECT SEQ_NO AS SEQNO, 
-			   BOARD_NAME AS BOARDNAME,
-			   BBS_CD AS BBSCD
-		FROM BOARD_MANAGER
-	</select>
 	
 </sqlMap>

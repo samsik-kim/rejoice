@@ -1,14 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#okBtn").click(function(){
-		$("#boardform").attr("action", "/board/boardInsert.do");
-		$("#boardform").submit();
-	});
+	// 등록 -> 목록
+	$('#okBtn').click(function(){
+		if(showValidate('regFrm', 'default', "입력오류를 확인하십시오.")){
+			if($("#codeNum").val() == ""){
+				alert("종목코드를 확인 해주세요.");
+				return;
+			}
+
+			if($("#subject").val() == ""){
+				alert("제목을 확인 해주세요.");
+				return;
+			}
+			
+			$("#regFrm").attr('action','/board/boardInsert.do') ;
+			$("#regFrm").submit();
+		}
+	});	
 });
 </script>
 
-<form name="boardform" id="boardform" method="post" enctype="multipart/form-data">
+<form name="regFrm" id="regFrm" method="post" enctype="multipart/form-data">
 <input type="hidden" name="currentPage" id="currentPage" value="${info.currentPage}" />
 <input type="hidden" name="stDt" id="stDt" value="${info.stDt}" />
 <input type="hidden" name="enDt" id="enDt" value="${info.enDt}" />	
@@ -25,7 +38,8 @@ $(document).ready(function() {
 			<tr>
 				<th scope="row" align="left"><span>*</span> 코드번호</th>
 				<td>
-					<input type="text" id="codeNum" name="codeNum" class="w180"/>
+					<input type="text" id="codeNum" name="codeNum" class="w180"
+					v:required='trim' m:required="종목코드를 입력하십시오."/>
 				</td>
 			</tr>
 			<tr>

@@ -21,14 +21,6 @@
 	</sql>	
 			
 	<typeAlias alias="boardInfo" type="com.stockinvest.data.board.info.BoardInfo"/>
-	<typeAlias alias="boardManageInfo" type="com.stockinvest.data.board.info.BoardManageInfo"/>
-	
-	<select id="selectBoardManageList" resultClass="boardManageInfo">
-		SELECT SEQ_NO AS SEQNO, 
-			   BOARD_NAME AS BOARDNAME,
-			   BBS_CD AS BBSCD
-		FROM BOARD_MANAGER
-	</select>
 	
 	<select id="selectBoardList" parameterClass="boardInfo" resultClass="boardInfo">
 		<isNotEmpty property="currentPage">

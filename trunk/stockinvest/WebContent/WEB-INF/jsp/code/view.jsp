@@ -8,12 +8,11 @@ $(document).ready(function(){
 		$("#regFrm").submit();
 	});
 	
-		
 	// 등록 -> 목록
 	$('#modifyBtn').click(function(){
 		if(!confirm('정말 수정하시겠습니까?')) return;
 		
-		if(showValidate('regFrm', 'default', "입력오류를 확인하십시오.")){
+		if(showValidate('modifyFrm', 'default', "입력오류를 확인하십시오.")){
 			if($("#codeName").val() == ""){
 				alert("종목명을 확인 해주세요.");
 				return;
@@ -24,15 +23,15 @@ $(document).ready(function(){
 				return;
 			}
 			
-			$("#regFrm").attr('action','/code/codeUpdate.do') ;
-			$("#regFrm").submit();
+			$("#modifyFrm").attr('action','/code/codeUpdate.do') ;
+			$("#modifyFrm").submit();
 		}
 	});
 	
 });
 </script>
 <div class="tstyleA">
-<form id="regFrm" name="regFrm" method="post" >
+<form id="modifyFrm" name="modifyFrm" method="post" >
 	<table summary="종목코드 기본정보 입력 항목입니다">
 		<caption>종목코드 입력 항목</caption>
 		<colgroup>

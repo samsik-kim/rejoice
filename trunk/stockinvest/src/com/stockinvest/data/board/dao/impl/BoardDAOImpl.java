@@ -61,9 +61,4 @@ public class BoardDAOImpl extends IBatisAbstractDao implements BoardDAO{
 		return getSqlMapClient().queryForList(NAME_SPACE + ".selectBoardListExcel",info);
 	}
 	
-	@Override
-	public List<BoardManageInfo> selectBoardManageList() throws SQLException {
-		return getSqlMapClient().queryForList(NAME_SPACE + ".selectBoardManageList");
-	} 
-	
 }

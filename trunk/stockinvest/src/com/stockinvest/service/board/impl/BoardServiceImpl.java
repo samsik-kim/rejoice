@@ -57,9 +57,4 @@ public class BoardServiceImpl implements BoardService {
 	public List selectBoardListExcel(BoardInfo info) throws SQLException {
 		return dao.selectBoardListExcel(info);
 	}
-
-	@Override
-	public List<BoardManageInfo> selectBoardManageList() throws SQLException {
-		return dao.selectBoardManageList();
-	}	
 }
