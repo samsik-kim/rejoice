@@ -53,15 +53,29 @@ public class CodeController {
 	@RequestMapping("/code/ajaxCodeListinner.do")
 	public ModelAndView codeListinner(HttpServletRequest request, @ModelAttribute CodeInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView();
+		String getStDt = StringUtils.nvlStr(info.getStDt(),"");
+		String getEnDt = StringUtils.nvlStr(info.getEnDt(),"");
+		info.setStDt(StringUtils.nvlStr(info.getStDt(),"").replaceAll("-", ""));
+		info.setEnDt(StringUtils.nvlStr(info.getEnDt(),"").replaceAll("-", ""));		
 		int currentPage = Integer.parseInt(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
 		int pageUnit = 10; // 페이지를 보여줄 갯수
 		int pageSize = 20; // 한페이지에 보여줄 게시물수
 		PageInfo pageInfo = new PageInfo(request, currentPage, pageUnit, pageSize);
 		pageInfo = service.selectCodeList(pageInfo, info);
 		mav.addObject("pageInfo", pageInfo);
-		
+		info.setStDt(getStDt);
+		info.setEnDt(getEnDt);
 		mav.addObject("info", info);
 		mav.setViewName("code/listInner");
+		return mav;
+	}
+	
+	@RequestMapping("/code/ajaxCodeName.do")
+	public ModelAndView getCodeName(HttpServletRequest request, @ModelAttribute CodeInfo info) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		CodeInfo getCodeInfo = service.selectCodeNameInfo(info);
+		mav.addObject("info",getCodeInfo);
+		mav.setViewName("code/codeName");
 		return mav;
 	}
 	
@@ -69,8 +83,8 @@ public class CodeController {
 	@RequestMapping("/code/codeListExcel.do")
 	 public ModelAndView excelCodeExportForm(HttpServletRequest req) throws Exception {
 	  CodeInfo info = new CodeInfo();
-	  info.setStDt(req.getParameter("stDt"));
-	  info.setEnDt(req.getParameter("enDt"));
+	  info.setStDt(StringUtils.nvlStr(req.getParameter("stDt"),"").replaceAll("-", ""));
+	  info.setEnDt(StringUtils.nvlStr(req.getParameter("enDt"),"").replaceAll("-", ""));	  
 	  List list = service.selectCodeListExcel(info);
 	  Map model = new HashMap();
 	  String[] header = {"순번","종목명", "종목코드명" , "지분보유" , "전화번호" ,"정보연락처" , "등록일"};

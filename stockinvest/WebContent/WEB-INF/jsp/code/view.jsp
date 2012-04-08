@@ -85,7 +85,7 @@ $(document).ready(function(){
 	</table>
 	<br/>
 	<div class="btnarea">
-		<a href="#"><img id="modifyBtn" src="/resource/images/common/btn_inner_ok3.gif" alt="수정" /></a>
+		<a href="#"><img id="modifyBtn" src="/resource/images/common/btn_inner_change.gif" alt="수정" /></a>
 		<a href="#"><img id="listBtn" src="/resource/images/common/btn_cancel2.gif" alt="목록" /></a>
 	</div>
 </form>				

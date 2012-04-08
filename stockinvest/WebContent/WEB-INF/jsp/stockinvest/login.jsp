@@ -69,7 +69,7 @@ $(document).ready(function(){
 							$("#login").submit();
 					} else {
 						alert("로그인 정보가 잘못되었습니다.\n다시입력해주세요.");
-							$("#login").attr("action", "/stockinvest/loginForm.do");
+							$("#login").attr("action", "/loginForm.do");
 							$("#login").submit();
 					}
 				},

@@ -12,4 +12,7 @@ public interface StockinvestService {
 	public MemberInfo selectAdminInfo() throws SQLException;
 	public int updatePassword(MemberInfo info) throws SQLException;
 	public List<BoardManageInfo> selectBoardManageList() throws SQLException;
+	public int updateBoardManageInfo(BoardManageInfo info) throws  SQLException;
+	public int deleteBoardManageInfo(BoardManageInfo info) throws SQLException;
+	public void insertBoardManageInfo(BoardManageInfo info) throws SQLException;		
 }

@@ -45,4 +45,27 @@ public class StockinvestDAOImpl extends IBatisAbstractDao implements Stockinvest
 		return getSqlMapClient().queryForList(NAME_SPACE + ".selectBoardManageList");
 	} 
 	
+	/**
+	 * 게시판 관리 게시판명 입력
+	 * @throws SQLException
+	 */
+	@Override
+	public void insertBoardManageInfo(BoardManageInfo info) throws SQLException {
+		
+		String getMaxBbsCd = (String)getSqlMapClient().queryForObject(NAME_SPACE + ".selectMaxBbsCd");
+		info.setBbsCd(getMaxBbsCd);
+		getSqlMapClient().insert(NAME_SPACE + ".insertBoardManage", info);		
+	}
+	
+	@Override
+	public int deleteBoardManageInfo(BoardManageInfo info) throws SQLException {
+		return getSqlMapClient().update(NAME_SPACE + ".deleteBoardManage", info);
+	}	
+	
+	@Override
+	public int updateBoardManageInfo(BoardManageInfo info) throws SQLException {
+		return getSqlMapClient().update(NAME_SPACE + ".updateBoardManage", info);
+	}	
+	
+	
 }

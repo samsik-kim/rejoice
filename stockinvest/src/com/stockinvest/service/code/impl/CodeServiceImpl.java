@@ -70,4 +70,9 @@ public class CodeServiceImpl implements CodeService {
 		return dao.selectCodeListExcel(info);
 	}
 
+	@Override
+	public CodeInfo selectCodeNameInfo(CodeInfo info) throws SQLException {
+		return dao.selectCodeNameInfo(info);
+	}
+	
 }
