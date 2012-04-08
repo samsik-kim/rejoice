@@ -27,8 +27,11 @@
 <link type="text/css" href="/resource/jquery-ui-1.8.17.custom/css/cupertino/jquery-ui-1.8.17.custom.css" rel="stylesheet" />	
 <script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="/resource/jquery-ui-1.8.17.custom/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="/resource/ets/jquery.blockUI.js"></script>
 <script type="text/javascript" src="/resource/ets/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="/resource/ets/validate.js"></script>
+<script type="text/javascript" src="/resource/ets/common.js"></script>
+
 <script type="text/javascript">
 $(function() {
 	$.datepicker.regional['ko']= {

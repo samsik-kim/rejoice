@@ -3,11 +3,7 @@
 <decorators defaultdir="/WEB-INF/jsp/decorators/layout">
     <excludes>
         <pattern>**/ajax*</pattern>
-        <pattern>**/sign*</pattern>
         <pattern>**/index.jsp</pattern>
-        <pattern>**/adminLogin*</pattern>
-        <pattern>**/adminLogOut*</pattern>
-        <pattern>**/user/*</pattern>
     </excludes>
 
     <decorator name="layout" page="layout.jsp">
