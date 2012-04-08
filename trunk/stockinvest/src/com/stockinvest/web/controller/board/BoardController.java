@@ -51,7 +51,18 @@ public class BoardController {
 	 */	
 	@RequestMapping("/board/boardList.do")
 	public ModelAndView boardList(HttpServletRequest request, @ModelAttribute BoardInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView("board/list");
+		mav.addObject("info", info);
+		return mav;
+	}	
+	
+	@RequestMapping("/board/ajaxBoardListinner.do")
+	public ModelAndView boardlistinner(HttpServletRequest request, @ModelAttribute  BoardInfo info)throws Exception {
 		ModelAndView mav = new ModelAndView();
+		String getStDt = StringUtils.nvlStr(info.getStDt(),"");
+		String getEnDt = StringUtils.nvlStr(info.getEnDt(),"");
+		info.setStDt(StringUtils.nvlStr(info.getStDt(),"").replaceAll("-", ""));
+		info.setEnDt(StringUtils.nvlStr(info.getEnDt(),"").replaceAll("-", ""));
 		int currentPage = Integer.parseInt(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
 		int pageUnit = 10; // 페이지를 보여줄 갯수
 		int pageSize = 20; // 한페이지에 보여줄 게시물수
@@ -60,17 +71,18 @@ public class BoardController {
 			pageInfo = service.selectBoardList(pageInfo, info);
 		}
 		mav.addObject("pageInfo", pageInfo);
-		
+		info.setStDt(getStDt);
+		info.setEnDt(getEnDt);
 		mav.addObject("info", info);
-		mav.setViewName("board/list");
-		return mav;
-	}	
+		mav.setViewName("board/listInner");
+		return mav;		
+	}
 	
 	@RequestMapping("/board/boardListExcel.do")
 	 public ModelAndView excelBoardExportForm(HttpServletRequest req) throws Exception {
 	  BoardInfo info = new BoardInfo();
-	  info.setStDt(req.getParameter("stDt"));
-	  info.setEnDt(req.getParameter("enDt"));
+	  info.setStDt(StringUtils.nvlStr(req.getParameter("stDt"),"").replaceAll("-", ""));
+	  info.setEnDt(StringUtils.nvlStr(req.getParameter("enDt"),"").replaceAll("-", ""));
 	  info.setBbsCd(req.getParameter("bbsCd"));
 	  List list = service.selectBoardListExcel(info);
 	  Map model = new HashMap();
@@ -103,8 +115,10 @@ public class BoardController {
 	public ModelAndView boardDetailForm(HttpServletRequest request, @ModelAttribute BoardInfo info)throws Exception{
 		ModelAndView mav = new ModelAndView("board/view");
 		info.setCurrentPage(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
+		BoardInfo searchInfo = info;
 		if(info.getSeqNo() != null){
 			info = service.selectBoardInfo(info);
+			info = setSearchInfo(info,searchInfo);
 		}
 		mav.addObject("info", info);
 		return mav;
@@ -148,29 +162,35 @@ public class BoardController {
 		
 		String redirectUrl = "redirect:/board/boardList.do?bbsCd="+info.getBbsCd();
 		ModelAndView mav = new ModelAndView(redirectUrl);
-		info.setCodeName("이타치테스트중");
 		info.setContent(request.getParameter("CONTENT"));
 		service.insertBoardInfo(info);
 		return mav;
 	}
 	
 	@RequestMapping("/board/boardUpdate.do")
-	public ModelAndView updateCode(HttpServletRequest request, @ModelAttribute("setBoardInfo") BoardInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView("redirect:/board/boardList.do");
+	public ModelAndView updateBoard(HttpServletRequest request, @ModelAttribute("setBoardInfo") BoardInfo info)throws Exception{
+		String redirectUrl = "redirect:/board/boardList.do?bbsCd="+info.getBbsCd();		
+		ModelAndView mav = new ModelAndView(redirectUrl);
 		service.updateBoardInfo(info);
 		return mav;
 	}	
 	
 	@RequestMapping("/board/boardDelete.do")
-	public ModelAndView deleteCode(HttpServletRequest request, @ModelAttribute("setBoardInfo") BoardInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView("redirect:/board/boardList.do");
+	public ModelAndView deleteBoard(HttpServletRequest request, @ModelAttribute("setBoardInfo") BoardInfo info)throws Exception{
+		String redirectUrl = "redirect:/board/boardList.do?bbsCd="+info.getBbsCd();
+		ModelAndView mav = new ModelAndView(redirectUrl);
 		info.setDelArr(info.getDelVal().split(","));
 		service.deleteBoardInfo(info);
 		return mav;
 	}
 	
-	public BoardInfo setSearchInfo(BoardInfo info,BoardInfo searchBoardInfo) {
-		info.setCodeName("TEST중");
+	public BoardInfo setSearchInfo(BoardInfo info,BoardInfo searchInfo) {
+		info.setCurrentPage(StringUtils.nvlStr(searchInfo.getCurrentPage(),"1"));
+		info.setStDt(StringUtils.nvlStr(searchInfo.getStDt(),""));
+		info.setEnDt(StringUtils.nvlStr(searchInfo.getEnDt(),""));
+		info.setSearchKey(StringUtils.nvlStr(searchInfo.getSearchKey(),""));
+		info.setSearchValue(StringUtils.nvlStr(searchInfo.getSearchValue(),""));
+		info.setBbsCd(StringUtils.nvlStr(searchInfo.getBbsCd(),""));
 		return info;
 	}
 	

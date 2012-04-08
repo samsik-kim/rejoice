@@ -28,4 +28,23 @@
 		FROM BOARD_MANAGER
 	</select>
 	
+	<select id="selectMaxBbsCd" resultClass="java.lang.String">
+		SELECT IFNULL(MAX(BBS_CD),0)+1 AS MAX_NUM FROM BOARD_MANAGER	
+	</select>	
+	
+	<insert id="insertBoardManage" parameterClass="boardManageInfo">
+		INSERT INTO BOARD_MANAGER VALUES(NULL,#boardName#,#bbsCd#)
+	</insert>
+	
+	<update id="updateBoardManage" parameterClass="boardManageInfo">
+		UPDATE BOARD_MANAGER
+			SET BOARD_NAME=#boardName#
+		WHERE SEQ_NO = #seqNo#			
+	</update>
+	
+	<delete id="deleteBoardManage" parameterClass="boardManageInfo">
+		DELETE FROM BOARD_MANAGER
+		WHERE SEQ_NO = #seqNo#
+	</delete>
+	
 </sqlMap>

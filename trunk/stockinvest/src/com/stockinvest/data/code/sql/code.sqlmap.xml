@@ -185,4 +185,10 @@
 		WHERE SEQ_NO = #seqNo#
 	</delete>
 	
+	<select id="selectCodeNameInfo" parameterClass="info" resultClass="info">
+		SELECT 
+			CODE_NAME	AS CODENAME
+		FROM CODE_CATE
+		WHERE CODE_NUM = #codeNum#
+	</select>	
 </sqlMap>

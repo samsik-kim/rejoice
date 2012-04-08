@@ -59,5 +59,10 @@ public class CodeDAOImpl extends IBatisAbstractDao implements CodeDAO{
 	public List selectCodeListExcel(CodeInfo info) throws SQLException {
 		return getSqlMapClient().queryForList(NAME_SPACE + ".selectCodeListExcel",info);
 	}
- 
+
+	@Override
+	public CodeInfo selectCodeNameInfo(CodeInfo info) throws SQLException {
+		return (CodeInfo)getSqlMapClient().queryForObject(NAME_SPACE + ".selectCodeNameInfo",info);
+	}
+	
 }

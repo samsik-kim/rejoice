@@ -13,4 +13,5 @@ public interface CodeDAO {
 	public int updateCodeInfo(CodeInfo info) throws  SQLException;
 	public int deleteCodeInfo(CodeInfo info) throws SQLException;
 	public void insertCodeInfo(CodeInfo info) throws SQLException;
+	public CodeInfo selectCodeNameInfo(CodeInfo info) throws SQLException;
 }

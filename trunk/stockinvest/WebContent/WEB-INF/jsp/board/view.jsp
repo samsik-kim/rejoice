@@ -1,6 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script type="text/javascript">
 $(document).ready(function() {
+	//취소 -> 목록
+	$("#listBtn").click(function(){
+		$("#modifyFrm").attr('action','/board/boardList.do') ;
+		$("#modifyFrm").submit();
+	});
+
+	pageLoadAjaxListInner("modifyFrm", "checkCodeNum", "/code/ajaxCodeName.do"); // 종목코드명 호출
+	
+	$('#codeNum').change(function() {
+		var getCodeNum = $("input:[name=codeNum]").val();
+	
+		if (getCodeNum.length == 6) {
+			pageLoadAjaxListInner("modifyFrm", "checkCodeNum", "/code/ajaxCodeName.do"); // 종목코드명 호출		
+		}
+		
+	});	
+	
 	// 수정 -> 목록
 	$('#okBtn').click(function(){
 		if(showValidate('modifyFrm', 'default', "입력오류를 확인하십시오.")){
@@ -9,6 +26,11 @@ $(document).ready(function() {
 				return;
 			}
 
+			if($("#codeName").val() == "") {
+				alert("등록되지않은 종목코드는 입력할수 없습니다.");	
+				return;
+			}
+			
 			if($("#subject").val() == ""){
 				alert("제목을 확인 해주세요.");
 				return;
@@ -38,10 +60,18 @@ $(document).ready(function() {
 			<tr>
 				<th scope="row" align="left"><span>*</span> 코드번호</th>
 				<td>
+				<table>
+					<tr><td>
 					<input type="text" id="codeNum" name="codeNum" class="w180"
-					v:required='trim' m:required="종목코드를 입력하십시오." value="${info.codeNum}"/>
+					v:required='trim' m:required="종목코드를 입력하십시오." maxlength=6 value="${info.codeNum}"/>
+					</td>
+					<td>
+					<div id=checkCodeNum></div>
+					</td>
+					</tr>
+				</table>					
 				</td>
-			</tr>
+			</tr>		
 			<tr>
 				<th scope="row" align="left"><span>*</span> 제목</th>
 				<td>
@@ -69,6 +99,7 @@ $(document).ready(function() {
 	</table>
 <div class="fltr mar_t10">
 	<a href="#"><img id="okBtn" src="/resource/images/common/btn_inner_ok3.gif" alt="OK" /></a>
+	<a href="#"><img id="listBtn" src="/resource/images/common/btn_cancel2.gif" alt="목록" /></a>	
 </div>
 	<input type="hidden" name="atchFileNm" value=""/>
 	<input type="file" id="atchFile" name="atchFile"/>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.stockinvest.data.board.info.BoardInfo;
 import com.stockinvest.data.board.info.BoardManageInfo;
 import com.stockinvest.data.stockinvest.dao.StockinvestDAO;
 import com.stockinvest.data.stockinvest.info.MemberInfo;
@@ -40,5 +41,18 @@ public class StockinvestServiceImpl implements StockinvestService {
 		return dao.selectBoardManageList();
 	}	
 	
+	@Override
+	public int updateBoardManageInfo(BoardManageInfo info) throws SQLException {
+		return dao.updateBoardManageInfo(info);
+	}
 
+	@Override
+	public int deleteBoardManageInfo(BoardManageInfo info) throws SQLException {
+		return dao.deleteBoardManageInfo(info);
+	}
+
+	@Override
+	public void insertBoardManageInfo(BoardManageInfo info) throws SQLException {
+		dao.insertBoardManageInfo(info);
+	}
 }
