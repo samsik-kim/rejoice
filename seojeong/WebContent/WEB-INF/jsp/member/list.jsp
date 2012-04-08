@@ -22,12 +22,15 @@ $(document).ready(function(){
 		var delArr = document.getElementsByName("delch");
 		var delValues = "";
 		for(var i=0; i<delArr.length; i++){
-			delValues += delArr[i].value + ",";
+			if(delArr[i].checked){
+				delValues += delArr[i].value + ",";
+			}
 		}
 		if(confirm("삭제 하시겠습니까?")){
 			$("#delVal").val(delValues);
 			$("#searchFrm").attr('action','/member/delete.do') ;
 			$("#searchFrm").submit();
+			pageLoadAjaxListInner("searchFrm", "innerList", "/member/ajaxlistInner.do"); // 리스트 호출
 		}
 	});
 	
