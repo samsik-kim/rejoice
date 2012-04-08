@@ -50,26 +50,25 @@ public class MemberController {
 	 */
 	@RequestMapping("/member/list.do")
 	public ModelAndView memberList(HttpServletRequest request, @ModelAttribute MemberInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView();
-		int currentPage = Integer.parseInt(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
-		int pageUnit = 10; // 페이지를 보여줄 갯수
-		int pageSize = 20; // 한페이지에 보여줄 게시물수
-		PageInfo pageInfo = new PageInfo(request, currentPage, pageUnit, pageSize);
-		pageInfo = service.selectMemberList(pageInfo, info);
-		mav.addObject("pageInfo", pageInfo);
-//		if(info.getStDt() != null || !"".equals(info.getStDt())){
-//			String stDt = info.getStDt().substring(0,4) + "-" + info.getStDt().substring(4,6) +"-"+info.getStDt().substring(6);
-//			info.setStDt(stDt);
-//		}
-//		if(info.getEnDt() != null || !"".equals(info.getEnDt())){
-//			String enDt = info.getEnDt().substring(0,4) + "-" + info.getEnDt().substring(4,6) +"-"+info.getEnDt().substring(6);
-//			info.setEnDt(enDt);
-//		}
-		mav.addObject("info", info);
-		mav.setViewName("member/list");
+		ModelAndView mav = new ModelAndView("member/list");
 		return mav;
 	}
 
+	@RequestMapping("/member/ajaxlistInner.do")
+	public ModelAndView memberListInner(HttpServletRequest request, @ModelAttribute MemberInfo info)throws Exception{
+		ModelAndView mav = new ModelAndView();
+		int currentPage = Integer.parseInt(StringUtils.nvlStr(request.getParameter("currentPage"), "1"));
+		int pageUnit = 10; // 페이지를 보여줄 갯수
+		int pageSize = 5; // 한페이지에 보여줄 게시물수
+		PageInfo pageInfo = new PageInfo(request, currentPage, pageUnit, pageSize);
+		pageInfo = service.selectMemberList(pageInfo, info);
+		mav.addObject("pageInfo", pageInfo);
+		mav.addObject("info", info);
+		mav.setViewName("member/listInner");
+		return mav;
+	}
+	
+	
 	/**
 	 * @param request
 	 * @param info
@@ -148,10 +147,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/excel.do")
-	public ModelAndView excelExportForm(HttpServletRequest req) throws Exception {
-		MemberInfo info = new MemberInfo();
-		info.setStDt(req.getParameter("stDt"));
-		info.setEnDt(req.getParameter("enDt"));
+	public ModelAndView excelExportForm(HttpServletRequest req, @ModelAttribute MemberInfo info) throws Exception {
 		List list = service.selectExcel(info);
 		Map model = new HashMap();
 		String[] header = {"고객명", "전화번호"};

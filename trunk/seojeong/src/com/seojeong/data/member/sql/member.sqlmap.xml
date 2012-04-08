@@ -24,6 +24,7 @@
 						VST_DT AS vstDt,
 						REPLACE(VST_DT,'-', '') AS searchDt
 					FROM MEMBER
+					ORDER BY REG_DT desc
 				) A
 				WHERE 1=1
 				<dynamic>
@@ -46,7 +47,6 @@
 					<![CDATA[	AND searchDt <= #enDt# ]]>
 					</isNotEmpty>
 				</dynamic>	
-				ORDER BY seq
 			) x
 		<![CDATA[
 			WHERE ROWNUM <= #endNum#
@@ -59,6 +59,27 @@
 		SELECT 
 			COUNT(*)
 		FROM MEMBER
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty property="searchKey">
+				<isEqual property="searchKey" compareValue="nm">
+					<isNotEmpty property="searchValue">
+						AND MEMBER_NM LIKE '%'||#searchValue#||'%'
+					</isNotEmpty>
+				</isEqual>
+				<isEqual property="searchKey" compareValue="mdn">
+					<isNotEmpty property="searchValue">
+						AND MDN LIKE '%'||#searchValue#||'%'
+					</isNotEmpty>
+				</isEqual>
+			</isNotEmpty>
+			<isNotEmpty property="stDt">
+			<![CDATA[	AND REPLACE(VST_DT,'-', '') >= #stDt# ]]> 
+			</isNotEmpty>
+			<isNotEmpty property="enDt">
+			<![CDATA[	AND REPLACE(VST_DT,'-', '') <= #enDt# ]]>
+			</isNotEmpty>
+		</dynamic>	
 	</select>
 	
 	<select id="selectMdnCheck" resultClass="int" parameterClass="java.lang.String">
@@ -105,7 +126,8 @@
 			VST_CNT,
 			REG_DT,
 			UP_DT,
-			VST_DT
+			VST_DT,
+			WIN_CNT
 		) VALUES (
 			#seq#,
 			#memberNm#,
@@ -113,10 +135,11 @@
 			#contanct#,
 			#addr#,
 			#email#,
-			'1',
+			#vstCnt#,
 			SYSDATE,
 			SYSDATE,
-			#vstDt#
+			#vstDt#,
+			#winCnt#
 		)
 	</insert>
 	
@@ -144,24 +167,49 @@
 	</delete>
 	
 	<select id="selectExcel" resultClass="java.util.HashMap" parameterClass="info">
-		SELECT A.* FROM(
+		SELECT y.* FROM(
 			SELECT 
-				MEMBER_SEQ	AS seq,
-				MEMBER_NM	AS memberNm,
-				MDN AS mdn,
-				REPLACE(VST_DT,'-', '') AS searchDt
-			FROM MEMBER
-		) A
-		WHERE 1=1
-		<dynamic>
-			<isNotEmpty property="stDt">
-		<![CDATA[	AND searchDt >= #stDt# ]]> 
-			</isNotEmpty>
-			<isNotEmpty property="enDt">
-		<![CDATA[	AND searchDt <= #enDt# ]]>
-			</isNotEmpty>
-		</dynamic>	
-		ORDER BY seq
+				ROWNUM as rnum, x.*
+			FROM(
+				SELECT A.* FROM(
+					SELECT 
+						MEMBER_SEQ	AS seq,
+						MEMBER_NM	AS memberNm,
+						NVL2(MDN, SUBSTR(MDN, 0, 3) || '-' || SUBSTR(MDN, 3, 4)|| '-' || SUBSTR(MDN, 8), '')AS mdn,
+						CONTANCT	AS contanct,
+						ADDR		AS addr,
+						EMAIL		AS email,
+						VST_CNT		AS vstCnt,
+						WIN_CNT		AS winCnt,
+						TO_CHAR(REG_DT,'YYYY-MM-DD')AS regDt,
+						VST_DT AS vstDt,
+						REPLACE(VST_DT,'-', '') AS searchDt
+					FROM MEMBER
+					ORDER BY REG_DT desc
+				) A
+				WHERE 1=1
+				<dynamic>
+					<isNotEmpty property="searchKey">
+						<isEqual property="searchKey" compareValue="nm">
+							<isNotEmpty property="searchValue">
+								AND memberNm LIKE '%'||#searchValue#||'%'
+							</isNotEmpty>
+						</isEqual>
+						<isEqual property="searchKey" compareValue="mdn">
+							<isNotEmpty property="searchValue">
+								AND mdn LIKE '%'||#searchValue#||'%'
+							</isNotEmpty>
+						</isEqual>
+					</isNotEmpty>
+					<isNotEmpty property="stDt">
+					<![CDATA[	AND searchDt >= #stDt# ]]> 
+					</isNotEmpty>
+					<isNotEmpty property="enDt">
+					<![CDATA[	AND searchDt <= #enDt# ]]>
+					</isNotEmpty>
+				</dynamic>	
+			) x
+		) y
 	</select>
 	
 </sqlMap>

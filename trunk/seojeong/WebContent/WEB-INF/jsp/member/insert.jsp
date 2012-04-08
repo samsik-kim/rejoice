@@ -88,6 +88,23 @@ $(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
+				<th scope="row"><span>*</span> 당첨횟수</th>
+				<td>
+					<input type="text" id="winCnt" name="winCnt" class="w180" value="0"
+					v:mustnum m:mustnum="당첨횟수를 숫자로만 입력하세요."/>&nbsp;
+					<span class="txtcolor01"> &nbsp;* 숫자로만 입력해 주세요.</span>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><span>*</span> 방문횟수</th>
+				<td>
+					<input type="text" id="vstCnt" name="vstCnt" class="w180" value="1"
+					v:required='trim' m:required="방문횟수를 입력하십시오."
+					v:mustnum m:mustnum="방문횟수를 숫자로만 입력하세요."/>&nbsp;
+					<span class="txtcolor01"> &nbsp;* 숫자로만 입력해 주세요.</span>
+				</td>
+			</tr>
+			<tr>
 				<th scope="row" class="tit03">이메일</th>
 				<td>
 					<input type="text" id="email" name="email" class="w180"
@@ -105,5 +122,5 @@ $(document).ready(function(){
 		<a href="#"><img id="regBtn" src="/resource/images/common/btn_inner_ok3.gif" alt="등록" /></a>
 		<a href="#"><img id="cancelBtn" src="/resource/images/common/btn_cancel2.gif" alt="취소" /></a>
 	</div>
-</form>				
+</form>			
 </div>
