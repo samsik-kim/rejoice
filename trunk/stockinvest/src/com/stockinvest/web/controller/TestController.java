@@ -139,19 +139,23 @@ public class TestController {
 	 * @param response HttpServletResponse 객체
 	 * @return 다운로드 요청된 파일과 다운로드View 정보를 가진 ModelAndView객체
 	 */
-	@RequestMapping("/display/fileDownload.do")
+	@RequestMapping("/test/fileDownload.do")
 	public ModelAndView fileDown(HttpServletRequest request, HttpServletResponse response){
-		String fileType = StringUtils.nvlStr(request.getParameter("fileType"), "xls");
-		String fileName = StringUtils.nvlStr(request.getParameter("fileName"), "");
-		//파일의 경로 지정
-		String filePath = config.getString("upload.img.dir"); 
-		filePath += config.getString("upload.file.display.event." + fileType + ".path") + "/";	
+//		String fileType = StringUtils.nvlStr(request.getParameter("fileType"), "xls");
+//		String fileName = StringUtils.nvlStr(request.getParameter("fileName"), "");
+//		//파일의 경로 지정
+//		String filePath = config.getString("upload.img.dir"); 
+//		filePath += config.getString("upload.file.display.event." + fileType + ".path") + "/";
+		
+		String fileName = "20120404044001_7493465743210584880.gif";
+		String filePath = config.getString("uploadTempDir") + "/" + config.getString("board.dir");
 		
 		ModelAndView mav =new ModelAndView();
 		if(!"".equals(fileName)){	
 			//파일 객체에 다운받을 파일의 경로와 파일의 이름을 넣어서 생성
-			File downFile = new File(filePath,fileName);	
-			mav.setViewName("fileDownload");	
+			File downFile = new File(filePath,fileName);
+			//setViewName => bean id 
+			mav.setViewName("downloadView");	
 			mav.addObject("downloadFile", downFile);
 			mav.addObject("fileName", fileName);	
 			
