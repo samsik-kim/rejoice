@@ -142,12 +142,8 @@ public class CodeController {
 	
 	@RequestMapping("/code/codeDelete.do")
 	public ModelAndView deleteCode(HttpServletRequest request, @ModelAttribute("setCodeInfo") CodeInfo info)throws Exception{
-		ModelAndView mav = new ModelAndView("jsonView");
-		JSONObject jsonObject = new JSONObject();
-		int result = service.deleteCodeInfo(info);
-		info.setResultCode(result > 0 ? "SUCCESS" : "FAIL");
-		jsonObject.put("result", info.getResultCode());
-		mav.addObject("jsonObject", jsonObject);
+		ModelAndView mav = new ModelAndView("redirect:/code/codeList.do");
+		service.deleteCodeInfo(info);
 		return mav;
 	}
 	

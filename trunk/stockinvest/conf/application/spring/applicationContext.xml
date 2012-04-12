@@ -75,6 +75,8 @@
 		</constructor-arg>	
 	</bean>
 	
+	<bean id="downloadView" class="com.stockinvest.common.util.FileDownload"/>
+	
 	
 	<!-- Message (CP사)용도 시작 -->
 	<bean id="messageSource"

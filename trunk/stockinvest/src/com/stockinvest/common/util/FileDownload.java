@@ -50,6 +50,7 @@ public class FileDownload extends AbstractView{
 			if (fis != null)	fis.close();				
 		}
 
+		out.flush();//check
     }
 	
 

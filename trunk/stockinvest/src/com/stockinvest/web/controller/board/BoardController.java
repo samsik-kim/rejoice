@@ -1,5 +1,6 @@
 package com.stockinvest.web.controller.board;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -127,7 +129,7 @@ public class BoardController {
 	@RequestMapping("/board/boardInsert.do")
 	public ModelAndView insertBoard(HttpServletRequest request, @ModelAttribute("setBoardInfo") BoardInfo info)throws Exception{
 		
-		String savePath = config.getString("uploadTempDir");
+		String savePath = config.getString("board.dir");
 		String allowExt = "swf,gif,jpg,png,jpeg";
 		
 		ArrayList<HashMap> fileData = new FileUpload().upload(request, savePath, allowExt);
@@ -136,8 +138,8 @@ public class BoardController {
 		String resultCode = ""; // 00 성공
 		String resultMessage = ""; // 
 		String inputName = "";// input 태그 이름
-		String fileRealName = ""; // 저장된 파일명
-		String fileOrgName = ""; // 원본 파일명
+		String fileRealName = " "; // 저장된 파일명
+		String fileOrgName = " "; // 원본 파일명
 		String fileSize = ""; // 파일용량
 
 		for (int i = 0; i < fileData.size(); i++) {
@@ -159,7 +161,8 @@ public class BoardController {
 			logger.debug("==========================================================");
 		}		
 		
-		
+		info.setFile2(fileRealName);
+		info.setFile3(fileOrgName);		
 		String redirectUrl = "redirect:/board/boardList.do?bbsCd="+info.getBbsCd();
 		ModelAndView mav = new ModelAndView(redirectUrl);
 		info.setContent(request.getParameter("CONTENT"));
@@ -181,6 +184,44 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView(redirectUrl);
 		info.setDelArr(info.getDelVal().split(","));
 		service.deleteBoardInfo(info);
+		return mav;
+	}
+	
+	/** 
+	 * <pre>
+	 * 파일 다운로드
+	 * 다운로드 요청된 파일의 정보를 서비스 객체를 통해 얻어오고,
+	 * 얻어온 파일정보 객체를 ModelAndView에 셋팅해서 리턴한다.
+	 * </pre>
+	 * @param request HttpServletRequest 객체
+	 * @param response HttpServletResponse 객체
+	 * @return 다운로드 요청된 파일과 다운로드View 정보를 가진 ModelAndView객체
+	 */
+	@RequestMapping("/board/fileDownload.do")
+	public ModelAndView fileDown(HttpServletRequest request, HttpServletResponse response){
+		String getFile2 = StringUtils.nvlStr(request.getParameter("file2")); //실제파일명
+ 		
+//		int lastIndex = getFile2.lastIndexOf(".");
+		String fileName = getFile2;//getFile2.substring(0,lastIndex); //파일명
+//		String fileType = fileInfo[1]; //확장자명
+		//String fileType = StringUtils.nvlStr(request.getParameter("fileType"), "xls");
+		//String fileName = StringUtils.nvlStr(request.getParameter("fileName"), "");
+		//파일의 경로 지정
+		String filePath = config.getString("uploadTempDir")+"/"+config.getString("board.dir"); 
+		ModelAndView mav =new ModelAndView();
+		if(!"".equals(fileName)){	
+			//파일 객체에 다운받을 파일의 경로와 파일의 이름을 넣어서 생성
+			File downFile = new File(filePath,fileName);
+			mav.setViewName("fileDownload");	
+			mav.addObject("downloadFile", downFile);
+			mav.addObject("fileName", fileName);	
+			
+			if(logger.isDebugEnabled()){
+				logger.debug(">>>File DownLoad :  " + fileName + " : " + downFile.getPath() );
+			}
+					
+		}
+		
 		return mav;
 	}
 	

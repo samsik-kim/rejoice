@@ -28,6 +28,14 @@ $(document).ready(function(){
 		}
 	});
 	
+	$('#deleteBtn').click(function(){
+		if(!confirm('정말 삭제하시겠습니까?')) return;
+		
+		$("#modifyFrm").attr('action','/code/codeDelete.do') ;
+		$("#modifyFrm").submit();		
+	});
+	
+	
 });
 </script>
 <div class="tstyleA">
@@ -86,6 +94,7 @@ $(document).ready(function(){
 	<br/>
 	<div class="btnarea">
 		<a href="#"><img id="modifyBtn" src="/resource/images/common/btn_inner_change.gif" alt="수정" /></a>
+		<a href="#"><img id="deleteBtn" src="/resource/images/common/btn_inner_delete.gif" alt="삭제" /></a>
 		<a href="#"><img id="listBtn" src="/resource/images/common/btn_cancel2.gif" alt="목록" /></a>
 	</div>
 </form>				
