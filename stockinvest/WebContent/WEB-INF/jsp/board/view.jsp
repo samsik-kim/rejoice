@@ -41,6 +41,13 @@ $(document).ready(function() {
 		}
 	});		
 });
+
+function fn_download() {
+	$("#modifyFrm").attr('action','/board/fileDownload.do') ;
+	$("#modifyFrm").submit();	
+}
+
+
 </script>
 
 <form name="modifyFrm" id="modifyFrm" method="post" enctype="multipart/form-data">
@@ -50,7 +57,9 @@ $(document).ready(function() {
 <input type="hidden" name="searchKey" id="searchKey" value="${info.searchKey}" />								
 <input type="hidden" name="searchValue" id="searchValue" value="${info.searchValue}" />
 <input type="hidden" name="bbsCd" id="bbsCd" value="${info.bbsCd}" />
-	<table summary="게시판 기본정보 입력 항목입니다" border="2">
+<input type="hidden" name="file2" id="file2" value="${info.file2}"/>
+<input type="hidden" name="file3" id="file3" value="${info.file3}"/>
+	<table summary="게시판 기본정보 입력 항목입니다">
 		<caption>게시판 입력 항목</caption>
 		<colgroup>
 			<col width="15%" />
@@ -77,6 +86,11 @@ $(document).ready(function() {
 				<td>
 					<input type="text" id="subject" name="subject" class="w280" 
 					v:required='trim' m:required="제목을 입력하십시오." value="${info.subject}"/>&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" align="left">&nbsp;&nbsp;파일</th>
+				<td><a href="#" onclick="javascript:fn_download();">${info.file3}</a>
 				</td>
 			</tr>
 			<tr>

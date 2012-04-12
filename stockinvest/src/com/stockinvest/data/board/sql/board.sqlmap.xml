@@ -160,7 +160,9 @@
 			CODE_NUM	AS CODENUM,
 			SUBJECT		AS SUBJECT,
 			CONTENT		AS CONTENT,
-			CRT_DATE	AS CRTDATE
+			CRT_DATE	AS CRTDATE,
+			FILE2       AS FILE2,
+			FILE3       AS FILE3
 		FROM BOARD
 		WHERE 1=1
 		AND BBS_CD = #bbsCd#
@@ -179,8 +181,8 @@
 		INSERT INTO BOARD(SEQ_NO , CRT_DATE, BBS_CD, CODE_NUM, CODE_NAME, 
 		                  SUBJECT, CONTENT, FILE2,    DEL_YN,  VCOUNTER, 
 		                 LIST_NUM, REF, RE_LEVEL, PAR_NO, EMAIL,FILE3
-		) VALUES (#seqNo#,DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),#bbsCd#,#codeNum#,#codeName#,#subject#,#content#,'','N',0,
-		0,0,0,0,'',''	
+		) VALUES (#seqNo#,DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),#bbsCd#,#codeNum#,#codeName#,#subject#,#content#,#file2#,'N',0,
+		0,0,0,0,'',#file3#	
 		)
 	</insert>
 	

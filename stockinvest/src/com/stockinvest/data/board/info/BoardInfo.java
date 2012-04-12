@@ -17,8 +17,8 @@ public class BoardInfo extends CommonInfo implements Serializable{
 	private String subject;
 	private String content;
 	private String file1;
-	private String file2;
-	private String file3;
+	private String file2; //저장된파일명
+	private String file3; //원본명
 	private String passWd;
 	private String crtDate;
 	private String udtDate;
