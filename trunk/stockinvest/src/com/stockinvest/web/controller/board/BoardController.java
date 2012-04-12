@@ -212,7 +212,7 @@ public class BoardController {
 		if(!"".equals(fileName)){	
 			//파일 객체에 다운받을 파일의 경로와 파일의 이름을 넣어서 생성
 			File downFile = new File(filePath,fileName);
-			mav.setViewName("fileDownload");	
+			mav.setViewName("downloadView");	
 			mav.addObject("downloadFile", downFile);
 			mav.addObject("fileName", fileName);	
 			
