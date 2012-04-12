@@ -6,6 +6,10 @@ $(document).ready(function() {
 		$("#testFrm").submit();
 	});
 });
+
+function fileDown(){
+	location.href = "/test/fileDownload.do";
+}
 </script>
 <form name="testFrm" id="testFrm" method="post" enctype="multipart/form-data">
 <div>
@@ -23,3 +27,6 @@ CKEDITOR.replace('CONTENT');
 	<input type="hidden" name="atchFileNm" value=""/>
 	<input type="file" id="atchFile" name="atchFile"/>
 </form>
+<div>
+<a href="#" class="sbutton" onclick="javascript:fileDown()">다운받기</a>
+</div>

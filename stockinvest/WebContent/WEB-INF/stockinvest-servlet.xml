@@ -53,6 +53,8 @@
 				<value>/loginForm.do</value>
 				<value>/loginCheck.do</value>
 				<value>/logOut.do</value>
+				<value>/test/test.do</value>
+				<value>/test/fileDownload.do</value>
 			</list>
 		</property>
 		<property name="interceptors">
