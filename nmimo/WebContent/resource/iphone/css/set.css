@@ -1,0 +1,82 @@
+body
+{
+background: url(../images/templete/main_bg.gif) background-repeat:repeat-x ;
+margin-left: 0px;
+margin-top: 0px;
+margin-right: 0px;
+margin-bottom: 0px;
+scrollbar-face-color: #d1d1d1;
+scrollbar-shadow-color: #cccccc;
+scrollbar-highlight-color: #f1f1f1;
+scrollbar-3dlight-color: #ffffff;
+scrollbar-darkshadow-color: #ffffff;
+scrollbar-track-color: #f1f1f1;
+scrollbar-arrow-color: #333333;
+} 
+
+form { margin : 0px;}
+
+P {
+  margin-top:2px;
+  margin-bottom:2px;
+}
+
+td {
+	font-size: 9pt;
+	text-decoration: none; 
+	line-height:160%;
+	font-family:����;
+	color:#747070;
+}
+
+.hp_top_bg{ background-repeat:repeat-x;padding:0px 0px 0px 26px;vertical-align:bottom;text-align:left;}
+.hp_mid_bg{ background-repeat:repeat-x;padding:0px 0px 0px 0px;text-align:center;vertical-align:top;}
+.hp_bom_bg{background-repeat:repeat-x;padding:0px 0px 0px 20px;text-align:left;vertical-align:top;}
+.msg_length{background:#dce1e5;width:219px;height:20px;padding:5px 0px 0px 0px;color:#504f4d;font-size:11px;}
+.msg_length1{background:#dce1e5;width:230px;height:20px;padding:5px 0px 0px 0px;color:#504f4d;font-size:11px;}
+.msg_red{color:#ec3635;font-weight:bold;}
+/*.spc_bg{background-image:url(images_n/ico_spc_bg.gif); background-repeat:no-repeat;width:16px;height:19px;text-align:center;cursor:hand;color:#000000;}*/
+.msg_font_color{width:11px;height:12px;cursor:hand;}
+.msg_info_text{color:#ffffff;font-size:11px;letter-spacing:-1px;line-height:130%;}
+.popup_start1{color: #e3716a;cursor:hand;}
+
+/*사전예약 Layer Style*/
+#reservation_div1 {position:absolute; left:0px; top:140px; width:100%; height:1030px;background-color:#000000;z-index:1;}  
+#reservation_div1 {filter:alpha(opacity=50);-ms-filter: alpha(opacity=50);-khtml-opacity: 0.5;-moz-opacity: 0.5;opacity: 0.5;}  
+#reservation_div2 {background-color:#FFFFFF; width:300px; height:80px; position:absolute; top:240px; left:expression((document.body.clientWidth/2)-160); top:300px; z-index:1;}
+.msg_con_title{background:#eaeaea;text-align:center;font-weight:bold;height:30px;color: #242424;}
+
+#hidden_div_step1 {position:absolute; left:0px; top:0px; width:0px; height:0px;background-color:#000000;z-index:1;}  
+#hidden_div_step1 {filter:alpha(opacity=50);-ms-filter: alpha(opacity=50);-khtml-opacity: 0.5;-moz-opacity: 0.5;opacity: 0.5;}  
+
+#hidden_div_step2 {position:absolute; left:0px; top:0px; width:0px; height:0px;background-color:#000000;z-index:1;}  
+#hidden_div_step2 {filter:alpha(opacity=50);-ms-filter: alpha(opacity=50);-khtml-opacity: 0.5;-moz-opacity: 0.5;opacity: 0.5;}  
+
+#hidden_div_step3 {position:absolute; left:0px; top:0px; width:0px; height:0px;background-color:#000000;z-index:1;}  
+#hidden_div_step3 {filter:alpha(opacity=50);-ms-filter: alpha(opacity=50);-khtml-opacity: 0.5;-moz-opacity: 0.5;opacity: 0.5;}  
+
+
+
+A.spcicon:link
+{
+	color:#000000;
+    TEXT-DECORATION: none
+}
+A.spcicon:active
+{
+	color:#000000;
+    TEXT-DECORATION: none
+}
+A.spcicon:visited
+{
+	color:#000000;
+    TEXT-DECORATION: none
+}
+A.spcicon:hover
+{
+	color:#000000;
+    TEXT-DECORATION: none
+}
+.spc_bg{}
+table ul.spc  { padding:0; margin:0 0 0 3px}
+table li {list-style:none;float:left;background-image:url(../images/ico_spc_bg.gif); background-repeat:no-repeat;width:16px;height:19px;text-align:center;cursor:hand;color:#000000; margin-right:3px }

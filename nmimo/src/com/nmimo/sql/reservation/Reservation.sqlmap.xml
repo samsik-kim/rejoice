@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="reservation">
+
+	<typeAlias alias="reservationInfo" type="com.nmimo.data.reservation.info.ReservationInfo" />
+	
+	<!-- 사전예약 -->
+	<select id="selectBfacList" parameterClass="reservationInfo" resultClass="reservationInfo">
+		SELECT x.*
+			FROM (
+				SELECT 
+					BFAC_REG_SEQ		AS "bfacRegSeq",		
+					USER_NM			    AS "userNm",		
+					USER_DEPT_NM		AS "userDeptNm",		
+					WRK_NM			    AS "wrkNm",		
+					DSP_RSRV_DATE		AS "dspRsrvDate",		
+					CRET_DT			    AS "cretDt",		
+					DSP_SBST			AS "dspSbst",		
+					RCV_TGT_SBST		AS "rcvTgtSbst",		
+					APV_STTUS_VAL		AS "apvSttusVal",		
+					RSRV_NO			    AS "rsrvNo",		
+					USE_YN			    AS "useYn",		
+					RCESS_WHY_SBST		AS "rcessWhySbst",		
+					MSG_TYPE_VAL		AS "msgTypeVal",		
+					DSP_CASCNT			AS "dspCascnt",	
+					CRETR_ID            AS "cretrId"
+				FROM  BFAC_REG_BAS 
+				WHERE 1=1
+				<isNotEmpty property="searchStr" prepend="AND"> 
+			    	<isEqual property="searchType" compareValue="1">
+				    		WRK_NM ILIKE '%' ||#searchStr#|| '%'
+			    	</isEqual>
+			    	<isEqual property="searchType" compareValue="2">
+				    		CRETR_ID ILIKE '%' ||#searchStr#|| '%'
+			    	</isEqual>
+	    		</isNotEmpty>
+	    		ORDER BY CRET_DT DESC 
+			) x
+		LIMIT #pageGroupSize# OFFSET #startNum#	
+	</select>
+	
+	<select id="selectTotalBfac" parameterClass="reservationInfo" resultClass="int">
+		SELECT COUNT(*) AS CNT 
+			FROM BFAC_REG_BAS
+		WHERE 1=1
+		<isNotEmpty property="searchStr" prepend="AND"> 
+	    	<isEqual property="searchType" compareValue="1">
+		    		WRK_NM ILIKE '%' ||#searchStr#|| '%'
+	    	</isEqual>
+	    	<isEqual property="searchType" compareValue="2">
+		    		CRETR_ID ILIKE '%' ||#searchStr#|| '%'
+	    	</isEqual>
+   		</isNotEmpty>			
+	</select>
+	
+	<select id="selectBfacDetail" parameterClass="int" resultClass="reservationInfo">
+		SELECT 
+				BFAC_REG_SEQ		AS "bfacRegSeq",		
+				USER_NM			    AS "userNm",		
+				USER_DEPT_NM		AS "userDeptNm",		
+				WRK_NM			    AS "wrkNm",		
+				DSP_RSRV_DATE		AS "dspRsrvDate",		
+				CRET_DT			    AS "cretDt",		
+				DSP_SBST			AS "dspSbst",		
+				RCV_TGT_SBST		AS "rcvTgtSbst",		
+				APV_STTUS_VAL		AS "apvSttusVal",		
+				RSRV_NO			    AS "rsrvNo",		
+				USE_YN			    AS "useYn",		
+				RCESS_WHY_SBST		AS "rcessWhySbst",		
+				MSG_TYPE_VAL		AS "msgTypeVal",		
+				DSP_CASCNT			AS "dspCascnt",	
+				CRETR_ID            AS "cretrId"
+			FROM  BFAC_REG_BAS
+		WHERE BFAC_REG_SEQ = #bfacRegSeq#
+	</select>
+	
+</sqlMap>

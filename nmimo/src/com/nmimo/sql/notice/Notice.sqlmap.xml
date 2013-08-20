@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="notice">
+	
+	<typeAlias alias="noticeInfo" type="com.nmimo.data.notice.info.NoticeInfo" />
+
+	<sql id="noticeColumns">
+		NTF_SEQ			    AS "ntfSeq",		
+		USER_NM			    AS "userNm",		
+		CRETR_ID			AS "cretrId",		
+		TITLE_NM			AS "titleNm",		
+		NTF_SBST			AS "ntfSbst",		
+		ATC_FILE_NM			AS "atcFileNm",	
+		RETV_TMSCNT			AS "retvTmscnt",	
+		CRET_DT			    AS "cretDt",		
+		AMD_DT			    AS "amdDt",		
+		POPUP_YN			AS "popupYn",		
+		POPUP_FNS_DATE      AS "popupFnsDate"
+	</sql>
+	
+	<select id="selectNoticeList" parameterClass="noticeInfo" resultClass="noticeInfo">
+		SELECT x.*
+			FROM (
+				SELECT 
+				   	 <include refid="noticeColumns"/>
+				FROM  NTF_BAS 
+				WHERE 1=1
+				<isNotEmpty property="searchStr" prepend="AND"> 
+			    	<isEqual property="searchType" compareValue="1">
+				    		TITLE_NM ILIKE '%' ||#searchStr#|| '%'
+			    	</isEqual>
+			    	<isEqual property="searchType" compareValue="2">
+				    		NTF_SBST ILIKE '%' ||#searchStr#|| '%
+			    	</isEqual>
+	    		</isNotEmpty>
+	    		ORDER BY CRET_DT DESC 
+			) x
+		LIMIT #pageGroupSize# OFFSET #startNum#	
+	</select>
+	
+	<select id="selectTotalNotice" parameterClass="noticeInfo" resultClass="int">
+		SELECT COUNT(*) AS CNT 
+			FROM NTF_BAS
+		WHERE 1=1
+			<isNotEmpty property="searchStr" prepend="AND"> 
+		    	<isEqual property="searchType" compareValue="1">
+			    		MSG_TITLE_NM ILIKE '%' ||#searchStr#|| '%'
+		    	</isEqual>
+		    	<isEqual property="searchType" compareValue="2">
+			    		NTF_SBST ILIKE '%' ||#searchStr#|| '%
+		    	</isEqual>
+	    	</isNotEmpty>	
+	</select>
+	
+	<select id="selectNoticeDetail" parameterClass="int" resultClass="noticeInfo">
+		SELECT 
+		   	 <include refid="noticeColumns"/>
+			FROM  NTF_BAS 
+		WHERE NTF_SEQ = #ntfSeq#
+	</select>
+</sqlMap>

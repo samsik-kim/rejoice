@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="user">
+	
+	<typeAlias alias="userInfo" type="com.nmimo.data.user.info.UserInfo" />
+	<typeAlias alias="userBasInfo" type="com.nmimo.data.user.info.UserBasInfo" />
+	
+	<sql id="userBasColums">
+		USER_ID			                  AS "userId",
+		USER_PWD			              AS "userPwd",
+		USER_NM			                  AS "userNm",
+		USER_RLVN_DEPT_NM			      AS "userRlvnDeptNm",
+		BAS_APVR_ID			              AS "basApvrId",
+		BAS_APVR_NM			              AS "basApvrNm",
+		GENL_TEL_NO			              AS "genlTelNo",
+		MPHON_NO			              AS "mphonNo",
+		EMAIL_ADR			              AS "emailAdr",
+		IPADR			                  AS "ipadr",
+		CRET_DT			                  AS "cretDt",
+		APV_DT			                  AS "apvDt",
+		AMD_DT			                  AS "amdDt",
+		USE_POSBL_ST_DT			          AS "usePosblStDt",
+		USE_POSBL_FNS_DT			      AS "usePosblFnsDt",
+		USER_AUT_VAL			          AS "userAutVal",
+		USER_STTUS_VAL			          AS "userSttusVal",
+		PWD_CHG_DT			              AS "pwdChgDt",
+		TST_TRM_1_NO			          AS "tstTrm1No",
+		TST_TRM_2_NO			          AS "tstTrm2No",
+		TST_TRM_3_NO			          AS "tstTrm3No",
+		TST_TRM_4_NO			          AS "tstTrm4No",
+		PWD_CHG_YN			              AS "pwdChgYn",
+		PWD_AES_ECOD_USG_KEY_VAL          AS "pwdAesEcodUsgKeyVal"
+	</sql>
+	
+	<select id="selectUserBasList" parameterClass="userBasInfo" resultClass="userBasInfo">
+		SELECT x.*
+			FROM (
+				SELECT 
+				   	 <include refid="userBasColums"/>
+				FROM  USER_BAS 
+			<isEqual property="userAutVal" compareValue="1">
+				WHERE USER_AUT_VAL = 'CU'
+			</isEqual>
+			<isEqual property="userAutVal" compareValue="2">
+				WHERE USER_AUT_VAL IN ('CC1','CC2','CC3','SC')
+			</isEqual>
+			<isEqual property="userAutVal" compareValue="3">
+				WHERE USER_AUT_VAL IN ('MA','DV','AD','KT')
+			</isEqual>
+
+			<isNotEmpty property="searchStr" prepend="AND"> 
+		    	<isEqual property="searchType" compareValue="1">
+			    	USER_ID = #searchStr#
+		    	</isEqual>
+		    	<isEqual property="searchType" compareValue="2">
+			    	USER_NM LIKE '%' ||#searchStr#|| '%'
+		    	</isEqual>
+    		</isNotEmpty>
+    		
+	    		AND USER_STTUS_VAL != 'E'
+	    		ORDER BY CRET_DT DESC 
+			) x
+		LIMIT #pageGroupSize# OFFSET #startNum#	
+	</select>
+	
+	<select id="selectTotalUser" parameterClass="userBasInfo" resultClass="int">
+		SELECT COUNT(*) AS CNT 
+			FROM USER_BAS
+			
+		<isEqual property="userAutVal" compareValue="1">
+			WHERE USER_AUT_VAL = 'CU'
+		</isEqual>
+		<isEqual property="userAutVal" compareValue="2">
+			WHERE USER_AUT_VAL IN ('CC1','CC2','CC3','SC')
+		</isEqual>
+		<isEqual property="userAutVal" compareValue="3">
+				WHERE USER_AUT_VAL IN ('MA','DV','AD','KT')
+		</isEqual>			
+		<isNotEmpty property="searchStr" prepend="AND"> 
+	    	<isEqual property="searchType" compareValue="1">
+	    		USER_ID = #searchStr#
+	    	</isEqual>
+	    	<isEqual property="searchType" compareValue="2">
+	    		USER_NM ILIKE '%' ||#searchStr#|| '%'
+	    	</isEqual>
+   		</isNotEmpty>		
+	</select>
+	
+	<select id="selectUserDetail" parameterClass="userBasInfo" resultClass="userBasInfo">
+		SELECT 
+			<include refid="userBasColums"/>
+		FROM USER_BAS
+		WHERE USER_ID = #userId#
+	</select>
+	
+	<!-- 로그인 처리 -->
+	<select id="selectUserLoginChk" parameterClass="userBasInfo" resultClass="userBasInfo">
+		SELECT	
+ 			<include refid="userBasColums"/>
+		FROM	USER_BAS
+		WHERE USER_ID = #userId#
+		AND	  USER_PWD = #userPwd#
+		<!-- 승인된 사용자 검색 추가 -->
+	</select>
+	
+	<!-- 로그인검증 -->
+	<select id="selectUserLoginAesKey" parameterClass="userInfo" resultClass="String">
+		SELECT	
+			PWD_KEY
+		FROM	COMM_USERINFO
+		WHERE USERID = #userId#
+	</select>
+
+	<select id="test" resultClass="String">
+		select emp_no from IDMS_USERINFO where emp_no ='S200860776'
+	</select>
+	
+	<!-- 로그인화면 > 사용자신청 > IDMS 사용자정보   -->
+	<select id="selectIdmsUserDetail" parameterClass="userBasInfo" resultClass="userBasInfo">
+		SELECT 
+			JOB_NM			AS "userRlvnDeptNm",
+			EMP_NM			AS "userNm",
+			NOR_TEL_NO		AS "genlTelNo",
+			HANDPHONE_NO	AS "mphonNo",
+			MAILID			AS "emailAdr"
+		FROM IDMS_USERINFO
+		WHERE NEW_EMP_NO = #userId#
+	</select>
+	
+	<!-- 로그인화면 > 사용자신청 > 등록  -->
+	<update id="insertRegisterUserInfo"  parameterClass="userBasInfo">
+		INSERT INTO USER_BAS 
+		(  
+			USER_ID,			        
+			USER_PWD,			    
+			USER_NM	,		        
+			USER_RLVN_DEPT_NM,		
+		<isNotEmpty  property="genlTelNo">
+			GENL_TEL_NO,
+		</isNotEmpty>			    
+		<isNotEmpty  property="mphonNo">
+			MPHON_NO,
+	    </isNotEmpty>
+		<isNotEmpty  property="emailAdr">		
+			EMAIL_ADR,
+		</isNotEmpty>						    
+			CRET_DT,			        
+			USER_AUT_VAL,			
+			USER_STTUS_VAL,			
+			PWD_CHG_DT			    
+		)
+		VALUES
+		(
+			#userId#,			        
+			#userPwd#,			    
+			#userNm#,		        
+			#userRlvnDeptNm#,		
+		<isNotEmpty  property="genlTelNo">
+			#genlTelNo#,
+		</isNotEmpty>
+		<isNotEmpty  property="mphonNo">			    
+			#mphonNo#,
+	    </isNotEmpty>
+		<isNotEmpty  property="emailAdr">	    
+			#emailAdr#,			    
+		</isNotEmpty>			
+			now(),			        
+			#userAutVal#,			
+			#userSttusVal#,			
+			now()			    
+		)
+	</update>
+	
+	<!-- 로그인화면 > 사용자신청 > 사용자ID 중복체크   -->
+	<select id="selectUserRegChk" parameterClass="userBasInfo" resultClass="int">
+		SELECT 
+			COUNT(USER_ID)
+		FROM USER_BAS
+		WHERE USER_ID = #userId#
+	</select>
+	
+	
+	<!-- 사용자관리 >> 사용자정보 >> 사용자정보수정 >> 비밀번호 초기화   -->
+	<update id="updateUserPwdRest" parameterClass="userBasInfo">
+		UPDATE USER_BAS SET 
+			USER_PWD = '0000',
+			PWD_CHG_DT = now(),
+			PWD_CHG_YN ='Y'
+		WHERE USER_ID = #userId# 
+	</update>
+	
+	
+	<!-- 사용자관리 >> 사용자정보 >> 사용자정보수정 >> 발송승인자 검색   -->
+	<select id="selectSearchApprover" parameterClass="userBasInfo" resultClass="userBasInfo">
+		SELECT 
+			USER_ID				AS "userId",
+			USER_NM				AS "userNm",
+			USER_RLVN_DEPT_NM	AS "userRlvnDeptNm"
+		FROM USER_BAS
+		WHERE USER_ID = #userId#
+		AND USER_AUT_VAL IN('CC1','CC2','CC3');
+	</select>
+	
+	<!-- 사용자관리 >> 사용자정보 >> 사용자정보수정 >> 수정 처리   -->
+	<update id="updateUserInfo" parameterClass="userBasInfo">
+		UPDATE USER_BAS SET 
+			USER_RLVN_DEPT_NM= #userRlvnDeptNm#,
+			USER_AUT_VAL = #userAutVal#,
+			BAS_APVR_ID= #basApvrId#
+		WHERE USER_ID = #userId# 
+	</update>
+
+	<!-- 사용자관리 >> 사용자정보 >> 사용자정보수정 >> 해지 처리   -->
+	<update id="deleteUserInfo" parameterClass="userBasInfo">
+		UPDATE USER_BAS SET 
+			USER_STTUS_VAL = #userSttusVal#
+		WHERE USER_ID = #userId# 
+	</update>
+	
+	
+</sqlMap>

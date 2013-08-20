@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="review">
+
+	<typeAlias alias="banrInfo" type="com.nmimo.data.review.info.BanrInfo" />
+	<typeAlias alias="bfacInfo" type="com.nmimo.data.review.info.BfacRegBasInfo" />
+	<typeAlias alias="reviewInfo" type="com.nmimo.data.review.info.ReviewInfo" />
+
+	<sql id="selectMsgWrkList">
+		WRK_ID					AS	"wrkId",
+		WRK_NM					AS	"wrkNm",
+		USER_NM					AS	"userNm",
+		USER_DEPT_NM			AS	"userDeptNm",
+		MSG_DIV_VAL				AS	"msgDivVal",
+		MSG_CHAR_VAL			AS	"msgCharVal",
+		MSG_TITLE_NM			AS	"msgTitleNm",
+		DSP_TGT_SBST			AS	"dspTgtSbst",
+		DSP_PRPS_SBST			AS	"dspPrpsSbst",
+		ETC_INFO_SBST			AS	"etcInfoSbst",
+		BPM_SNCT_NO				AS	"bpmSnctNo",
+		REVIEW_MTR_VAL			AS	"reviewMtrVal",
+		OTGO_NO					AS	"otgoNo",
+		MSG_SBST				AS	"msgSbst",
+		CRET_DT					AS	"cretDt",
+		RSRV_DT					AS	"rsrvDt",
+		AMD_DT					AS	"amdDt",
+		AMDR_ID					AS	"amdrId",
+		AMDR_DEPT_NM			AS	"amdrDeptNm",
+		TGTR_FILE_NM			AS	"tgtrFileNm",
+		RSND_YN					AS	"rsndYn",
+		RSND_TMSCNT				AS	"rsndTmscnt",
+		TRM_RQT_CASCNT			AS	"trmRqtCascnt",
+		REAL_TRM_CASCNT			AS	"realTrmCascnt",
+		FILE_DUPL_CASCNT		AS	"fileDuplCascnt",
+		RFSL_CASCNT				AS	"rfslCascnt",
+		SQL_ERR_CASCNT			AS	"sqlErrCascnt",
+		DLY_DUPL_CASCNT			AS	"dlyDuplCascnt",
+		TRM_STTUS_VAL			AS	"trmSttusVal",
+		WRK_PATH_VAL			AS	"wrkPathVal",
+		APV_STTUS_VAL			AS	"apvSttusVal",
+		REVIWR_ID				AS	"reviwrId",
+		REVIWR_NM				AS	"reviwrNm",
+		REVIEW_TIME_NM			AS	"reviewTimeNm",
+		CALBK_URL_TYPE_VAL		AS	"calbkUrlTypeVal",
+		FEAPON_CALBK_URL_VAL	AS	"feaponCalbkUrlVal",
+		SMPH_CALBK_URL_VAL		AS	"smphCalbkUrlVal",
+		CALBK_NO_TYPE_VAL		AS	"calbkNoTypeVal",
+		FEAPON_CALBK_NO			AS	"feaponCalbkNo",
+		SMPH_CALBK_NO			AS	"smphCalbkNo",
+		CALBK_URL_MEMO_SBST		AS	"calbkUrlMemoSbst",
+		CRETR_ID				AS	"cretrId"
+	</sql>
+
+	<select id="selectGenlMsgWrkBasList" parameterClass="reviewInfo" resultClass="reviewInfo">
+		SELECT x.*
+			FROM (
+				SELECT 
+				   	 <include refid="selectMsgWrkList"/>
+				FROM  GENL_MSG_WRK_BAS 
+				WHERE 1=1
+					AND APV_STTUS_VAL = #apvSttusVal#
+				<isNotEmpty property="searchStr" prepend="AND"> 
+			    	<isEqual property="searchType" compareValue="1">
+				    		MSG_TITLE_NM ILIKE '%' ||#searchStr#|| '%'
+			    	</isEqual>
+			    	<isEqual property="searchType" compareValue="2">
+				    		MSG_DIV_VAL = #searchStr#
+			    	</isEqual>
+	    		</isNotEmpty>
+	    		ORDER BY CRET_DT DESC 
+			) x
+		LIMIT #pageGroupSize# OFFSET #startNum#
+	</select>
+
+	<select id="selectTotalCnt" resultClass="int" parameterClass="reviewInfo">
+		SELECT COUNT(*) AS CNT 
+			FROM GENL_MSG_WRK_BAS
+			WHERE 1=1
+				AND APV_STTUS_VAL = #apvSttusVal#
+			<isNotEmpty property="searchStr" prepend="AND"> 
+		    	<isEqual property="searchType" compareValue="1">
+			    		MSG_TITLE_NM ILIKE '%' ||#searchStr#|| '%'
+		    	</isEqual>
+		    	<isEqual property="searchType" compareValue="2">
+			    		MSG_DIV_VAL = #searchStr#
+		    	</isEqual>
+	    	</isNotEmpty>
+	</select>
+	
+	<select id="selectWorkDetail" resultClass="reviewInfo" parameterClass="reviewInfo">
+		SELECT 
+			<include refid="selectMsgWrkList"/>
+		FROM GENL_MSG_WRK_BAS
+		WHERE WRK_ID = #wrkId#
+	</select>
+
+
+	<!-- 배너 -->
+	<select id="selectBanrList" parameterClass="banrInfo" resultClass="banrInfo">
+		SELECT 
+			BANR_BDY_ADM_SEQ	AS "banrBdyAdmSeq",			
+			TEL_DIV_VAL			AS "telDivVal",
+			BANR_SBST			AS "banrSbst",
+			BANR_FILE_NM		AS "banrFileNm",
+			SBST_PRIRT_VAL		AS "sbstPrirtVal",
+			BANR_USE_YN			AS "banrUseYn",
+			CRET_DT				AS "cretDt",
+			AMD_DT				AS "amdDt"
+		FROM MSG_BANR_BDY_ADM_BAS
+		ORDER BY CRET_DT DESC
+		LIMIT #pageGroupSize# OFFSET #startNum#
+	</select>
+	
+	<select id="selectTotalBanr" parameterClass="banrInfo" resultClass="int">
+		SELECT COUNT(*) AS CNT 
+			FROM MSG_BANR_BDY_ADM_BAS
+	</select>
+	
+	<select id="selectBanrDetail" parameterClass="int" resultClass="banrInfo">
+		SELECT 
+			BANR_BDY_ADM_SEQ	AS "banrBdyAdmSeq",
+			TEL_DIV_VAL			AS "telDivVal",
+			BANR_SBST			AS "banrSbst",
+			BANR_FILE_NM		AS "banrFileNm",
+			SBST_PRIRT_VAL		AS "sbstPrirtVal",
+			BANR_USE_YN			AS "banrUseYn",
+			CRET_DT				AS "cretDt",
+			AMD_DT				AS "amdDt"
+		FROM MSG_BANR_BDY_ADM_BAS
+		WHERE BANR_BDY_ADM_SEQ = #seq#
+		ORDER BY CRET_DT DESC
+	</select>
+	
+	<!-- 사전예약 -->
+	<select id="selectBfacList" parameterClass="bfacInfo" resultClass="bfacInfo">
+		SELECT x.*
+			FROM (
+				SELECT 
+					BFAC_REG_SEQ		AS "bfacRegSeq",		
+					USER_NM			    AS "userNm",		
+					USER_DEPT_NM		AS "userDeptNm",		
+					WRK_NM			    AS "wrkNm",		
+					DSP_RSRV_DATE		AS "dspRsrvDate",		
+					CRET_DT			    AS "cretDt",		
+					DSP_SBST			AS "dspSbst",		
+					RCV_TGT_SBST		AS "rcvTgtSbst",		
+					APV_STTUS_VAL		AS "apvSttusVal",		
+					RSRV_NO			    AS "rsrvNo",		
+					USE_YN			    AS "useYn",		
+					RCESS_WHY_SBST		AS "rcessWhySbst",		
+					MSG_TYPE_VAL		AS "msgTypeVal",		
+					DSP_CASCNT			AS "dspCascnt",	
+					CRETR_ID            AS "cretrId"
+				FROM  BFAC_REG_BAS 
+				WHERE 1=1
+				<isNotEmpty property="searchStr" prepend="AND"> 
+			    	<isEqual property="searchType" compareValue="1">
+				    		WRK_NM ILIKE '%' ||#searchStr#|| '%'
+			    	</isEqual>
+			    	<isEqual property="searchType" compareValue="2">
+				    		CRETR_ID ILIKE '%' ||#searchStr#|| '%'
+			    	</isEqual>
+	    		</isNotEmpty>
+	    		ORDER BY CRET_DT DESC 
+			) x
+		LIMIT #pageGroupSize# OFFSET #startNum#	
+	</select>
+	
+	<select id="selectTotalBfac" parameterClass="bfacInfo" resultClass="int">
+		SELECT COUNT(*) AS CNT 
+			FROM BFAC_REG_BAS
+		WHERE 1=1
+		<isNotEmpty property="searchStr" prepend="AND"> 
+	    	<isEqual property="searchType" compareValue="1">
+		    		WRK_NM ILIKE '%' ||#searchStr#|| '%'
+	    	</isEqual>
+	    	<isEqual property="searchType" compareValue="2">
+		    		CRETR_ID ILIKE '%' ||#searchStr#|| '%'
+	    	</isEqual>
+   		</isNotEmpty>			
+	</select>
+	
+	<select id="selectBfacDetail" parameterClass="int" resultClass="bfacInfo">
+		SELECT 
+				BFAC_REG_SEQ		AS "bfacRegSeq",		
+				USER_NM			    AS "userNm",		
+				USER_DEPT_NM		AS "userDeptNm",		
+				WRK_NM			    AS "wrkNm",		
+				DSP_RSRV_DATE		AS "dspRsrvDate",		
+				CRET_DT			    AS "cretDt",		
+				DSP_SBST			AS "dspSbst",		
+				RCV_TGT_SBST		AS "rcvTgtSbst",		
+				APV_STTUS_VAL		AS "apvSttusVal",		
+				RSRV_NO			    AS "rsrvNo",		
+				USE_YN			    AS "useYn",		
+				RCESS_WHY_SBST		AS "rcessWhySbst",		
+				MSG_TYPE_VAL		AS "msgTypeVal",		
+				DSP_CASCNT			AS "dspCascnt",	
+				CRETR_ID            AS "cretrId"
+			FROM  BFAC_REG_BAS
+		WHERE BFAC_REG_SEQ = #bfacRegSeq#
+	</select>
+	
+</sqlMap>

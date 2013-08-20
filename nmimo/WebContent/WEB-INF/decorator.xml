@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/jsp/decorators/layout">
+	<excludes>
+        <pattern>*errorEx.jsp</pattern>
+    	<pattern>*error.jsp*</pattern>
+        <pattern>**/ajax*</pattern>
+        <pattern>**/index.jsp</pattern>
+        <pattern>**/sampleJs.do</pattern>
+        <pattern>/crm/campaign.do</pattern>
+        <pattern>/crm/pssoChk.*</pattern>
+        <pattern>**/result.jsp</pattern>
+	</excludes>
+	
+    <decorator name="default" page="defaultLayout.jsp">  
+        <pattern>/*</pattern>  
+    </decorator>
+    
+        <!--  Empty Layout  -->
+    <decorator name="empty" page="empty.jsp"> 
+    	<pattern>/login/loginForm.do</pattern>
+		<pattern>/login/pwdChangeForm.do</pattern>
+		<pattern>/common/error.do*</pattern>
+        <pattern>/common/errorPopup.do*</pattern>
+    </decorator>
+    
+        <!--  PopUp Layout  -->
+    <decorator name="pop" page="popLayout.jsp" >
+    	<pattern>**/popup/*Pop.do</pattern>
+    </decorator>
+    
+    <!--  ETC Layout  -->
+    <decorator name="etcLayout" page="etcLayout.jsp" >
+		<pattern>/crm/*</pattern>
+    </decorator> 
+    
+    <!-- Header -->
+	<decorator name="header.CC1" page="/WEB-INF/jsp/decorators/common/include/gnb/gnb.CC1.jsp" />
+	<decorator name="header.CC2" page="/WEB-INF/jsp/decorators/common/include/gnb/gnb.CC2.jsp" />
+	<decorator name="header.CC3" page="/WEB-INF/jsp/decorators/common/include/gnb/gnb.CC3.jsp" />
+	<decorator name="header.MA"  page="/WEB-INF/jsp/decorators/common/include/gnb/gnb.MA.jsp" />
+	<decorator name="header.DV"  page="/WEB-INF/jsp/decorators/common/include/gnb/gnb.DV.jsp" />
+	<decorator name="header.CU"  page="/WEB-INF/jsp/decorators/common/include/gnb/gnb.CU.jsp" />
+	<decorator name="header.AD"  page="/WEB-INF/jsp/decorators/common/include/gnb/gnb.AD.jsp" />
+	<decorator name="header.SC"  page="/WEB-INF/jsp/decorators/common/include/gnb/gnb.SC.jsp" />
+	<decorator name="header.KT"  page="/WEB-INF/jsp/decorators/common/include/gnb/gnb.KT.jsp" />
+	<!-- Footer -->
+	<decorator name="footer" page="/WEB-INF/jsp/decorators/common/include/footer.jsp" />
+</decorators>

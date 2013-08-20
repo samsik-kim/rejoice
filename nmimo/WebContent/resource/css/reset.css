@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+/* reset.css */
+
+html,body{width:100%; height:100%; background:url(/resource/images/top_bg.gif) repeat-x;}
+
+body,div,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,select,option,textarea,button,blockquote{margin:0; padding:0;}
+body,table,th,td,input,select,option,textarea,button{font-family:"돋움",Datum,sans-serif; font-size:12px; color:#333;}
+h1,h2,h3,h4,h5,h6{font-size:12px; color:#333; font-weight:normal;}
+img,fieldset,abbr,acronym{border:0;}
+img,li,input,select{vertical-align:middle;}
+ul,ol{list-style:none; margin:0; padding:0}
+
+a{text-decoration:underline; color:#333;}
+a:hover,a:active,a:focus{text-decoration:underline; color:#ea0009;}
+
+table{border-collapse:collapse; border-spacing:0;}
+
+input { padding:1px}
+
+em,address{font-style:normal;}
+address,caption,cite,code,dfn,em,var{font-style:normal; font-weight:normal;}
+caption{position:absolute; left:0; top:0; width:0; height:0; font-size:0; line-height:0; text-indent:-9999px; overflow:hidden;}
+q:before,q:after{content:'';}
+hr{display:none;}
+.skipnavi,.hidden{position:absolute; left:0; top:0; width:0; height:0; font-size:0; line-height:0; text-indent:-9999px; overflow:hidden;}
