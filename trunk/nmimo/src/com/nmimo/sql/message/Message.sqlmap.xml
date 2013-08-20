@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="message">
+
+	<typeAlias alias="messageInfo" type="com.nmimo.data.message.info.MessageInfo" />
+	
+	<sql id="messageColumsInsert">
+		WRK_ID ,
+		WRK_NM ,
+		USER_NM ,
+		USER_DEPT_NM ,
+		MSG_DIV_VAL ,
+		MSG_CHAR_VAL,
+		MSG_TITLE_NM,
+		DSP_TGT_SBST ,
+		DSP_PRPS_SBST,
+		ETC_INFO_SBST,
+		BPM_SNCT_NO ,
+		REVIEW_MTR_VAL ,
+		OTGO_NO ,
+		MSG_SBST ,
+		CRET_DT ,
+		RSRV_DT ,
+		AMD_DT ,
+		AMDR_ID ,
+		AMDR_DEPT_NM ,
+		TGTR_FILE_NM ,
+		RSND_YN ,
+		RSND_TMSCNT ,
+		TRM_RQT_CASCNT ,
+		REAL_TRM_CASCNT ,
+		FILE_DUPL_CASCNT ,
+		RFSL_CASCNT ,
+		SQL_ERR_CASCNT ,
+		DLY_DUPL_CASCNT ,
+		TRM_STTUS_VAL ,
+		WRK_PATH_VAL ,
+		APV_STTUS_VAL ,
+		REVIWR_ID ,
+		REVIWR_NM ,
+		REVIEW_TIME_NM ,
+		CALBK_URL_TYPE_VAL ,
+		FEAPON_CALBK_URL_VAL ,
+		SMPH_CALBK_URL_VAL ,
+		CALBK_NO_TYPE_VAL ,
+		FEAPON_CALBK_NO ,
+		SMPH_CALBK_NO ,
+		CALBK_URL_MEMO_SBST ,
+		CRETR_ID
+	</sql>
+
+	<sql id="messageColumsSelect">
+		WRK_ID					AS "wrkId",
+		WRK_NM 					AS "wrkNm",
+		USER_NM					AS "userNm",
+		USER_DEPT_NM 			AS "userDeptNm",
+		MSG_DIV_VAL 			AS "msgDivVal",
+		MSG_CHAR_VAL			AS "msgCharVal",
+		MSG_TITLE_NM			AS "msgTitleNm",
+		DSP_TGT_SBST 			AS "dspTgtSbst",
+		DSP_PRPS_SBST			AS "dspPrpsSbst",
+		ETC_INFO_SBST			AS "etcInfoSbst",
+		BPM_SNCT_NO 			AS "bpmSnctNo",
+		REVIEW_MTR_VAL 			AS "reviewMtrVal",
+		OTGO_NO 				AS "otgoNo",
+		MSG_SBST 				AS "msgSbst",
+		CRET_DT 				AS "cretDt",
+		RSRV_DT 				AS "rervDt",
+		AMD_DT 					AS "amdDt",
+		AMDR_ID 				AS "amdrId",
+		AMDR_DEPT_NM 			AS "amdrDeptNm",
+		TGTR_FILE_NM 			AS "tgtrFileNm",
+		RSND_YN 				AS "rsndYn",
+		RSND_TMSCNT 			AS "rsndTmscnt",
+		TRM_RQT_CASCNT 			AS "trmRqtCascnt",
+		REAL_TRM_CASCNT 		AS "realTrmCascnt",
+		FILE_DUPL_CASCNT 		AS "fileDuplCascnt",
+		RFSL_CASCNT 			AS "rfslCascnt",
+		SQL_ERR_CASCNT 			AS "sqlErrCascntSqlErrCascnt",
+		DLY_DUPL_CASCNT 		AS "dlyDuplCascnt",
+		TRM_STTUS_VAL 			AS "trmSttusVal",
+		WRK_PATH_VAL 			AS "wrkPathVal",
+		APV_STTUS_VAL 			AS "apvSttusVal",
+		REVIWR_ID 				AS "reviwrId",
+		REVIWR_NM 				AS "reviwrNm",
+		REVIEW_TIME_NM 			AS "reviewTimeNm",
+		CALBK_URL_TYPE_VAL 		AS "calbkUrlTypeVal",
+		FEAPON_CALBK_URL_VAL 	AS "feaponCalbkUrlVal",
+		SMPH_CALBK_URL_VAL 		AS "smphCalbkUrlVal",
+		CALBK_NO_TYPE_VAL 		AS "calbkNoTypeVal",
+		FEAPON_CALBK_NO 		AS "feaponCalbkNo",
+		SMPH_CALBK_NO 			AS "smphCalbkNo",
+		CALBK_URL_MEMO_SBST 	AS "calbkUrlMemoSbst",
+		CRETR_ID 				AS "cretrId"
+	</sql>
+	
+	
+	<sql id="autoMessageColumsInsert">
+		WRK_ID ,
+		WRK_NM ,
+		USER_NM ,
+		USER_DEPT_NM ,
+		MSG_DIV_VAL ,
+		MSG_CHAR_VAL,
+		MSG_TITLE_NM,
+		OTGO_NO ,
+		MSG_SBST ,
+		CRET_DT ,
+		CRETR_ID,
+		AMD_DT ,
+		AMDR_ID ,
+		AMDR_DEPT_NM ,
+		TRM_RQT_CASCNT ,
+		REAL_TRM_CASCNT ,
+		TRM_STTUS_VAL ,
+		WRK_PATH_VAL ,
+		APV_STTUS_VAL ,
+		REVIWR_ID ,
+		REVIWR_NM ,
+		REVIEW_TIME_NM ,
+		CALBK_URL_TYPE_VAL ,
+		FEAPON_CALBK_URL_VAL ,
+		SMPH_CALBK_URL_VAL ,
+		CALBK_URL_MEMO_SBST ,
+		CALBK_NO_TYPE_VAL ,
+		FEAPON_CALBK_NO ,
+		SMPH_CALBK_NO ,
+		NSTEP_PRMS_VAL
+	</sql>
+
+	<sql id="autoMessageColumsSelect">
+		WRK_ID					AS "wrkId",
+		WRK_NM 					AS "wrkNm",
+		USER_NM					AS "userNm",
+		USER_DEPT_NM 			AS "userDeptNm",
+		MSG_DIV_VAL 			AS "msgDivVal",
+		MSG_CHAR_VAL			AS "msgCharVal",
+		MSG_TITLE_NM			AS "msgTitleNm",
+		OTGO_NO 				AS "otgoNo",
+		MSG_SBST 				AS "msgSbst",
+		CRET_DT 				AS "cretDt",
+		CRETR_ID 				AS "cretrId"
+		AMD_DT 					AS "amdDt",
+		AMDR_ID 				AS "amdrId",
+		AMDR_DEPT_NM 			AS "amdrDeptNm",
+		TRM_RQT_CASCNT 			AS "trmRqtCascnt",
+		REAL_TRM_CASCNT 		AS "realTrmCascnt",
+		TRM_STTUS_VAL 			AS "trmSttusVal",
+		WRK_PATH_VAL 			AS "wrkPathVal",
+		APV_STTUS_VAL 			AS "apvSttusVal",
+		REVIWR_ID 				AS "reviwrId",
+		REVIWR_NM 				AS "reviwrNm",
+		REVIEW_TIME_NM 			AS "reviewTimeNm",
+		CALBK_URL_TYPE_VAL 		AS "calbkUrlTypeVal",
+		FEAPON_CALBK_URL_VAL 	AS "feaponCalbkUrlVal",
+		SMPH_CALBK_URL_VAL 		AS "smphCalbkUrlVal",
+		CALBK_URL_MEMO_SBST 	AS "calbkUrlMemoSbst",
+		CALBK_NO_TYPE_VAL 		AS "calbkNoTypeVal",
+		FEAPON_CALBK_NO 		AS "feaponCalbkNo",
+		SMPH_CALBK_NO 			AS "smphCalbkNo",
+		NSTEP_PRMS_VAL			AS "nstepPrmsVal"
+	</sql>
+	
+	
+	<!-- 발송등록 > 공지홍보 > 등록  -->
+	<update id="insertMsgInfo"  parameterClass="messageInfo">
+		INSERT INTO GENL_MSG_WRK_BAS 
+		(
+			<include refid="messageColumsInsert"/>
+		)
+		VALUES
+		(
+			#wrkId#,
+			#wrkNm#,
+			#userNm#,
+			#userDeptNm#,
+			#msgDivVal#,
+			#msgCharVal#,
+			#msgTitleNm#,
+			#dspTgtSbst#,
+			#dspPrpsSbst#,
+			#etcInfoSbst#,
+			#bpmSnctNo#,
+			#reviewMtrVal#,
+			#otgoNo#,
+			#msgSbst#,
+				now(),
+				now(),
+				now(),
+			#amdrId#,
+			#amdrDeptNm#,
+			#tgtrFileNm#,
+			#rsndYn#,
+			0, 
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			#trmSttusVal#,
+			#wrkPathVal#,
+			#apvSttusVal#,
+			#reviwrId#,
+			#reviwrNm#,
+			#reviewTimeNm#,
+			#calbkUrlTypeVal#,
+			#feaponCalbkUrlVal#,
+			#smphCalbkUrlVal#,
+			#calbkNoTypeVal#,
+			#feaponCalbkNo#,
+			#smphCalbkNo#,
+			#calbkUrlMemoSbst#,
+			#cretrId#
+		)
+	</update>
+	
+	
+	<!-- 발송등록 > 자동 > 등록  -->
+	<update id="insertAutoMsgInfo"  parameterClass="messageInfo">
+		INSERT INTO RTIME_MSG_WRK_BAS 
+		(
+			<include refid="autoMessageColumsInsert"/>
+		)
+		VALUES
+		(
+			#wrkId#,
+			#wrkNm#,
+			#userNm#,
+			#userDeptNm#,
+			#msgDivVal#,
+			#msgCharVal#,
+			#msgTitleNm#,
+			#otgoNo#,
+			#msgSbst#,
+				now(),
+			#cretrId#,
+			now(),
+			#amdrId#,
+			#amdrDeptNm#,
+			0,
+			0,
+			#trmSttusVal#,
+			#wrkPathVal#,
+			#apvSttusVal#,
+			#reviwrId#,
+			#reviwrNm#,
+			#reviewTimeNm#,
+			#calbkUrlTypeVal#,
+			#feaponCalbkUrlVal#,
+			#smphCalbkUrlVal#,
+			#calbkNoTypeVal#,
+			#feaponCalbkNo#,
+			#smphCalbkNo#,
+			#calbkUrlMemoSbst#,
+			#cretrId#
+		)
+	</update>	
+</sqlMap>

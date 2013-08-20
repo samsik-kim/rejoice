@@ -1,0 +1,251 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<meta http-equiv="X-UA-Compatible" content="IE=7" />    
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="css/iphone.css">
+<script language="javascript" src="js/iphone.js"></script>
+<script language="javascript">
+<!--
+	function iframeOn(thisForm){
+		var editorFrame = document.getElementById('textWindow');
+
+		editorFrame.contentWindow.document.body.onclick = function () {
+			textWindow.focus();
+			chkBytes2(thisForm);
+		}
+
+		editorFrame.contentWindow.document.body.onkeyup = function () {
+			chkBytes2(thisForm);
+		}
+
+		editorFrame.contentWindow.document.body.onFocus = function () {
+			chkBytes2(thisForm);
+		}
+	}
+
+	function viewMyBox(){
+		popwindowSingle("/app_new/member/mypage/myMesegeBox_pop.asp","mybox","996","400","yes");
+	}
+
+//-->
+</script>
+<form name="form1" method="post">
+<input type="hidden" name="job_mode" value="mms" alt="sms or mms">
+<input type="hidden" name="img_add_yn" value="y" alt="이미지 추가여부 mms모드 변경하기 위해">
+<input type="hidden" name="rMode" value="insert" alt="현재모드정보 - insert, modify">
+<table width="259" height="574" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="3" class="hp_top_bg" style="background-image:url(images/iphone_bg_01.gif);" width="259" height="133">
+
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<input type="text" style="width:145px;" name="msgTitle" value=""></td>
+					<td>
+						<a href="javascript:void(0);" onclick="viewMyBox();">
+							<img src="images/ico_my_space.gif" alt="개인보관함" border="0"></a></td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<img src="images/iphone_bg_02.gif" width="21" height="198" alt=""></td>
+		<td class="hp_mid_bg" style="background-image:url(images/iphone_bg_03.gif);" width="219" height="198">
+			<!--메시지입력-->
+			<textarea name="msg" style="width:209; height:170;border:none;padding:5 0 5 0;display:none;" onKeyUp="chkBytes2(form1);"></textarea>
+			<textarea name="msg_test" id="msg_test" style="width:209; height:170;border:none;padding:5 0 5 0;display:none;"></textarea>
+
+			<iframe id="textWindow" name="textWindow" marginWidth="0" marginHeight="0" frameBorder="0" width="209" height="160" style="visibility:visible;overflow-y:auto;overflow-x:hidden;" onload="iframeOn(form1);"></iframe>
+
+			<div class="msg_length">
+				<span id="msg_length" name="msg_length" class="msg_red">0</span>/90byte(90byte넘으면 MMS로 발송)
+			</div>
+			<!--메시지입력-->
+		</td>
+		<td>
+			<img src="images/iphone_bg_04.gif" width="19" height="198" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="3" class="hp_bom_bg" style="background-image:url(images/iphone_bg_05.gif); " width="259" height="243">
+
+			<table width="219" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td align="center" style="padding:5 0 0 0;">
+						<!--특수아이콘-->
+						<table border="0" cellpadding="0" cellspacing="0" >
+							<tr>
+								<td align="center">
+									<a class="spcicon" href="javascript:addMsg('★')"><span class="spc_bg">★</span></a>
+									<a class="spcicon" href="javascript:addMsg('☆')"><span class="spc_bg">☆</span></a>
+									<a class="spcicon" href="javascript:addMsg('○')"><span class="spc_bg">○</span></a>
+									<a class="spcicon" href="javascript:addMsg('●')"><span class="spc_bg">●</span></a>
+									<a class="spcicon" href="javascript:addMsg('◎')"><span class="spc_bg">◎</span></a>
+									<a class="spcicon" href="javascript:addMsg('◇')"><span class="spc_bg">◇</span></a>
+									<a class="spcicon" href="javascript:addMsg('◆')"><span class="spc_bg">◆</span></a>
+									<a class="spcicon" href="javascript:addMsg('□')"><span class="spc_bg">□</span></a>
+									<a class="spcicon" href="javascript:addMsg('■')"><span class="spc_bg">■</span></a>
+									<a class="spcicon" href="javascript:addMsg('△')"><span class="spc_bg">△</span></a>
+									<a class="spcicon" href="javascript:addMsg('▲')"><span class="spc_bg">▲</span></a>
+								</td>
+							</tr>
+							<tr><td height="2"></td></tr>
+							<tr>
+								<td align="center">
+									<a class="spcicon" href="javascript:addMsg('▽')"><span class="spc_bg">▽</span></a>
+									<a class="spcicon" href="javascript:addMsg('▼')"><span class="spc_bg">▼</span></a>
+									<a class="spcicon" href="javascript:addMsg('¶')"><span class="spc_bg">¶</span></a>
+									<a class="spcicon" href="javascript:addMsg('▨')"><span class="spc_bg">▨</span></a>
+									<a class="spcicon" href="javascript:addMsg('▥')"><span class="spc_bg">▥</span></a>
+									<a class="spcicon" href="javascript:addMsg('♤')"><span class="spc_bg">♤</span></a>
+									<a class="spcicon" href="javascript:addMsg('♠')"><span class="spc_bg">♠</span></a>
+									<a class="spcicon" href="javascript:addMsg('♡')"><span class="spc_bg">♡</span></a>
+									<a class="spcicon" href="javascript:addMsg('♥')"><span class="spc_bg">♥</span></a>
+									<a class="spcicon" href="javascript:addMsg('♧')"><span class="spc_bg">♧</span></a>
+									<a class="spcicon" href="javascript:addMsg('♣')"><span class="spc_bg">♣</span></a>
+								</td>
+							</tr>
+							<tr><td height="2"></td></tr>
+							<tr>
+								<td align="center">
+
+									<a class="spcicon" href="javascript:addMsg('⊙')"><span class="spc_bg">⊙</span></a>
+									<a class="spcicon" href="javascript:addMsg('◈')"><span class="spc_bg">◈</span></a>
+									<a class="spcicon" href="javascript:addMsg('▣')"><span class="spc_bg">▣</span></a>
+									<a class="spcicon" href="javascript:addMsg('▩')"><span class="spc_bg">▩</span></a>
+									<a class="spcicon" href="javascript:addMsg('♨')"><span class="spc_bg">♨</span></a>
+									<a class="spcicon" href="javascript:addMsg('☎')"><span class="spc_bg">☎</span></a>
+									<a class="spcicon" href="javascript:addMsg('☜')"><span class="spc_bg">☜</span></a>
+									<a class="spcicon" href="javascript:addMsg('☞')"><span class="spc_bg">☞</span></a>
+									<a class="spcicon" href="javascript:addMsg('♩')"><span class="spc_bg">♩</span></a>
+									<a class="spcicon" href="javascript:addMsg('♪')"><span class="spc_bg">♪</span></a>
+									<a class="spcicon" href="javascript:addMsg('♬')"><span class="spc_bg">♬</span></a>
+								</td>
+							</tr>
+							<tr><td height="2"></td></tr>
+							<tr>
+								<td align="center">
+									<a class="spcicon" href="javascript:addMsg('∞')"><span class="spc_bg">∞</span></a>
+									<a class="spcicon" href="javascript:addMsg('∴')"><span class="spc_bg">∴</span></a>
+									<a class="spcicon" href="javascript:addMsg('∽')"><span class="spc_bg">∽</span></a>
+									<a class="spcicon" href="javascript:addMsg('※')"><span class="spc_bg">※</span></a>
+									<a class="spcicon" href="javascript:addMsg('㉿')"><span class="spc_bg">㉿</span></a>
+									<a class="spcicon" href="javascript:addMsg('》')"><span class="spc_bg">》</span></a>
+									<a class="spcicon" href="javascript:addMsg('♂')"><span class="spc_bg">♂</span></a>
+									<a class="spcicon" href="javascript:addMsg('♀')"><span class="spc_bg">♀</span></a>
+									<a class="spcicon" href="javascript:addMsg('∬')"><span class="spc_bg">∬</span></a>
+									<a class="spcicon" href="javascript:addMsg('‡')"><span class="spc_bg">‡</span></a>
+									<a class="spcicon" href="javascript:addMsg('￠')"><span class="spc_bg">￠</span></a>
+								</td>
+							</tr>
+						</table>
+						<!--특수아이콘-->
+					</td>
+				</tr>
+				<tr>
+					<td align="center" style="padding:5 0 7 0;">
+						<img src="images/ico_img_add.gif" align="absmiddle" border="0" style="cursor:hand;" onclick="contentsUploadPop('img');">
+						<img src="images/ico_mov_add.gif" align="absmiddle" border="0" style="cursor:hand;" onclick="contentsUploadPop('mov');">
+						<img src="images/ico_param.gif" align="absmiddle" border="0" style="cursor:hand;" onclick="stringAdd(form1);" ></td>
+				</tr>
+				<tr>
+					<td align="center">
+						<!--컬러아이콘-->
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','black');">
+									<img src="images/common_color_01.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','gray');">
+									<img src="images/common_color_02.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','silver');">
+									<img src="images/common_color_03.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','white');">
+									<img src="images/common_color_04.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','maroon');">
+									<img src="images/common_color_05.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','red');">
+									<img src="images/common_color_06.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','purple');">
+									<img src="images/common_color_07.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','Fuchsia');">
+									<img src="images/common_color_08.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','green');">
+									<img src="images/common_color_09.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','lime');">
+									<img src="images/common_color_10.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','olive');">
+									<img src="images/common_color_11.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','yellow');">
+									<img src="images/common_color_12.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','navy');">
+									<img src="images/common_color_13.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','blue');">
+									<img src="images/common_color_14.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','teal');">
+									<img src="images/common_color_15.gif" width="11" height="12"></td>
+								<td width="3"></td>
+								<td class="msg_font_color" onclick="changeCommand('ForeColor','aqua');">
+									<img src="images/common_color_16.gif" width="11" height="12"></td>
+							</tr>
+						</table>
+						<!--컬러아이콘-->
+					</td>
+				</tr>
+				<tr>
+					<td>
+
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr><td height="1" bgcolor="#353535"></td></tr>
+							<tr><td height="1" bgcolor="#646464"></td></tr>
+						</table>
+
+					</td>
+				</tr>
+				<tr>
+					<td valign="top" align="center" style="padding:10 0 3 0;">
+
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td valign="top" style="padding:2 2 0 0;">
+									<img src="images/ico_arrow.gif" align="absmiddle" border="0"></td>
+								<td class="msg_info_text">
+									입력하신 내용이90 byte 미만인 경우,<br>
+									이미지 첨부 및 글자색기능이 불가능합니다.
+								</td>
+							</tr>
+							<tr>
+								<td valign="top" style="padding:2 2 0 0;">
+									<img src="images/ico_arrow.gif" align="absmiddle" border="0"></td>
+								<td class="msg_info_text">
+									구분자는 10개까지 입력 가능합니다.<br>
+									도움말을 참조하세요.
+									&nbsp;
+									<span class="popup_start1" onclick="popwindow01('/app_new/help/help_202.html','817','330');"><u>>> 도움말</u></span>
+								</td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+</table>
+</form>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="mywork">
+	
+	<typeAlias alias="myworkInfo" type="com.nmimo.data.mypage.info.MyWorkInfo" /> 
+
+	<sql id="selectMsgWrkList">
+		WRK_ID					AS	"wrkId",
+		WRK_NM					AS	"wrkNm",
+		USER_NM					AS	"userNm",
+		USER_DEPT_NM			AS	"userDeptNm",
+		MSG_DIV_VAL				AS	"msgDivVal",
+		MSG_CHAR_VAL			AS	"msgCharVal",
+		MSG_TITLE_NM			AS	"msgTitleNm",
+		DSP_TGT_SBST			AS	"dspTgtSbst",
+		DSP_PRPS_SBST			AS	"dspPrpsSbst",
+		ETC_INFO_SBST			AS	"etcInfoSbst",
+		BPM_SNCT_NO				AS	"bpmSnctNo",
+		REVIEW_MTR_VAL			AS	"reviewMtrVal",
+		OTGO_NO					AS	"otgoNo",
+		MSG_SBST				AS	"msgSbst",
+		CRET_DT					AS	"cretDt",
+		RSRV_DT					AS	"rsrvDt",
+		AMD_DT					AS	"amdDt",
+		AMDR_ID					AS	"amdrId",
+		AMDR_DEPT_NM			AS	"amdrDeptNm",
+		TGTR_FILE_NM			AS	"tgtrFileNm",
+		RSND_YN					AS	"rsndYn",
+		RSND_TMSCNT				AS	"rsndTmscnt",
+		TRM_RQT_CASCNT			AS	"trmRqtCascnt",
+		REAL_TRM_CASCNT			AS	"realTrmCascnt",
+		FILE_DUPL_CASCNT		AS	"fileDuplCascnt",
+		RFSL_CASCNT				AS	"rfslCascnt",
+		SQL_ERR_CASCNT			AS	"sqlErrCascnt",
+		DLY_DUPL_CASCNT			AS	"dlyDuplCascnt",
+		TRM_STTUS_VAL			AS	"trmSttusVal",
+		WRK_PATH_VAL			AS	"wrkPathVal",
+		APV_STTUS_VAL			AS	"apvSttusVal",
+		REVIWR_ID				AS	"reviwrId",
+		REVIWR_NM				AS	"reviwrNm",
+		REVIEW_TIME_NM			AS	"reviewTimeNm",
+		CALBK_URL_TYPE_VAL		AS	"calbkUrlTypeVal",
+		FEAPON_CALBK_URL_VAL	AS	"feaponCalbkUrlVal",
+		SMPH_CALBK_URL_VAL		AS	"smphCalbkUrlVal",
+		CALBK_NO_TYPE_VAL		AS	"calbkNoTypeVal",
+		FEAPON_CALBK_NO			AS	"feaponCalbkNo",
+		SMPH_CALBK_NO			AS	"smphCalbkNo",
+		CALBK_URL_MEMO_SBST		AS	"calbkUrlMemoSbst",
+		CRETR_ID				AS	"cretrId"
+	</sql>
+	
+	<select id="selectGenlMsgWrkBasList" parameterClass="myworkInfo" resultClass="myworkInfo">
+		SELECT x.*
+			FROM (
+				SELECT 
+				   	 <include refid="selectMsgWrkList"/>
+				FROM  GENL_MSG_WRK_BAS 
+				WHERE 1=1
+					AND APV_STTUS_VAL = #apvSttusVal#
+				<isNotEmpty property="searchStr" prepend="AND"> 
+			    	<isEqual property="searchType" compareValue="1">
+				    		MSG_TITLE_NM ILIKE '%' ||#searchStr#|| '%'
+			    	</isEqual>
+			    	<isEqual property="searchType" compareValue="2">
+				    		MSG_DIV_VAL = #searchStr#
+			    	</isEqual>
+	    		</isNotEmpty>
+	    		ORDER BY CRET_DT DESC 
+			) x
+		LIMIT #pageGroupSize# OFFSET #startNum#
+	</select>
+
+	<select id="selectTotalCnt" resultClass="int" parameterClass="myworkInfo">
+		SELECT COUNT(*) AS CNT 
+			FROM GENL_MSG_WRK_BAS
+			WHERE 1=1
+				AND APV_STTUS_VAL = #apvSttusVal#
+			<isNotEmpty property="searchStr" prepend="AND"> 
+		    	<isEqual property="searchType" compareValue="1">
+			    		MSG_TITLE_NM ILIKE '%' ||#searchStr#|| '%'
+		    	</isEqual>
+		    	<isEqual property="searchType" compareValue="2">
+			    		MSG_DIV_VAL = #searchStr#
+		    	</isEqual>
+	    	</isNotEmpty>
+	</select>
+	
+	<select id="selectWorkDetail" resultClass="myworkInfo" parameterClass="myworkInfo">
+		SELECT 
+			<include refid="selectMsgWrkList"/>
+		FROM GENL_MSG_WRK_BAS
+		WHERE WRK_ID = #wrkId#
+	</select>
+	
+</sqlMap>
