@@ -47,21 +47,21 @@
 	                <property name="contentType" value="javascript/jsonp"/>
 	            </bean>
 	            <!-- XML 요청을 처리할 뷰 -->
-<!-- 	            <bean class="org.springframework.web.servlet.view.xml.MarshallingView"> -->
-<!-- 	            	<constructor-arg> -->
-<!-- 	            		<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller"> -->
-<!-- 	            			<property name="packagesToScan"> -->
-<!-- 	            				<list> -->
-<!-- 	            					<value>패키지명.*.dto</value> -->
-<!-- 	            				</list> -->
-<!-- 	            			</property> -->
-<!-- 	            		</bean> -->
-<!-- 	            	</constructor-arg> -->
-<!-- 	            </bean> -->
+	            <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+	            	<constructor-arg>
+	            		<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+	            			<property name="classesToBeBound">
+	            				<list>
+	            					<value>com.resttemplate.rejoiceAPI.bean.Message</value>
+	            				</list>
+	            			</property>
+	            		</bean>
+	            	</constructor-arg>
+	            </bean>
 	            <!-- XML View -->
 <!-- 				<bean class="org.springframework.web.servlet.view.xml.MarshallingView"> -->
 <!-- 					<property name="marshaller"> -->
-<!-- 						<bean class="example.package.name.XStreamMarshallerWrapper"> -->
+<!-- 						<bean class="com.resttemplate.rejoiceAPI.bean.Message"> -->
 <!-- 							<property name="autodetectAnnotations" value="true" /> -->
 <!-- 						</bean> -->
 <!-- 					</property> -->
