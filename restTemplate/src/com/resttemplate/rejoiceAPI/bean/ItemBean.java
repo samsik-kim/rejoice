@@ -1,10 +1,23 @@
 package com.resttemplate.rejoiceAPI.bean;
 
-public class ItemBean {
+@SuppressWarnings("serial")
+public class ItemBean extends ResponseBean{
 	
+	/**
+	 * @comment : ID
+	 */
 	private String id;
+	/**
+	 * @comment : NAME
+	 */
 	private String name;
+	/**
+	 * @comment : NO
+	 */
 	private String no;
+	/**
+	 * @comment : 기타
+	 */
 	private String etc;
 	/**
 	 * @return the id
