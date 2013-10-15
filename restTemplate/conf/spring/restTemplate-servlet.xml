@@ -24,7 +24,17 @@
 	<mvc:resources mapping="/resource/**" location="/resource/" />
 
 	<!-- annotation base scan 선언  -->
-	<context:component-scan base-package="com.resttemplate." />
+	<context:component-scan base-package="com.resttemplate." >
+		<context:include-filter type="annotation" expression=""/>
+		<context:exclude-filter type="annotation" expression=""/>
+	</context:component-scan>
+	<!-- Sample
+	<context:component-scan base-package="com.piyoro.spring">
+        <context:include-filter type="regex" expression="com\.piyoro\.spring\..*Dao.*" />
+        <context:include-filter type="regex" expression="com\.piyoro\.spring\..*Service.*" />
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+	 -->
 
 	<!-- ViewResolver 설정 -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
