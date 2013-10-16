@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div>
-Test
-${data}
+<ul>
+${list.data}
+</ul>
 </div>
