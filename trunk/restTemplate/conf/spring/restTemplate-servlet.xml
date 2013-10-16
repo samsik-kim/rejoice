@@ -51,4 +51,71 @@
 		</property>
 	</bean>
 	
+<!-- ViewResolver 설정 
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	    <property name="order" value="1" />
+	    <property name="mediaTypes">
+	        <map>
+	            <entry key="json" value="application/json" />
+	            <entry key="jsonp" value="javascript/jsonp" />
+	            <entry key="xml" value="application/xml"/>
+	        </map>
+	    </property>
+	    <property name="defaultViews">
+	        <list>
+	            <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+	            <bean class="com.resttemplate.common.util.JSONPView">
+	                <property name="contentType" value="javascript/jsonp"/>
+	            </bean>
+	            <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+	            	<constructor-arg>
+	            		<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+	            			<property name="classesToBeBound">
+	            				<list>
+	            					<value>com.resttemplate.rejoiceAPI.bean.Message</value>
+	            				</list>
+	            			</property>
+	            		</bean>
+	            	</constructor-arg>
+	            </bean>
+				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<property name="marshaller">
+						<bean class="com.resttemplate.rejoiceAPI.bean.Message">
+							<property name="autodetectAnnotations" value="true" />
+						</bean>
+					</property>
+				</bean>
+	        </list>
+	    </property>
+	    <property name="ignoreAcceptHeader" value="true" />
+	</bean>
+-->
+	<!-- 맵핑되는 확장자가 없을때 JSP 로 뷰 처리 
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+	    <property name="order" value="2" />
+	    <property name="prefix" value="/WEB-INF/jsp/"/>
+	    <property name="suffix" value=".jsp"/>
+	    <property name="cache" value="false" />
+	</bean>
+
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.FormHttpMessageConverter">
+	                <property name="charset">
+		                <bean class="java.nio.charset.Charset" factory-method="forName">
+		                	<constructor-arg value="UTF-8"/>
+	                	</bean>
+                	</property>
+                </bean>
+				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+			  		<property name="supportedMediaTypes" value="application/json" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	-->
+	
+	
 </beans>
