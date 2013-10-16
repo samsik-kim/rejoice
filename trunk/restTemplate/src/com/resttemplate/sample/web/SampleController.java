@@ -1,23 +1,22 @@
 package com.resttemplate.sample.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import net.sf.dozer.util.mapping.Mapper;
 import net.sf.dozer.util.mapping.MappingException;
-import net.sf.dozer.util.mapping.util.MappingUtils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.resttemplate.common.validator.ImgValidator;
 import com.resttemplate.rejoiceAPI.bean.ItemBean;
-import com.resttemplate.sample.bean.ImgInfo;
 import com.resttemplate.sample.bean.SampleBean;
 
 @Controller
@@ -70,14 +69,29 @@ public class SampleController {
 	}
 	
 	@RequestMapping(value = "/testForm.do")
-	public String testForm(@ModelAttribute ImgInfo info ,ModelMap map, BindingResult result){
-		ImgValidator validator = new ImgValidator();
-		validator.validate(info, result);
-		if(result.hasErrors()){
-			
-		}
-		
+	public String testForm(ModelMap map){
+//		ImgValidator validator = new ImgValidator();
+//		validator.validate(info, result);
+//		if(result.hasErrors()){
+//			
+//		}
 		return "sample/jqueryForm";
+	}
+	
+	@RequestMapping(value = "/ajaxData.do")
+	public String ajaxInnerData(ModelMap map){
+		HashMap<String, Object> hashMap1 = new HashMap<String, Object>();
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("a", "1");
+		hashMap.put("b", "2");
+		hashMap.put("c", "3");
+		List<HashMap<String, Object>> list = new ArrayList<HashMap<String,Object>>();
+		list.add(hashMap);
+		hashMap1.put("data", list);
+		
+		map.put("list", hashMap1);
+		
+		return "sample/innerData";
 	}
 	
 	
@@ -92,9 +106,6 @@ public class SampleController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 		return "";
 	}
 }
