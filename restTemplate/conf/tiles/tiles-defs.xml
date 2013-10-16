@@ -9,6 +9,13 @@
         <put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />
     </definition>
      
+    <definition name="none_layout" template="/WEB-INF/jsp/layout/default_layout.jsp">
+    </definition> 
+     
+    <definition name="none/*/*" extends="none_layout">
+        <put-attribute name="content" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+    </definition>
+    
     <definition name="*" extends="default_layout">
         <put-attribute name="content" value="/WEB-INF/jsp/{1}.jsp" />
     </definition>
