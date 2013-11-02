@@ -10,6 +10,7 @@ import net.sf.dozer.util.mapping.MappingException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -79,7 +80,7 @@ public class SampleController {
 	}
 	
 	@RequestMapping(value = "/ajaxData.do")
-	public String ajaxInnerData(ModelMap map){
+	public String ajaxInnerData(ModelMap map, @ModelAttribute SampleBean bean){
 		HashMap<String, Object> hashMap1 = new HashMap<String, Object>();
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put("a", "1");
@@ -108,4 +109,18 @@ public class SampleController {
 		}
 		return "";
 	}
+	
+	@RequestMapping( value = "/sampleJs.do")
+	public String sampleJs(){
+		return "sample/sampleJs";
+	}
+	
+	@RequestMapping( value = "/js.do")
+	public String js(){
+		return "sample/js";
+	}
+	
+	@RequestMapping(value="/multiFileuploadForm.do")
+	public void multiFileuploadForm(){ } 
+	
 }
