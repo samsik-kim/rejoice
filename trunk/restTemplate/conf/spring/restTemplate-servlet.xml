@@ -6,12 +6,15 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/util 
 		http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring 
+		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
@@ -33,7 +36,7 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
 	 -->
-	
+	<!-- 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass">
@@ -50,8 +53,10 @@
 			</list>
 		</property>
 	</bean>
+	 -->
 	
 <!-- ViewResolver 설정 
+-->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 	    <property name="order" value="1" />
 	    <property name="mediaTypes">
@@ -78,6 +83,7 @@
 	            		</bean>
 	            	</constructor-arg>
 	            </bean>
+	            <!-- 
 				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
 					<property name="marshaller">
 						<bean class="com.resttemplate.rejoiceAPI.bean.Message">
@@ -85,12 +91,13 @@
 						</bean>
 					</property>
 				</bean>
+	             -->
 	        </list>
 	    </property>
 	    <property name="ignoreAcceptHeader" value="true" />
 	</bean>
--->
 	<!-- 맵핑되는 확장자가 없을때 JSP 로 뷰 처리 
+	-->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 	    <property name="order" value="2" />
@@ -115,7 +122,12 @@
 			</list>
 		</property>
 	</bean>
-	-->
-	
-	
+
+	 
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+		<property name="maxUploadSize" value="30720000" />
+	</bean>
+
+<!-- 	 <bean id="multipartResolver" class="com.resttemplate.common.util.MultiFileSupportServletRequestDataBinder"/> -->
+
 </beans>
