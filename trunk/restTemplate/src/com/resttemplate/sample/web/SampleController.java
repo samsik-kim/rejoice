@@ -122,5 +122,7 @@ public class SampleController {
 	
 	@RequestMapping(value="/multiFileuploadForm.do")
 	public void multiFileuploadForm(){ } 
-	
+
+	@RequestMapping(value="/file.do")
+	public void file(){ }
 }
