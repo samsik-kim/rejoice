@@ -15,19 +15,21 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public class FileUploadBean {
 
-	private List<MultipartFile> files;
+	private MultipartFile [] files;
+//	private List<MultipartFile> files;
 	private List<MultipartFile> getFiles;
-	private Map<String, MultipartFile> mapFiles;
+//	private Map<String, MultipartFile> mapFiles;
+	
 	/**
 	 * @return the files
 	 */
-	public List<MultipartFile> getFiles() {
+	public MultipartFile[] getFiles() {
 		return files;
 	}
 	/**
 	 * @param files the files to set
 	 */
-	public void setFiles(List<MultipartFile> files) {
+	public void setFiles(MultipartFile[] files) {
 		this.files = files;
 	}
 	/**
@@ -41,17 +43,5 @@ public class FileUploadBean {
 	 */
 	public void setGetFiles(List<MultipartFile> getFiles) {
 		this.getFiles = getFiles;
-	}
-	/**
-	 * @return the mapFiles
-	 */
-	public Map<String, MultipartFile> getMapFiles() {
-		return mapFiles;
-	}
-	/**
-	 * @param mapFiles the mapFiles to set
-	 */
-	public void setMapFiles(Map<String, MultipartFile> mapFiles) {
-		this.mapFiles = mapFiles;
 	}
 }
