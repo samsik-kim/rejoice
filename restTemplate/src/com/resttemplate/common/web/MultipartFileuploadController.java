@@ -127,6 +127,15 @@ public class MultipartFileuploadController{
         return "";
 	}
 	
+	/**
+	 * @comment : JSON Type View
+	 * @date    : 2013. 11. 3.
+	 * @author  : Rejoice
+	 * @param files
+	 * @return
+	 * @throws IllegalStateException
+	 * @throws IOException 
+	 */
 	@RequestMapping(value = "/file/upload", method=RequestMethod.POST)
 	@ResponseBody
 	public List<FileMeta> upload(@RequestParam(value="files[]", required=false) MultipartFile[] files) throws IllegalStateException, IOException{
@@ -142,6 +151,16 @@ public class MultipartFileuploadController{
 		return fileMetas;
 	}
 	
+	/**
+	 * @comment : BeanNameView
+	 * @date    : 2013. 11. 3.
+	 * @author  : Rejoice
+	 * @param files
+	 * @return
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 * @throws JSONException 
+	 */
 	@RequestMapping(value = "/file/uploadBean", method=RequestMethod.POST)
 	public ModelAndView beanUpload(@RequestParam(value="files[]", required=false) MultipartFile[] files) throws IllegalStateException, IOException, JSONException{
 		ModelAndView modelAndView = new ModelAndView("jsonView");
@@ -160,8 +179,8 @@ public class MultipartFileuploadController{
 	}
 	
 	
-	@RequestMapping("/sample/ajaxMultipartFileupload.do")
-	public void ajaxMultipartFileupload(){}
+	@RequestMapping("/sample/basic.do")
+	public void basic(){}
 	
 	@RequestMapping("/sample/basic_plus.do")
 	public void basic_plus(){}
