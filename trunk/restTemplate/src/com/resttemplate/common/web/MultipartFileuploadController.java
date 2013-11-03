@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +18,22 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.resttemplate.common.bean.FileMeta;
+import com.resttemplate.common.bean.FileUploadBean;
 
 /**
  * @comment : 
@@ -79,7 +90,8 @@ public class MultipartFileuploadController{
 	@RequestMapping("/Mupload.do")
 	public String multiUpload(HttpServletRequest request,
 			HttpServletResponse response,
-			ModelMap map) throws IOException{
+			ModelMap map,
+			@ModelAttribute FileUploadBean bean) throws IOException{
 		MultipartHttpServletRequest multipartRequest =  (MultipartHttpServletRequest)request;  //다중파일 업로드
 		Map fileMap = multipartRequest.getFileMap();
 		String realPath = request.getSession().getServletContext().getRealPath("/");
@@ -114,4 +126,46 @@ public class MultipartFileuploadController{
         }
         return "";
 	}
+	
+	@RequestMapping(value = "/file/upload", method=RequestMethod.POST)
+	@ResponseBody
+	public List<FileMeta> upload(@RequestParam(value="files[]", required=false) MultipartFile[] files) throws IllegalStateException, IOException{
+		
+		List<FileMeta> fileMetas = new ArrayList<FileMeta>();
+		for (MultipartFile file : files) {
+			File uploadFile = new File("D:/", file.getOriginalFilename());
+			file.transferTo(uploadFile);
+			FileMeta bean = new FileMeta(uploadFile.getAbsolutePath(), file.getSize(), "");
+			bean.setName(file.getOriginalFilename());
+			fileMetas.add(bean);
+		}
+		return fileMetas;
+	}
+	
+	@RequestMapping(value = "/file/uploadBean", method=RequestMethod.POST)
+	public ModelAndView beanUpload(@RequestParam(value="files[]", required=false) MultipartFile[] files) throws IllegalStateException, IOException, JSONException{
+		ModelAndView modelAndView = new ModelAndView("jsonView");
+		JSONObject jsonObject = new JSONObject();
+		List<FileMeta> fileMetas = new ArrayList<FileMeta>();
+		for (MultipartFile file : files) {
+			File uploadFile = new File("D:/", file.getOriginalFilename());
+			file.transferTo(uploadFile);
+			FileMeta bean = new FileMeta(uploadFile.getAbsolutePath(), file.getSize(), "");
+			bean.setName(file.getOriginalFilename());
+			fileMetas.add(bean);
+		}
+		jsonObject.put("files", fileMetas);
+		modelAndView.addObject("jsonObject", jsonObject);
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping("/sample/ajaxMultipartFileupload.do")
+	public void ajaxMultipartFileupload(){}
+	
+	@RequestMapping("/sample/basic_plus.do")
+	public void basic_plus(){}
+	
+	@RequestMapping("/sample/angularjs.do")
+	public void angularjs(){}
 }

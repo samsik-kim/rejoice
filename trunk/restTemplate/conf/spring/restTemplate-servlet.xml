@@ -125,9 +125,14 @@
 
 	 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
-		<property name="maxUploadSize" value="30720000" />
+		<property name="maxUploadSize" value="52428800" />
 	</bean>
 
-<!-- 	 <bean id="multipartResolver" class="com.resttemplate.common.util.MultiFileSupportServletRequestDataBinder"/> -->
+	<bean id="beanNameResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0"/> 
+	</bean>
 
+	<bean id="jsonView" class="com.resttemplate.common.util.JSonView">
+		<property name="contentType" value="text/html;charset=UTF-8"></property>
+	</bean>
 </beans>
