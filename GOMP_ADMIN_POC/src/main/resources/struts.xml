@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+<!-- 
+	<include file="struts_config/struts-common.xml" />
+ -->
+	<include file="struts_config/struts-filesupport.xml" />
+
+	<include file="struts_config/struts-adminMgr.xml" /> 
+	
+	<include file="struts_config/struts-community.xml" />
+
+	<include file="struts_config/struts-contents.xml" /> 
+
+	<include file="struts_config/struts-membermgr.xml" />
+	
+	<!-- User Member Management -->
+	<include file="struts_config/struts-userMemberMgr.xml" />
+
+	<!-- Dev Member Management -->
+	<include file="struts_config/struts-devMemberMgr.xml" />
+	
+	<include file="struts_config/struts-qna.xml" />
+	
+	<include file="struts_config/struts-member-contract.xml" />
+	
+	<!-- 캐쉬 관리 -->
+	<include file="struts_config/struts-cash.xml" /> 
+	
+	<!-- GIFTCARD 관리 -->
+	<include file="struts_config/struts-giftcard.xml" />
+	
+	<!-- 결제취소 관리 -->
+	<include file="struts_config/struts-purchasecancel.xml" /> 
+
+	<include file="struts_config/struts-product.xml" />
+
+	<!-- 검증 관리 -->
+	<include file="struts_config/struts-verify.xml" />
+	
+		<!-- 검증 관리 -->
+	<include file="struts_config/struts-certifyMgr.xml" /> 	
+	
+
+	<!-- DEVICE -->
+	<include file="struts_config/struts-device.xml" />
+	
+	<!-- Search Management -->
+	<include file="struts_config/struts-search.xml" />
+	
+	<!-- Mobile Banner Management -->
+	<include file="struts_config/struts-mobilebanner.xml" />
+
+	<!--  PhoneRemapping -->
+	<include file="struts_config/struts-phonemapping.xml" />
+	
+	<!--  SaleStat -->
+	<include file="struts_config/struts-salestat.xml" />
+	
+	<!-- Verify License -->
+	<include file="struts_config/struts-verifyLicense.xml" />
+	
+	<!-- 정산 기초 정보 관리 -->
+	<include file="struts_config/struts-settlement-basis.xml" /> 
+	
+	
+	<!-- 정산 송금  정보 관리 -->
+	<include file="struts_config/struts-settlement-remittance.xml" />
+	
+	<!-- 정산  정보 관리 -->
+	<include file="struts_config/struts-settlement-accounts.xml" /> 
+	
+	
+	<package name="common" extends="struts-default">
+		
+		<result-types>
+			<result-type name="mredirect"
+				class="com.omp.struts2.result.MessageAndRedirectResult"> 
+				<param name="page">/jsp/common/MessageAndRedirect.jsp</param>
+			</result-type>
+		</result-types>
+		
+		<interceptors>
+			<interceptor name="gompInterceptor" class="com.omp.struts2.interceptor.GompIntergrateInterceptor">
+				<param name="messageResult">NoticeMessage</param>
+				<param name="serviceFaultResult">ServiceFaultMessage</param>
+			</interceptor>
+			<interceptor-stack name="defaultStack">
+				<interceptor-ref name="gompInterceptor"/>
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="defaultStack"/>
+		
+		<!-- Global Results -->
+		<global-results>
+			<result name="NoticeMessage">/jsp/common/exception/NoticeMessage.jsp</result>
+			<result name="ServiceFaultMessage">/jsp/common/exception/ServiceFaultMessage.jsp</result>
+		</global-results>
+	</package>
+
+</struts>

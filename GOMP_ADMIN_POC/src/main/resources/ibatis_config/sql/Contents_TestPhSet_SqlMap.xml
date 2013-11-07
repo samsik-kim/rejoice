@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="phoneSet">
+	<typeAlias alias="TestPhoneSet" type="com.omp.dev.contents.model.TestPhoneSet"/>
+	
+	<resultMap class="TestPhoneSet" id="testPhoneSet-resultMap">
+		<result property="tmpSeq" column="SEQ_OTA" />
+		<result property="macAddr" column="MAC_ADDR" />
+	</resultMap>
+	
+	<statement id="phoneSet.selectTestPhone" parameterClass="java.lang.String" resultMap="testPhoneSet-resultMap">
+		SELECT 
+			/* phoneSet.selectTestPhone jhsong 2011.05.11 : Content_TestPhSet_SqlMap.xml */ 
+			SEQ_OTA,
+            MAC_ADDR
+		FROM TBL_US_OTA_PHONE
+		WHERE MBR_NO=#mbrNo#
+	</statement>
+	<statement id="phoneSet.deleteTestPhone" parameterClass="TestPhoneSet">
+		DELETE
+			/* phoneSet.deleteTestPhone jhsong 2011.05.11 : Content_TestPhSet_SqlMap.xml */ 
+		FROM TBL_US_OTA_PHONE
+		WHERE  MBR_NO = #mbrNo#
+        AND    SEQ_OTA = #tmpSeq#
+	</statement>
+	<statement id="phoneSet.insertTestPhone" parameterClass="TestPhoneSet">
+        INSERT INTO
+        	/* phoneSet.insertTestPhone jhsong 2011.05.11 : Content_TestPhSet_SqlMap.xml */  
+	        TBL_US_OTA_PHONE
+	               (
+	                MBR_NO,                                                                                                                                 
+	                SEQ_OTA,                                                                                                                                 
+	                MAC_ADDR,                                                                                                                           
+	                UPD_ID,                                                                                                                             
+	                UPD_DTTM,                                                                                                                                 
+	                REG_ID,
+	                REG_DTTM
+	               )
+	        VALUES (
+	               #mbrNo#,
+	               (SELECT NVL(MAX(SEQ_OTA)+1,0) FROM TBL_US_OTA_PHONE WHERE MBR_NO=#mbrNo#),
+	                UPPER(#macAddr#),
+	               '',
+	               '',
+	               #mbrNo#,
+	               TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	               )
+	</statement>
+	<statement id="phoneSet.modifyTestPhone" parameterClass="TestPhoneSet">
+        UPDATE
+        	/* phoneSet.modifyTestPhone jhsong 2011.05.11 : Content_TestPhSet_SqlMap.xml */   
+        	TBL_US_OTA_PHONE
+        SET    MAC_ADDR = UPPER(#macAddr#),
+               UPD_ID = #mbrNo#,
+               UPD_DTTM = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+        WHERE  SEQ_OTA = #tmpSeq#
+        AND    MBR_NO = #mbrNo#
+	</statement>
+</sqlMap>

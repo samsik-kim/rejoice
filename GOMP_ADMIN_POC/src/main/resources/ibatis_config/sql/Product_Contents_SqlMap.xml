@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Product_Contents">
+	<typeAlias alias="contents" type="com.omp.admin.product.model.Contents"/>
+	<typeAlias alias="contentsSub" type="com.omp.admin.product.model.ContentsSub"/>
+	<typeAlias alias="dpCat" type="com.omp.admin.product.model.DpCat"/>
+	<typeAlias alias="subContents" type="com.omp.admin.product.model.SubContents"/>
+	<typeAlias alias="contentsImg" type="com.omp.admin.product.model.ContentsImg" />
+	<typeAlias alias="contentsSprtPhone" type="com.omp.admin.product.model.ContentsSprtPhone"/>
+	<typeAlias alias="contentsSaleHistory" type="com.omp.admin.product.model.ContentsSaleHistory" />
+	<typeAlias alias="contentsVerify" type="com.omp.admin.product.model.ContentsVerify" />
+	<typeAlias alias="contentsSaleStat" type="com.omp.admin.product.model.ConstantsSaleStat" />
+	
+	<!-- 상품의 판매상태 및 검증상태를 가져온다. -->
+	<select id="Product_Contents.getSaleStat" parameterClass="string" resultClass="contentsSaleStat">
+		SELECT /* Product_Contents.getSaleStat bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			CID
+			, SALE_STAT AS SALESTAT
+			, VERIFY_PRGR_YN
+		FROM TBL_PD_CONTS
+		WHERE CID = #cid#
+	</select>
+	
+	<!-- 상품 카테고리 리스트 조회 -->
+	<select id="Product_Contents.selectDpCatList" parameterClass="string" resultClass="dpCat">
+		SELECT /* Product_Contents.selectDpCatList bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			DP_CAT_NO AS DPCATNO
+			, DP_CAT_NM AS DPCATNM
+			, DP_CAT_DESC AS DPCATDESC
+			, DP_CAT_PRIOR AS DPCATPRIOR
+		FROM TBL_DP_CAT
+		WHERE UP_DP_CAT_NO = #value#
+		AND USE_YN = 'Y'
+		ORDER BY DP_CAT_PRIOR, DP_CAT_NO
+	</select>
+	
+	<!-- 상품 리스트  -->
+	<select id="Product_Contents.selectContentsList" parameterClass="contentsSub" resultClass="contents">
+	 	<include refid="GOMP.pagingStart"/>
+		SELECT  /* Product_Contents.selectContentsList bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			<include refid="GOMP.pagingTotalCount"/>
+			A.CID 
+			, A.PROD_NM AS PRODNM
+			, A.AID
+			, A.DEV_USER_ID AS DEVUSERID
+			, A.PROD_PRC AS PRODPRC
+			, A.SALE_STAT AS SALESTAT
+			, B.CTGR_CD AS CTGRCD2
+			, ( 	SELECT DP_CAT_NM 
+				FROM TBL_DP_CAT 
+				WHERE DP_CAT_NO = B.CTGR_CD 
+			) AS CTGRNM2
+			, A.VERIFY_PRGR_YN AS VERIFYPRGRYN
+			, ( SELECT MBR_ID FROM TBL_US_MEMBER WHERE MBR_NO = A.DEV_USER_ID ) AS MBRID
+			, FIRST_INS_DT AS FIRSTINSDT
+			, C.FILE_POS AS  STATUSIMGPOS
+			, C.FILE_NM AS  STATUSIMGNM
+		FROM TBL_PD_CONTS A
+		LEFT JOIN TBL_PD_TARGET_CTG B ON (A.CID = B.CID)
+		LEFT JOIN TBL_PD_CONTS_IMG C ON (A.CID = C.CID AND C.IMG_GBN = 'DP000108')
+		WHERE 'Y' != NVL(A.DEL_YN, 'N')
+		<isNotEmpty property="vmType" >
+			AND A.VM_TYPE = #vmType# 	
+		</isNotEmpty>
+		<isNotEmpty property="saleStat" >
+			AND A.SALE_STAT = #saleStat#
+		</isNotEmpty>
+		<isNotEmpty property="dpCat2" >
+			AND B.CTGR_CD = #dpCat2# 
+		</isNotEmpty>
+		<isNotEmpty property="verifyPrgrYn">
+			AND A.VERIFY_PRGR_YN = #verifyPrgrYn#
+		</isNotEmpty>
+		
+		<isNotEmpty property="searchText">
+			<isEqual property="searchType" compareValue="prd">
+			AND UPPER( A.PROD_NM ) LIKE '%'||UPPER( #searchText# )||'%'
+			</isEqual>
+			<isEqual property="searchType" compareValue="aid">
+			AND UPPER( A.AID ) LIKE '%'||UPPER( #searchText# )||'%'
+			</isEqual>
+			<isEqual property="searchType" compareValue="cid">
+			AND UPPER( A.CID ) LIKE '%'||UPPER( #searchText# )||'%'
+			</isEqual>
+			<isEqual property="searchType" compareValue="devId">
+			AND UPPER( ( SELECT MBR_ID FROM TBL_US_MEMBER WHERE MBR_NO = A.DEV_USER_ID ) ) LIKE '%'||UPPER( #searchText# )||'%'
+			</isEqual>
+		</isNotEmpty>
+		
+		<isNotEmpty property="startDateDB">
+			<isNotEmpty property="endDateDB">
+				AND FIRST_INS_DT BETWEEN #startDateDB#||'000000' AND #endDateDB#||'235959'
+			</isNotEmpty>
+		</isNotEmpty>
+		ORDER BY A.VERIFY_PRGR_YN, A.AID
+		 <include refid="GOMP.pagingEnd"/>
+	</select>
+
+	<!-- 상품 상세 공통 inner sql -->
+	<sql id="contentsInnerSql">
+				A.CID
+              , A.AID
+              , A.PROD_GBN AS PRODGBN
+              , A.VERIFY_REQ_VER AS VERIFYREQVER
+              , A.VERIFY_PRGR_YN AS VERIFYPRGRYN
+              , A.SALE_STAT AS SALESTAT
+              , A.AGRMNT_STAT AS AGRMNTSTAT
+			  , A.PROD_NM AS PRODNM
+              , A.VM_TYPE AS VMTYPE
+			  , A.DEV_USER_ID AS MBRNO
+	</sql>
+	
+	<!-- 상품 기본 정보  -->
+	<select id="Product_Contents.selectContentsBaseInfo" parameterClass="string" resultClass="contents">
+		SELECT /* Product_Contents.selectContentsBaseInfo bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			<include refid="contentsInnerSql"/>	
+			  , A.CORP_PROD_NO AS CORPPRODNO
+              , A.FIRST_INS_DT AS FIRSTINSDT
+              , B.MBR_ID AS MBRID
+              , CASE B.MBR_CLS_CD 
+              		WHEN 'US000102' THEN B.COMP_NM
+              		ELSE B.MBR_NM 
+              	END AS MBRNM
+              , A.FIRST_AGRMNT_DT AS FIRSTAGRMNTDT
+              , A.SALE_START_DT AS SALESTARTDT
+              , NVL(A.ADJ_RATE,65) AS ADJRATE
+              , NVL(A.ADJ_RATE_SKT,35) AS ADJRATESKT
+              , A.SIGN_OPTION AS SIGNOPTION
+		FROM TBL_PD_CONTS A
+        LEFT JOIN TBL_US_MEMBER B ON (A.DEV_USER_ID = B.MBR_NO)
+		WHERE A.CID = #cid#
+	</select>
+	
+	<!-- 상품 검증레벨 업데이트 -->
+	<update id="Product_Contents.updateContentsSignOption" parameterClass="map" >
+		UPDATE /* Product_Contents.updateContentsSignOption bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		TBL_PD_CONTS SET
+			SIGN_OPTION = #signOption#
+			, UPD_BY = #adminId#
+			, UPD_DTTM = TO_CHAR(SYSDATE,'yyyyMMddHH24MISS')
+		WHERE CID = #cid#
+		  AND VERIFY_PRGR_YN NOT IN('PD005301', 'PD005320')
+	</update>
+	
+	<!-- 상품 정산율 업데이트  -->
+	<update id="Product_Contents.updateContentsRate" parameterClass="map">
+		UPDATE /* Product_Contents.updateContentsRate bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		TBL_PD_CONTS SET 
+			ADJ_RATE = #adjRate#
+			, ADJ_RATE_SKT = #adjRateSkt#
+			, UPD_BY = #adminId#
+			, UPD_DTTM = TO_CHAR(SYSDATE,'yyyyMMddHH24MISS')
+		WHERE CID = #cid#
+	</update>
+	
+	<!-- 정산율 관리 테이블에 해당 상품의 정산 정보가 있는지 확인 -->
+	<select id="Product_Contents.checkProdSettl" parameterClass="map" resultClass="string">
+		SELECT /* Product_Contents.checkProdSettl bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			PROD_ID 
+		FROM TBL_PROD_SETTL
+		WHERE PROD_ID = #cid#
+		  AND ROWNUM &lt; 2
+	</select>
+	
+	<!-- 정산율 관리 테이블에 오늘 일자로 시작하는 데이터가 있는지 확인  -->
+	<select id="Product_Contents.checkProdSettlStrtDt" parameterClass="map" resultClass="string">
+		SELECT /* Product_Contents.checkProdSettlStrtDt bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			PROD_ID 
+		FROM TBL_PROD_SETTL
+		WHERE PROD_ID = #cid#
+		  AND EFF_STRT_DT = TO_CHAR(SYSDATE,'YYYYMMDD')
+	</select>
+	
+	<!-- 정산율 관리 테이블 insert -->
+	<insert id="DisplayDeploy.insertProdSettlToday" parameterClass="map">
+		INSERT /* DisplayDeploy.insertProdSettlToday bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		INTO TBL_PROD_SETTL(
+			PROD_ID
+			, EFF_STRT_DT
+			, SETTL_RT
+			, EFF_END_DT
+			, REG_ID
+			, REG_DT
+			, MBR_NO
+		)
+		SELECT 
+			#cid#
+			, to_char(SYSDATE,'YYYYMMDD' )
+			, #adjRate#
+			, '99991231'
+			,  #adminId#
+			, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+			, DEV_USER_ID
+		FROM TBL_PD_CONTS
+		WHERE CID = #cid#
+	</insert>
+	
+	<!-- 정산율 관리 테이블 update -->
+	<update id="DisplayDeploy.updateProdSettl" parameterClass="map">
+		UPDATE /* DisplayDeploy.updateProdSettl bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		TBL_PROD_SETTL SET
+			SETTL_RT = #adjRate#
+			, EFF_END_DT = '99991231' 
+			, UPDT_ID = #adminId#
+			, UPDT_DT = to_char(SYSDATE, 'YYYYMMDDHH24MISS')
+		WHERE PROD_ID = #cid#
+		  AND EFF_STRT_DT = TO_CHAR(SYSDATE,'YYYYMMDD')
+	</update>
+	
+	<!-- 정산율 관리 테이블 update (이전 정산율 데이터 End date Marking)-->
+	<update id="DisplayDeploy.updateProdSettlEndDt" parameterClass="map">
+		UPDATE /* DisplayDeploy.updateProdSettlEndDt bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		TBL_PROD_SETTL SET
+	    	EFF_END_DT = TO_CHAR(SYSDATE - 1,'YYYYMMDD')
+	        ,UPDT_ID = #adminId#
+	    	,UPDT_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')	
+	    WHERE PROD_ID = #cid#
+	      AND EFF_STRT_DT = (SELECT MAX(EFF_STRT_DT) FROM TBL_PROD_SETTL WHERE PROD_ID = #cid#)
+	</update>
+	
+	<!-- 상품 상세정보 조회  -->
+	<select id="Product_Contents.selectContentsProductInfo" parameterClass="string" resultClass="contents">
+		SELECT /* Product_Contents.selectContentsProductInfo bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			<include refid="contentsInnerSql"/>
+			, A.CORP_PROD_NO AS CORPPRODNO
+			, NVL(A.DRM_YN,'N') AS DRMYN
+			, A.GAME_DELIB_GRD AS GAMEDELIBGRD
+			, A.PROD_PRC AS PRODPRC
+			, A.PROMOTION_URL AS PROMOTIONURL
+			, A.PROD_DESC_SMMR AS PRODDESCSMMR
+			, A.PROD_DESC_DTL AS PRODDESCDTL
+			, A.UPD_DTTM AS UPDDTTM
+			, EXPOSURE_DEV_NM AS EXPOSUREDEVNM
+			, B.CTGR_CD AS CTGRCD2
+			, ( 	SELECT DP_CAT_NM 
+				FROM TBL_DP_CAT 
+				WHERE DP_CAT_NO = B.CTGR_CD
+			) AS CTGRNM2
+		FROM TBL_PD_CONTS A
+		LEFT JOIN TBL_PD_TARGET_CTG B ON (A.CID = B.CID)
+		WHERE A.CID = #cid#
+	</select>
+
+	<!-- 상품 개발자 등록 키워드 조회  -->
+	<select id="Product_Contents.getSellerTagList" parameterClass="string" resultClass="string">
+		SELECT /* Product_Contents.getSellerTagList bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			TAG_NM AS TAGNM
+		FROM TBL_TAG_INFO
+		WHERE CID = #cid#
+		ORDER BY TAG_INFO_SEQ
+	</select>	
+	
+	<!-- 상품 이미지 조회  -->
+	<select id="Product_Contents.getContentsImgMap" parameterClass="string" resultClass="contentsImg">
+		SELECT /* Product_Contents.getContentsImgMap bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			CID 
+			, IMG_GBN AS IMGGBN
+			, FILE_POS AS FILEPOS
+			, FILE_NM AS FILENM
+			, FILE_SIZE AS FILESIZE
+		FROM TBL_PD_CONTS_IMG
+		WHERE CID = #cid#
+	</select>
+	
+	<!-- 상품 정보 업데이트 -->
+	<update id="Product_Contents.updateContentsProductInfo" parameterClass="map" >
+		UPDATE /* Product_Contents.updateContentsProductInfo bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		TBL_PD_CONTS SET 
+			PROMOTION_URL = #promotionUrl#
+			, PROD_DESC_SMMR = #prodDescSmmr#
+			, PROD_DESC_DTL = #prodDescDtl#
+			, UPD_BY = #adminId#
+			, UPD_DTTM = TO_CHAR(SYSDATE,'yyyyMMddHH24MISS')
+		WHERE CID = #cid#
+		  AND VERIFY_PRGR_YN NOT IN('PD005301', 'PD005320')
+	</update>
+	
+	<!-- 상품 개발자 등록 키워드 삭제-->
+	<delete id="Product_Contents.deleteContentsTag" parameterClass="string">
+		DELETE /* Product_Contents.deleteContentsTag bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		FROM TBL_TAG_INFO
+		WHERE CID = #cid#
+	</delete>
+	
+	<!-- 상품 개발자 등록 키워드 insert -->
+	<insert id="Product_Contents.insertContentsTag" parameterClass="map">
+		INSERT /* Product_Contents.insertContentsTag bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		INTO TBL_TAG_INFO (
+			CID
+			, TAG_INFO_SEQ
+			, TAG_NM
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY
+			, UPD_DTTM
+		)
+		SELECT 
+			#cid#
+			, NVL(MAX(TAG_INFO_SEQ), 0)+1
+			, #tagNm#
+			, #adminId#
+			,TO_CHAR(sysdate, 'yyyyMMddHH24MISS')
+			, #adminId#
+			, to_char(sysdate, 'yyyyMMddHH24MISS')
+		FROM  TBL_TAG_INFO
+		WHERE cid = #cid#
+	</insert>
+	
+	<!-- 상품 카테고리 정보 삭제  -->
+	<delete id="Product_Contents.deleteCategory" parameterClass="string">
+		DELETE /* Product_Contents.deleteCategory bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		FROM TBL_PD_TARGET_CTG
+		WHERE CID = #cid#
+	</delete>
+	
+	<!-- 상품 카테고리 정보 입력  -->
+	<insert id="Product_Contents.insertCategory" parameterClass="map">
+		INSERT /* Product_Contents.insertCategory bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		INTO TBL_PD_TARGET_CTG (
+			CID
+			, CTGR_CD
+			, CTGR_DEPTH
+			, ORDER_SEQ
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY
+			, UPD_DTTM
+		)VALUES (
+			#cid#
+			, #ctgrCd2#
+			, ( SELECT DP_CAT_DEPTH 
+				FROM TBL_DP_CAT 
+				WHERE DP_CAT_NO = #ctgrCd2# )
+			, 1
+			, #adminId#
+			, to_char(sysdate, 'yyyyMMddHH24MISS')
+			, #adminId#
+			, to_char(sysdate, 'yyyyMMddHH24MISS') 
+		)
+	</insert>
+	
+	<!-- =====================  DEV INFO ============================ -->
+	<!-- 상품 개발 정보 조회 -->
+	<select id="Product_Contents.selectContentsDevInfo" parameterClass="string" resultClass="contents">
+		SELECT /* Product_Contents.selectContentsDevInfo bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			<include refid="contentsInnerSql"/>	
+              , NVL(A.DRM_YN,'N') AS DRMYN
+			  , VERIFY_SCNR_FILE AS VERIFYSCNRFILE
+			  , VERIFY_SCNR_FILE_NM AS VERIFYSCNRFILENM
+			  , A.UPD_DTTM AS UPDDTTM
+		FROM TBL_PD_CONTS A
+        LEFT JOIN TBL_US_MEMBER B ON (A.DEV_USER_ID = B.MBR_NO)
+		WHERE A.CID = #cid#
+	</select>
+	
+	<!-- 상품 개발정보 SCID Result Map-->
+	<resultMap id="subContentsResultMap" class="subContents" >
+		<result column="SCID" property="scid" />
+		<result column="CID" property="cid" />
+		<result column="VMVERMIN" property="vmVerMin" />
+		<result column="VMVERMAX" property="vmVerMax" />
+		<result column="VMVERTARGET" property="vmVerTarget" />
+		<result column="PKGNM" property="pkgNm" />
+		<result column="VERSIONCODE" property="versionCode" />
+		<result column="VERSIONNAME" property="versionName" />
+		<result column="RUNFILEPOS" property="runFilePos" />
+		<result column="RUNFILENM" property="runFileNm" />
+		<result column="RUNFILESIZE" property="runFileSize" />
+		<result column="SCID" property="contentsSprtPhoneList" select="Product_Contents.selectSprtPhone" />
+	</resultMap>
+	
+	<!-- 상품 개발정보 SCID 정보 조회  -->
+	<select id="Product_Contents.selectSubContents" parameterClass="string" resultMap="subContentsResultMap">
+		SELECT /* Product_Contents.selectSubContents bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			A.SCID
+			, A.CID
+			, A.VM_VER_MIN AS VMVERMIN
+			, A.VM_VER_MAX AS VMVERMAX
+			, A.VM_VER_TARGET AS VMVERTARGET
+			, A.PKG_NM AS PKGNM
+			, A.VERSION_CODE AS VERSIONCODE
+			, A.VERSION_NAME AS VERSIONNAME
+			, A.RUN_FILE_POS AS RUNFILEPOS
+			, A.RUN_FILE_NM AS RUNFILENM
+			, A.RUN_FILE_SIZE AS RUNFILESIZE
+		FROM TBL_PD_SUB_CONTS A
+		WHERE A.CID = #cid#
+		ORDER BY A.SCID
+	</select>
+	
+	<!-- 상품 개발정보 SCID 단말 정보 및 LCD 정보 조회-->
+	<select id="Product_Contents.selectSprtPhone" parameterClass="string" resultClass="contentsSprtPhone">
+		SELECT /* Product_Contents.selectSprtPhone bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			A.SCID
+			, A.PHONE_MODEL_CD AS PHONEMODELCD
+			, B.MGMT_PHONE_MODEL_NM AS MGMTPHONEMODELNM
+			, B.MODEL_NM AS MODELNM
+			, B.VM_VER  AS VMVER
+			, B.LCD_SIZE AS LCDSIZE
+		FROM TBL_PD_SPRT_PHONE A
+		INNER JOIN tbl_phone_info B ON (A.PHONE_MODEL_CD = B.PHONE_MODEL_CD AND B.DEL_YN = 'N')
+		WHERE SCID = #scid#
+		ORDER BY A.PHONE_MODEL_CD
+	</select>
+	
+	
+	<!-- =====================  판매중 개발정보 ============================ -->
+	<!-- 판매중 개발정보 조회  -->
+	<select id="Product_Contents.selectSaleConts" parameterClass="string" resultClass="contents">
+		SELECT /* Product_Contents.selectSaleConts bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+				A.CID
+			  , A.AID
+			  , A.PROD_GBN AS PRODGBN
+			  , A.PROD_STAT_CD AS SALESTAT
+			  , A.PROD_NM AS PRODNM
+			  , A.PLAT_CLS_CD AS VMTYPE
+			  , A.MBR_NO AS MBRNO
+			  , NVL(A.DRM_YN,'N') AS DRMYN
+			  , A.UPD_DT AS UPDDTTM 
+			  , (SELECT VERIFY_PRGR_YN FROM TBL_PD_CONTS WHERE CID = A.CID) AS VERIFYPRGRYN
+		FROM TBL_DP_PROD A
+		LEFT JOIN TBL_US_MEMBER B ON (A.MBR_NO = B.MBR_NO)
+		WHERE A.CID = #cid#
+	</select>
+	
+	<!-- 판매중 개발정보 SCID Result Map -->
+	<resultMap id="saleSubContentsResultMap" class="subContents" >
+		<result column="SCID" property="scid" />
+		<result column="CID" property="cid" />
+		<result column="VMVERMIN" property="vmVerMin" />
+		<result column="VMVERMAX" property="vmVerMax" />
+		<result column="VMVERTARGET" property="vmVerTarget" />
+		<result column="PKGNM" property="pkgNm" />
+		<result column="VERSIONCODE" property="versionCode" />
+		<result column="VERSIONNAME" property="versionName" />
+		<result column="RUNFILEPOS" property="runFilePos" />
+		<result column="RUNFILENM" property="runFileNm" />
+		<result column="RUNFILESIZE" property="runFileSize" />
+		<result column="SCID" property="contentsSprtPhoneList" select="Product_Contents.selectSaleSprtPhone" />
+	</resultMap>
+	
+	<!-- 판매중 개발정보 SCID 정보 조회  -->
+	<select id="Product_Contents.selectSaleSubContents" parameterClass="string" resultMap="saleSubContentsResultMap">
+		SELECT /* Product_Contents.selectSaleSubContents bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			A.SUB_CONTS_ID AS SCID
+			, A.PROD_ID AS CID
+			, A.VM_VER_MIN AS VMVERMIN
+			, A.VM_VER_MAX AS VMVERMAX
+			, A.VM_TARGET AS VMVERTARGET
+			, A.PKG_NM AS PKGNM
+			, A.VER_CD AS VERSIONCODE
+			, A.VER_NM AS VERSIONNAME
+			, A.FILE_POS AS RUNFILEPOS
+			, A.FILE_NM AS RUNFILENM
+			, A.FILE_SIZE AS RUNFILESIZE
+		FROM TBL_DP_SUB_CONTS A
+		WHERE A.PROD_ID = #cid#
+		ORDER BY A.SUB_CONTS_ID
+	</select>
+	
+	<!-- 판매중 개발정보 scid 단말 및 LCD 정보 조회-->
+	<select id="Product_Contents.selectSaleSprtPhone" parameterClass="string" resultClass="contentsSprtPhone">
+		SELECT /* Product_Contents.selectSaleSprtPhone bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			A.SUB_CONTS_ID AS SCID
+			, A.PHONE_MODEL_CD AS PHONEMODELCD
+			, B.MGMT_PHONE_MODEL_NM AS MGMTPHONEMODELNM
+			, B.MODEL_NM AS MODELNM
+			, B.VM_VER  AS VMVER
+			, B.LCD_SIZE AS LCDSIZE
+		FROM TBL_DP_SPRT_HP A
+		INNER JOIN TBL_PHONE_INFO B ON (A.PHONE_MODEL_CD = B.PHONE_MODEL_CD AND B.DEL_YN = 'N')
+		WHERE A.SUB_CONTS_ID = #scid#
+		ORDER BY A.PHONE_MODEL_CD
+	</select>
+	
+	<!-- =====================  검증요청 개발정보 ============================ -->
+	<!-- 검증요청 개발정보 조회 -->
+	<select id="Product_Contents.selectVerifyConts" parameterClass="string" resultClass="contents">
+		SELECT /* Product_Contents.selectVerifyConts bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+				A.CID
+              , A.AID
+              , B.PROD_GBN AS PRODGBN
+              , A.VERIFY_REQ_VER AS VERIFYREQVER
+              , B.VERIFY_PRGR_YN AS VERIFYPRGRYN
+              , B.SALE_STAT AS SALESTAT
+              , A.AGRMNT_STAT AS AGRMNTSTAT
+			  , A.PROD_NM AS PRODNM
+              , A.VM_TYPE AS VMTYPE
+			  , B.DEV_USER_ID AS MBRNO
+              , NVL(A.DRM_YN,'N') AS DRMYN
+			  , A.VERIFY_SCNR_FILE AS VERIFYSCNRFILE
+			  , A.VERIFY_SCNR_FILE_NM AS VERIFYSCNRFILENM
+			  , A.UPD_DTTM AS UPDDTTM
+		FROM TBL_CT_CONTS A
+		INNER JOIN TBL_PD_CONTS B ON (A.CID=B.CID AND A.VERIFY_REQ_VER = B.VERIFY_REQ_VER)
+		WHERE A.CID = #cid#
+	</select>
+	
+	<!-- 검증요청 개발정보 SCID Result Map -->
+	<resultMap id="verifySubContentsResultMap" class="subContents" >
+		<result column="SCID" property="scid" />
+		<result column="CID" property="cid" />
+		<result column="VMVERMIN" property="vmVerMin" />
+		<result column="VMVERMAX" property="vmVerMax" />
+		<result column="VMVERTARGET" property="vmVerTarget" />
+		<result column="PKGNM" property="pkgNm" />
+		<result column="VERSIONCODE" property="versionCode" />
+		<result column="VERSIONNAME" property="versionName" />
+		<result column="RUNFILEPOS" property="runFilePos" />
+		<result column="RUNFILENM" property="runFileNm" />
+		<result column="RUNFILESIZE" property="runFileSize" />
+		<result column="{scid=SCID, verifyReqVer=VERIFYREQVER}" property="contentsSprtPhoneList" select="Product_Contents.selectVerifySprtPhone" />
+	</resultMap>
+	
+	<!-- 검증요청 개발정보 SCID 조회  -->
+	<select id="Product_Contents.selectVerifySubContents" parameterClass="string" resultMap="verifySubContentsResultMap">
+		SELECT /* Product_Contents.selectVerifySubContents bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			A.SCID
+			, A.CID
+			, A.VERIFY_REQ_VER AS VERIFYREQVER 
+			, A.VM_VER_MIN AS VMVERMIN
+			, A.VM_VER_MAX AS VMVERMAX
+			, A.VM_VER_TARGET AS VMVERTARGET
+			, A.PKG_NM AS PKGNM
+			, A.VERSION_CODE AS VERSIONCODE
+			, A.VERSION_NAME AS VERSIONNAME
+			, A.RUN_FILE_POS AS RUNFILEPOS
+			, A.RUN_FILE_NM AS RUNFILENM
+			, A.RUN_FILE_SIZE AS RUNFILESIZE
+		FROM TBL_CT_SUB_CONTS A
+		WHERE A.CID = #cid#
+		  AND A.VERIFY_REQ_VER = (SELECT VERIFY_REQ_VER FROM TBL_PD_CONTS WHERE CID = A.CID)
+		ORDER BY A.SCID
+	</select>
+	
+	<!--검증요청 개발정보 SCID 단말/LCD 정보 조회  -->
+	<select id="Product_Contents.selectVerifySprtPhone" parameterClass="hashmap" resultClass="contentsSprtPhone">
+		SELECT /* Product_Contents.selectVerifySprtPhone bcpark 2011.05.11 : Product_Contents_SqlMap.xml */ 
+			A.SCID
+			, A.PHONE_MODEL_CD AS PHONEMODELCD
+			, B.MGMT_PHONE_MODEL_NM AS MGMTPHONEMODELNM
+			, B.MODEL_NM AS MODELNM
+			, B.VM_VER  AS VMVER
+			, B.LCD_SIZE AS LCDSIZE
+		FROM TBL_CT_SPRT_PHONE A
+		INNER JOIN TBL_PHONE_INFO B ON (A.PHONE_MODEL_CD = B.PHONE_MODEL_CD AND B.DEL_YN = 'N')
+		WHERE A.SCID = #scid#
+		  AND A.VERIFY_REQ_VER = #verifyReqVer#
+		ORDER BY A.PHONE_MODEL_CD
+	</select>
+	
+	<!-- 상품 판매상태 변경 history 조회  -->
+	<select id="Product_Contents.selectStatHistory" parameterClass="string" resultClass="contentsSaleHistory">
+		SELECT 	/* Product_Contents.selectStatHistory bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			A.CID 
+			, A.CHNG_DTTM AS CHNGDTTM
+			, A.SALE_STAT AS SALESTAT
+			, A.INS_BY AS INSBY
+			, CASE WHEN A.ADMIN_CHNG_YN = 'N' THEN B.MBR_ID ELSE A.INS_BY END AS CHANGEID
+			, A.ADMIN_CHNG_YN AS ADMINCHNGYN
+		FROM TBL_PD_SALE_STAT_HIS A
+		LEFT JOIN TBL_US_MEMBER  B ON (A.INS_BY = B.MBR_NO)
+		WHERE A.CID = #cid#
+		ORDER BY A.CHNG_DTTM DESC
+	</select>
+	
+	<!--상품 검증요청 리스트 조회  -->
+	<select id="Product_Contents.selectContentsVerifyList" parameterClass="contentsSub" resultClass="contentsVerify">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* Product_Contents.selectContentsVerifyList bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			<include refid="GOMP.pagingTotalCount"/>
+			VERIFY_REQ_VER AS VERIFYREQVER
+			, INS_DTTM AS INSDTTM
+			, CT_END_DT AS CTENDDT
+			, VERIFY_PRGR_YN AS VERIFYPRGRYN
+			, AGRMNT_STAT AS AGRMNTSTAT
+			, SUBSTR(MAX(SYS_CONNECT_BY_PATH(SCID,'&lt;br/&gt;')),6) AS SCID
+		FROM (
+				SELECT T1.VERIFY_REQ_VER, T1.INS_DTTM, T1.CT_END_DT, T1.VERIFY_PRGR_YN, T1.AGRMNT_STAT, T2.SCID,
+				ROW_NUMBER () OVER (PARTITION BY T1.VERIFY_REQ_VER ORDER BY  T2.SCID) RNUM
+				FROM TBL_CT_CONTS T1
+				INNER JOIN TBL_CT_SUB_CONTS T2 ON (T1.CID = T2.CID AND T1.VERIFY_REQ_VER = T2.VERIFY_REQ_VER)
+				WHERE T1.CID = #cid#
+		)
+		START WITH RNUM = 1
+		CONNECT BY PRIOR RNUM = RNUM -1
+		AND PRIOR VERIFY_REQ_VER = VERIFY_REQ_VER
+		GROUP BY VERIFY_REQ_VER, INS_DTTM, CT_END_DT, VERIFY_PRGR_YN, AGRMNT_STAT
+		ORDER BY VERIFY_REQ_VER DESC
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+	
+	<!-- 검증내역 팝업 상세 : 검증내역 정보 -->
+	<select id="Product_Contents.selectContentsVerifyInfo" parameterClass="contentsSub" resultClass="contentsVerify">
+		SELECT /* Product_Contents.selectContentsVerifyInfo bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			T1.CID
+			, T1.AID
+			, T1.INS_DTTM AS INSDTTM
+			, T1.CT_END_DT AS CTENDDT
+			, T1.VERIFY_PRGR_YN AS VERIFYPRGRYN
+			, T1.AGRMNT_STAT AS AGRMNTSTAT
+		FROM TBL_CT_CONTS T1
+		WHERE T1.CID = #cid#
+		  AND T1.VERIFY_REQ_VER = #verifyReqVer#
+	</select>
+	
+	<!-- 검증내역 팝업 상세 : 검증내역 상세 정보 -->
+	<resultMap id="verifySubDetailMap" class="subContents" >
+		<result column="SCID" property="scid" />
+		<result column="CID" property="cid" />
+		<result column="VMVERMIN" property="vmVerMin" />
+		<result column="VMVERMAX" property="vmVerMax" />
+		<result column="VMVERTARGET" property="vmVerTarget" />
+		<result column="PKGNM" property="pkgNm" />
+		<result column="VERSIONCODE" property="versionCode" />
+		<result column="VERSIONNAME" property="versionName" />
+		<result column="RUNFILEPOS" property="runFilePos" />
+		<result column="RUNFILENM" property="runFileNm" />
+		<result column="RUNFILESIZE" property="runFileSize" />
+		<result column="APPCTRESULTFILE" property="appCtResultFile" />
+		<result column="APPCTRESULTFILENM" property="appCtResultFileNm" />
+		<result column="APPCTCMT" property="appCtCmt" />
+		<result column="INSDTTM" property="insDttm" />
+		<result column="CTENDDT" property="ctEndDt" />
+		<result column="{scid=SCID, verifyReqVer=VERIFYREQVER}" property="lcdSizeList" select="Product_Contents.selectContentsVerifyDetailLcd" />
+		<result column="{scid=SCID, verifyReqVer=VERIFYREQVER}" property="addFileList" select="Product_Contents.selectContentsVerifyAddFile" />
+	</resultMap>
+	
+	<select id="Product_Contents.selectContentsVerifyDetailList"  parameterClass="contentsSub" resultMap="verifySubDetailMap">
+		SELECT /* Product_Contents.selectContentsVerifyDetailList bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			A.SCID 
+			, A.CID
+			, A.VERIFY_REQ_VER AS VERIFYREQVER
+			, A.VM_VER_MIN AS VMVERMIN
+			, A.VM_VER_MAX AS VMVERMAX
+			, A.VM_VER_TARGET AS VMVERTARGET
+			, A.VERSION_CODE AS VERSIONCODE
+			, A.VERSION_NAME AS VERSIONNAME
+			, A.PKG_NM AS PKGNM
+			, A.RUN_FILE_POS AS RUNFILEPOS
+			, A.RUN_FILE_NM AS RUNFILENM
+			, A.RUN_FILE_SIZE AS RUNFILESIZE
+			, A.APP_CT_RESULT_FILE AS APPCTRESULTFILE
+			, A.APP_CT_RESULT_FILE_NM AS APPCTRESULTFILENM
+			, A.APP_CT_CMT AS APPCTCMT
+			, B.INS_DTTM AS INSDTTM
+			, B.CT_END_DT AS CTENDDT
+		FROM TBL_CT_SUB_CONTS A
+		INNER JOIN TBL_CT_CONTS B ON (A.CID = B.CID AND A.VERIFY_REQ_VER = B.VERIFY_REQ_VER)
+		WHERE A.CID = #cid#
+		  AND A.VERIFY_REQ_VER = #verifyReqVer#
+	</select>
+	
+	<!-- 검증내역 팝업 상세 : 검증내역 상세 - LCD 정보 -->
+	<select id="Product_Contents.selectContentsVerifyDetailLcd" parameterClass="hashmap" resultClass="string">
+		SELECT /* Product_Contents.selectContentsVerifyDetailLcd bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			B.CD_NM AS ITEMNM
+		FROM TBL_CT_PROVISION_ITEM A
+		INNER JOIN TBL_COMM_CD B ON (B.DTL_FULL_CD = A.ITEM_CD)
+		WHERE A.SCID = #scid#
+		  AND A.VERIFY_REQ_VER = #verifyReqVer#
+		  AND A.ITEM_TYPE = 'PD008303'
+	</select>
+	
+	<!-- 검증내역 팝업 상세 : 검증내역 상세 - 기타첨부파일 정보 -->
+	<select id="Product_Contents.selectContentsVerifyAddFile" parameterClass="hashmap" resultClass="hashmap">
+		SELECT /* Product_Contents.selectContentsVerifyAddFile bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			ADD_FILE AS ADDFILE
+			, ADD_FILE_NM AS ADDFILENM
+		FROM TBL_CT_ADD_FILE
+		WHERE SCID = #scid#
+		  AND VERIFY_REQ_VER = #verifyReqVer#
+		ORDER BY ADD_FILE_SEQ
+	</select>
+	
+	<!-- 상품 상태 변경 UPDATE -->
+	<update id="Product_Contents.changeSaleStat" parameterClass="hashmap">
+		UPDATE /* Product_Contents.changeSaleStat bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		TBL_PD_CONTS SET
+			SALE_STAT = #saleStat#
+			, UPD_BY = #adminId#
+			, UPD_DTTM = TO_CHAR(SYSDATE,'yyyyMMddHH24MISS')
+		WHERE CID = #cid#
+	</update>
+	
+	<!-- DRM 적용여부 UPDATE (DP) -->
+	<update id="Product_Contents.updateDpDrmYn" parameterClass="map">
+		UPDATE /* Product_Contents.updateDpDrmYn bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		TBL_DP_PROD SET
+			DRM_YN = #drmYn#
+			, DRM_SET_OPT = #drmSetOpt#
+			, DRM_SET_VAL = #drmSetVal#
+		WHERE CID = #cid#
+	</update>
+	
+	<!-- DRM 적용여부 UPDATE (PD) -->
+	<update id="Product_Contents.updatePdDrmYn" parameterClass="map">
+		UPDATE /* Product_Contents.updatePdDrmYn bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+		TBL_PD_CONTS SET
+			DRM_YN = #drmYn#
+			, DRM_SET_OPT = #drmSetOpt#
+			, DRM_SET_VAL = #drmSetVal#
+		WHERE CID = #cid#
+	</update>
+	
+	<!-- 이메일을 보내기위한 상품정보및 개발자 아이디를 가져온다. -->
+	<select id="Product_Contents.getProductInfo" parameterClass="string" resultClass="hashmap">
+		SELECT /* Product_Contents.getProductInfo bcpark 2011.05.11 : Product_Contents_SqlMap.xml */
+			A.PROD_NM AS PRODNM
+			, B.MBR_ID AS DEVUSERID
+			, A.UPD_DTTM AS UPDDTTM
+			, B.EMAIL_ADDR AS EMAILADDR
+			, A.SALE_STAT AS SALESTAT
+			, A.VERIFY_PRGR_YN AS VERIFYPRGRYN
+			, A.AGRMNT_STAT AS AGRMNTSTAT
+		FROM TBL_PD_CONTS A
+		INNER JOIN TBL_US_MEMBER B ON (A.DEV_USER_ID = B.MBR_NO)
+		WHERE A.CID = #cid#
+	</select>
+</sqlMap>

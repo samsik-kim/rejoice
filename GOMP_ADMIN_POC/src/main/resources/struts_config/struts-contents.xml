@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="contents" extends="common" namespace="/contents">
+
+
+		<!-- Contents - SC MENU -->
+		<action name="selectCategoryList" class="com.omp.admin.contents.category.action.CategoryAction" method="selectCategoryList">
+			<result>/${loc.language}/jsp/contents/category/categoryList.jsp</result>
+		</action>
+		<action name="insertCategory" class="com.omp.admin.contents.category.action.CategoryAction" method="insertCategory">
+			<result type="chain">selectCategoryList</result>
+		</action>
+		<action name="updateCategory" class="com.omp.admin.contents.category.action.CategoryAction" method="updateCategory">
+			<!-- <result type="chain">selectCategoryList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+				<!-- <param name="message">수정되었습니다.</param> -->
+				<param name="message">變更完畢。</param>
+				<param name="to">/contents/selectCategoryList.omp</param>
+			</result>
+		</action>
+		<action name="updateCategoryPriorList" class="com.omp.admin.contents.category.action.CategoryAction" method="updateCategoryPriorList">
+			<!-- <result type="chain">selectCategoryList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+				<!-- <param name="message">수정되었습니다.</param> -->
+				<param name="message">變更完畢。</param>
+				<param name="to">/contents/selectCategoryList.omp</param>
+			</result>
+		</action>
+		<action name="deleteCategory" class="com.omp.admin.contents.category.action.CategoryAction" method="deleteCategory">
+			<result type="chain">selectCategoryList</result>
+		</action>
+
+		<action name="popCategory" class="com.omp.admin.contents.category.action.CategoryAction" method="popCategory">
+			<result>/${loc.language}/jsp/contents/category/popCategory.jsp</result>
+		</action>
+
+		<action name="popInsertCategory" class="com.omp.admin.contents.category.action.CategoryAction" method="insertCategory">
+			<result>/${loc.language}/jsp/contents/category/popCategorySuccess.jsp</result>
+		</action>
+
+		<action name="popUpdateCategory" class="com.omp.admin.contents.category.action.CategoryAction" method="updateCategory">
+			<result>/${loc.language}/jsp/contents/category/popCategorySuccess.jsp</result>
+		</action>
+
+		<!-- Contents - SERVICE ANNOUNCEMENT -->
+		<action name="announceList" class="com.omp.admin.contents.announce.action.AnnounceAction" method="selectAnnounceList">
+			<result>/${loc.language}/jsp/contents/announce/announceList.jsp</result>
+		</action>
+
+		<action name="announceView" class="com.omp.admin.contents.announce.action.AnnounceAction" method="selectAnnounce">
+			<result>/${loc.language}/jsp/contents/announce/announceView.jsp</result>
+		</action>
+
+		<action name="insertAnnounce" class="com.omp.admin.contents.announce.action.AnnounceAction" method="insertAnnounce">
+			<!-- <result type="chain">announceList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+			    <!-- <param name="message">저장되었습니다.</param> -->
+				<param name="message">儲存完畢。</param>
+				<param name="to">/contents/announceList.omp?srchFlag=TRUE&amp;pageNo=${dpAnoc.page.no}&amp;startDate=${dpAnoc.startDate}&amp;endDate=${dpAnoc.endDate}</param>
+			</result>
+		</action>
+
+		<action name="updateAnnounce" class="com.omp.admin.contents.announce.action.AnnounceAction" method="updateAnnounce">
+			<!-- <result>/${loc.language}/jsp/contents/announce/announceView.jsp</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+			    <!-- <param name="message">저장되었습니다.</param> -->
+				<param name="message">儲存完畢。</param>
+				<param name="to">/contents/announceView.omp?srchFlag=TRUE&amp;pageNo=${dpAnoc.page.no}&amp;startDate=${dpAnoc.startDate}&amp;endDate=${dpAnoc.endDate}</param>
+			</result>
+		</action>
+
+		<action name="deleteAnnounce" class="com.omp.admin.contents.announce.action.AnnounceAction" method="deleteAnnounce">
+			<!-- <result type="chain">announceList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+			    <!-- <param name="message">삭제되었습니다.</param> -->
+			    <param name="message">刪除完畢。</param>
+				<param name="to">/contents/announceList.omp?srchFlag=TRUE&amp;pageNo=${dpAnoc.page.no}&amp;startDate=${dpAnoc.startDate}&amp;endDate=${dpAnoc.endDate}</param>
+			</result>
+		</action>
+
+		<!-- Admin Recommend List -->
+		<action name="selectAdminRecommendList" class="com.omp.admin.contents.adminrec.action.AdminRecommendAction" method="selectAdminRecommendList">
+			<result>/${loc.language}/jsp/contents/adminrec/adminRecommendList.jsp</result>
+		</action>
+		<action name="selectAdminBeginnerList" class="com.omp.admin.contents.adminrec.action.AdminRecommendAction" method="selectAdminBeginnerList">
+			<result>/${loc.language}/jsp/contents/adminrec/adminBeginnerList.jsp</result>
+		</action>
+		<action name="popAdminProdList" class="com.omp.admin.contents.adminrec.action.AdminRecommendAction" method="popAdminProdList">
+			<result>/${loc.language}/jsp/contents/adminrec/popAdminProdList.jsp</result>
+		</action>
+		<action name="popAdminProdDetail" class="com.omp.admin.contents.adminrec.action.AdminRecommendAction" method="popAdminProdDetail">
+			<result>/${loc.language}/jsp/contents/adminrec/popAdminProdDetail.jsp</result>
+		</action>
+		<action name="insertAdminRecommendProd" class="com.omp.admin.contents.adminrec.action.AdminRecommendAction" method="insertAdminRecommendProd">
+		</action>
+		<action name="updateAdminRecommendList" class="com.omp.admin.contents.adminrec.action.AdminRecommendAction" method="updateAdminRecommendList">
+			<result type="chain">selectAdminRecommendList</result>
+		</action>
+		<action name="deleteAdminRecommendList" class="com.omp.admin.contents.adminrec.action.AdminRecommendAction" method="deleteAdminRecommendList">
+			<result type="chain">selectAdminRecommendList</result>
+		</action>	
+		<action name="updateAdminBeginnerList" class="com.omp.admin.contents.adminrec.action.AdminRecommendAction" method="updateAdminRecommendList">
+			<result type="chain">selectAdminBeginnerList</result>
+		</action>
+		<action name="deleteAdminBeginnerList" class="com.omp.admin.contents.adminrec.action.AdminRecommendAction" method="deleteAdminRecommendList">
+			<result type="chain">selectAdminBeginnerList</result>
+		</action>	
+		<!-- Charge Best List -->
+		<action name="selectChargeBestList" class="com.omp.admin.contents.best.action.ChargeAction" method="selectChargeBestList">
+			<result>/${loc.language}/jsp/contents/best/chargeBestList.jsp</result>
+		</action>	
+		<action name="updateChargeBestList" class="com.omp.admin.contents.best.action.ChargeAction" method="updateChargeBestList">
+			<result type="chain">selectChargeBestList</result>
+		</action>
+		<action name="deleteChargeBestList" class="com.omp.admin.contents.best.action.ChargeAction" method="deleteChargeBestList">
+			<result type="chain">selectChargeBestList</result>
+		</action>	
+		<action name="insertChargeBestDefault" class="com.omp.admin.contents.best.action.ChargeAction" method="insertChargeBestDefault">
+			<result type="chain">selectChargeBestList</result>
+		</action>
+		<!-- Free Best List -->
+		<action name="selectFreeBestList" class="com.omp.admin.contents.best.action.FreeAction" method="selectFreeBestList">
+			<result>/${loc.language}/jsp/contents/best/freeBestList.jsp</result>
+		</action>	
+		<action name="updateFreeBestList" class="com.omp.admin.contents.best.action.FreeAction" method="updateFreeBestList">
+			<result type="chain">selectFreeBestList</result>
+		</action>
+		<action name="deleteFreeBestList" class="com.omp.admin.contents.best.action.FreeAction" method="deleteFreeBestList">
+			<result type="chain">selectFreeBestList</result>
+		</action>
+		<action name="insertFreeBestDefault" class="com.omp.admin.contents.best.action.FreeAction" method="insertFreeBestDefault">
+			<result type="chain">selectFreeBestList</result>
+		</action>
+		<!-- New Update List -->
+		<action name="selectNewUpdateList" class="com.omp.admin.contents.newupdate.action.NewUpdateAction" method="selectNewUpdateList">
+			<result>/${loc.language}/jsp/contents/newupdate/newUpdateList.jsp</result>
+		</action>	
+		<action name="updateNewUpdateList" class="com.omp.admin.contents.newupdate.action.NewUpdateAction" method="updateNewUpdateList">
+			<result type="chain">selectNewUpdateList</result>
+		</action>
+		<action name="deleteNewUpdateList" class="com.omp.admin.contents.newupdate.action.NewUpdateAction" method="deleteNewUpdateList">
+			<result type="chain">selectNewUpdateList</result>
+		</action>
+	</package>
+</struts>

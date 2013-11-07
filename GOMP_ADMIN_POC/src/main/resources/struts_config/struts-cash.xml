@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <package name="cash" extends="common" namespace="/cash">
+
+        <!-- Whoopy Cash 관리 -->
+        <!-- 회원별 캐쉬 내역 -->      
+        <action name="cashList" class="com.omp.admin.cash.action.CashAction" method="getCashList">
+            <result>/${loc.language}/jsp/cash/cashList.jsp</result>            
+        </action>
+        
+        <!-- 충전 현황 -->      
+        <action name="chargeList" class="com.omp.admin.cash.action.CashAction" method="getCashChargeList">
+            <result>/${loc.language}/jsp/cash/chargeList.jsp</result>            
+        </action>
+        
+        <!-- export 일별 판매현황 목록 조회 -->      
+        <action name="chargeListExcel" class="com.omp.admin.cash.action.CashAction" method="getCashChargeListExcel">
+			<result name="success" type="stream">
+			  <param name="contentType">${downloadFile.contentType}</param>
+			  <param name="inputName">downloadFile.inputStream</param>
+			  <param name="contentDisposition">${downloadFile.saveAs}</param>
+			  <param name="contentLength">${downloadFile.length}</param>
+			  <param name="bufferSize">${downloadFile.bufferSize}</param>
+			</result>
+		</action>
+        
+        <!-- 충전 상세 현황 -->      
+        <action name="chargeListDetail" class="com.omp.admin.cash.action.CashAction" method="getCashChargeListDetail">
+            <result>/${loc.language}/jsp/cash/chargeListDetail.jsp</result>            
+        </action>
+        
+        <!-- 충전 상세 현황 엑셀 다운로드 -->      
+        <action name="chargeListDetailExcel" class="com.omp.admin.cash.action.CashAction" method="getCashChargeListDetailExcel">
+             <result name="success" type="stream">
+			  <param name="contentType">${downloadFile.contentType}</param>
+			  <param name="inputName">downloadFile.inputStream</param>
+			  <param name="contentDisposition">${downloadFile.saveAs}</param>
+			  <param name="contentLength">${downloadFile.length}</param>
+			  <param name="bufferSize">${downloadFile.bufferSize}</param>
+			</result>
+        </action>
+        
+         <!-- 취소 내역 -->      
+        <action name="cancelList" class="com.omp.admin.cash.action.CashAction" method="getCashCancelList">
+            <result>/${loc.language}/jsp/cash/cancelList.jsp</result>            
+        </action>
+        
+        <!-- 취소 내역 엑셀 다운로드 -->      
+        <action name="cancelListExcel" class="com.omp.admin.cash.action.CashAction" method="getCashCancelListExcel">
+             <result name="success" type="stream">
+			  <param name="contentType">${downloadFile.contentType}</param>
+			  <param name="inputName">downloadFile.inputStream</param>
+			  <param name="contentDisposition">${downloadFile.saveAs}</param>
+			  <param name="contentLength">${downloadFile.length}</param>
+			  <param name="bufferSize">${downloadFile.bufferSize}</param>
+			</result>
+        </action>
+        
+        <!-- Cash 차감 대상 검색  -->      
+        <action name="popRefund" class="com.omp.admin.cash.action.CashAction" method="getCashRefundUser">
+            <result>/${loc.language}/jsp/cash/popuprefund.jsp</result>
+        </action>
+
+         <!-- 취소 상세 내역 -->      
+        <action name="cancelListDetail" class="com.omp.admin.cash.action.CashAction" method="getCashCancelListDetail">
+            <result>/${loc.language}/jsp/cash/cancelListDetail.jsp</result>            
+        </action>
+        
+         <!-- 취소 상세 내역 엑셀 다운로드 -->      
+        <action name="cancelListDetailExcel" class="com.omp.admin.cash.action.CashAction" method="getCashCancelListDetailExcel">
+            <result name="success" type="stream">
+			  <param name="contentType">${downloadFile.contentType}</param>
+			  <param name="inputName">downloadFile.inputStream</param>
+			  <param name="contentDisposition">${downloadFile.saveAs}</param>
+			  <param name="contentLength">${downloadFile.length}</param>
+			  <param name="bufferSize">${downloadFile.bufferSize}</param>
+			</result>           
+        </action>
+        
+         <!-- Cash 충전관리 -->
+        <action name="cashmanage" class="com.omp.admin.cash.action.CashAction" method="getCashManage">
+            <result>/${loc.language}/jsp/cash/cashmanage.jsp</result>
+        </action>
+        
+        <!-- Cash 보너스율 수정  -->
+		<action name="registCashBonus" class="com.omp.admin.cash.action.CashAction" method="registCashBonus">
+			<result name="success" type="chain">cashmanage</result>
+		</action>
+		
+		<!-- Cash 충전관리이력 -->
+        <action name="cashmanagehisList" class="com.omp.admin.cash.action.CashAction" method="getCashManageHisList">
+            <result>/${loc.language}/jsp/cash/cashmanagehisList.jsp</result>
+        </action>
+		         		      
+    </package>    
+    
+</struts>

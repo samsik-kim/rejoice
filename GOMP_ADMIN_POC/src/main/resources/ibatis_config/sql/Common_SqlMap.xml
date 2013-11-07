@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Common">
+	<typeAlias alias="zipCode" type="com.omp.commons.com.model.ZipCode"/>
+	<typeAlias alias="dpCat" type="com.omp.commons.com.model.DpCat"/>
+	<typeAlias alias="ctgr" type="com.omp.commons.com.model.Ctgr"/>
+	<typeAlias alias="phoneInfo" type="com.omp.commons.phone.model.PhoneInfo"/>
+
+	<resultMap id="zipCode-resultMap" class="zipCode">
+		<result property="zipCd" column="ZIP_CD"/>
+		<result property="zipSeq" column="ZIP_SEQ"/>
+    	<result property="si" column="SI"/>
+    	<result property="gu" column="GU"/>
+    	<result property="dong" column="DONG"/>
+    	<result property="ri" column="RI"/>
+    	<result property="dosu" column="DOSU"/>
+    	<result property="bungi" column="BUNGI"/>
+    	<result property="builNm" column="BUIL_NM"/>
+    	<result property="address" column="ADDRESS"/>
+    	<result property="chgDt" column="CHG_DT"/>
+	</resultMap>	
+
+	<statement id="Common.selectZipCode" parameterClass="java.lang.String" resultMap="zipCode-resultMap">
+		SELECT /* Common_SqlMap.xml, selectZipCode, AdminPoC : Kang Dae-Min, 2009-08-12 */
+		SUBSTR(ZIP_CD,0, 3)||'-'||SUBSTR(ZIP_CD,4) as ZIP_CD, ZIP_SEQ, SI, GU, DONG, RI, DOSU, BUNGI, BUIL_NM, ADDRESS, CHG_DT
+		FROM TBL_CM_ZIPCD
+		WHERE DONG LIKE '%'||#keyword#||'%'
+	</statement>
+
+	<select id="Common.selectCategoryList" parameterClass="string" resultClass="ctgr">
+		/* category list */
+		SELECT /* Common_SqlMap.xml, selectCategoryList, AdminPoC : Kang Dae-Min, 2009-08-12 */
+		CTGR_CD AS CTGRCD,
+		CTGR_NM AS CTGRNM
+		FROM TBL_CTGR
+		WHERE HIGH_CTGR = #value#
+		AND DEL_YN = 'N'
+		AND OPEN_YN = 'Y'
+		ORDER BY CTGR_CD
+	</select>
+
+	<select id="Common.selectPhoneNameList" parameterClass="string" resultClass="phoneInfo">
+		/* PhoneNameList */
+		SELECT /* Common_SqlMap.xml, selectPhoneNameList, AdminPoC : Kang Dae-Min, 2009-08-12 */
+		PHONE_MODEL_CD AS phoneModelCd,
+		MODEL_NM AS modelNm
+		FROM TBL_PHONE_INFO
+		WHERE MAKE_COMP = #value#
+		ORDER BY PHONE_MODEL_CD
+	</select>
+
+	<select id="Common.selectDpCatLvl1List" parameterClass="list" resultClass="dpCat">
+		/* Display Category List Lv1 */
+		SELECT /* Common_SqlMap.xml, selectDpCatLvl1List, AdminPoC : Kang Dae-Min, 2009-08-12 */
+		DP_CAT_NO AS DPCATNO,
+		DP_CAT_NM AS DPCATNM,
+		DP_CAT_DESC AS DPCATDESC
+		FROM TBL_DP_CAT
+		WHERE
+		<dynamic prepend="DP_CAT_NO IN">
+			<iterate open="(" close=")" conjunction=",">
+				#[]#
+			</iterate>
+		</dynamic>
+		AND USE_YN = 'Y'
+		ORDER BY DP_CAT_PRIOR
+	</select>
+
+	<select id="Common.selectDpCatList" parameterClass="string" resultClass="dpCat">
+		/* Display Category List */
+		SELECT /* Common_SqlMap.xml, selectDpCatList, AdminPoC : Kang Dae-Min, 2009-08-12 */
+		DP_CAT_NO AS DPCATNO,
+		DP_CAT_NM AS DPCATNM,
+		DP_CAT_DESC AS DPCATDESC,
+		DP_CAT_PRIOR AS DPCATPRIOR
+		FROM TBL_DP_CAT
+		WHERE UP_DP_CAT_NO = #value#
+		AND USE_YN = 'Y'
+		ORDER BY DP_CAT_PRIOR, DP_CAT_NO
+	</select>
+
+</sqlMap>

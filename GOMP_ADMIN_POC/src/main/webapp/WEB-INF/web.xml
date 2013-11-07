@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app id="WebApp_ID" version="2.5"
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd">
+	
+	<display-name>GOMP_ADMIN_POC</display-name>
+	
+	<filter>
+		<filter-name>ThreadSessionFilter</filter-name>
+		<filter-class>com.omp.commons.filter.ThreadSessionFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>LocaleAndMessageFilter</filter-name>
+		<filter-class>com.omp.commons.filter.LocaleAndMessageFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>struts-prepare</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter</filter-class>
+		<init-param>		
+			<param-name>struts.devMode</param-name>		
+			<param-value>false</param-value>		
+		</init-param>		
+		<init-param>		
+			<param-name>struts.i18n.encoding</param-name>		
+			<param-value>UTF-8</param-value>		
+		</init-param>		
+	</filter>
+	<filter>
+		<filter-name>sitemesh</filter-name>
+		<filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>struts-execute</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter</filter-class>
+		<init-param>		
+			<param-name>struts.devMode</param-name>		
+			<param-value>false</param-value>		
+		</init-param>		
+		<init-param>		
+			<param-name>struts.i18n.encoding</param-name>		
+			<param-value>UTF-8</param-value>		
+		</init-param>		
+	</filter>
+
+	<filter-mapping>
+		<filter-name>ThreadSessionFilter</filter-name>
+		<url-pattern>*.omp</url-pattern>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LocaleAndMessageFilter</filter-name>
+		<url-pattern>*.omp</url-pattern>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>struts-prepare</filter-name>
+		<url-pattern>*.omp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>*.omp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>struts-execute</filter-name>
+		<url-pattern>*.omp</url-pattern>
+	</filter-mapping>
+
+	<context-param>
+		<param-name>ConfigProperties.resourcePath</param-name>
+		<param-value>/conf/adminpoc/omp.properties</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>com.omp.admin.common.AdminContextInitializeListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>alice-upload</servlet-name>
+		<servlet-class>com.omp.admin.common.UploadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>alice-upload</servlet-name>
+		<url-pattern>/alice-upload</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>app.tld</taglib-uri>
+			<taglib-location>/WEB-INF/tld/app.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+	
+	<error-page>
+	   <error-code>404</error-code>
+	   <location>/jsp/common/exception/FileNotFound.jsp</location>
+	</error-page>
+	
+	<error-page>
+	   <error-code>500</error-code>
+	   <location>/jsp/common/exception/ServerFaultMessage.jsp</location>
+	</error-page>	
+
+
+	<error-page>
+	   <error-code>503</error-code>
+	   <location>/jsp/common/exception/ServerBusy.jsp</location>
+	</error-page>	
+	
+    <session-config>
+        <session-timeout>180</session-timeout>
+    </session-config>
+</web-app>

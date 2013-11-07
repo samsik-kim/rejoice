@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Paging">
+
+	<sql id="Paging.oraPagingHead">
+		SELECT * FROM (
+			SELECT ROWNUM AS RNUM, PAGESQL.* FROM (
+	</sql>
+	<sql id="Paging.oraPagingTotal">
+		COUNT(*) OVER() AS TOTALCOUNT,
+	</sql>
+	<sql id="Paging.oraPagingFoot">
+			) PAGESQL
+		)
+		WHERE RNUM BETWEEN #startRow# AND #endRow#
+	</sql>
+	<sql id="Paging.oraPagingFootPg">
+			) PAGESQL
+		)
+		WHERE 1=1
+		<isEmpty  property="pageRows">
+			AND CEIL(RNUM/10) = #currentPage#
+		</isEmpty>
+		<isNotEmpty property="pageRows">
+			AND CEIL(RNUM/#pageRows#) = #currentPage#		
+		</isNotEmpty>
+	</sql>
+
+</sqlMap>

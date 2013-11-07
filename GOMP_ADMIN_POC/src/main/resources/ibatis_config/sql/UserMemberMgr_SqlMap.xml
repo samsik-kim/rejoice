@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="userMemberMgr">
+
+
+<typeAlias alias="userMember" type="com.omp.admin.member.membermgr.model.UserMemberMgr"/>
+<typeAlias alias="phoneHist" type="com.omp.admin.member.membermgr.model.PhoneInfoHist"/>
+
+<!--***********************************************************************************-->
+<!-- USER MEMBER MANAGEMENT -->
+<!--***********************************************************************************-->
+
+	<!-- USER MEMBER MANAGEMENT	LIST -->
+	<resultMap id="userMemberList-resultMap" class="userMember" >
+		<result property="totalCount" column="total_count"/>
+		<result property="rnum" column="rnum"/>
+		<result property="mbrno" column="mbrno" />
+		<result property="mbrid" column="mbrid" />
+		<result property="mbrclscd" column="mbrclscd" />
+		<result property="mobilecnt" column="mobilecnt" />
+		<result property="mbrstartdt" column="mbrstartdt" />
+		<result property="mbrstatcd" column="mbrstatcd" />
+	</resultMap>
+	
+	<statement id="userMemberMgr.findUserMemberMgrList" resultMap="userMemberList-resultMap" parameterClass="userMember">
+	   	<include refid="GOMP.pagingStart"/>
+		SELECT /* userMemberMgr.findUserMemberMgrList chpbj 2011.05.11 : UserMemberMgr_SqlMap.xml */
+		   	<include refid="GOMP.pagingTotalCount"/>
+			UM.MBR_NO as mbrno,
+			UM.MBR_ID as mbrid,
+			UM.MBR_CLS_CD as mbrclscd,
+			(SELECT COUNT(UMH.MBR_NO) FROM TBL_US_MEMBER_HP UMH WHERE UMH.MBR_NO = UM.MBR_NO) as mobilecnt,
+			UM.MBR_START_DT as mbrstartdt,
+			UM.MBR_STAT_CD as mbrstatcd
+		FROM
+			TBL_US_MEMBER UM
+		WHERE
+			UM.MBR_CAT_CD = 'US000202'
+		<dynamic>
+			<isEqual prepend="AND" property="mbrclscd" compareValue="ALL">
+				UM.MBR_CLS_CD IN ('US000101', 'US000103')
+			</isEqual>
+			<isNotEqual prepend="AND" property="mbrclscd" compareValue="ALL">
+				UM.MBR_CLS_CD = #mbrclscd#
+			</isNotEqual>
+			<isEqual prepend="AND" property="mbrstatcd" compareValue="ALL">
+				UM.MBR_STAT_CD IN('US000503', 'US000504', 'US000505')
+			</isEqual>
+			<isNotEqual prepend="AND" property="mbrstatcd" compareValue="ALL">
+				UM.MBR_STAT_CD = #mbrstatcd#
+			</isNotEqual>
+			<isNotEmpty property="searchValue">
+				<isEqual prepend="AND" property="searchType" compareValue="id">
+					UM.MBR_ID LIKE '%' ||#searchValue#|| '%'
+				</isEqual>
+				<isEqual prepend="AND" property="searchType" compareValue="email">
+					UM.EMAIL_ADDR LIKE '%' ||#searchValue#|| '%'
+				</isEqual>
+				<isEqual prepend="AND" property="searchType" compareValue="hp">
+					UM.HP_NO LIKE '%' ||#searchValue#|| '%'
+				</isEqual>
+			</isNotEmpty>
+		</dynamic>
+			AND UM.MBR_START_DT BETWEEN #startDate# AND #endDate#
+		ORDER BY UM.MBR_START_DT DESC
+	   	<include refid="GOMP.pagingEnd"/>
+	</statement>
+	
+	<!-- USER MEMBER DATAIL -->
+	<resultMap id="userMemberDetail-resultMap" class="userMember" >
+		<result property="mbrno" column="mbrno" />
+		<result property="mbrid" column="mbrid" />
+		<result property="mbrnm" column="mbrnm" />
+		<result property="emailaddr" column="emailaddr" />
+		<result property="newsyn" column="newsyn" />
+		<result property="hpno" column="hpno" />
+		<result property="mbrclscd" column="mbrclscd" />
+		<result property="mbrstatcd" column="mbrstatcd" />
+		<result property="mbrstartdt" column="mbrstartdt" />
+		<result property="mbrenddt" column="mbrenddt" />
+		<result property="psregno" column="psregno" />	
+		<result property="birthdt" column="birthdt" />
+		<result property="sex" column="sex" />
+	</resultMap>
+	    	
+	<statement id="userMemberMgr.findUserMemberDetail" resultMap="userMemberDetail-resultMap" parameterClass="java.lang.String">
+	<![CDATA[
+		SELECT /* userMemberMgr.findUserMemberDetail chpbj 2011.05.11 : UserMemberMgr_SqlMap.xml */
+			MBR_NO as mbrno,
+			MBR_ID as mbrid,
+			MBR_NM as mbrnm,
+			EMAIL_ADDR as emailaddr,
+			NEWS_YN as newsyn,
+			HP_NO as hpno,
+			MBR_CLS_CD as mbrclscd,
+			MBR_STAT_CD as mbrstatcd,
+			MBR_START_DT as mbrstartdt,
+			MBR_END_DT as mbrenddt,
+			PS_REG_NO as psregno,
+			BIRTH_DT as birthdt,
+			SEX as sex
+        FROM
+            TBL_US_MEMBER
+        WHERE
+            MBR_NO = #mbrno#
+            AND MBR_CAT_CD = 'US000202'
+			AND MBR_CLS_CD <> 'US000102'
+	]]>	
+	</statement>
+	
+	<!-- PHONE INFO LIST -->
+	<statement id="userMemberMgr.phoneInfoList" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+		SELECT /* userMemberMgr.phoneInfoList chpbj 2011.05.11 : UserMemberMgr_SqlMap.xml */
+			A.MBR_NO as mbrno,
+			A.GDID as gdid,
+			A.HP_NO as hpno,
+			B.MGMT_PHONE_MODEL_NM as hpmodelnm,
+			B.MODEL_NM  as modelnm,
+			A.MAC_ADDR  as macaddr,
+			A.GDID_USE_YN as gdidYn,
+			A.REG_DTTM  as regdts
+		FROM
+			TBL_US_MEMBER_HP A,
+			TBL_PHONE_INFO B
+		WHERE
+			A.MBR_NO = #mbrno#
+			AND A.PHONE_MODEL_CD = B.PHONE_MODEL_CD(+)
+		ORDER BY A.REG_DTTM DESC
+	</statement>
+	
+	<!-- PHONE INFO -->
+	<statement id="userMemberMgr.phoneInfo" parameterClass="userMember" resultClass="phoneHist">
+		SELECT /* userMemberMgr.phoneInfo chpbj 2011.05.11 : UserMemberMgr_SqlMap.xml */
+			B.MBR_NO as mbrno,
+			B.GDID as gdid,
+			B.PHONE_MODEL_CD as phonemodelcd,
+			B.GDCD as gdcd,
+			B.HP_NO as hpno,
+			B.IMEI as imei,
+			B.ANDROID_ID as androidid,
+			B.SERIAL_NO as serialno,
+			B.MAC_ADDR as macaddr
+		FROM
+			TBL_US_MEMBER A,
+			TBL_US_MEMBER_HP B
+		WHERE
+			A.MBR_NO = #mbrno#
+			AND A.MBR_CAT_CD = 'US000202'
+			<![CDATA[
+			AND A.MBR_CLS_CD <> 'US000102'
+			]]>
+			AND A.MBR_NO = B.MBR_NO(+)
+			AND B.GDID = #gdid#
+	</statement>
+	
+	<!-- PHONE INFO DELETE -->
+	<delete id="userMemberMgr.userPhoneInfoDelete" parameterClass="userMember" >
+		DELETE /* userMemberMgr.userPhoneInfoDelete chpbj 2011.05.11 : UserMemberMgr_SqlMap.xml */
+		FROM
+			TBL_US_MEMBER_HP
+		WHERE
+			MBR_NO = #mbrno#
+			AND GDID = #gdid#
+	</delete>
+	
+	<!-- PHONE INFO HISTORY SEQ NO -->
+	<statement id="userMemberMgr.seqHpHistSeq" resultClass="java.lang.String">
+		SELECT /* userMemberMgr.seqHpHistSeq chpbj 2011.05.11 : UserMemberMgr_SqlMap.xml */
+			SEQ_US_MEMBER_HP_HIST.NEXTVAL
+		FROM DUAL
+	</statement>
+	
+	<!-- INSERT PHONE INFO HISTORY -->
+	<insert id="userMemberMgr.insertPhoneInfoHistory" parameterClass="phoneHist">
+		INSERT /* userMemberMgr.insertPhoneInfoHistory chpbj 2011.05.11 : UserMemberMgr_SqlMap.xml */
+		INTO TBL_US_MEMBER_HP_HIST (
+			SEQ,
+			HIS_CD,
+			MBR_NO,
+			GDID,
+			GDCD,
+			HP_NO,
+			IMEI,
+			ANDROID_ID,
+			SERIAL_NO,
+			MAC_ADDR,
+			PHONE_MODEL_CD,
+			REG_DTTM,
+			UPD_ID,
+			UPD_DTTM
+		) VALUES (
+			#hphistseq#,
+			#hiscd#,
+			#mbrno#,
+			#gdid#,
+			#gdcd#,
+			#hpno#,
+			#imei#,
+			#androidid#,
+			#serialno#,
+			#macaddr#,
+			#phonemodelcd#,
+			TO_CHAR(SYSDATE, 'yyyymmddHH24miss'),
+			'',
+			TO_CHAR(SYSDATE, 'yyyymmddHH24miss')
+		)
+	</insert>
+	
+	<!-- LOGIN INFO HISTORY LIST -->
+	<resultMap id="loginInfo-resultMap" class="userMember" >
+		<result property="totalCount" column="total_count"/>
+		<result property="rnum" column="rnum"/>
+		<result property="accdts" column="accdts" />
+		<result property="accipaddr" column="accipaddr" />
+		<result property="hpno" column="hpno" />
+		<result property="modelnm" column="modelnm" />
+		<result property="scver" column="scver" />
+	</resultMap>
+	
+	<statement id="userMemberMgr.loginInfoHistory" parameterClass="userMember" resultMap="loginInfo-resultMap">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* userMemberMgr.loginInfoHistory chpbj 2011.05.11 : UserMemberMgr_SqlMap.xml */
+		   	<include refid="GOMP.pagingTotalCount"/>
+			A.ACC_DTS as accdts,
+			A.IP_MAC_ADDR as accipaddr,
+			A.HP_NO as hpno,
+			B.MODEL_NM as modelnm,
+			A.SC_VER as scver
+		FROM
+			TBL_US_LOGIN_INFO A,
+			TBL_PHONE_INFO B
+		WHERE
+			A.MBR_NO = #mbrno#
+			AND A.ACC_DTS BETWEEN TO_DATE(#startDate#, 'YYYYMMDD HH24:MI:SS') AND TO_DATE(#endDate#, 'YYYYMMDD HH24:MI:SS')
+			AND A.PHONE_MODEL_CD = B.PHONE_MODEL_CD
+			AND B.DEL_YN = 'N'
+			AND B.SVC_CD = 'US005203'
+			<dynamic>
+				<isNotEmpty property="searchValue">
+					<isEqual property="searchType" compareValue="MDN">
+						AND A.HP_NO LIKE '%' ||#searchValue#|| '%'
+					</isEqual>
+					<isEqual property="searchType" compareValue="MAC">
+						AND A.IP_MAC_ADDR LIKE '%' ||#searchValue#|| '%'
+					</isEqual>
+				</isNotEmpty>
+			</dynamic>
+		ORDER BY A.ACC_DTS DESC
+       <include refid="GOMP.pagingEnd"/>
+	</statement>
+	
+	<!-- UPDATE EMAIL ADDRESS -->
+	<update id="userMemberMgr.updateEmailAddr" parameterClass="userMember">
+		UPDATE /* userMemberMgr.updateEmailAddr chpbj 2011.05.11 : UserMemberMgr_SqlMap.xml */
+			TBL_US_MEMBER
+		SET
+			<dynamic>
+				<isNotEmpty property="emailaddr">
+					EMAIL_ADDR = #emailaddr#,
+				</isNotEmpty>
+			</dynamic>
+			MBR_PW = #mbrpw#
+		WHERE MBR_NO = #mbrno#
+	</update>
+	
+</sqlMap>	

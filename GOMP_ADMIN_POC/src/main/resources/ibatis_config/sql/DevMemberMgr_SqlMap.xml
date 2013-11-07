@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="devMemberMgr">
+
+
+<typeAlias alias="devMember" type="com.omp.admin.member.membermgr.model.UserMemberMgr"/>
+
+<!--***********************************************************************************-->
+<!-- DEV MEMBER MANAGEMENT -->
+<!--***********************************************************************************-->
+
+	<!-- DEV MEMBER MANAGEMENT	LIST -->
+	<resultMap id="devMemberList-resultMap" class="devMember" >
+		<result property="totalCount" column="total_count"/>
+		<result property="rnum" column="rnum"/>
+		<result property="mbrno" column="mbrno" />
+		<result property="mbrid" column="mbrid" />
+		<result property="mbrnm" column="mbrnm" />
+		<result property="compnm" column="compnm" />
+		<result property="mbrgrcd" column="mbrgrcd" />
+		<result property="mbrclscd" column="mbrclscd" />
+		<result property="mbrcatcd" column="mbrcatcd" />
+		<result property="devmbrstatcd" column="devmbrstatcd" />
+		<result property="mbrstartdt" column="mbrstartdt" />
+		<result property="payTransDt" column="payTransDt" />
+	</resultMap>
+	
+	<statement id="devMemberMgr.findDevMemberMgrList" resultMap="devMemberList-resultMap" parameterClass="devMember">
+	   	<include refid="GOMP.pagingStart"/>
+		SELECT /* devMemberMgr.findDevMemberMgrList chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+		   	<include refid="GOMP.pagingTotalCount"/>
+			A.MBR_NO as mbrno,
+			A.MBR_ID as mbrid,
+			A.MBR_NM as mbrnm,
+			A.COMP_NM as compnm,
+			A.MBR_GR_CD as mbrgrcd,
+			A.MBR_CLS_CD as mbrclscd,
+			A.MBR_CAT_CD as mbrcatcd,
+			A.DEV_MBR_STAT_CD as devmbrstatcd,
+			A.MBR_START_DT as mbrstartdt,
+			A.PAY_TRANS_DT as payTransDt
+		FROM
+			TBL_US_MEMBER A
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty property="mbrgrcd">
+				<isEqual prepend="AND" property="mbrgrcd" compareValue="ALL">
+					A.MBR_GR_CD IN ('US005001', 'US005002', 'US005003')
+				</isEqual>
+				<isNotEqual prepend="AND" property="mbrgrcd" compareValue="ALL">
+					A.MBR_GR_CD = #mbrgrcd#
+				</isNotEqual>
+			</isNotEmpty>
+			<isNotEmpty property="mbrclscd">
+				<isEqual prepend="AND" property="mbrclscd" compareValue="ALL">
+					A.MBR_CLS_CD IN ('US000101', 'US000102', 'US000103')
+				</isEqual>
+				<isNotEqual prepend="AND" property="mbrclscd" compareValue="ALL">
+					A.MBR_CLS_CD = #mbrclscd#
+				</isNotEqual>
+			</isNotEmpty>
+			<isNotEmpty property="mbrcatcd">
+				<isEqual prepend="AND" property="mbrcatcd" compareValue="ALL">
+					A.MBR_CAT_CD IN ('US000205', 'US000206')
+				</isEqual>
+				<isNotEqual prepend="AND" property="mbrcatcd" compareValue="ALL">
+					A.MBR_CAT_CD = #mbrcatcd#
+				</isNotEqual>
+			</isNotEmpty>
+			<isEqual property="mbrclscd" compareValue="US000102">
+				<isEqual property="mbrcatcd" compareValue="US000206">
+					<isEqual prepend="AND" property="bizcatcd" compareValue="ALL">
+						A.BIZ_CAT_CD IN ('US000901', 'US000902')
+					</isEqual>
+					<isNotEqual prepend="AND" property="bizcatcd" compareValue="ALL">
+						A.BIZ_CAT_CD = #bizcatcd#
+					</isNotEqual>
+				</isEqual>
+			</isEqual>
+			<isNotEmpty prepend="AND" property="startDate">
+				(A.MBR_START_DT BETWEEN #startDate# AND #endDate# OR A.PAY_TRANS_DT BETWEEN #payStartDt# AND #payEndDt#)
+			</isNotEmpty>
+			<isNotEmpty property="devmbrstatcd">
+				<isNotEqual prepend="AND" property="devmbrstatcd" compareValue="ALL">
+						A.DEV_MBR_STAT_CD = #devmbrstatcd#
+				</isNotEqual>
+			</isNotEmpty>
+			<isNotEmpty property="searchValue">
+				<isEqual prepend="AND" property="searchType" compareValue="id">
+						A.MBR_ID LIKE '%' ||#searchValue#|| '%'
+				</isEqual>
+				<isEqual prepend="AND" property="searchType" compareValue="name">
+						(A.MBR_NM LIKE '%' ||#searchValue#|| '%' OR A.COMP_NM LIKE '%' ||#searchValue#|| '%')
+				</isEqual>
+			</isNotEmpty>
+		</dynamic>
+		ORDER BY A.MBR_START_DT DESC
+	   	<include refid="GOMP.pagingEnd"/>
+	</statement>
+	
+	<!-- DEV MEMBER DATAIL -->
+	<resultMap id="devMemberdetail-resultMap" class="devMember" >
+		<result property="mbrno" column="mbrno" />
+		<result property="mbrgrcd" column="mbrgrcd" />
+		<result property="mbrclscd" column="mbrclscd" />
+		<result property="mbrcatcd" column="mbrcatcd" />
+		<result property="mbrstartdt" column="mbrstartdt" />
+		<result property="mbrstatregdt" column="mbrstatregdt" />
+		<result property="payTransDt" column="payTransDt" />
+		<result property="devmbrstatcd" column="devmbrstatcd" />
+		<result property="mbrid" column="mbrid" />
+		<result property="psregno" column="psregno" />	
+		<result property="mbrnm" column="mbrnm" />
+		<result property="telno" column="telno" />
+		<result property="hpno" column="hpno" />
+		<result property="webSiteUrl" column="webSiteUrl" />
+		<result property="city" column="city" />		
+		<result property="emailaddr" column="emailaddr" />
+		<result property="emailyn" column="emailyn" />
+		<result property="nanm" column="nanm" />
+		<result property="zipcd" column="zipcd" />
+		<result property="homeaddrdtl" column="homeaddrdtl" />
+		<result property="opnm" column="opnm" />
+		<result property="opemailaddr" column="opemailaddr" />
+		<result property="optelno" column="optelno" />
+		<result property="ophpno" column="ophpno" />
+		<result property="backcd" column="backcd" />
+		<result property="backnm" column="backnm" />
+		<result property="acctno" column="acctno" />
+		<result property="acctnm" column="acctnm" />
+		<result property="acctcertyn" column="acctcertyn" />
+		<result property="currencyunit" column="currencyunit" />
+		<result property="backglcd" column="backglcd" />
+		<result property="backgltype" column="backgltype" />
+		<result property="compnm" column="compnm" />
+		<result property="bizcatcd" column="bizcatcd" />
+		<result property="acctfilenm" column="acctfilenm" />
+		<result property="acctfilepath" column="acctfilepath" />
+		<result property="idfilenm" column="idfilenm" />
+		<result property="idfilepath" column="idfilepath" />
+		<result property="freedevreqdt" column="freedevreqdt" />
+		<result property="freedevenddt" column="freedevenddt" />
+		<result property="freedevwithdrawtxt" column="freedevwithdrawtxt" />
+		<result property="paydevreqdt" column="paydevreqdt" />
+		<result property="paydevenddt" column="paydevenddt" />
+		<result property="paydevwithdrawtxt" column="paydevwithdrawtxt" />
+	</resultMap>
+	    	
+	<statement id="devMemberMgr.findDevMemberDetail" resultMap="devMemberdetail-resultMap" parameterClass="java.lang.String">
+		<![CDATA[
+			SELECT /* devMemberMgr.findDevMemberDetail chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+				A.MBR_NO as mbrno,
+				A.MBR_GR_CD as mbrgrcd,
+				A.MBR_CLS_CD as mbrclscd,
+				A.MBR_CAT_CD as mbrcatcd,
+				A.MBR_START_DT as mbrstartdt,
+				A.MBR_STAT_REG_DT as mbrstatregdt,
+				A.PAY_TRANS_DT as payTransDt,
+				A.DEV_MBR_STAT_CD as devmbrstatcd,
+				A.MBR_ID as mbrid,
+				A.PS_REG_NO as psregno,
+				A.MBR_NM as mbrnm,
+				A.TEL_NO as telno,
+				A.HP_NO as hpno,
+				A.WEB_SITE_URL as webSiteUrl,
+				A.CITY as city,
+				A.EMAIL_ADDR as emailaddr,
+				A.EMAIL_CERT_YN as emailyn,
+				A.NA_CD as nanm,
+				A.ZIP_CD as zipcd,
+				A.HOME_ADDR_DTL as homeaddrdtl,
+				A.OP_NM as opnm,
+				A.OP_EMAIL_ADDR as opemailaddr,
+				A.OP_TEL_NO as optelno,
+				A.OP_HP_NO as ophpno,
+				A.BACK_NM as backnm,
+				A.BACK_CD as backcd,
+				A.ACCT_NO as acctno,
+				A.ACCT_NM as acctnm,
+				A.ACCT_CERT_YN as acctcertyn,
+				A.CURRENCY_UNIT as currencyunit,
+				A.BACK_GL_CD as backglcd,
+				A.BACK_GL_TYPE as backgltype,
+				A.COMP_NM as compnm,
+				A.BIZ_CAT_CD as bizcatcd,
+				B.ACCT_NM as acctfilenm,
+				B.ACCT_PATH as acctfilepath,
+				B.ID_NM as idfilenm,
+				B.ID_PATH as idfilepath,
+				C.FREE_DEV_END_REQ_DT as freedevreqdt,
+				C.FREE_DEV_END_DT as freedevenddt,
+				(CASE   WHEN C.FREE_DEV_END_REASON_CD IS NULL THEN ''
+							WHEN C.FREE_DEV_END_REASON_CD = 'US001709' THEN C.FREE_DEV_END_REASON_DSCR
+							ELSE (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = C.FREE_DEV_END_REASON_CD) END) as freedevwithdrawtxt,
+				C.PAY_DEV_END_REQ_DT as paydevreqdt,
+				C.PAY_DEV_END_DT as paydevenddt,
+				(CASE   WHEN C.PAY_DEV_END_REASON_CD IS NULL THEN ''
+							WHEN C.PAY_DEV_END_REASON_CD = 'US001809' THEN C.PAY_DEV_END_REASON_DSCR
+							ELSE (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = C.PAY_DEV_END_REASON_CD) END) as paydevwithdrawtxt
+			FROM
+				TBL_US_MEMBER A,
+				(
+					SELECT
+						MBR_NO,
+						MAX(CASE DOC_HM_CD WHEN 'US001904' THEN FILE_NM ELSE NULL END) as ACCT_NM,
+						MAX(CASE DOC_HM_CD WHEN 'US001904' THEN FILE_PATH ELSE NULL END) as ACCT_PATH,
+						MAX(CASE DOC_HM_CD WHEN 'US001904' THEN NULL ELSE FILE_NM END) as ID_NM,
+						MAX(CASE DOC_HM_CD WHEN 'US001904' THEN NULL ELSE FILE_PATH END) as ID_PATH
+					FROM
+						TBL_US_MEMBER_DOC
+					WHERE
+						LST_VALID_YN = 'Y'
+						AND MBR_NO = #mbrno#
+					GROUP BY MBR_NO
+				) B,
+				TBL_US_MEMBER_SUB_HIST C
+			WHERE
+				A.MBR_NO = #mbrno#
+				AND A.MBR_CAT_CD IN ('US000205', 'US000206')
+				AND A.MBR_NO = B.MBR_NO(+)
+				AND A.MBR_NO = C.MBR_NO(+)
+		]]>
+	</statement>
+	
+	<!-- DEV MEMBER TRANS HIST SEQ NO -->
+	<statement id="devMemberMgr.seqTransNo" resultClass="java.lang.String">
+		SELECT /* devMemberMgr.seqTransNo chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			SEQ_US_TRANS_HIST.NEXTVAL
+		FROM DUAL
+	</statement>
+	
+	<!-- DEV MEMBER GRADE UPDATE -->
+	<update id="devMemberMgr.updateGrade" parameterClass="devMember">
+		UPDATE /* devMemberMgr.updateGrade chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			TBL_US_MEMBER
+		SET
+			MBR_GR_CD = #mbrgrcd#
+		WHERE MBR_NO = #mbrno#
+	</update>
+	
+	<!-- DEV MEMBER TRANS HIST SELECT -->
+	<statement id="devMemberMgr.selectTransHistInfo" parameterClass="devMember" resultClass="devMember">
+		SELECT /*+ INDEX(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_02) */ /* devMemberMgr.selectTransHistInfo chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			MBR_NO as mbrno,
+			CITY as city,
+			ZIP_CD as zipcd,
+			HOME_ADDR_DTL as homeaddrdtl,
+			WEB_SITE_URL as webSiteUrl,
+			OP_NM as opnm,
+			OP_EMAIL_ADDR as opemailaddr,
+			OP_TEL_NO as optelno,
+			OP_HP_NO as ophpno,
+			ACCT_NO as acctno,
+			BACK_NM as backnm,
+			BACK_CD as backcd,
+			BACK_BRANCH_NM as backbranchnm,
+			BACK_BRANCH_CD as backbranchcd,
+			CURRENCY_UNIT as currencyunit,
+			BACK_GL_CD as backglcd,
+			ACCT_NM as acctnm,
+			ACCT_CERT_YN as acctcertyn,
+			COMP_NM as compnm,
+			PS_REG_NO as psregno,
+			BIZ_CAT_CD as bizcatcd,
+			BACK_GL_TYPE as backgltype,
+			REG_DTTM as regdts
+		FROM
+			TBL_US_TRANS_HIST
+		WHERE
+			MBR_NO = #mbrno#
+			AND PRC_STAT_CD = #devmbrstatcd#
+			AND ROWNUM = 1
+	</statement>
+	
+	<!-- DEV MEMBER TRANS APPR STATE UPDATE -->
+	<update id="devMemberMgr.updateTransApprState" parameterClass="devMember">
+		UPDATE TBL_US_MEMBER SET /* devMemberMgr.updateTransApprState chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			MBR_CLS_CD = #mbrclscd#,
+			DEV_MBR_STAT_CD = #uptdevmbrstatcd#,
+			MBR_STAT_REG_DT = #mbrstatregdt#,
+			MBR_NM = '',
+			TEL_NO = '',
+			HP_NO = '',
+			CITY = #city#,
+			ZIP_CD = #zipcd#,
+			HOME_ADDR_DTL = #homeaddrdtl#,
+			WEB_SITE_URL = #webSiteUrl#,
+			OP_NM = #opnm#,
+			OP_EMAIL_ADDR = #opemailaddr#,
+			OP_TEL_NO = #optelno#,
+			OP_HP_NO = #ophpno#,
+			ACCT_NO = #acctno#,
+			BACK_NM = #backnm#,
+			BACK_CD = #backcd#,
+			BACK_BRANCH_NM = #backbranchnm#,
+			BACK_BRANCH_CD = #backbranchcd#,
+			CURRENCY_UNIT = #currencyunit#,
+			BACK_GL_CD = #backglcd#,
+			ACCT_NM = #acctnm#,
+			ACCT_CERT_YN = #acctcertyn#,
+			COMP_NM = #compnm#,
+			PS_REG_NO = #psregno#,
+			BIZ_CAT_CD = #bizcatcd#,
+			UPD_ID = #regid#,
+			UPD_DTTM = #uptDt#
+		WHERE 
+			MBR_NO = #mbrno#
+	</update>
+	
+	<!-- DEV MEMBER CALCULATE INFO STATE UPDATE -->
+	<update id="devMemberMgr.updateCalculateInfoApprState" parameterClass="devMember">
+		UPDATE /* devMemberMgr.updateCalculateInfoApprState chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			TBL_US_MEMBER
+		SET
+			DEV_MBR_STAT_CD = #uptdevmbrstatcd#,
+			MBR_STAT_REG_DT = #mbrstatregdt#,
+		<dynamic>
+			<isNotEmpty property="mbrcatcd">
+				MBR_CAT_CD = #mbrcatcd#,
+				PAY_TRANS_DT = #payTransDt#,
+			</isNotEmpty>
+			<isNotEmpty property="city">CITY = #city#,</isNotEmpty>
+			<isNotEmpty property="zipcd">ZIP_CD = #zipcd#,</isNotEmpty>
+			<isNotEmpty property="homeaddrdtl">HOME_ADDR_DTL = #homeaddrdtl#,</isNotEmpty>
+			<isNotEmpty property="webSiteUrl">WEB_SITE_URL = #webSiteUrl#,</isNotEmpty>
+			<isNotEmpty property="opnm">OP_NM = #opnm#,</isNotEmpty>
+			<isNotEmpty property="opemailaddr">OP_EMAIL_ADDR = #opemailaddr#,</isNotEmpty>
+			<isNotEmpty property="optelno">OP_TEL_NO = #optelno#,</isNotEmpty>
+			<isNotEmpty property="ophpno">OP_HP_NO = #ophpno#,</isNotEmpty>
+			<isNotEmpty property="acctno">ACCT_NO = #acctno#,</isNotEmpty>
+			<isNotEmpty property="backnm">BACK_NM = #backnm#,</isNotEmpty>
+			<isNotEmpty property="backcd">BACK_CD = #backcd#,</isNotEmpty>
+			<isNotEmpty property="backbranchnm">BACK_BRANCH_NM = #backbranchnm#,</isNotEmpty>
+			<isNotEmpty property="backbranchcd">BACK_BRANCH_CD = #backbranchcd#,</isNotEmpty>
+			<isNotEmpty property="currencyunit">CURRENCY_UNIT = #currencyunit#,</isNotEmpty>
+			<isNotEmpty property="backglcd">BACK_GL_CD = #backglcd#,</isNotEmpty>
+			<isNotEmpty property="backgltype">BACK_GL_TYPE = #backgltype#,</isNotEmpty>
+			<isNotEmpty property="acctnm">ACCT_NM = #acctnm#,</isNotEmpty>
+			<isNotEmpty property="acctcertyn">ACCT_CERT_YN = #acctcertyn#,</isNotEmpty>
+			<isNotEmpty property="compnm">COMP_NM = #compnm#,</isNotEmpty>
+			<isNotEmpty property="psregno">PS_REG_NO = #psregno#,</isNotEmpty>
+			<isNotEmpty property="bizcatcd">BIZ_CAT_CD = #bizcatcd#,</isNotEmpty>
+		</dynamic>
+			UPD_ID = #regid#,
+			UPD_DTTM = #uptDt#
+		WHERE 
+			MBR_NO = #mbrno#
+	</update>
+	
+	<!-- DEV MEMBER TRANS REJECT & WITHDRAW UPDATE -->
+	<update id="devMemberMgr.updateTransStateReject_Withdraw" parameterClass="devMember">
+		UPDATE /* devMemberMgr.updateTransStateReject_Withdraw chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			TBL_US_MEMBER
+		SET
+			DEV_MBR_STAT_CD = #uptdevmbrstatcd#,
+			MBR_STAT_REG_DT = #mbrstatregdt#,
+			UPD_ID = #regid#,
+			UPD_DTTM = #uptDt#
+		WHERE 
+			MBR_NO = #mbrno#
+	</update>
+	
+	<!--  DEV MEMBER TRANS HIST INSERT  -->
+	<insert id="devMemberMgr.insertTransHist" parameterClass="devMember">
+		INSERT /* devMemberMgr.insertTransHist chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+		INTO TBL_US_TRANS_HIST (
+		    TRANS_NO,
+		    MBR_NO,
+		    CITY,
+		    ZIP_CD,
+		    HOME_ADDR_DTL,
+		    WEB_SITE_URL,
+		    OP_NM,
+		    OP_EMAIL_ADDR,
+		    OP_TEL_NO,
+		    OP_HP_NO,
+		    ACCT_NO,
+		    BACK_NM,
+		    BACK_CD,
+		    BACK_BRANCH_NM,
+		    BACK_BRANCH_CD,
+		    CURRENCY_UNIT,
+		    BACK_GL_CD,
+		    ACCT_NM,
+		    ACCT_CERT_YN,
+		    COMP_NM,
+		    PS_REG_NO,
+		    BIZ_CAT_CD,
+		    TRACE_INFO,
+		    PRC_STAT_CD,
+		    REG_ID,
+		    REG_DTTM,
+		    REJ_REASON,
+		    BACK_GL_TYPE
+		) VALUES (
+			#transno#,
+			#mbrno#,
+			#city#,
+			#zipcd#,
+			#homeaddrdtl#,
+			#webSiteUrl#,
+			#opnm#,
+			#opemailaddr#,
+			#optelno#,
+			#ophpno#,
+			#acctno#,
+			#backnm#,
+			#backcd#,
+			#backbranchnm#,
+			#backbranchcd#,
+			#currencyunit#,
+			#backglcd#,
+			#acctnm#,
+			#acctcertyn#,
+			#compnm#,
+			#psregno#,
+			#bizcatcd#,
+			#transinfo#,
+			#devmbrstatcd#,
+			#regid#,
+		    #regdts#,
+		    #rejreason#,
+		   #backgltype#
+		)
+	</insert>
+	
+	<!-- UPDATE PAY&FREE DEV MEMBER SUB HIST -->
+	<update id="devMemberMgr.updateMemberSubHist" parameterClass="devMember">
+		UPDATE /* devMemberMgr.updateMemberSubHist chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			TBL_US_MEMBER_SUB_HIST
+		SET
+			<dynamic>
+				<isEqual property="mbrcatcd" compareValue="US000205"><!-- Free Dev Member -->
+					FREE_DEV_END_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+				</isEqual>
+				<isEqual property="mbrcatcd" compareValue="US000206"><!-- Pay Dev Member -->
+					PAY_DEV_END_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+				</isEqual>
+			</dynamic>
+		WHERE
+			MBR_NO = #mbrno#
+	</update>
+	
+	<!-- INSERT MEMBER TERM HIST -->
+	<insert id="devMemberMgr.insertMemberTermHist" parameterClass="devMember">
+		INSERT /* devMemberMgr.insertMemberTermHist chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+		INTO TBL_US_MEMBER_TERM_HIST (
+			MBR_NO,
+			MBR_ID,
+			END_CHNL_CD,
+			APPR_DT,
+			ID_REUSE_DT,
+			REG_DT
+		) VALUES (
+			#mbrno#,
+			#mbrid#,
+			'US001002',
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			TO_CHAR(ADD_MONTHS(SYSDATE, 6), 'YYYYMMDD'),
+			TO_CHAR(SYSDATE, 'YYYYMMDD')
+		)
+	</insert>
+	
+	<!-- UPDATE MEMBER DOC -->
+	<update id="devMemberMgr.updateMemberDoc" parameterClass="devMember">
+		UPDATE /* devMemberMgr.updateMemberDoc chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			TBL_US_MEMBER_DOC
+		SET
+			LST_VALID_YN = 'N'
+		WHERE
+			TRANS_NO = (
+									SELECT /*+ INDEX(TBL_US_MEMBER_DOC, IDX_US_MEMBER_DOC_01) */ 
+										DISTINCT(TRANS_NO)
+									FROM
+										TBL_US_MEMBER_DOC
+									WHERE
+										MBR_NO = #mbrno#
+										AND LST_VALID_YN = 'Y'
+								)
+			
+	</update>
+	
+	<!-- MEMBER DOC LIST -->
+	<statement id="devMemberMgr.selectMemberDoc" parameterClass="devMember" resultClass="java.util.HashMap">
+		SELECT /*+ INDEX(TBL_US_MEMBER_DOC, IDX_US_MEMBER_DOC_01) */ /* devMemberMgr.selectMemberDoc chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			DOC_HM_CD as dochmcd,
+			(SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = DOC_HM_CD) as docnm,
+			MBR_NO as mbrno,
+			FILE_PATH as filepath,
+			FILE_NM as filenm,
+			FILE_SIZE as filesize,
+			REG_DTTM as regdt
+		FROM
+			TBL_US_MEMBER_DOC
+		WHERE
+			MBR_NO = #mbrno#
+			AND TRANS_NO =(SELECT /*+ INDEX(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_02) */
+											TRANS_NO
+										FROM
+											TBL_US_TRANS_HIST
+										WHERE
+											MBR_NO =  #mbrno#
+											AND PRC_STAT_CD = #devmbrstatcd#
+											AND ROWNUM = 1)
+	</statement>
+	
+	<!-- INSERT MEMBER DOC -->
+	<insert id="devMemberMgr.insertMemberDoc" parameterClass="java.util.HashMap">
+		INSERT /* devMemberMgr.insertMemberDoc chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+		INTO TBL_US_MEMBER_DOC (
+			TRANS_NO,
+			DOC_HM_CD,
+			MBR_NO,
+			FILE_PATH,
+			FILE_NM,
+			FILE_SIZE,
+			LST_VALID_YN,
+			REG_ID,
+			REG_DTTM
+		) VALUES (
+			#transno#,
+			#DOCHMCD#,
+			#MBRNO#,
+			#FILEPATH#,
+			#FILENM#,
+			#FILESIZE#,
+			#lstvalidyn#,
+			#regid#,
+			#REGDT#
+		)
+	</insert>
+	
+	<!-- TRANS APPLICATION FORM VIEW-->
+	<resultMap id="devMemberdetail-resultMap" class="devMember" >
+		<result property="mbrno" column="mbrno" />
+		<result property="mbrclscd" column="mbrclscd" />
+		<result property="mbrcatcd" column="mbrcatcd" />
+		<result property="devmbrstatcd" column="devmbrstatcd" />
+		<result property="mbrid" column="mbrid" />
+		<result property="compnm" column="compnm" />
+		<result property="psregno" column="psregno" />	
+		<result property="telno" column="telno" />
+		<result property="webSiteUrl" column="webSiteUrl" />
+		<result property="mbrnm" column="mbrnm" />
+		<result property="hpno" column="hpno" />
+		<result property="emailaddr" column="emailaddr" />
+		<result property="emailyn" column="emailyn" />
+		<result property="city" column="city" />
+		<result property="zipcd" column="zipcd" />
+		<result property="homeaddrdtl" column="homeaddrdtl" />
+		<result property="opnm" column="opnm" />
+		<result property="opemailaddr" column="opemailaddr" />
+		<result property="ophpno" column="ophpno" />
+		<result property="optelno" column="optelno" />
+		<result property="acctno" column="acctno" />
+		<result property="backnm" column="backnm" />
+		<result property="backcd" column="backcd" />
+		<result property="acctnm" column="acctnm" />
+		<result property="currencyunit" column="currencyunit" />
+		<result property="backglcd" column="backglcd" />
+		<result property="backgltype" column="backgltype" />
+		<result property="transinfo" column="transinfo" />
+		<result property="regdts" column="regdts" />
+		<result property="acctfilenm" column="acctfilenm" />
+		<result property="acctfilenm" column="acctfilepath" />
+		<result property="idfilenm" column="idfilenm" />
+		<result property="idfilenm" column="idfilepath" />
+	</resultMap>
+	<statement id="devMemberMgr.transApplicationFormView" parameterClass="devMember" resultClass="devMember">
+		SELECT /* devMemberMgr.transApplicationFormView chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			A.MBR_NO as mbrno,
+			A.MBR_CLS_CD as mbrclscd,
+			A.MBR_CAT_CD as mbrcatcd,
+			A.MBR_ID as mbrid,
+			NVL2(B.COMP_NM, B.COMP_NM, A.COMP_NM) as compnm,
+			<isEqual property="devmbrstatcd" compareValue="US000809">
+				A.PS_REG_NO as psregno,
+			</isEqual>
+			<isEqual property="devmbrstatcd" compareValue="US000804">
+				B.PS_REG_NO as psregno,
+			</isEqual>
+			A.TEL_NO as telno,
+			NVL2(B.WEB_SITE_URL, B.WEB_SITE_URL, A.WEB_SITE_URL) as webSiteUrl,
+			A.MBR_NM as mbrnm,
+			A.HP_NO as hpno,
+			A.EMAIL_ADDR as emailaddr,
+			A.EMAIL_CERT_YN as emailyn,
+			A.NA_CD as nanm,
+			NVL2(B.CITY, B.CITY, A.CITY) as city,
+			NVL2(B.ZIP_CD, B.ZIP_CD, A.ZIP_CD) as zipcd,
+			NVL2(B.HOME_ADDR_DTL, B.HOME_ADDR_DTL, A.HOME_ADDR_DTL) as homeaddrdtl,
+			NVL2(B.OP_NM, B.OP_NM, A.OP_NM) as opnm,
+			NVL2(B.OP_EMAIL_ADDR, B.OP_EMAIL_ADDR, A.OP_EMAIL_ADDR) as opemailaddr,
+			NVL2(B.OP_HP_NO, B.OP_HP_NO, A.OP_HP_NO) as ophpno,
+			NVL2(B.OP_TEL_NO, B.OP_TEL_NO, A.OP_TEL_NO) as optelno,
+			B.ACCT_NO as acctno,
+			B.BACK_NM as backnm,
+			B.BACK_CD as backcd,
+			B.ACCT_NM as acctnm,
+			B.CURRENCY_UNIT as currencyunit,
+			B.BACK_GL_CD as backglcd,
+			B.BACK_GL_TYPE as backgltype,
+			B.TRACE_INFO as transinfo,
+			B.PRC_STAT_CD as devmbrstatcd,
+			B.REG_DTTM as regdts,
+			C.ACCT_NM as acctfilenm,
+			C.ACCT_PATH as acctfilepath,
+			C.ID_NM as idfilenm,
+			C.ID_PATH as idfilepath
+		FROM
+			TBL_US_MEMBER A,
+            (
+				SELECT /*+ INDEX(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_02) */ 
+					MBR_NO,
+					CITY,
+					ZIP_CD,
+					HOME_ADDR_DTL,
+					WEB_SITE_URL,
+					OP_NM,
+					OP_EMAIL_ADDR,
+					OP_HP_NO,
+					OP_TEL_NO,
+					ACCT_NO,
+					BACK_NM,
+					BACK_CD,
+					BACK_BRANCH_NM,
+					BACK_BRANCH_CD,
+					BACK_GL_TYPE,
+					ACCT_NM,
+					CURRENCY_UNIT,
+					BACK_GL_CD,
+					COMP_NM,
+					PS_REG_NO,
+					TRACE_INFO,
+					PRC_STAT_CD,
+					REG_DTTM
+				FROM
+					TBL_US_TRANS_HIST
+				WHERE
+					MBR_NO =  #mbrno#
+					AND PRC_STAT_CD = #devmbrstatcd#
+					AND ROWNUM = 1
+			) B,
+			(
+                SELECT
+						MBR_NO,
+						MAX(CASE DOC_HM_CD WHEN 'US001904' THEN FILE_NM ELSE NULL END) as ACCT_NM,
+						MAX(CASE DOC_HM_CD WHEN 'US001904' THEN FILE_PATH ELSE NULL END) as ACCT_PATH,
+						MAX(CASE DOC_HM_CD WHEN 'US001904' THEN NULL ELSE FILE_NM END) as ID_NM,
+						MAX(CASE DOC_HM_CD WHEN 'US001904' THEN NULL ELSE FILE_PATH END) as ID_PATH
+					FROM
+						TBL_US_MEMBER_DOC
+					WHERE
+						MBR_NO = #mbrno#
+						AND TRANS_NO = (SELECT /*+ INDEX(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_02) */
+															TRANS_NO
+														FROM
+															TBL_US_TRANS_HIST
+														WHERE
+															MBR_NO =  #mbrno#
+															AND PRC_STAT_CD = #devmbrstatcd#
+															AND ROWNUM = 1)
+					GROUP BY MBR_NO
+            ) C
+		WHERE
+			A.MBR_NO =  #mbrno#
+			AND A.MBR_NO = B.MBR_NO(+)
+			AND A.MBR_NO = C.MBR_NO(+)
+			AND A.MBR_CAT_CD IN ('US000205', 'US000206')
+	</statement>
+	
+	<!-- TRANS APPLICATION FORM VIEW MEMBER DOC-->
+	<statement id="devMemberMgr.transApplicationFormViewMemDoc" parameterClass="devMember" resultClass="java.util.HashMap">
+		SELECT /*+ INDEX(TBL_US_MEMBER_DOC, IDX_US_MEMBER_DOC_01) */ /* devMemberMgr.transApplicationFormViewMemDoc chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			DOC_HM_CD as doccd,
+			FILE_PATH as filepath,
+			FILE_NM as filenm
+		FROM
+			TBL_US_MEMBER_DOC
+		WHERE
+			MBR_NO =  #mbrno#
+			AND TRANS_NO =(SELECT /*+ INDEX(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_02) */ 
+											TRANS_NO
+										FROM
+											TBL_US_TRANS_HIST
+										WHERE
+											MBR_NO =  #mbrno#
+											AND PRC_STAT_CD = #devmbrstatcd#
+											AND ROWNUM = 1)
+	</statement>
+	
+	<!-- POP TRANS HISTORY VIEW -->
+	<resultMap id="popTransHistoryView-resultMap" class="devMember" >
+		<result property="totalCount" column="total_count"/>
+		<result property="rnum" column="rnum"/>
+		<result property="mbrno" column="mbrno" />
+		<result property="mbrid" column="mbrid" />
+		<result property="mbrclscd" column="mbrclscd" />
+		<result property="mbrcatcd" column="mbrcatcd" />
+		<result property="transinfo" column="transinfo" />
+		<result property="regdts" column="regdts" />
+		<result property="mbrstatregdt" column="mbrstatregdt" />	
+		<result property="devmbrstatcd" column="devmbrstatcd" />
+	</resultMap>
+	<statement id="devMemberMgr.popTransHistoryView" parameterClass="devMember" resultMap="popTransHistoryView-resultMap">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* devMemberMgr.popTransHistoryView chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+		   	<include refid="GOMP.pagingTotalCount"/>
+		   	A.MBR_NO as mbrno,
+		   	A.MBR_ID as mbrid,
+		   	A.MBR_CLS_CD as mbrclscd,
+		   	A.MBR_CAT_CD as mbrcatcd,
+			B.TRACE_INFO as transinfo,
+			B.REG_DTTM as regdts,
+			A.MBR_STAT_REG_DT as mbrstatregdt,
+			B.PRC_STAT_CD as devmbrstatcd
+		FROM
+			TBL_US_MEMBER A,
+			TBL_US_TRANS_HIST B
+		WHERE
+			A.MBR_NO =  #mbrno#
+			AND A.MBR_CAT_CD IN ('US000205', 'US000206')
+			AND A.MBR_NO = B.MBR_NO(+)
+		ORDER BY B.TRANS_NO DESC
+		<include refid="GOMP.pagingEnd"/>
+	</statement>
+	
+	<!-- TRANS REJECT REASON VIEW -->
+	<statement id="devMemberMgr.popRejectReasonView" parameterClass="devMember" resultClass="java.lang.String">
+		SELECT /*+ INDEX(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_02) */ /* devMemberMgr.popRejectReasonView chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			REJ_REASON
+		FROM
+			TBL_US_TRANS_HIST
+		WHERE
+			MBR_NO =  #mbrno#
+			AND PRC_STAT_CD = #devmbrstatcd#
+		AND ROWNUM = 1
+	</statement>
+	
+	<!-- DEV MEMBER WITHDRAW REASON VIEW -->
+	<statement id="devMemberMgr.popWithdrawReasonView" parameterClass="devMember" resultClass="devMember">
+		SELECT /* devMemberMgr.popWithdrawReasonView chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			A.MBR_NO as mbrno,
+			A.MBR_ID as mbrid,
+			A.MBR_CLS_CD as mbrclscd,
+			A.MBR_CAT_CD as mbrcatcd,
+			A.DEV_MBR_STAT_CD as devmbrstatcd,
+			B.FREE_DEV_END_REQ_DT as freedevreqdt,
+			B.FREE_DEV_END_REASON_DSCR as freedevwithdrawtxt,
+			B.PAY_DEV_END_REQ_DT as paydevreqdt,
+			B.PAY_DEV_END_REASON_DSCR as paydevwithdrawtxt
+		FROM
+			TBL_US_MEMBER A,
+			TBL_US_MEMBER_SUB_HIST B
+		WHERE
+			A.MBR_NO = #mbrno#
+			AND A.MBR_NO = B.MBR_NO
+	</statement>
+	
+	<!-- DEV MEMBER TEST PHONE INFO LIST -->
+	<statement id="devMemberMgr.testPhoneInfoList" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+		SELECT /* devMemberMgr.testPhoneInfoList chpbj 2011.05.11 : DevMemberMgr_SqlMap.xml */
+			MAC_ADDR as MACADDR,
+			REG_DTTM as REGDT
+		FROM
+			TBL_US_OTA_PHONE
+		WHERE
+			MBR_NO = #mbrno#
+		ORDER BY SEQ_OTA ASC
+	</statement>
+	
+</sqlMap>	

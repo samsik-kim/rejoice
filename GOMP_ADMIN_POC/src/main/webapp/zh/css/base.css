@@ -1,0 +1,56 @@
+@charset "utf-8";
+
+html { height:100%; }
+body {
+	color:#999; font-size: 13px; font-family:arial, helvetica, clean, sans-serif; line-height:1.3em;
+	margin:0; padding:0; background:url(../images/bg.gif) repeat-x 0 59px;
+}
+/* s:2011-04-12 */
+form, h1, h2, h3, h4, h5, h6, p, div, th, td, table, select, address, ul, li, dl, dt, dd {
+	margin: 0;
+	padding: 0;
+	font-size: 13px;
+}
+td{word-break: break-all; white-space: pre-wrap; white-space: -moz-pre-wrap;white-space: -pre-wrap;  white-space: -o-pre-wrap;word-wrap: break-word; white-space:normal;}
+/* e:2011-04-12 */
+img {border:0; margin:0; }
+caption,hr {display:none;}
+/* ie6. png expression */
+/* .png24 {tmp:expression(setPng24(this));} */
+/* .iePngFix {behavior:url("../js/iepngfix.htc");} */
+
+.clearfix:after {content:".";display:block;height:0;clear:both; visibility:hidden;}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+
+ul, li {list-style:none;}
+
+a {color:#017a9f;}
+a:link {text-decoration:none; }
+a:visited {text-decoration:none; }
+a:hover {text-decoration:underline; color:#017a9f;}
+a:active {text-decoration:none; }
+
+table a:link {text-decoration:underline; color:#017a9f;}
+
+
+/* 2009-03-09 기본 셀렉트 박스로 변경 select {
+	behavior:url('../js/selectbox.htc');
+}*/
+select {border:1px solid #D6D6D6; }
+
+
+/*탭메뉴*/
+/* ul.tab {height:25px; background:url('../images/bg_tab.gif') no-repeat left bottom;}
+ul.tab li {float:left; list-style:none;}
+ul.tab li img {vertical-align:top;} */
+
+
+/* table */
+table{border-collapse:collapse;}
+
+

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PurchaseCancel">
+
+	<typeAlias alias="PurchaseCancel" type="com.omp.admin.purchaseCancel.model.PurchaseCancel"/>
+	
+	<resultMap id="payMethod-resultMap" class="PurchaseCancel" >
+		<result property="handsetNo" column="HP_NO"/>
+		<result property="mbrNo" column="MBR_NO"/>
+		<result property="payMethod" column="PAYMETHOD"/>
+		<result property="prchsId" column="PRCHS_ID"/>
+		<result property="prodId" column="PROD_ID"/>
+		<result property="prchsCls" column="PRCHS_CLS"/>
+		<result property="prcAmt" column="PRC_AMT"/>
+	</resultMap>
+	
+	<statement id="PurchaseCancel.selectPayMethodMulti" parameterClass="PurchaseCancel" resultMap="payMethod-resultMap" >
+	    select  /* PurchaseCancel.selectPayMethodMulti chjin 2011.04.23 : PurchaseCancel_SqlMap.xml */
+	    		*
+		from    (
+		<![CDATA[
+		        select  p.hp_no,
+		                p.mbr_no,
+		                p.pay_cls as paymethod,
+		                p.prchs_id,
+		                q.prod_id,
+		                p.prchs_cls,
+		                q.prc_amt
+		        from    (
+		                select  /*+ index(a IDX_OD_PRCHS_INFO_02)*/
+		                        a.hp_no,
+		                        a.mbr_no,
+		                        a.pay_cls,
+		                        a.prchs_id,
+		                        a.prchs_cls
+		                from    tbl_od_prchs_info a
+		                where   a.prchs_stat = 'OR000301'
+		                and     a.prchs_id = #prchsId#
+		                and     to_char(sysdate, 'YYYYMMDDHH24MISS') < nvl(a.prchs_cncl_dtm, '99991231125959')
+		                ) p,
+		                tbl_od_exp_prchs_info q
+		        where   0=0
+		        and     p.prchs_id = q.prchs_id
+		        and     q.prchs_prod_num < 2
+		        ]]>
+		        )
+		where   rownum = 1
+	</statement>
+	  
+	<resultMap id="tid-resultMap" class="PurchaseCancel" >
+		<result property="tid" column="TID"/>
+		<result property="handsetNo" column="HP_NO"/>
+		<result property="payHandsetNo" column="PAY_HP_NO"/>
+		<result property="payMethod" column="PAYMETHOD"/>
+		<result property="prchsId" column="PRCHS_ID"/>
+		<result property="prodId" column="PROD_ID"/>
+		<result property="prchsCls" column="PRCHS_CLS"/>
+		<result property="moId" column="MOID"/>
+		<result property="totPrice" column="TOTPRICE"/>
+		<result property="applDate" column="APPLDATE"/>
+		<result property="applTime" column="APPLTIME"/>
+	</resultMap>
+	  
+	<statement id="PurchaseCancel.selectTid" parameterClass="PurchaseCancel" resultMap="tid-resultMap" >
+		SELECT /* PurchaseCancel.selectTid chjin 2011.04.23 : PurchaseCancel_SqlMap.xml */
+				B.TID
+		      ,A.HP_NO
+		      ,B.PAY_HP_NO
+		      ,B.PAY_CLS AS PAYMETHOD
+		      ,B.PRCHS_ID
+		      ,#prodId# AS PROD_ID
+		      ,A.PRCHS_CLS
+		      ,B.MOID
+		      ,B.TOTPRICE
+		      ,B.APPLDATE
+		      ,B.APPLTIME
+		  FROM TBL_OD_PRCHS_INFO A
+		      ,TBL_OD_APPR_CONF B
+		      ,TBL_COMM_CD C
+		 WHERE A.PRCHS_STAT = 'OR000301'     <!-- 구매상태 : 구매완료 -->
+		   <![CDATA[
+		   AND A.PRCHS_ID = #prchsId# 
+		   AND TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS') < NVL(A.PRCHS_CNCL_DTM, '99991231125959')
+		   AND B.PRCHS_ID = A.PRCHS_ID
+		   AND TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS') < NVL(B.PRCHS_CNCL_DTM, '99991231235959')
+		   ]]>
+		   AND C.DTL_FULL_CD = B.PAY_CLS 
+	     ORDER BY C.DISPLAY_ORDER ASC
+	</statement>
+	
+	<statement id="PurchaseCancel.updatePurchaseCncl" parameterClass="PurchaseCancel" >
+	    /* PurchaseCancel.updatePurchaseCncl chjin 2011.04.23 : PurchaseCancel_SqlMap.xml */
+		UPDATE TBL_OD_PRCHS_INFO            <!-- 구매정보 -->
+		   SET PRCHS_STAT = 'OR000302'      <!-- 구매취소 -->
+		   <dynamic prepend = ",">
+		   	<isEqual property="payMethod" compareValue="OR000601">
+		       PRCHS_CNCL_DTM = #cnclDt#||#cnclTm#
+		    </isEqual>
+		    <isEqual property="payMethod" compareValue="OR000602">
+		       PRCHS_CNCL_DTM = #cnclDt#||#cnclTm#
+		    </isEqual>
+		    <isEqual property="payMethod" compareValue="OR000607">
+		       PRCHS_CNCL_DTM = #cnclDt#||#cnclTm#
+		    </isEqual>
+		    <isEqual property="payMethod" compareValue="OR000608">
+		       PRCHS_CNCL_DTM = #cnclDt#||#cnclTm#
+		    </isEqual>
+		    <isEqual property="payMethod" compareValue="OR000698">
+		       PRCHS_CNCL_DTM = #cnclDt#||#cnclTm#
+		    </isEqual>
+		    <isEqual property="payMethod" compareValue="OR000699">
+		       PRCHS_CNCL_DTM = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		    </isEqual>
+		   </dynamic>
+		      ,UPDT_ID = 'ADMIN'
+		      ,UPDT_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		 WHERE PRCHS_ID = #prchsId#
+		   AND PRCHS_STAT = 'OR000301'
+	</statement>	
+	
+	<statement id="PurchaseCancel.updateAccountCncl" parameterClass="PurchaseCancel"  >
+	    /* PurchaseCancel.updateAccountCncl chjin 2011.04.23 : PurchaseCancel_SqlMap.xml */
+		UPDATE TBL_OD_APPR_CONF            <!-- 결제결과내역 -->
+		   <dynamic prepend = "SET">
+		   	<isEqual property="payMethod" compareValue="OR000601">
+     		   PRCHS_CNCL_DTM = #cnclDt#||#cnclTm#
+		    </isEqual>
+		    <isEqual property="payMethod" compareValue="OR000602">
+		       PRCHS_CNCL_DTM =#cnclDt#||#cnclTm#
+		    </isEqual>
+		    <isEqual property="payMethod" compareValue="OR000607">
+		       PRCHS_CNCL_DTM = #cnclDt#||#cnclTm#
+		    </isEqual>
+		    <isEqual property="payMethod" compareValue="OR000608">
+		       PRCHS_CNCL_DTM = #cnclDt#||#cnclTm#
+		    </isEqual>
+		   </dynamic>
+		      ,UPDT_ID = 'ADMIN'
+		      ,UPDT_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		 WHERE PRCHS_ID = #prchsId#
+	</statement>
+	
+	<statement id="PurchaseCancel.updateReceiptCncl" parameterClass="PurchaseCancel"  >
+	    /* PurchaseCancel.updateReceiptCncl chjin 2011.04.23 : PurchaseCancel_SqlMap.xml */
+		UPDATE TBL_OD_RECEIPT           
+		   SET USE_YN = 'N'
+		       ,PRCHS_ID = '',RT_CBYN = 'N'
+		       ,UPDT_ID = 'ADMIN'
+		       ,UPDT_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		 WHERE PRCHS_ID = #prchsId#
+	</statement>
+	
+	<statement id="PurchaseCancel.updateReceiptInfoCncl" parameterClass="PurchaseCancel"  >
+	    /* PurchaseCancel.updateReceiptInfoCncl chjin 2011.04.23 : PurchaseCancel_SqlMap.xml */
+		UPDATE TBL_OD_RECEIPT_INFO            
+		   SET RT_USE_CNT = RT_USE_CNT - 1  
+		       ,UPDT_ID = 'ADMIN'
+		       ,UPDT_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		 WHERE (RT_YEARTERM, OCCR_NO) IN (SELECT RT_YEARTERM, OCCR_NO FROM TBL_OD_RECEIPT WHERE PRCHS_ID = #prchsId#)
+	</statement>
+		
+	
+	<resultMap id="prod-resultMap" class="PurchaseCancel" >
+		<result property="chnnelId" column="CHNL_PROD_ID"/>
+		<result property="prodId" column="PROD_ID"/>
+	</resultMap>
+	
+	<statement id="PurchaseCancel.searchProd" parameterClass="PurchaseCancel" resultMap="prod-resultMap">
+		SELECT /* PurchaseCancel.searchProd chjin 2011.04.23 : PurchaseCancel_SqlMap.xml */
+				MAX(B.CHNL_PROD_ID) AS CHNL_PROD_ID, A.PROD_ID 
+		  FROM TBL_OD_EXP_PRCHS_INFO A
+		      ,TBL_DP_CAT_PROD B
+		 WHERE A.PRCHS_ID = #prchsId#
+		   AND A.PROD_ID  = B.PROD_ID
+		   AND B.DP_YN = 'Y'
+         GROUP BY A.PROD_ID
+	</statement>
+	
+	<statement id="PurchaseCancel.updateDownCnt" parameterClass="string" >
+	    /* PurchaseCancel.updateDownCnt chjin 2011.04.23 : PurchaseCancel_SqlMap.xml */
+		UPDATE TBL_DP_PROD_PRCHS
+		   SET PRCHS_CNT = PRCHS_CNT - 1
+		      ,UPD_DT   = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		 WHERE PROD_ID = #resultCd#
+	</statement>
+		
+</sqlMap>

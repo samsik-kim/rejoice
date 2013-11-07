@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+	
+<sqlMap namespace="MemberContract">
+
+	<typeAlias alias="memberContract" type="com.omp.admin.member.membermgr.model.MemberContract"/>	
+	
+	<resultMap class="memberContract" id="userListMap">
+		<result property="rnum" column="rnum"/>
+		<result property="mbrNo" column="mbrNo" />
+		<result property="mbrClsCd" column="mbrClsCd" />
+		<result property="mbrId" column="mbrId" />
+		<result property="mbrEndDt" column="mbrEndDt" />
+		<result property="totalCount" column="total_count" />
+	</resultMap>
+	
+	<resultMap class="memberContract" id="devChangeListMap">
+		<result property="rnum" column="rnum"/>
+		<result property="mbrId" column="mbrId" />
+		<result property="mbrNm" column="mbrNm" />
+		<result property="mbrNo" column="mbrNo" />
+		<result property="mbrGrCd" column="mbrGrCd" />
+		<result property="mbrClsCd" column="mbrClsCd" />
+		<result property="mbrCatCd" column="mbrCatCd" />
+		<result property="devMbrStatCd" column="devMbrStatCd" />
+		<result property="totalCount" column="total_count" />
+		<result property="regDttm" column="regDttm"/>
+		<result property="regDisposalDttm" column="regDisposalDttm"/>
+	</resultMap>
+	 
+	<select id="MemberContract.getUserMemberWithdrawList" parameterClass="memberContract" resultMap="userListMap">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* MemberContract.getUserMemberWithdrawList chpbj 2011.05.11 : Member_Withdraw_SqlMap.xml */
+	           <include refid="GOMP.pagingTotalCount"/>
+	            us_member.mbr_id AS "mbrId"
+	          , us_member.mbr_no AS "mbrNo"
+	          , us_member.mbr_end_dt AS "mbrEndDt"
+	          , us_member.mbr_cls_cd AS "mbrClsCd"
+	      FROM tbl_us_member us_member
+	      WHERE
+	        us_member.mbr_stat_cd = 'US000505'  /* 탈퇴 회원 */
+	        AND us_member.mbr_cat_cd = 'US000202'  /* 사용자회원 */
+			<isEmpty property="mbrClsCd">
+				AND us_member.mbr_cls_cd in ('US000101', 'US000103')
+			</isEmpty>
+			<isNotEmpty property="mbrClsCd">
+				AND us_member.mbr_cls_cd = #mbrClsCd#
+			</isNotEmpty>
+	        <isNotEmpty property="startDate">
+	          	AND us_member.mbr_end_dt BETWEEN #startDate# AND #endDate#
+	        </isNotEmpty>
+			<isNotEmpty property="searchValue">
+				<isEqual property="searchType" compareValue="id" >
+			 		AND us_member.mbr_id LIKE '%' || #searchValue# || '%'
+				</isEqual> 
+				<isEqual property="searchType" compareValue="hp" >
+					AND us_member.hp_no LIKE '%' || #searchValue# || '%'
+				</isEqual> 
+				<isEqual property="searchType" compareValue="name" >
+					AND us_member.mbr_nm LIKE '%' || #searchValue# || '%'
+				</isEqual> 
+				<isEqual property="searchType" compareValue="email" >
+					AND us_member.email_addr LIKE '%' || #searchValue# || '%'
+				</isEqual>  
+			</isNotEmpty>
+        ORDER BY us_member.mbr_end_dt DESC
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+
+	<!-- Member Developer Withdraw List Start -->
+	<sql id="MemberContract.getFreeDevWithdrawList">
+	  SELECT	
+				us_member.mbr_no
+		      , us_member.mbr_id
+		      , DECODE(us_member.mbr_cls_cd, 'US000102', us_member.comp_nm, us_member.mbr_nm) AS mbr_nm
+		      , us_member.mbr_gr_cd
+		      , us_member.mbr_cls_cd
+		      , us_member.mbr_cat_cd
+		      , us_member.dev_mbr_stat_cd
+		      , us_member_sub_hist.free_dev_end_req_dt AS end_req_dt
+		      , us_member_sub_hist.free_dev_end_dt AS  end_dt    
+		FROM tbl_us_member_sub_hist us_member_sub_hist, tbl_us_member us_member
+       WHERE 1 = 1
+         AND us_member_sub_hist.mbr_no = us_member.mbr_no
+		 AND (us_member_sub_hist.free_dev_end_dt BETWEEN #startDate# AND #endDate#  /* 탈퇴 처리일자 조회 */
+          OR us_member_sub_hist.free_dev_end_req_dt BETWEEN #startDate2# AND #endDate2#)  /* 탈퇴 신청일자 조회 */
+         <include refid="MemberContract.getDevMemberWithdrawSearch"/>
+	     AND us_member.mbr_cat_cd = 'US000205'  /* 무료 개발자 */
+	</sql>
+	
+	<sql id="MemberContract.getPayDevWithdrawList">
+	  SELECT
+				us_member.mbr_no
+		      , us_member.mbr_id
+		      , DECODE(us_member.mbr_cls_cd, 'US000102', us_member.comp_nm, us_member.mbr_nm) AS mbr_nm
+		      , us_member.mbr_gr_cd
+		      , us_member.mbr_cls_cd
+		      , us_member.mbr_cat_cd
+		      , us_member.dev_mbr_stat_cd
+		      , us_member_sub_hist.pay_dev_end_req_dt AS end_req_dt
+		      , us_member_sub_hist.pay_dev_end_dt AS  end_dt    
+		FROM tbl_us_member_sub_hist us_member_sub_hist, tbl_us_member us_member
+	   WHERE 1 = 1
+         AND us_member_sub_hist.mbr_no = us_member.mbr_no
+		 AND (us_member_sub_hist.pay_dev_end_dt BETWEEN #startDate# AND #endDate#  /* 탈퇴 처리일자 조회 */
+          OR us_member_sub_hist.pay_dev_end_req_dt BETWEEN #startDate2# AND #endDate2#)  /* 탈퇴 신청일자 조회 */
+         <include refid="MemberContract.getDevMemberWithdrawSearch"/>
+         AND us_member.mbr_cat_cd = 'US000206'  /* 유료 개발자 */
+	</sql>
+	
+	<sql id="MemberContract.getDevMemberWithdrawSearch">
+		<isEmpty property="mbrClsCd">
+         AND us_member.mbr_cls_cd IN ('US000101', 'US000102', 'US000103') /* 개인, 외국인, 회사 */
+        </isEmpty>
+        <isNotEmpty property="mbrClsCd">
+         AND us_member.mbr_cls_cd = #mbrClsCd#
+        </isNotEmpty>
+        <isEmpty property="mbrCatCd">
+         AND us_member.mbr_cat_cd IN ('US000205', 'US000206') /* 무료, 유료 */
+        </isEmpty>
+        <isNotEmpty property="mbrCatCd">
+         AND us_member.mbr_cat_cd = #mbrCatCd#
+        </isNotEmpty>
+        <isNotEmpty property="bizCatCd">
+         AND us_member.biz_cat_cd = #bizCatCd#
+        </isNotEmpty>
+        <isEmpty property="devMbrStatCd">
+         AND us_member.dev_mbr_stat_cd IN ('US000807', 'US000808') /* 탈퇴신청, 탈퇴완료 */
+        </isEmpty>
+        <isNotEmpty property="devMbrStatCd">
+         AND us_member.dev_mbr_stat_cd = #devMbrStatCd#
+	    </isNotEmpty>
+	    <isNotEmpty property="searchValue">
+	    	<isEqual property="searchType" compareValue="id">
+	    		AND us_member.mbr_id like '%'|| #searchValue# ||'%'
+	    	</isEqual>
+	    	<isEqual property="searchType" compareValue="name">
+	    		AND (us_member.mbr_nm like '%'|| #searchValue# || '%' or us_member.comp_nm like '%'|| #searchValue# || '%') 
+	    	</isEqual>
+	    </isNotEmpty>
+	</sql>
+	
+	<select id="MemberContract.getDevWithdrawList" parameterClass="memberContract" resultClass="memberContract">
+		<include refid="GOMP.pagingStart"/>
+	    SELECT /* MemberContract.getDevWithdrawList chpbj 2011.05.11 : Member_Withdraw_SqlMap.xml */
+	       COUNT(*) OVER() AS totalCount
+	      ,t1.mbr_no AS "mbrNo"
+	      ,t1.mbr_id AS "mbrId"
+	      ,t1.mbr_nm AS "mbrNm"
+	      ,t1.mbr_gr_cd AS "mbrGrCd"
+	      ,t1.mbr_cls_cd AS "mbrClsCd"
+	      ,t1.mbr_cat_cd AS "mbrCatCd"
+	      ,t1.dev_mbr_stat_cd AS "devMbrStatCd"
+	      ,CASE WHEN t1.mbr_cat_cd = 'US000205' THEN (SELECT free_dev_end_reason_dscr  FROM tbl_us_member_sub_hist us_member_sub_hist WHERE us_member_sub_hist.mbr_no = t1.mbr_no)
+	                 ELSE (SELECT pay_dev_end_reason_dscr  FROM tbl_us_member_sub_hist us_member_sub_hist WHERE us_member_sub_hist.mbr_no = t1.mbr_no)
+	        END AS "devEndReasonDscr"
+	      ,t1.end_req_dt AS "devEndReqDt"  
+	      ,t1.end_dt AS "mbrEndDt"
+	    FROM  
+	    (
+	    	<isEqual property="searchType2" compareValue="US000205">
+	    		<include refid="MemberContract.getFreeDevWithdrawList"/>
+	    	</isEqual>
+	    	
+	        <isEqual property="searchType2" compareValue="US000206">
+	        	<include refid="MemberContract.getPayDevWithdrawList"/>
+	        </isEqual>
+	        
+	        <isEmpty property="searchType2">
+	        	<include refid="MemberContract.getFreeDevWithdrawList"/>
+	        	UNION ALL
+	        	<include refid="MemberContract.getPayDevWithdrawList"/>
+	        </isEmpty>
+	    ) t1                  
+	   ORDER BY t1.END_REQ_DT DESC, t1.MBR_ID          
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+	<!-- Member Developer Withdraw List End -->
+
+	<select id="MemberContract.getDevChangeMemberList" parameterClass="memberContract" resultMap="devChangeListMap">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* MemberContract.getDevChangeMemberList chpbj 2011.05.11 : Member_Withdraw_SqlMap.xml */
+			<include refid="GOMP.pagingTotalCount"/> 
+		    us_member.mbr_id AS "mbrId" 
+		  , DECODE(us_member.mbr_cls_cd, 'US000102', us_member.comp_nm, us_member.mbr_nm) AS "mbrNm"
+		  , us_member.mbr_no AS "mbrNo"
+		  , us_member.mbr_gr_cd AS "mbrGrCd"
+		  , us_member.mbr_cls_cd AS "mbrClsCd"
+		  , us_member.mbr_cat_cd AS "mbrCatCd"
+		  , us_member.dev_mbr_stat_cd AS "devMbrStatCd"
+		  , us_member.last_trans_reg_dt AS "regDttm" /* Last 전환 신청 일자 */
+		  , (CASE WHEN us_member.dev_mbr_stat_cd IN ('US000805', 'US000806') 
+		          THEN us_member.mbr_stat_reg_dt
+		          ELSE NULL
+		     END) AS "regDisposalDttm" /* 전환 신청에 대한 처리일자 */
+		FROM tbl_us_member us_member
+		WHERE 1 = 1
+		<isNotEmpty property="startDate">
+			AND us_member.last_trans_reg_dt BETWEEN #startDate# AND #endDate#
+        </isNotEmpty>
+		<isNotEmpty property="mbrClsCd">
+			AND us_member.mbr_cls_cd = #mbrClsCd#
+        </isNotEmpty>
+        <isEmpty property="mbrCatCd">
+			AND us_member.mbr_cat_cd IN ('US000205', 'US000206') /* 무료, 유료 */
+        </isEmpty>
+        <isNotEmpty property="mbrCatCd">
+			AND us_member.mbr_cat_cd = #mbrCatCd#
+        </isNotEmpty>
+        <isNotEmpty property="bizCatCd">
+			AND us_member.biz_cat_cd = #bizCatCd#
+        </isNotEmpty>
+        <isEmpty property="devMbrStatCd">
+			AND us_member.dev_mbr_stat_cd IN ('US000804', 'US000805', 'US000806')
+        </isEmpty>
+        <isNotEmpty property="devMbrStatCd">
+			AND us_member.dev_mbr_stat_cd = #devMbrStatCd#
+	    </isNotEmpty>
+	    <isNotEmpty property="searchValue">
+	    	<isEqual property="searchType" compareValue="id">
+	    		AND us_member.mbr_id like '%'|| #searchValue# ||'%'
+	    	</isEqual>
+	    	<isEqual property="searchType" compareValue="name">
+	    		AND (us_member.mbr_nm like '%'|| #searchValue# || '%' or us_member.comp_nm like '%'|| #searchValue# || '%') 
+	    	</isEqual>
+	    </isNotEmpty>
+		ORDER BY us_member.last_trans_reg_dt DESC,  us_member.dev_mbr_stat_cd, us_member.mbr_id
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+		
+</sqlMap>

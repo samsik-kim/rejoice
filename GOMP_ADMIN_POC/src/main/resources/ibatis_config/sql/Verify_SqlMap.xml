@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="verify">
+	<typeAlias alias="Verify" type="com.omp.admin.verify.model.Verify"/>
+
+	<resultMap id="verify-resultMap" class="Verify">
+		<result property="totalCount" column="total_count"/>
+		<result property="rnum" column="rnum"/>
+		<result property="testCaseSeq" 	column="TEST_CASE_SEQ"/>  
+		<result property="vmType" 	column="VM_TYPE"/>   
+		<result property="ctCtgNm" 	column="CT_CTG_NM"/>  
+		<result property="titleNm" 	column="TITLE_NM"/>  
+		<result property="explain" column="EXPLAIN"/>       
+		<result property="stepFile" column="STEP_FILE"/>       
+		<result property="stepFileNm" 	column="STEP_FILE_NM"/>  
+		<result property="useYn" 	column="USE_YN"/>             
+	</resultMap>
+	
+	<resultMap id="categoryAll-resultMap" class="Verify">
+		<result property="ctCtgSeq" column="CT_CTG_SEQ"/>
+		<result property="titleNm" column="TITLE_NM"/>
+		<result property="explain" column="EXPLAIN"/>
+		<result property="useYn" 	column="USE_YN"/>
+	</resultMap>
+	
+	<statement id="verify.selectVerify" parameterClass="Verify" resultMap="verify-resultMap">
+		<include refid="GOMP.pagingStart"/>
+		SELECT <include refid="GOMP.pagingTotalCount"/> T1.*
+		FROM (SELECT /* verify.selectVerify jhhan 2011.03.23 : Verify_SqlMap.xml */
+					 A.TEST_CASE_SEQ,
+		             (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = A.VM_TYPE) AS VM_TYPE,
+		             (SELECT TITLE_NM  FROM TBL_CT_CTG WHERE CT_CTG_SEQ = A.CT_CTG_SEQ) AS CT_CTG_NM,
+		             A.TITLE_NM,
+		             A.EXPLAIN,
+		             A.STEP_FILE,
+		             A.STEP_FILE_NM,
+		             A.USE_YN
+				FROM TBL_CT_TEST_CASE A
+				WHERE 1=1
+				<isNotEmpty property="keyword">
+					AND A.TITLE_NM LIKE '%'||#keyword#||'%'
+				</isNotEmpty>
+				<isNotEmpty property="platCtgr">
+					AND A.VM_TYPE = #platCtgr#
+				</isNotEmpty>
+				<isNotEmpty property="ctCtgSeq">
+					AND A.CT_CTG_SEQ = #ctCtgSeq#
+				</isNotEmpty>
+				ORDER BY CT_CTG_NM ASC, USE_YN DESC, TITLE_NM ASC) T1
+        <include refid="GOMP.pagingEnd"/>
+	</statement>
+	
+	<statement id="verify.selectCategoryNameAll" parameterClass="java.lang.String" resultMap="categoryAll-resultMap">
+		SELECT /* verify.selectCategoryNameAll jhhan 2011.03.23 : Verify_SqlMap.xml */
+			   CT_CTG_SEQ,
+               TITLE_NM,
+               EXPLAIN,
+               USE_YN
+		FROM TBL_CT_CTG
+		WHERE USE_YN = 'Y'
+		ORDER BY INS_DTTM
+	</statement>
+	
+	<select id="verify.categorySaveSelect" resultClass="Verify">
+		SELECT /* verify.categorySaveSelect jhhan 2011.03.23 : Verify_SqlMap.xml */
+			   CT_CTG_SEQ AS "ctCtgSeq"
+             , TITLE_NM AS "titleNm"
+             , EXPLAIN AS "explain"
+             , USE_YN AS "useYn"
+          FROM TBL_CT_CTG
+		ORDER BY INS_DTTM
+	</select>
+	
+	<statement id="verify.saveCategory" parameterClass="Verify">
+		MERGE /* verify.saveCategory jhhan 2011.03.23 : Verify_SqlMap.xml */
+			  INTO TBL_CT_CTG A
+		USING (SELECT #ctCtgSeq# AS CD FROM DUAL) B
+		ON(A.CT_CTG_SEQ = B.CD)
+		WHEN MATCHED THEN
+		UPDATE SET A.TITLE_NM = #titleNm#,
+                   A.EXPLAIN = #explain#,
+                   A.USE_YN = #useYn#,
+                   A.UPD_BY = #insId#,
+                   A.UPD_DTTM = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHEN NOT MATCHED THEN
+		INSERT(
+			   A.CT_CTG_SEQ,
+               A.TITLE_NM,
+               A.EXPLAIN,
+               A.USE_YN,
+               A.INS_BY,
+               A.INS_DTTM,
+               A.UPD_BY,
+               A.UPD_DTTM
+               )
+		VALUES (
+			   (SELECT NVL(MAX(CT_CTG_SEQ)+1,0) FROM TBL_CT_CTG),
+               #titleNm#,
+               #explain#,
+               #useYn#,
+               #insId#,
+               TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+               #insId#,
+               TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+               )
+	</statement>
+	
+	<statement id="verify.insertCase" parameterClass="Verify">
+		INSERT /* verify.insertCase jhhan 2011.03.23 : Verify_SqlMap.xml */
+			   INTO TBL_CT_TEST_CASE (
+				TEST_CASE_SEQ,                                                                                                                                 
+				VM_TYPE,                                                                                                                                 
+				CT_CTG_SEQ,                                                                                                                           
+				TITLE_NM,                                                                                                                             
+				EXPLAIN,                                                                                                                                 
+				STEP_FILE,
+				STEP_FILE_NM,
+				USE_YN,
+				INS_BY,
+				INS_DTTM,
+				UPD_BY,
+				UPD_DTTM
+			   )
+		VALUES (
+				(SELECT NVL(MAX(TEST_CASE_SEQ)+1,0) FROM TBL_CT_TEST_CASE),
+				#vmType#,
+				#ctCtgSeq#,
+				#titleNm#,
+				#explain#,
+				#stepFile#,
+				#stepFileNm#,
+				#useYn#,
+				#insId#,
+				TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+				'',
+				''
+			)
+	</statement>
+</sqlMap>

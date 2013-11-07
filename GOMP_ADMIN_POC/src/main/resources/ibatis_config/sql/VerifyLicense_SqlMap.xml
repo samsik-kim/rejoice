@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="verifyLicense">
+	<typeAlias alias="VerifyLicense" type="com.omp.admin.verify.model.VerifyLicense"/>
+	 <resultMap id="verifyLicense-resultMap" class="VerifyLicense">
+        <result property="totalCount" column="total_count"/>
+        <result property="rnum" column="rnum"/>
+        <result property="seqOta"     column="SEQ_OTA"/>  
+        <result property="macAddr"     column="MAC_ADDR"/>   
+        <result property="validFrdt"     column="VALID_CD"/>   
+        <result property="issueDttm" column="ISSUE_DTTM"/>       
+        <result property="insId" column="REG_ID"/>                   
+    </resultMap>
+    <resultMap id="detailLicense-resultMap" class="VerifyLicense">  
+        <result property="macAddr"     column="MAC_ADDR"/>   
+        <result property="validFrdt"     column="VALID_CD"/>   
+        <result property="issueDttm" column="ISSUE_DTTM"/>       
+        <result property="insId" column="REG_ID"/>                   
+    </resultMap>
+    <resultMap id="commcd-resultMap" class="VerifyLicense">  
+        <result property="cdNm"     column="CD_NM"/>                  
+    </resultMap>
+    <statement id="verifyLicense.licenseList" parameterClass="VerifyLicense" resultMap="verifyLicense-resultMap">
+        <include refid="GOMP.pagingStart"/>
+        SELECT /* verifyLicense.licenseList aylee 2011.05.11 : VerifyLicense_SqlMap.xml */
+            <include refid="GOMP.pagingTotalCount"/>
+             SEQ_OTA,
+             MAC_ADDR,
+             (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = VALID_CD) AS VALID_CD,
+             TO_CHAR(TO_DATE(ISSUE_DTTM,'YYYYMMDDHH24MISS'),'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DTTM,
+             REG_ID
+        FROM TBL_AD_OTA_PHONE
+        WHERE SUBSTR(REG_DTTM,1,8) BETWEEN #startDate# AND #endDate#
+        <isNotEmpty property="keyWord">
+            <isEqual property="keyType" compareValue="id">
+                AND REG_ID LIKE '%'||#keyWord#||'%'
+            </isEqual>
+            <isEqual property="keyType" compareValue="mac">
+                AND MAC_ADDR LIKE '%'||#keyWord#||'%'
+             </isEqual>
+        </isNotEmpty>
+        ORDER BY REG_DTTM DESC
+        <include refid="GOMP.pagingEnd"/>
+    </statement>
+	<statement id="verifyLicense.insertVerifyLicense" parameterClass="VerifyLicense" >
+		INSERT /* verifyLicense.insertVerifyLicense aylee 2011.05.11 : VerifyLicense_SqlMap.xml */
+		INTO TBL_AD_OTA_PHONE 
+			   (
+			    SEQ_OTA,                                                                                                                                                                                                                                                                
+				MAC_ADDR,                                                                                                                           
+				VALID_CD,                                                                                                                                                                                                                                                              
+				ISSUE_DTTM,
+				REG_ID,
+				REG_DTTM
+				)VALUES (
+				(SELECT NVL(MAX(SEQ_OTA)+1,0) FROM TBL_AD_OTA_PHONE),
+				#macAddr#,
+				#validFrdt#,
+				TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+				#insId#,
+				TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				)
+	</statement>
+	<statement id="verifyLicense.detailLicense" parameterClass="java.lang.String" resultMap="detailLicense-resultMap">
+        SELECT /* verifyLicense.detailLicense aylee 2011.05.11 : VerifyLicense_SqlMap.xml */
+               MAC_ADDR,
+               (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = VALID_CD) AS VALID_CD,
+               TO_CHAR(TO_DATE(ISSUE_DTTM,'YYYYMMDDHH24MISS'),'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DTTM,
+               REG_ID
+        FROM   TBL_AD_OTA_PHONE
+        WHERE  SEQ_OTA = #seqOta#
+    </statement>
+    <statement id="verifyLicense.getCodeName" parameterClass="java.lang.String" resultMap="commcd-resultMap">
+    	SELECT /* verifyLicense.getCodeName aylee 2011.05.11 : VerifyLicense_SqlMap.xml */
+    			SUBSTR(CD_NM,1,2) AS CD_NM
+    	FROM TBL_COMM_CD 
+    	WHERE DTL_FULL_CD = #validFrdt#
+    </statement>
+</sqlMap>
