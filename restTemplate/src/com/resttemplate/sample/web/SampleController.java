@@ -119,7 +119,9 @@ public class SampleController {
 //		MappingUtils.
 		
 		SampleBean sb = new SampleBean();
-		
+		String a=null;
+		int b = 0;
+		 
 		try {
 			ItemBean ib = (ItemBean) Mapper.map(sb, ItemBean.class);
 		} catch (MappingException e) {
