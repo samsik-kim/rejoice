@@ -3,7 +3,6 @@
  */
 package com.resttemplate.sample.bean;
 
-import com.sun.istack.internal.NotNull;
 
 /**
  * @comment : 
@@ -12,7 +11,6 @@ import com.sun.istack.internal.NotNull;
  */
 public class SampleBean {
 
-	@Size(min=1, message="")
-	@NotNull
+//	@NotNull
 	private String code;
 }
