@@ -15,7 +15,7 @@
     <!-- PMD Classpath -->
     <path id="pmd.classpath">
         <fileset dir="${pmd.home}">
-            <include name="lib/**/*.jar" />
+            <include name="lib/*.jar" />
         </fileset>
     </path>
 
