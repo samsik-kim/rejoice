@@ -135,4 +135,6 @@
 	<bean id="jsonView" class="com.resttemplate.common.util.JSonView">
 		<property name="contentType" value="text/html;charset=UTF-8"></property>
 	</bean>
+	
+	<bean id="testBean" class="com.resttemplate.sample.bean.TestBean" scope="session"/>
 </beans>

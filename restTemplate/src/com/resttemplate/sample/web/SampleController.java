@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import net.sf.dozer.util.mapping.Mapper;
 import net.sf.dozer.util.mapping.MappingException;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.resttemplate.rejoiceAPI.bean.ItemBean;
 import com.resttemplate.sample.bean.SampleBean;
+import com.resttemplate.sample.bean.TestBean;
 
 @Controller
 @RequestMapping(value="/sample")
@@ -95,6 +102,18 @@ public class SampleController {
 		return "sample/innerData";
 	}
 	
+	@RequestMapping(value="/testBean.do")
+	public String testGetBean(HttpSession session){
+//		TestBean testBean = new TestBean();
+//		testBean.setA("23");
+//		testBean.setB("33");
+//		session.setAttribute("testBean", testBean);
+		
+//		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/restTemplate-servlet.xml");
+//		TestBean bean = (TestBean) context.getBean("testBean");
+//		bean.getA();
+		return "sample/testBean";
+	}
 	
 	public String dozerTest(){
 //		MappingUtils.
