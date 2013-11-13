@@ -3,7 +3,7 @@
     <property file="build.properties"/>
     <path id="compile.classpath">
         <!-- Include all elements that Tomcat exposes to applications -->
-        <fileset dir="C:/GRA_PRJ/jenkins/server/Tomcat 7.0_UCI_GRA/lib">
+        <fileset dir="D:/uci/jenkins/Tomcat 7.0_uci/lib">
             <include name="*.jar"/>
         </fileset>
         <!-- Include all elements for this application only -->
