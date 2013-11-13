@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="D_NMIMO_Web_Deploy" default="publish" basedir=".">
+<project name="restTemplate" default="publish" basedir=".">
     <property file="build.properties"/>
     <path id="compile.classpath">
         <!-- Include all elements that Tomcat exposes to applications -->
-        <fileset dir="C:/Tomcat 7.0/lib">
+        <fileset dir="C:/GRA_PRJ/jenkins/server/Tomcat 7.0_UCI_GRA/lib">
             <include name="*.jar"/>
         </fileset>
         <!-- Include all elements for this application only -->
