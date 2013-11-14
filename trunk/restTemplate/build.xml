@@ -27,6 +27,14 @@
         <mkdir dir="${app.deploy.home}/WEB-INF/classes" />
         <mkdir dir="${jenkins.workspace.dir}/report/pmd" />
         
+    	<!-- conf files deploy -->
+	    <echo message="conf files to ${app.deploy.home}/WEB-INF/classes"/>
+	    <sync todir="${app.deploy.home}/WEB-INF/classes">
+	      <fileset dir="${jenkins.workspace.dir}/conf">
+	        <include name="**/*.*" />
+	      </fileset>
+	    </sync>
+    	
         <!-- Compile source files -->
         <echo message="javac src to ${app.deploy.home}/WEB-INF/classes"/>
         <javac srcdir="${jenkins.workspace.dir}/src" 
@@ -74,14 +82,6 @@
         <echo message="tld files to ${app.deploy.home}/WEB-INF/tld"/>
         <sync todir="${app.deploy.home}/WEB-INF/tld">
           <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/tld">
-            <include name="**/*.*" />
-          </fileset>
-        </sync>
-
-        <!-- conf files deploy -->
-        <echo message="conf files to ${app.deploy.home}/WEB-INF/classes"/>
-        <sync todir="${app.deploy.home}/WEB-INF/classes">
-          <fileset dir="${jenkins.workspace.dir}/conf">
             <include name="**/*.*" />
           </fileset>
         </sync>
