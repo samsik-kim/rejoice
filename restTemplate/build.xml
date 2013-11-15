@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="restTemplate" default="publish" basedir=".">
+<project name="D_NMIMO_Web_Deploy" default="publish" basedir=".">
     <property file="build.properties"/>
     <path id="compile.classpath">
         <!-- Include all elements that Tomcat exposes to applications -->
-        <fileset dir="D:/uci/jenkins/Tomcat 7.0_uci/lib">
+        <fileset dir="C:/Tomcat 7.0/lib">
             <include name="*.jar"/>
         </fileset>
         <!-- Include all elements for this application only -->
@@ -19,6 +19,15 @@
         </fileset>
     </path>
 
+	<target name="test.tomcat.stop">
+	     <property name="tomcat.start.cmd" value="C:\project\apache-tomcat-6.0.37\bin\shutdown.bat"/>
+	     <echo message="STOP WAS(tomcat)" />
+	     <exec executable="cmd" failonerror="true">
+	          <arg value="/c"/>
+	          <arg value="${tomcat.stop.cmd}"/>
+	     </exec>
+	</target>
+	
     <!-- publish directory -->
     <target name="publish">
 
@@ -27,14 +36,6 @@
         <mkdir dir="${app.deploy.home}/WEB-INF/classes" />
         <mkdir dir="${jenkins.workspace.dir}/report/pmd" />
         
-    	<!-- conf files deploy -->
-	    <echo message="conf files to ${app.deploy.home}/WEB-INF/classes"/>
-	    <sync todir="${app.deploy.home}/WEB-INF/classes">
-	      <fileset dir="${jenkins.workspace.dir}/conf">
-	        <include name="**/*.*" />
-	      </fileset>
-	    </sync>
-    	
         <!-- Compile source files -->
         <echo message="javac src to ${app.deploy.home}/WEB-INF/classes"/>
         <javac srcdir="${jenkins.workspace.dir}/src" 
@@ -82,6 +83,14 @@
         <echo message="tld files to ${app.deploy.home}/WEB-INF/tld"/>
         <sync todir="${app.deploy.home}/WEB-INF/tld">
           <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/tld">
+            <include name="**/*.*" />
+          </fileset>
+        </sync>
+
+        <!-- conf files deploy -->
+        <echo message="conf files to ${app.deploy.home}/WEB-INF/classes"/>
+        <sync todir="${app.deploy.home}/WEB-INF/classes">
+          <fileset dir="${jenkins.workspace.dir}/conf">
             <include name="**/*.*" />
           </fileset>
         </sync>
