@@ -20,9 +20,10 @@
             <include name="lib/*.jar" />
         </fileset>
     </path>
-	
+
     <!-- publish directory -->
     <target name="publish">
+<!--
 
     	<echo message="Stop Tomcat" />  
 	    <java dir="${was.dir}/bin/" jar="${was.dir}/bin/bootstrap.jar" fork="true">
@@ -30,7 +31,7 @@
 			<arg value="stop"/>   
 	    </java>
 	    <echo message="Stop Tomcat success" />
-    	
+-->    	
     	
         <!-- Initial setting -->
         <delete dir="${app.deploy.home}/WEB-INF/classes" />
@@ -111,7 +112,7 @@
             <include name="*.*" />
           </fileset>
         </copy>
-
+<!--
 	    <echo message="Start Tomcat" />
 	    <java dir="${was.dir}/bin/" jar="${was.dir}/bin/bootstrap.jar" fork="true" spawn="true">        
 	      <jvmarg value="-Dcatalina.home=${was.dir}"/>
@@ -119,7 +120,7 @@
 	    </java>
 	    <sleep seconds="5" />
 	    <echo message="Start Tomcat success" />
-    	
+-->    	
     </target>
 
     <!-- Code Convetion Analysis using PMD -->
@@ -133,6 +134,13 @@
             <include name="**/*.java"/>
         </fileset>
         </pmd>
+    </target>
+	
+    <target name="start" description="Start Tomcat application">
+        <start url="http://localhost:8080/manager"
+            username="admin"
+            password="admin"
+            path="/restTemplate"/>
     </target>
 	
 </project>
