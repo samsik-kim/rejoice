@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="restTemplate" default="publish" basedir=".">
     <property file="build.properties"/>
-	<property name="web.dir" value="C:/Tomcat 7.0/" />
+	<property name="catalina.home" value="C:/Tomcat 7.0/" />
 	
     <path id="compile.classpath">
         <!-- Include all elements that Tomcat exposes to applications -->
@@ -136,12 +136,12 @@
         </pmd>
     </target>
 	
-    <target name="start" description="Start Tomcat application">
-        <start url="http://localhost:8080/manager"
-            username="admin"
-            password="admin"
-            path="/restTemplate"/>
-    </target>
+	<target name="was-start">
+        <echo message="Start Tomcat" />
+        <java dir="${catalina.home}/bin/" jar="${catalina.home}/bin/bootstrap.jar" fork="true">
+            <arg value="start"/>   
+        </java>
+	</target>
 	
 </project>
 
