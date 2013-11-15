@@ -147,7 +147,7 @@
 	
 	<target name="was-start">
         <echo message="Start Tomcat" />
-        <java dir="${web.dir}/bin/" jar="${web.dir}/bin/bootstrap.jar" fork="true">
+        <java dir="C:/Tomcat 7.0/bin/" jar="C:/Tomcat 7.0/bin/bootstrap.jar" fork="true">
             <arg value="start"/>   
         </java>
     </target>
