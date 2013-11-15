@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="restTemplate" default="publish" basedir=".">
     <property file="build.properties"/>
-	<property name="catalina.home" value="C:/Tomcat 7.0/" />
+	<property name="web.dir" value="C:/Tomcat 7.0/" />
 	
     <path id="compile.classpath">
         <!-- Include all elements that Tomcat exposes to applications -->
@@ -121,6 +121,12 @@
 	    <sleep seconds="5" />
 	    <echo message="Start Tomcat success" />
 -->    	
+	   <deploy url="${manager.url.LOCAL}"
+	     username="${manager.username}"
+	     password="${manager.password}"
+	     path="${app.path}"
+	     war="${war.name}"
+	     update="true" />
     </target>
 
     <!-- Code Convetion Analysis using PMD -->
@@ -136,12 +142,24 @@
         </pmd>
     </target>
 	
+	<target name="war" description="Make War" >
+	  <mkdir dir="C:/Tomcat 7.0/webapps/"/> 
+	  <jar jarfile="C:/Tomcat 7.0/webapps/restTemplate.war" basedir="${app.deploy.home}"/>
+	  <delete dir="${app.deploy.home}"/>
+	 </target>
+	
+	<!--
+	
 	<target name="was-start">
         <echo message="Start Tomcat" />
         <java dir="${catalina.home}/bin/" jar="${catalina.home}/bin/bootstrap.jar" fork="true">
             <arg value="start"/>   
         </java>
-	</target>
+    </target>
+	-->
+	<target name="install_local_war" 
+	   description="Local Tomcat Deploy">
+	  </target>
 	
 </project>
 
