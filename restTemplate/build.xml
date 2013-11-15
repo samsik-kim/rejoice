@@ -151,4 +151,18 @@
             <arg value="start"/>   
         </java>
     </target>
+	
+	<target name="restart" description="tomcat stop/start">
+		<echo message="tomcat stop"/>
+		<stop url="http://localhost:8080/manager" username="deployer"
+		password="1234" path="/restTemplate" />
+	
+		<echo message="sleep 1 m"/>
+		<sleep minutes="1"/>
+		
+		<echo message="tomcat start"/>
+		<start url="http://localhost:8080/manager" username="deployer"
+			password="1234" path="/restTemplate" />
+	</target>
+	
 </project>
