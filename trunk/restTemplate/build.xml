@@ -13,6 +13,14 @@
             <include name="*.jar"/>
         </fileset>
     </path>
+	<taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
+	<taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
+	<taskdef name="reload"    classname="org.apache.catalina.ant.ReloadTask"/>
+	<taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask"/>
+	<taskdef name="roles"     classname="org.apache.catalina.ant.RolesTask"/>
+	<taskdef name="start"     classname="org.apache.catalina.ant.StartTask"/>
+	<taskdef name="stop"      classname="org.apache.catalina.ant.StopTask"/>
+	<taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask"/>
 
     <!-- PMD Classpath -->
     <path id="pmd.classpath">
@@ -154,8 +162,8 @@
 	
 	<target name="restart" description="tomcat stop/start">
 		<echo message="deployer"/>
-		<deploy url="http://localhost:8080/manager" username="deployer"
-		password="1234" path="/restTemplate" />
+		<deploy url="http://localhost:8080/manager" username="admin"
+		password="admin" path="/restTemplate" />
 		<!--
 		<stop url="http://localhost:8080/manager" username="deployer"
 		password="1234" path="/restTemplate" />
@@ -168,5 +176,13 @@
 			password="1234" path="/restTemplate" />
 			-->
 	</target>
-	
+
+	<target name="stop" description="Stop web application">
+	    <stop url="http://localhost:8080/manager" username="deployer" password="1234" path="/restTemplate"/>
+	  </target>
+
+	  <target name="start" description="Start web application">
+	    <start url="http://localhost:8080/manager" username="deployer" password="1234" path="/restTemplate"/>
+	  </target>
+
 </project>
