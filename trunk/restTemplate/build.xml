@@ -3,7 +3,7 @@
     <property file="build.properties"/>
     <path id="compile.classpath">
         <!-- Include all elements that Tomcat exposes to applications -->
-        <fileset dir="C:/Tomcat 7.0/lib">
+        <fileset dir="C:/project/apache-tomcat-6.0.37/lib">
             <include name="*.jar"/>
         </fileset>
         <!-- Include all elements for this application only -->
@@ -20,7 +20,7 @@
     </path>
 
 	<target name="test.tomcat.stop">
-	     <property name="tomcat.start.cmd" value="C:\project\apache-tomcat-6.0.37\bin\shutdown.bat"/>
+	     <property name="tomcat.start.cmd" value="C:/project/apache-tomcat-6.0.37/bin/shutdown.bat"/>
 	     <echo message="STOP WAS(tomcat)" />
 	     <exec executable="cmd" failonerror="true">
 	          <arg value="/c"/>
@@ -127,7 +127,7 @@
     </target>
 	
 	<target name="test.tomcat.start">
-	     <property name="tomcat.start.cmd" value="C:\project\apache-tomcat-6.0.37\bin\startup.bat"/>
+	     <property name="tomcat.start.cmd" value="C:/project/apache-tomcat-6.0.37/bin/startup.bat"/>
 	     <echo message="START WAS(tomcat)" />
 	     <exec executable="cmd" failonerror="true">
 	          <arg value="/c"/>
