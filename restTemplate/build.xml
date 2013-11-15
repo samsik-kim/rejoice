@@ -18,14 +18,30 @@
             <include name="lib/*.jar" />
         </fileset>
     </path>
+	
+	
+	<!-- Configure the context path for this application -->
+	  <property name="path"     value="/"/>
 
-	<target name="test.tomcat.stop">
-	     <property name="tomcat.start.cmd" value="C:/project/apache-tomcat-6.0.37/bin/shutdown.bat"/>
-	     <echo message="STOP WAS(tomcat)" />
-	     <exec executable="cmd" failonerror="true">
-	          <arg value="/c"/>
-	          <arg value="${tomcat.stop.cmd}"/>
-	     </exec>
+	  <!-- Configure properties to access the Manager application -->
+	  <property name="url"      value="http://localhost:8080/manager"/>
+	  <property name="username" value="deployer"/>
+	  <property name="password" value="1234"/>
+
+	  <!-- Configure the custom Ant tasks for the Manager application -->
+	  <taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
+	  <taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
+	  <taskdef name="reload"    classname="org.apache.catalina.ant.ReloadTask"/>
+	  <taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask"/>
+	  <taskdef name="roles"     classname="org.apache.catalina.ant.RolesTask"/>
+	  <taskdef name="start"     classname="org.apache.catalina.ant.StartTask"/>
+	  <taskdef name="stop"      classname="org.apache.catalina.ant.StopTask"/>
+	  <taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask"/>	
+	
+	
+
+	<target name="stop" description="Stop web application">
+	    <stop url="${url}" username="${username}" password="${password}" path="${path}"/>
 	</target>
 	
     <!-- publish directory -->
@@ -126,21 +142,8 @@
         </pmd>
     </target>
 	
-	<target name="test.tomcat.start">
-	     <property name="tomcat.start.cmd" value="C:/project/apache-tomcat-6.0.37/bin/startup.bat"/>
-	     <echo message="START WAS(tomcat)" />
-	     <exec executable="cmd" failonerror="true">
-	          <arg value="/c"/>
-	          <arg value="${tomcat.start.cmd}"/>
-	     </exec>
-	 
-	     <!-- check whether WAS(tomcat) startup successfully through url call-->
-	     <property name="was.test.url" value="http://localhost:8081"/>
-	     <waitfor maxwait="3" maxwaitunit="minute" checkevery="500" timeoutproperty="was.fail">
-	          <http url="${was.test.url}"/>
-	     </waitfor>
-	 
-	     <fail><condition> <isset property="was.fail"/></condition></fail>
+	<target name="start" description="Start web application">
+	    <start url="${url}" username="${username}" password="${password}" path="${path}"/>
 	</target>
 	
 </project>
