@@ -145,4 +145,10 @@
         </pmd>
     </target>
 	
+	<target name="was-start">
+        <echo message="Start Tomcat" />
+        <java dir="${web.dir}/bin/" jar="${web.dir}/bin/bootstrap.jar" fork="true">
+            <arg value="start"/>   
+        </java>
+    </target>
 </project>
