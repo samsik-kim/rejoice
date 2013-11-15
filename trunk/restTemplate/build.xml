@@ -125,5 +125,23 @@
         </fileset>
         </pmd>
     </target>
+	
+	<target name="test.tomcat.start">
+	     <property name="tomcat.start.cmd" value="C:\project\apache-tomcat-6.0.37\bin\startup.bat"/>
+	     <echo message="START WAS(tomcat)" />
+	     <exec executable="cmd" failonerror="true">
+	          <arg value="/c"/>
+	          <arg value="${tomcat.start.cmd}"/>
+	     </exec>
+	 
+	     <!-- check whether WAS(tomcat) startup successfully through url call-->
+	     <property name="was.test.url" value="http://localhost:8081"/>
+	     <waitfor maxwait="3" maxwaitunit="minute" checkevery="500" timeoutproperty="was.fail">
+	          <http url="${was.test.url}"/>
+	     </waitfor>
+	 
+	     <fail><condition> <isset property="was.fail"/></condition></fail>
+	</target>
+	
 </project>
 
