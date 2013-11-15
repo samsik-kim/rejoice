@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="restTemplate" default="publish" basedir=".">
     <property file="build.properties"/>
+	<property name="web.dir" value="C:/Tomcat 7.0/" />
+	
     <path id="compile.classpath">
         <!-- Include all elements that Tomcat exposes to applications -->
-        <fileset dir="C:/project/apache-tomcat-6.0.37/lib">
+        <fileset dir="C:/Tomcat 7.0/lib">
             <include name="*.jar"/>
         </fileset>
         <!-- Include all elements for this application only -->
@@ -19,34 +21,17 @@
         </fileset>
     </path>
 	
-	
-	<!-- Configure the context path for this application -->
-	  <property name="path"     value="/"/>
-
-	  <!-- Configure properties to access the Manager application -->
-	  <property name="url"      value="http://localhost:8080/manager"/>
-	  <property name="username" value="deployer"/>
-	  <property name="password" value="1234"/>
-
-	  <!-- Configure the custom Ant tasks for the Manager application -->
-	  <taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
-	  <taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
-	  <taskdef name="reload"    classname="org.apache.catalina.ant.ReloadTask"/>
-	  <taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask"/>
-	  <taskdef name="roles"     classname="org.apache.catalina.ant.RolesTask"/>
-	  <taskdef name="start"     classname="org.apache.catalina.ant.StartTask"/>
-	  <taskdef name="stop"      classname="org.apache.catalina.ant.StopTask"/>
-	  <taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask"/>	
-	
-	
-
-	<target name="stop" description="Stop web application">
-	    <stop url="${url}" username="${username}" password="${password}" path="${path}"/>
-	</target>
-	
     <!-- publish directory -->
     <target name="publish">
 
+    	<echo message="Stop Tomcat" />  
+	    <java dir="${was.dir}/bin/" jar="${was.dir}/bin/bootstrap.jar" fork="true">
+			<jvmarg value="-Dcatalina.home=${was.dir}"/>
+			<arg value="stop"/>   
+	    </java>
+	    <echo message="Stop Tomcat success" />
+    	
+    	
         <!-- Initial setting -->
         <delete dir="${app.deploy.home}/WEB-INF/classes" />
         <mkdir dir="${app.deploy.home}/WEB-INF/classes" />
@@ -127,6 +112,14 @@
           </fileset>
         </copy>
 
+	    <echo message="Start Tomcat" />
+	    <java dir="${was.dir}/bin/" jar="${was.dir}/bin/bootstrap.jar" fork="true" spawn="true">        
+	      <jvmarg value="-Dcatalina.home=${was.dir}"/>
+	      <arg value="start"/>   
+	    </java>
+	    <sleep seconds="5" />
+	    <echo message="Start Tomcat success" />
+    	
     </target>
 
     <!-- Code Convetion Analysis using PMD -->
@@ -141,10 +134,6 @@
         </fileset>
         </pmd>
     </target>
-	
-	<target name="start" description="Start web application">
-	    <start url="${url}" username="${username}" password="${password}" path="${path}"/>
-	</target>
 	
 </project>
 
