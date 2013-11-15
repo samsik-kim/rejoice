@@ -127,6 +127,9 @@
 	     war="${war.name}"
 	     update="true" />
 -->    	
+	  <mkdir dir="C:/Tomcat 7.0/webapps/"/> 
+	  <jar jarfile="C:/Tomcat 7.0/webapps/restTemplate.war" basedir="${app.deploy.home}"/>
+	  <delete dir="${app.deploy.home}"/>
     </target>
 
     <!-- Code Convetion Analysis using PMD -->
@@ -143,9 +146,6 @@
     </target>
 	
 	<target name="war" description="Make War" >
-	  <mkdir dir="C:/Tomcat 7.0/webapps/"/> 
-	  <jar jarfile="C:/Tomcat 7.0/webapps/restTemplate.war" basedir="${app.deploy.home}"/>
-	  <delete dir="${app.deploy.home}"/>
 	 </target>
 	
 	<!--
