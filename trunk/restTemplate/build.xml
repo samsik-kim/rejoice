@@ -145,21 +145,4 @@
         </pmd>
     </target>
 	
-	<target name="war" description="Make War" >
-	 </target>
-	
-	<!--
-	
-	<target name="was-start">
-        <echo message="Start Tomcat" />
-        <java dir="${catalina.home}/bin/" jar="${catalina.home}/bin/bootstrap.jar" fork="true">
-            <arg value="start"/>   
-        </java>
-    </target>
-	-->
-	<target name="install_local_war" 
-	   description="Local Tomcat Deploy">
-	  </target>
-	
 </project>
-
