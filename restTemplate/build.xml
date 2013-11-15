@@ -153,7 +153,10 @@
     </target>
 	
 	<target name="restart" description="tomcat stop/start">
-		<echo message="tomcat stop"/>
+		<echo message="deployer"/>
+		<deploy url="http://localhost:8080/manager" username="deployer"
+		password="1234" path="/restTemplate" />
+		<!--
 		<stop url="http://localhost:8080/manager" username="deployer"
 		password="1234" path="/restTemplate" />
 	
@@ -163,6 +166,7 @@
 		<echo message="tomcat start"/>
 		<start url="http://localhost:8080/manager" username="deployer"
 			password="1234" path="/restTemplate" />
+			-->
 	</target>
 	
 </project>
