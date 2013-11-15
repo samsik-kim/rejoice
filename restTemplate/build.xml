@@ -120,13 +120,13 @@
 	    </java>
 	    <sleep seconds="5" />
 	    <echo message="Start Tomcat success" />
--->    	
-	   <deploy url="${manager.url.LOCAL}"
-	     username="${manager.username}"
-	     password="${manager.password}"
+	   <deploy url="hppt://localhost:8080/manager"
+	     username="admin"
+	     password="admin"
 	     path="${app.path}"
 	     war="${war.name}"
 	     update="true" />
+-->    	
     </target>
 
     <!-- Code Convetion Analysis using PMD -->
