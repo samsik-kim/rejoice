@@ -2,7 +2,9 @@
 <project name="restTemplate" default="publish" basedir=".">
     <property file="build.properties"/>
 	<property name="web.dir" value="C:/Tomcat 7.0/" />
-	
+	<fileset dir="C:/data/apache-ant-1.9.2/lib">
+	    <include name="catalina-ant.jar"/>
+	</fileset>
     <path id="compile.classpath">
         <!-- Include all elements that Tomcat exposes to applications -->
         <fileset dir="C:/Tomcat 7.0/lib">
