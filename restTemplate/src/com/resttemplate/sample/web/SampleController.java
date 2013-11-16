@@ -46,7 +46,7 @@ public class SampleController {
      * properties.xml[value] ? Default Value
      */
     @Value("#{config['sample.prop2']?:'test'}") private String value2;
-    @Value("#{config['test']?:'없네'}") private String value3;
+    @Value("#{rejoice['abcd']?:'없네'}") private String value3;
 	
 	@RequestMapping(value="/{itemId}" , method = RequestMethod.GET)
 	@ResponseBody
