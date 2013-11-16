@@ -35,7 +35,7 @@
     </path>
 
     <!-- publish directory -->
-    <target name="publish">
+    <target name="publish" depends="">
 <!--
 
     	<echo message="Stop Tomcat" />  
@@ -196,11 +196,15 @@
 		<start url="${tomcat-manager-url}" username="${tomcat-manager-username}"
 			password="${tomcat-manager-password}" path="/${project-name}" />
 	</target>
+	
+	<target name="tomcatdeploy">
+	  <deploy url="http://localhost:8080/manager/html" username="admin" password="admin" path="/restTemplate" war="file:restTemplate.war"/>                   
+	</target>
 <!--
 	<target name="stop" description="Stop web application">
 	    <stop url="http://localhost:8080/manager" username="deployer" password="1234" path="/restTemplate"/>
 	  </target>
-
+http://localhost:8080/manager/stop?path=%2FrestTemplate
 	  <target name="start" description="Start web application">
 	    <start url="http://localhost:8080/manager" username="deployer" password="1234" path="/restTemplate"/>
 	  </target>
