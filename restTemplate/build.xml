@@ -104,7 +104,7 @@
 
 		<jar jarfile="${was.dir}/restTemplate.war" basedir="${app.deploy.home}" />
 		<delete dir="${app.deploy.home}" />
-
+		<sleep seconds="30"/>
 	</target>
 
 	<!-- Code Convetion Analysis using PMD -->
