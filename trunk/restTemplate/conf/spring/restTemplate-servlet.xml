@@ -22,7 +22,7 @@
     <mvc:annotation-driven />
 	
 	<util:properties id="config" location="classpath:property/properties.xml"/>
-
+	<util:properties id="rejoice" location="classpath:property/rejoice.properties"/>
 	<!-- resources 선언 -->
 	<mvc:resources mapping="/resource/**" location="/resource/" />
 
