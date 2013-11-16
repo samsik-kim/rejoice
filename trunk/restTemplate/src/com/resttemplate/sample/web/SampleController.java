@@ -41,12 +41,12 @@ public class SampleController {
 	 * properties.xml[value] + Customer Value
 	 */
 	@Value("#{config['api.url'].concat(' abc')}") private String value1;
-	
     /**
      * Default Set
      * properties.xml[value] ? Default Value
      */
     @Value("#{config['sample.prop2']?:'test'}") private String value2;
+    @Value("#{config['test']?:'없네'}") private String value3;
 	
 	@RequestMapping(value="/{itemId}" , method = RequestMethod.GET)
 	@ResponseBody
@@ -99,7 +99,7 @@ public class SampleController {
 		map.put("url", con_url);
 		map.put("mode", System.getProperty("server.mode"));
 		map.put("list", hashMap1);
-		
+		map.put("test", value3);
 		return "sample/innerData";
 	}
 	
