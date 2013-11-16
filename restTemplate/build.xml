@@ -123,7 +123,7 @@
 	
 	<!--<target name="tomcat.restart" depends="test.tomcat.stop, test.tomcat.start"/>-->
 	<target name="test.tomcat.stop">
-	     <property name="tomcat.start.cmd" value="%CATALINA_HOME%\bin\shutdown.bat"/>
+	     <property name="tomcat.stop.cmd" value="%CATALINA_HOME%\bin\shutdown.bat"/>
 	     <echo message="STOP WAS(tomcat)" />
 	     <exec executable="cmd" failonerror="true">
 	          <arg value="/c"/>
