@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="restTemplate" default="publish" basedir=".">
     <property file="build.properties"/>
-	<property name="web.dir" value="C:/Tomcat 7.0/" />
-	<fileset dir="C:/data/apache-ant-1.9.2/lib">
-	    <include name="catalina-ant.jar"/>
-	</fileset>
-    <path id="compile.classpath">
+
+	<path id="compile.classpath">
         <!-- Include all elements that Tomcat exposes to applications -->
         <fileset dir="C:/Tomcat 7.0/lib">
             <include name="*.jar"/>
@@ -15,18 +12,7 @@
             <include name="*.jar"/>
         </fileset>
     </path>
-	<!--
-	<taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
-	<taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
-	<taskdef name="reload"    classname="org.apache.catalina.ant.ReloadTask"/>
-	<taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask"/>
-	<taskdef name="roles"     classname="org.apache.catalina.ant.RolesTask"/>
-	<taskdef name="start"     classname="org.apache.catalina.ant.StartTask"/>
-	<taskdef name="stop"      classname="org.apache.catalina.ant.StopTask"/>
-	<taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask"/>
--->
-	
-	
+
     <!-- PMD Classpath -->
     <path id="pmd.classpath">
         <fileset dir="${pmd.home}">
@@ -35,25 +21,25 @@
     </path>
 
     <!-- publish directory -->
-    <target name="publish" depends="">
+    <target name="publish">
     	
         <!-- Initial setting -->
-        <delete dir="${app.deploy.home}/${job.name}/WEB-INF/classes" />
-        <mkdir dir="${app.deploy.home}/${job.name}/WEB-INF/classes" />
+        <delete dir="${app.deploy.home}/WEB-INF/classes" />
+        <mkdir dir="${app.deploy.home}/WEB-INF/classes" />
         <mkdir dir="${jenkins.workspace.dir}/report/pmd" />
         
         <!-- conf files deploy -->
-        <echo message="conf files to ${app.deploy.home}/${job.name}/WEB-INF/classes"/>
-        <sync todir="${app.deploy.home}/${job.name}/WEB-INF/classes">
+        <echo message="conf files to ${app.deploy.home}/WEB-INF/classes"/>
+        <sync todir="${app.deploy.home}/WEB-INF/classes">
           <fileset dir="${jenkins.workspace.dir}/conf">
             <include name="**/*.*" />
           </fileset>
         </sync>
     	
         <!-- Compile source files -->
-        <echo message="javac src to ${app.deploy.home}/${job.name}/WEB-INF/classes"/>
+        <echo message="javac src to ${app.deploy.home}/WEB-INF/classes"/>
         <javac srcdir="${jenkins.workspace.dir}/src" 
-            destdir="${app.deploy.home}/${job.name}/WEB-INF/classes" 
+            destdir="${app.deploy.home}/WEB-INF/classes" 
             encoding="UTF-8"
             debug="true" includeantruntime="false">
             <!-- classpath above reference -->
@@ -62,66 +48,66 @@
         </javac>
 
         <!-- sqlmap files deploy -->
-        <echo message="sqlmap files to ${app.deploy.home}/${job.name}/WEB-INF/classes"/>
-        <copy todir="${app.deploy.home}/${job.name}/WEB-INF/classes">
+        <echo message="sqlmap files to ${app.deploy.home}/WEB-INF/classes"/>
+        <copy todir="${app.deploy.home}/WEB-INF/classes">
           <fileset dir="${jenkins.workspace.dir}/src">
             <include name="**/*.xml" />
           </fileset>
         </copy>
 
         <!-- resource files deploy -->
-        <echo message="resource files to ${app.deploy.home}/${job.name}/resource"/>
-        <sync todir="${app.deploy.home}/${job.name}/resource">
+        <echo message="resource files to ${app.deploy.home}/resource"/>
+        <sync todir="${app.deploy.home}/resource">
           <fileset dir="${jenkins.workspace.dir}/WebContent/resource">
             <include name="**/*.*" />
           </fileset>
         </sync>
 
         <!-- jsp files deploy -->
-        <echo message="jsp files to ${app.deploy.home}/${job.name}/WEB-INF/jsp"/>
-        <sync todir="${app.deploy.home}/${job.name}/WEB-INF/jsp">
+        <echo message="jsp files to ${app.deploy.home}/WEB-INF/jsp"/>
+        <sync todir="${app.deploy.home}/WEB-INF/jsp">
           <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/jsp">
             <include name="**/*.*" />
           </fileset>
         </sync>
 
         <!-- library files deploy -->
-        <echo message="library files to ${app.deploy.home}/${job.name}/WEB-INF/lib"/>
-        <sync todir="${app.deploy.home}/${job.name}/WEB-INF/lib">
+        <echo message="library files to ${app.deploy.home}/WEB-INF/lib"/>
+        <sync todir="${app.deploy.home}/WEB-INF/lib">
           <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/lib">
             <include name="**/*.*" />
           </fileset>
         </sync>
 
         <!-- tld files deploy -->
-        <echo message="tld files to ${app.deploy.home}/${job.name}/WEB-INF/tld"/>
-        <sync todir="${app.deploy.home}/${job.name}/WEB-INF/tld">
-          <fileset dir="${jenkins.workspace.dir}/${job.name}/WebContent/WEB-INF/tld">
+        <echo message="tld files to ${app.deploy.home}/WEB-INF/tld"/>
+        <sync todir="${app.deploy.home}/WEB-INF/tld">
+          <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/tld">
             <include name="**/*.*" />
           </fileset>
         </sync>
 
         <!-- web.xml, jboss-web.xml deploy -->
-        <echo message="web.xml, jboss-web.xml to ${app.deploy.home}/${job.name}/WEB-INF"/>
-        <copy todir="${app.deploy.home}/${job.name}/WEB-INF">
-          <fileset dir="${jenkins.workspace.dir}/${job.name}/WebContent/WEB-INF">
+        <echo message="web.xml, jboss-web.xml to ${app.deploy.home}/WEB-INF"/>
+        <copy todir="${app.deploy.home}/WEB-INF">
+          <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF">
             <include name="*.xml" />
           </fileset>
         </copy>
 
         <!-- index.jsp deploy -->
-        <echo message="index.jsp to ${app.deploy.home}/${job.name}"/>
-        <copy todir="${app.deploy.home}/${job.name}">
+        <echo message="index.jsp to ${app.deploy.home}"/>
+        <copy todir="${app.deploy.home}">
           <fileset dir="${jenkins.workspace.dir}/WebContent">
             <include name="*.*" />
           </fileset>
         </copy>
-   	
-	  <mkdir dir="${app.deploy.home}"/> 
-	  <jar jarfile="${app.deploy.home}/restTemplate.war" basedir="${app.deploy.home}"/>
+<!--
+	  <mkdir dir="C:/Tomcat 7.0/webapps/"/> 
+	  <jar jarfile="C:/Tomcat 7.0/webapps/restTemplate.war" basedir="${app.deploy.home}"/>
 	  <delete dir="${app.deploy.home}"/>
+-->
     </target>
-
     <!-- Code Convetion Analysis using PMD -->
     <target name="pmd">
         <echo message="Code Convention Analysis using PMD (JAVA basic ruleset applied)"/>
@@ -135,88 +121,30 @@
         </pmd>
     </target>
 	
-<!--
-	<target name="was-start">
-        <echo message="Start Tomcat" />
-        <java dir="C:/Tomcat 7.0/bin/" jar="C:/Tomcat 7.0/bin/bootstrap.jar" fork="true">
-            <arg value="start"/>   
-        </java>
-    </target>
-	
-	<target name="restart" description="tomcat stop/start">
-		<echo message="deployer"/>
-		<deploy url="http://localhost:8080/manager" username="admin"
-		password="admin" path="/restTemplate" />
-		
+	<!--<target name="tomcat.restart" depends="test.tomcat.stop, test.tomcat.start"/>-->
+	<target name="test.tomcat.stop">
+	     <property name="tomcat.start.cmd" value="%CATALINA_HOME%\bin\shutdown.bat"/>
+	     <echo message="STOP WAS(tomcat)" />
+	     <exec executable="cmd" failonerror="true">
+	          <arg value="/c"/>
+	          <arg value="${tomcat.stop.cmd}"/>
+	     </exec>
 	</target>
-	
-	<taskdef name="start" classname="org.apache.catalina.ant.StartTask" />
-	<taskdef name="stop" classname="org.apache.catalina.ant.StopTask" />
-	<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" />
-	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" />
-
-	<target name="stop" description="stop application in tomcat">
-		<stop url="${tomcat-manager-url}" username="${tomcat-manager-username}"
-			password="${tomcat-manager-password}" path="/${project-name}" />
-	</target>
-
-	<target name="start" description="start application in tomcat">
-		<start url="${tomcat-manager-url}" username="${tomcat-manager-username}"
-			password="${tomcat-manager-password}" path="/${project-name}" />
-	</target>
-	
-	<target name="tomcatdeploy">
-	  <deploy url="http://localhost:8080/manager" username="admin" password="admin" path="/restTemplate" war="file:C:/Tomcat 7.0/webapps/restTemplate.war"/>                   
-	</target>
-	<target name="stop" description="Stop web application">
-	    <stop url="http://localhost:8080/manager" username="deployer" password="1234" path="/restTemplate"/>
-	  </target>
-http://localhost:8080/manager/stop?path=%2FrestTemplate
-	  <target name="start" description="Start web application">
-	    <start url="http://localhost:8080/manager" username="deployer" password="1234" path="/restTemplate"/>
-	  </target>
--->
-	
-	<target name="tomcat.start">
-		<java classname="org.apache.catalina.startup.Bootstrap" jvm="${java_home}/bin/java" fork="true" spawn="true">
-			<classpath>
-				<fileset dir="${catalina.home}/bin">
-					<include name="bootstrap.jar" />
-				</fileset>
-			</classpath>
-			<arg value="start" />
-			<sysproperty key="catalina.home" value="${catalina.home}" />
-			<sysproperty key="java.endorsed.dirs" value="${catalina.home}/common/endorsed" />
-			<sysproperty key="java.util.logging.manager" value="org.apache.juli.ClassLoaderLogManager" />
-			<sysproperty key="java.util.logging.config.file" value="${catalina.home}/conf/logging.properties" />
-			<sysproperty key="catalina.base" value="${catalina.base}" />
-			<sysproperty key="java.io.tmpdir" value="${catalina.base}/temp" />
-		</java>
+	<target name="test.tomcat.start">
+	     <property name="tomcat.start.cmd" value="%CATALINA_HOME%\bin\startup.bat"/>
+	     <echo message="START WAS(tomcat)" />
+	     <exec executable="cmd" failonerror="true">
+	          <arg value="/c"/>
+	          <arg value="${tomcat.start.cmd}"/>
+	     </exec>
+	 
+	     <!-- check whether WAS(tomcat) startup successfully through url call-->
+	     <property name="was.test.url" value="http://localhost:8080"/>
+	     <waitfor maxwait="3" maxwaitunit="minute" checkevery="500" timeoutproperty="was.fail">
+	          <http url="${was.test.url}"/>
+	     </waitfor>
+	 
+	     <fail><condition> <isset property="was.fail"/></condition></fail>
 	</target>
 
-	<target name="tomcat.stop">
-		<java classname="org.apache.catalina.startup.Bootstrap" jvm="${java_home}/bin/java" fork="true" spawn="true">
-			<classpath>
-				<fileset dir="${catalina.home}/bin">
-					<include name="bootstrap.jar" />
-				</fileset>
-			</classpath>
-			<arg value="stop" />
-			<sysproperty key="catalina.base" value="${catalina.home}" />
-			<sysproperty key="catalina.home" value="${catalina.home}" />
-			<sysproperty key="java.endorsed.dirs" value="${catalina.home}/common/endorsed" />
-			<sysproperty key="java.util.logging.manager" value="org.apache.juli.ClassLoaderLogManager" />
-			<sysproperty key="java.util.logging.config.file" value="${catalina.home}/conf/logging.properties" />
-			<sysproperty key="java.io.tmpdir" value="${catalina.home}/temp" />
-		</java>
-	</target>
-	
-	<target name="start" >
-	<exec executable="${catalina.home}/bin/startup.bat" os="Windows7" /> 
-	</target>
-	<target name="stop">
-	<exec executable="${catalina.home}/bin/shutdown.bat" os="Windows7" /> 
-	</target>
-	<!--<target name="start" depends ="stop" />-->
-	
 </project>
