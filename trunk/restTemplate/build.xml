@@ -25,6 +25,8 @@
     	
         <!-- Initial setting -->
         <delete dir="${app.deploy.home}/WEB-INF/classes" />
+    	<delete dir="${was.dir}//restTemplate.war" />
+    	
         <mkdir dir="${app.deploy.home}/WEB-INF/classes" />
         <mkdir dir="${jenkins.workspace.dir}/report/pmd" />
         
