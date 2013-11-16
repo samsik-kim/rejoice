@@ -1,127 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="restTemplate" default="publish" basedir=".">
-    <property file="build.properties"/>
+	<property file="build.properties" />
 
 	<path id="compile.classpath">
-        <!-- Include all elements that Tomcat exposes to applications -->
-        <fileset dir="C:/Tomcat 7.0/lib">
-            <include name="*.jar"/>
-        </fileset>
-        <!-- Include all elements for this application only -->
-        <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/lib">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
+		<!-- Include all elements that Tomcat exposes to applications -->
+		<fileset dir="C:/Tomcat 7.0/lib">
+			<include name="*.jar" />
+		</fileset>
+		<!-- Include all elements for this application only -->
+		<fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
 
-    <!-- PMD Classpath -->
-    <path id="pmd.classpath">
-        <fileset dir="${pmd.home}">
-            <include name="lib/*.jar" />
-        </fileset>
-    </path>
+	<!-- PMD Classpath -->
+	<path id="pmd.classpath">
+		<fileset dir="${pmd.home}">
+			<include name="lib/*.jar" />
+		</fileset>
+	</path>
 
-    <!-- publish directory -->
-    <target name="publish" depends="pmd">
-    	
-        <!-- Initial setting -->
-        <delete dir="${app.deploy.home}/WEB-INF/classes" />
-    	<delete dir="${was.dir}//restTemplate.war" />
-    	
-        <mkdir dir="${app.deploy.home}/WEB-INF/classes" />
-        <mkdir dir="${jenkins.workspace.dir}/report/pmd" />
-        
-        <!-- conf files deploy -->
-        <echo message="conf files to ${app.deploy.home}/WEB-INF/classes"/>
-        <sync todir="${app.deploy.home}/WEB-INF/classes">
-          <fileset dir="${jenkins.workspace.dir}/conf">
-            <include name="**/*.*" />
-          </fileset>
-        </sync>
-    	
-        <!-- Compile source files -->
-        <echo message="javac src to ${app.deploy.home}/WEB-INF/classes"/>
-        <javac srcdir="${jenkins.workspace.dir}/src" 
-            destdir="${app.deploy.home}/WEB-INF/classes" 
-            encoding="UTF-8"
-            debug="true" includeantruntime="false">
-            <!-- classpath above reference -->
-            <classpath refid="compile.classpath"/>
-            <compilerarg value="-Xlint:unchecked -nowarn" />
-        </javac>
+	<!-- publish directory -->
+	<target name="publish" depends="pmd">
 
-        <!-- sqlmap files deploy -->
-        <echo message="sqlmap files to ${app.deploy.home}/WEB-INF/classes"/>
-        <copy todir="${app.deploy.home}/WEB-INF/classes">
-          <fileset dir="${jenkins.workspace.dir}/src">
-            <include name="**/*.xml" />
-          </fileset>
-        </copy>
+		<!-- Initial setting -->
+		<delete dir="${app.deploy.home}/WEB-INF/classes" />
+		<delete dir="${was.dir}//restTemplate.war" />
 
-        <!-- resource files deploy -->
-        <echo message="resource files to ${app.deploy.home}/resource"/>
-        <sync todir="${app.deploy.home}/resource">
-          <fileset dir="${jenkins.workspace.dir}/WebContent/resource">
-            <include name="**/*.*" />
-          </fileset>
-        </sync>
+		<mkdir dir="${app.deploy.home}/WEB-INF/classes" />
+		<mkdir dir="${jenkins.workspace.dir}/report/pmd" />
 
-        <!-- jsp files deploy -->
-        <echo message="jsp files to ${app.deploy.home}/WEB-INF/jsp"/>
-        <sync todir="${app.deploy.home}/WEB-INF/jsp">
-          <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/jsp">
-            <include name="**/*.*" />
-          </fileset>
-        </sync>
+		<!-- conf files deploy -->
+		<echo message="conf files to ${app.deploy.home}/WEB-INF/classes" />
+		<sync todir="${app.deploy.home}/WEB-INF/classes">
+			<fileset dir="${jenkins.workspace.dir}/conf">
+				<include name="**/*.*" />
+			</fileset>
+		</sync>
 
-        <!-- library files deploy -->
-        <echo message="library files to ${app.deploy.home}/WEB-INF/lib"/>
-        <sync todir="${app.deploy.home}/WEB-INF/lib">
-          <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/lib">
-            <include name="**/*.*" />
-          </fileset>
-        </sync>
+		<!-- Compile source files -->
+		<echo message="javac src to ${app.deploy.home}/WEB-INF/classes" />
+		<javac srcdir="${jenkins.workspace.dir}/src" destdir="${app.deploy.home}/WEB-INF/classes" encoding="UTF-8" debug="true" includeantruntime="false">
+			<!-- classpath above reference -->
+			<classpath refid="compile.classpath" />
+			<compilerarg value="-Xlint:unchecked -nowarn" />
+		</javac>
 
-        <!-- tld files deploy -->
-        <echo message="tld files to ${app.deploy.home}/WEB-INF/tld"/>
-        <sync todir="${app.deploy.home}/WEB-INF/tld">
-          <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/tld">
-            <include name="**/*.*" />
-          </fileset>
-        </sync>
+		<!-- sqlmap files deploy -->
+		<echo message="sqlmap files to ${app.deploy.home}/WEB-INF/classes" />
+		<copy todir="${app.deploy.home}/WEB-INF/classes">
+			<fileset dir="${jenkins.workspace.dir}/src">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
 
-        <!-- web.xml, jboss-web.xml deploy -->
-        <echo message="web.xml, jboss-web.xml to ${app.deploy.home}/WEB-INF"/>
-        <copy todir="${app.deploy.home}/WEB-INF">
-          <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF">
-            <include name="*.xml" />
-          </fileset>
-        </copy>
+		<!-- resource files deploy -->
+		<echo message="resource files to ${app.deploy.home}/resource" />
+		<sync todir="${app.deploy.home}/resource">
+			<fileset dir="${jenkins.workspace.dir}/WebContent/resource">
+				<include name="**/*.*" />
+			</fileset>
+		</sync>
 
-        <!-- index.jsp deploy -->
-        <echo message="index.jsp to ${app.deploy.home}"/>
-        <copy todir="${app.deploy.home}">
-          <fileset dir="${jenkins.workspace.dir}/WebContent">
-            <include name="*.*" />
-          </fileset>
-        </copy>
+		<!-- jsp files deploy -->
+		<echo message="jsp files to ${app.deploy.home}/WEB-INF/jsp" />
+		<sync todir="${app.deploy.home}/WEB-INF/jsp">
+			<fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/jsp">
+				<include name="**/*.*" />
+			</fileset>
+		</sync>
 
-	  <jar jarfile="${was.dir}/restTemplate.war" basedir="${app.deploy.home}"/>
-	  <delete dir="${app.deploy.home}"/>
-		<sleep seconds="30"/>
-    	<delete dir="${was.dir}/restTemplate.war"/>
-    </target>
- 
+		<!-- library files deploy -->
+		<echo message="library files to ${app.deploy.home}/WEB-INF/lib" />
+		<sync todir="${app.deploy.home}/WEB-INF/lib">
+			<fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/lib">
+				<include name="**/*.*" />
+			</fileset>
+		</sync>
+
+		<!-- tld files deploy -->
+		<echo message="tld files to ${app.deploy.home}/WEB-INF/tld" />
+		<sync todir="${app.deploy.home}/WEB-INF/tld">
+			<fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/tld">
+				<include name="**/*.*" />
+			</fileset>
+		</sync>
+
+		<!-- web.xml, jboss-web.xml deploy -->
+		<echo message="web.xml, jboss-web.xml to ${app.deploy.home}/WEB-INF" />
+		<copy todir="${app.deploy.home}/WEB-INF">
+			<fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF">
+				<include name="*.xml" />
+			</fileset>
+		</copy>
+
+		<!-- index.jsp deploy -->
+		<echo message="index.jsp to ${app.deploy.home}" />
+		<copy todir="${app.deploy.home}">
+			<fileset dir="${jenkins.workspace.dir}/WebContent">
+				<include name="*.*" />
+			</fileset>
+		</copy>
+
+		<jar jarfile="${was.dir}/restTemplate.war" basedir="${app.deploy.home}" />
+		<delete dir="${app.deploy.home}" />
+
+	</target>
+
 	<!-- Code Convetion Analysis using PMD -->
-    <target name="pmd">
-        <echo message="Code Convention Analysis using PMD (JAVA basic ruleset applied)"/>
-        <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
-        <pmd rulesetfiles="rulesets/favorites.xml">
-        <ruleset>rulesets/java/basic.xml</ruleset>
-        <formatter type="xml" toFile="${jenkins.workspace.dir}/report/pmd/pmd_report.xml"/>
-        <fileset dir="${jenkins.workspace.dir}/src">
-            <include name="**/*.java"/>
-        </fileset>
-        </pmd>
-    </target>
- 
+	<target name="pmd">
+		<echo message="Code Convention Analysis using PMD (JAVA basic ruleset applied)" />
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
+		<pmd rulesetfiles="rulesets/favorites.xml">
+			<ruleset>rulesets/java/basic.xml</ruleset>
+			<formatter type="xml" toFile="${jenkins.workspace.dir}/report/pmd/pmd_report.xml" />
+			<fileset dir="${jenkins.workspace.dir}/src">
+				<include name="**/*.java" />
+			</fileset>
+		</pmd>
+	</target>
+
 </project>
