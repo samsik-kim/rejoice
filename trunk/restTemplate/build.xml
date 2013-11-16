@@ -38,22 +38,22 @@
     <target name="publish" depends="">
     	
         <!-- Initial setting -->
-        <delete dir="${app.deploy.home}/WEB-INF/classes" />
-        <mkdir dir="${app.deploy.home}/WEB-INF/classes" />
+        <delete dir="${app.deploy.home}/${job.name}/WEB-INF/classes" />
+        <mkdir dir="${app.deploy.home}/${job.name}/WEB-INF/classes" />
         <mkdir dir="${jenkins.workspace.dir}/report/pmd" />
         
         <!-- conf files deploy -->
-        <echo message="conf files to ${app.deploy.home}/WEB-INF/classes"/>
-        <sync todir="${app.deploy.home}/WEB-INF/classes">
+        <echo message="conf files to ${app.deploy.home}/${job.name}/WEB-INF/classes"/>
+        <sync todir="${app.deploy.home}/${job.name}/WEB-INF/classes">
           <fileset dir="${jenkins.workspace.dir}/conf">
             <include name="**/*.*" />
           </fileset>
         </sync>
     	
         <!-- Compile source files -->
-        <echo message="javac src to ${app.deploy.home}/WEB-INF/classes"/>
+        <echo message="javac src to ${app.deploy.home}/${job.name}/WEB-INF/classes"/>
         <javac srcdir="${jenkins.workspace.dir}/src" 
-            destdir="${app.deploy.home}/WEB-INF/classes" 
+            destdir="${app.deploy.home}/${job.name}/WEB-INF/classes" 
             encoding="UTF-8"
             debug="true" includeantruntime="false">
             <!-- classpath above reference -->
@@ -62,63 +62,63 @@
         </javac>
 
         <!-- sqlmap files deploy -->
-        <echo message="sqlmap files to ${app.deploy.home}/WEB-INF/classes"/>
-        <copy todir="${app.deploy.home}/WEB-INF/classes">
+        <echo message="sqlmap files to ${app.deploy.home}/${job.name}/WEB-INF/classes"/>
+        <copy todir="${app.deploy.home}/${job.name}/WEB-INF/classes">
           <fileset dir="${jenkins.workspace.dir}/src">
             <include name="**/*.xml" />
           </fileset>
         </copy>
 
         <!-- resource files deploy -->
-        <echo message="resource files to ${app.deploy.home}/resource"/>
-        <sync todir="${app.deploy.home}/resource">
+        <echo message="resource files to ${app.deploy.home}/${job.name}/resource"/>
+        <sync todir="${app.deploy.home}/${job.name}/resource">
           <fileset dir="${jenkins.workspace.dir}/WebContent/resource">
             <include name="**/*.*" />
           </fileset>
         </sync>
 
         <!-- jsp files deploy -->
-        <echo message="jsp files to ${app.deploy.home}/WEB-INF/jsp"/>
-        <sync todir="${app.deploy.home}/WEB-INF/jsp">
+        <echo message="jsp files to ${app.deploy.home}/${job.name}/WEB-INF/jsp"/>
+        <sync todir="${app.deploy.home}/${job.name}/WEB-INF/jsp">
           <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/jsp">
             <include name="**/*.*" />
           </fileset>
         </sync>
 
         <!-- library files deploy -->
-        <echo message="library files to ${app.deploy.home}/WEB-INF/lib"/>
-        <sync todir="${app.deploy.home}/WEB-INF/lib">
+        <echo message="library files to ${app.deploy.home}/${job.name}/WEB-INF/lib"/>
+        <sync todir="${app.deploy.home}/${job.name}/WEB-INF/lib">
           <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/lib">
             <include name="**/*.*" />
           </fileset>
         </sync>
 
         <!-- tld files deploy -->
-        <echo message="tld files to ${app.deploy.home}/WEB-INF/tld"/>
-        <sync todir="${app.deploy.home}/WEB-INF/tld">
-          <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/tld">
+        <echo message="tld files to ${app.deploy.home}/${job.name}/WEB-INF/tld"/>
+        <sync todir="${app.deploy.home}/${job.name}/WEB-INF/tld">
+          <fileset dir="${jenkins.workspace.dir}/${job.name}/WebContent/WEB-INF/tld">
             <include name="**/*.*" />
           </fileset>
         </sync>
 
         <!-- web.xml, jboss-web.xml deploy -->
-        <echo message="web.xml, jboss-web.xml to ${app.deploy.home}/WEB-INF"/>
-        <copy todir="${app.deploy.home}/WEB-INF">
-          <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF">
+        <echo message="web.xml, jboss-web.xml to ${app.deploy.home}/${job.name}/WEB-INF"/>
+        <copy todir="${app.deploy.home}/${job.name}/WEB-INF">
+          <fileset dir="${jenkins.workspace.dir}/${job.name}/WebContent/WEB-INF">
             <include name="*.xml" />
           </fileset>
         </copy>
 
         <!-- index.jsp deploy -->
-        <echo message="index.jsp to ${app.deploy.home}"/>
-        <copy todir="${app.deploy.home}">
+        <echo message="index.jsp to ${app.deploy.home}/${job.name}"/>
+        <copy todir="${app.deploy.home}/${job.name}">
           <fileset dir="${jenkins.workspace.dir}/WebContent">
             <include name="*.*" />
           </fileset>
         </copy>
    	
-	  <mkdir dir="C:/Tomcat 7.0/webapps/"/> 
-	  <jar jarfile="C:/Tomcat 7.0/webapps/restTemplate.war" basedir="${app.deploy.home}"/>
+	  <mkdir dir="${app.deploy.home}"/> 
+	  <jar jarfile="${app.deploy.home}/restTemplate.war" basedir="${app.deploy.home}"/>
 	  <delete dir="${app.deploy.home}"/>
     </target>
 
