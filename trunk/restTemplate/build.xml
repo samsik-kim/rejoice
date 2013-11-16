@@ -211,4 +211,12 @@ http://localhost:8080/manager/stop?path=%2FrestTemplate
 		</java>
 	</target>
 	
+	<target name="start" >
+	<exec executable="${catalina.home}/bin/startup.bat" os="Windows7" /> 
+	</target>
+	<target name="stop">
+	<exec executable="${catalina.home}/bin/shutdown.bat" os="Windows7" /> 
+	</target>
+	<!--<target name="start" depends ="stop" />-->
+	
 </project>
