@@ -218,12 +218,12 @@ http://localhost:8080/manager/stop?path=%2FrestTemplate
 					</fileset>
 				</classpath>
 				<arg value="stop" />
-				<sysproperty key="catalina.base" value="C:/Tomcat 7.0/" />
-				<sysproperty key="catalina.home" value="C:/Tomcat 7.0/" />
-				<sysproperty key="java.endorsed.dirs" value="C:/Tomcat 7.0//common/endorsed" />
+				<sysproperty key="catalina.base" value="C:/Tomcat 7.0" />
+				<sysproperty key="catalina.home" value="C:/Tomcat 7.0" />
+				<sysproperty key="java.endorsed.dirs" value="C:/Tomcat 7.0/common/endorsed" />
 				<sysproperty key="java.util.logging.manager" value="org.apache.juli.ClassLoaderLogManager" />
-				<sysproperty key="java.util.logging.config.file" value="C:/Tomcat 7.0//conf/logging.properties" />
-				<sysproperty key="java.io.tmpdir" value="C:/Tomcat 7.0//temp" />
+				<sysproperty key="java.util.logging.config.file" value="C:/Tomcat 7.0/conf/logging.properties" />
+				<sysproperty key="java.io.tmpdir" value="C:/Tomcat 7.0/temp" />
 			</java>
 		</target>
 	
