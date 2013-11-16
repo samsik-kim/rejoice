@@ -112,7 +112,7 @@
     <target name="pmd">
         <echo message="Code Convention Analysis using PMD (JAVA basic ruleset applied)"/>
         <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
-        <pmd rulesetfiles="java-basic" shortFilenames="true">
+        <pmd rulesetfiles="rulesets/basic.xml">
         <ruleset>rulesets/java/basic.xml</ruleset>
         <formatter type="xml" toFile="${jenkins.workspace.dir}/report/pmd/pmd_report.xml"/>
         <fileset dir="${jenkins.workspace.dir}/src">
