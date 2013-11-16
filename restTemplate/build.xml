@@ -104,9 +104,9 @@
         </copy>
 <!--
 	  <mkdir dir="${was.dir}"/> 
+	  -->
 	  <jar jarfile="${was.dir}/webapps/restTemplate.war" basedir="${app.deploy.home}"/>
 	  <delete dir="${app.deploy.home}"/>
-	  -->
     </target>
  
 	<!-- Code Convetion Analysis using PMD -->
