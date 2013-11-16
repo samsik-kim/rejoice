@@ -96,7 +96,7 @@ public class SampleController {
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String,Object>>();
 		list.add(hashMap);
 		hashMap1.put("data", list);
-		
+		map.put("url", con_url);
 		map.put("list", hashMap1);
 		
 		return "sample/innerData";
