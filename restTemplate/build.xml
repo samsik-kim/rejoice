@@ -107,7 +107,8 @@
 	  <jar jarfile="${was.dir}/webapps/restTemplate.war" basedir="${app.deploy.home}"/>
 	  <delete dir="${app.deploy.home}"/>
     </target>
-    <!-- Code Convetion Analysis using PMD -->
+ 
+	<!-- Code Convetion Analysis using PMD -->
     <target name="pmd">
         <echo message="Code Convention Analysis using PMD (JAVA basic ruleset applied)"/>
         <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
@@ -119,20 +120,19 @@
         </fileset>
         </pmd>
     </target>
-        <!-- 소스코드를 검사할 PMD 규칙이 설정된 파일 지정 -->
-            <!--  분석결과 파일 저장 위치 지정 -->
-<!--
-	<target name="pmd">
-        <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath">
-        <mkdir dir="${jenkins.workspace.dir}/report/pmd">
-        <pmd rulesetfiles="rulesets/favorites.xml">
-            <ruleset>basic</ruleset>
-            <formatter type="xml" tofile="${jenkins.workspace.dir}/report/pmd/pmd_report.xml">
-            <fileset dir="${jenkins.workspace.dir}/src">
-                <include name="**/*.java">
-            </include></fileset>
-        </formatter></pmd>
-        </mkdir></taskdef>
+ 
+	<target name="pmd_4.3">
+	 <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask"/>
+	 <pmd shortFilenames="true">
+	  <sourceLanguage name="java" version="1.6"/>
+	  <ruleset>rulesets/java/design.xml</ruleset>
+	  <ruleset>java-basic</ruleset>
+	  <formatter type="html" toFile="${jenkins.workspace.dir}/report/pmd/pmd_report.xml">
+	    <param name="linkPrefix" value="http://pmd.sourceforge.net/xref/"/>
+	  </formatter>
+	 	<fileset dir="${jenkins.workspace.dir}/src">
+            <include name="**/*.java"/>
+        </fileset>
+	 </pmd>
 	</target>
--->
 </project>
