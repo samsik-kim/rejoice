@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="tomcat-demo" default="tomcat.restart" basedir=".">
+	<property file="build.properties"/>
+	
+	<target name="tomcat.restart" depends="test.tomcat.stop, test.tomcat.start"/>
+	<target name="test.tomcat.stop">
+	     <property name="tomcat.stop.cmd" value="${was.dir}\bin\shutdown.bat"/>
+	     <echo message="STOP WAS(tomcat)" />
+	     <exec executable="cmd" failonerror="true">
+	          <arg value="/c"/>
+	          <arg value="${tomcat.stop.cmd}"/>
+	     </exec>
+	</target>
+	<target name="test.tomcat.start">
+	     <property name="tomcat.start.cmd" value="${was.dir}\bin\startup.bat"/>
+	     <echo message="START WAS(tomcat)" />
+	     <exec executable="cmd" failonerror="true">
+	          <arg value="/c"/>
+	          <arg value="${tomcat.start.cmd}"/>
+	     </exec>
+	 
+	     <!-- check whether WAS(tomcat) startup successfully through url call-->
+	     <property name="was.test.url" value="http://localhost:8080"/>
+	     <waitfor maxwait="3" maxwaitunit="minute" checkevery="500" timeoutproperty="was.fail">
+	          <http url="${was.test.url}"/>
+	     </waitfor>
+	 
+	     <fail><condition> <isset property="was.fail"/></condition></fail>
+	</target>
+	
+</project>
