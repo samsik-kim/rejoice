@@ -211,7 +211,7 @@ http://localhost:8080/manager/stop?path=%2FrestTemplate
 -->
 	
 	<target name="tomcat.stop">
-			<java classname="org.apache.catalina.startup.Bootstrap" jvm="${java_home}/bin/java" fork="true" spawn="true">
+			<java classname="org.apache.catalina.startup.Bootstrap" jvm="C:/Program Files/Java/jdk1.6.0_45/bin/java" fork="true" spawn="true">
 				<classpath>
 					<fileset dir="C:/Tomcat 7.0/bin">
 						<include name="bootstrap.jar" />
