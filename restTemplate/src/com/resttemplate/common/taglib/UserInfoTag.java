@@ -23,7 +23,7 @@ public class UserInfoTag extends TagSupport {
     }
 
     private void init() {
-        var = null;
+        var = "";
     }    
 
     public void release() {
