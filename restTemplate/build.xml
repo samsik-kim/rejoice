@@ -198,7 +198,7 @@
 	</target>
 	
 	<target name="tomcatdeploy">
-	  <deploy url="http://localhost:8080/manager/html" username="admin" password="admin" path="/restTemplate" war="file:C:/Tomcat 7.0/webapps/restTemplate.war"/>                   
+	  <deploy url="http://localhost:8080/manager" username="admin" password="admin" path="/restTemplate" war="file:C:/Tomcat 7.0/webapps/restTemplate.war"/>                   
 	</target>
 <!--
 	<target name="stop" description="Stop web application">
