@@ -30,11 +30,11 @@
         
         <!-- conf files deploy -->
         <echo message="conf files to ${app.deploy.home}/WEB-INF/classes"/>
-        <sync todir="${app.deploy.home}/WEB-INF/classes">
+        <copy todir="${app.deploy.home}/WEB-INF/classes">
           <fileset dir="${jenkins.workspace.dir}/conf">
             <include name="**/*.*" />
           </fileset>
-        </sync>
+        </copy>
     	
         <!-- Compile source files -->
         <echo message="javac src to ${app.deploy.home}/WEB-INF/classes"/>
@@ -57,35 +57,35 @@
 
         <!-- resource files deploy -->
         <echo message="resource files to ${app.deploy.home}/resource"/>
-        <sync todir="${app.deploy.home}/resource">
+        <copy todir="${app.deploy.home}/resource">
           <fileset dir="${jenkins.workspace.dir}/WebContent/resource">
             <include name="**/*.*" />
           </fileset>
-        </sync>
+        </copy>
 
         <!-- jsp files deploy -->
         <echo message="jsp files to ${app.deploy.home}/WEB-INF/jsp"/>
-        <sync todir="${app.deploy.home}/WEB-INF/jsp">
+        <copy todir="${app.deploy.home}/WEB-INF/jsp">
           <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/jsp">
             <include name="**/*.*" />
           </fileset>
-        </sync>
+        </copy>
 
         <!-- library files deploy -->
         <echo message="library files to ${app.deploy.home}/WEB-INF/lib"/>
-        <sync todir="${app.deploy.home}/WEB-INF/lib">
+        <copy todir="${app.deploy.home}/WEB-INF/lib">
           <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/lib">
             <include name="**/*.*" />
           </fileset>
-        </sync>
+        </copy>
 
         <!-- tld files deploy -->
         <echo message="tld files to ${app.deploy.home}/WEB-INF/tld"/>
-        <sync todir="${app.deploy.home}/WEB-INF/tld">
+        <copy todir="${app.deploy.home}/WEB-INF/tld">
           <fileset dir="${jenkins.workspace.dir}/WebContent/WEB-INF/tld">
             <include name="**/*.*" />
           </fileset>
-        </sync>
+        </copy>
 
         <!-- web.xml, jboss-web.xml deploy -->
         <echo message="web.xml, jboss-web.xml to ${app.deploy.home}/WEB-INF"/>
