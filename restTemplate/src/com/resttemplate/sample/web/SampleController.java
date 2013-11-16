@@ -97,6 +97,7 @@ public class SampleController {
 		list.add(hashMap);
 		hashMap1.put("data", list);
 		map.put("url", con_url);
+		map.put("mode", System.getProperty("server.mode"));
 		map.put("list", hashMap1);
 		
 		return "sample/innerData";
