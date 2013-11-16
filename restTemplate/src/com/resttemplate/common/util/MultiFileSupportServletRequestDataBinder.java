@@ -13,7 +13,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -73,8 +72,7 @@ public class MultiFileSupportServletRequestDataBinder extends
 		// Extract multipart files and multipart parameters.
 		for (Iterator it = fileItems.iterator(); it.hasNext();) {
 			FileItem fileItem = (FileItem) it.next();
-			if (fileItem.isFormField()) {
-			} else {
+			if (!fileItem.isFormField()) {
 				// multipart file field
 				CommonsMultipartFile file = new CommonsMultipartFile(fileItem);
 //				if (multipartFiles.put(file.getName(), (List<MultipartFile>) file) != null) {
