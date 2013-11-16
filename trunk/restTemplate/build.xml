@@ -21,7 +21,7 @@
     </path>
 
     <!-- publish directory -->
-    <target name="publish" depends="test.tomcat.stop, test.tomcat.start, pmd">
+    <target name="publish" depends="test.tomcat.stop, test.tomcat.start">
     	
         <!-- Initial setting -->
         <delete dir="${app.deploy.home}/WEB-INF/classes" />
