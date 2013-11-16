@@ -124,7 +124,7 @@
 	<target name="pmd_4.3">
 	 <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
 	 <pmd shortFilenames="true">
-	  <sourceLanguage name="java" version="1.6"/>
+	  <!--<sourceLanguage name="java" version="1.6"/>-->
 	  <ruleset>rulesets/java/design.xml</ruleset>
 	  <ruleset>java-basic</ruleset>
 	  <formatter type="html" toFile="${jenkins.workspace.dir}/report/pmd/pmd_report.xml">
