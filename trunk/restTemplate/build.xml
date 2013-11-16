@@ -108,6 +108,7 @@
 	  <delete dir="${app.deploy.home}"/>
     </target>
     <!-- Code Convetion Analysis using PMD -->
+	<!--
     <target name="pmd">
         <echo message="Code Convention Analysis using PMD (JAVA basic ruleset applied)"/>
         <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
@@ -119,5 +120,20 @@
         </fileset>
         </pmd>
     </target>
-
+-->
+	<target name="pmd">
+        <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath">
+        <mkdir dir="./report/pmd">
+        <!-- 소스코드를 검사할 PMD 규칙이 설정된 파일 지정 -->
+        <pmd rulesetfiles="rulesets/favorites.xml">
+         
+            <!--  분석결과 파일 저장 위치 지정 -->
+            <ruleset>basic</ruleset>
+            <formatter type="xml" tofile="report/pmd/pmd_report.xml">
+            <fileset dir="src">
+                <include name="**/*.java">
+            </include></fileset>
+        </formatter></pmd>
+        </mkdir></taskdef>
+	</target>
 </project>
