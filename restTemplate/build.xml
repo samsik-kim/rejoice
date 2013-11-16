@@ -227,4 +227,22 @@ http://localhost:8080/manager/stop?path=%2FrestTemplate
 			</java>
 		</target>
 	
+	<target name="tomcat.start">
+		<java classname="org.apache.catalina.startup.Bootstrap" jvm="C:/Program Files/Java/jdk1.6.0_45/bin/java" fork="true" spawn="true">
+			<classpath>
+				<fileset dir="C:/Tomcat 7.0/bin">
+					<include name="bootstrap.jar" />
+				</fileset>
+			</classpath>
+			<arg value="start" />
+			<sysproperty key="catalina.home" value="C:/Tomcat 7.0" />
+			<sysproperty key="java.endorsed.dirs" value="C:/Tomcat 7.0/common/endorsed" />
+			<sysproperty key="java.util.logging.manager" value="org.apache.juli.ClassLoaderLogManager" />
+			<sysproperty key="java.util.logging.config.file" value="C:/Tomcat 7.0/conf/logging.properties" />
+			<sysproperty key="catalina.base" value="C:/Tomcat 7.0" />
+			<sysproperty key="java.io.tmpdir" value="C:/Tomcat 7.0/temp" />
+		</java>
+	</target>
+
+	
 </project>
