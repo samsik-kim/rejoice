@@ -107,11 +107,11 @@
 	  <jar jarfile="${was.dir}/webapps/restTemplate.war" basedir="${app.deploy.home}"/>
 	  <delete dir="${app.deploy.home}"/>
     </target>
-    <!-- Code Convetion Analysis using PMD 
+    <!-- Code Convetion Analysis using PMD -->
     <target name="pmd">
         <echo message="Code Convention Analysis using PMD (JAVA basic ruleset applied)"/>
         <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
-        <pmd shortFilenames="true">
+        <pmd>
         <ruleset>rulesets/java/basic.xml</ruleset>
         <formatter type="xml" toFile="${jenkins.workspace.dir}/report/pmd/pmd_report.xml"/>
         <fileset dir="${jenkins.workspace.dir}/src">
@@ -119,11 +119,9 @@
         </fileset>
         </pmd>
     </target>
-    -->
         <!-- 소스코드를 검사할 PMD 규칙이 설정된 파일 지정 -->
             <!--  분석결과 파일 저장 위치 지정 -->
-	<!--
--->
+<!--
 	<target name="pmd">
         <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath">
         <mkdir dir="${jenkins.workspace.dir}/report/pmd">
@@ -136,4 +134,5 @@
         </formatter></pmd>
         </mkdir></taskdef>
 	</target>
+-->
 </project>
