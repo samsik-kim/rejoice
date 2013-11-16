@@ -107,7 +107,7 @@
 
 	  <jar jarfile="${was.dir}/restTemplate.war" basedir="${app.deploy.home}"/>
 	  <delete dir="${app.deploy.home}"/>
-		<sleep minutes="2"/>
+		<sleep seconds="30"/>
     	<delete dir="${was.dir}/restTemplate.war"/>
     </target>
  
