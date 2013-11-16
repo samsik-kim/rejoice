@@ -4,6 +4,7 @@
 	<comment>설명</comment>
 	<entry key="key">value</entry>
 	<entry key="api.url">http://localhost/rejoice/123</entry>
+	<entry key="test">rejoice</entry>
 	<entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>
 	<entry key="jdbc.url">http://localhost:1521</entry>
 	<entry key="jdbc.username">test</entry>
