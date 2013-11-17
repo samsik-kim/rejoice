@@ -18,17 +18,6 @@ public class Message {
 	@XmlElement
 	private String name="kimgyeongbok";
 
-//	/**
-//	 * @comment :
-//	 * @date    : 2013. 10. 6.
-//	 * @author  : Rejoice
-//	 * @param name
-//	 */
-//	public Message(String name) {
-//		super();
-//		this.name = name;
-//	}
-
 	/**
 	 * @return the name
 	 */
