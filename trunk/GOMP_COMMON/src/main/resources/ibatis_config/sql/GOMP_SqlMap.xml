@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="GOMP">
+
+	<!-- 페이징 쿼리 탬플릿 -->
+	<sql id="GOMP.pagingStart">
+		SELECT * FROM (
+			SELECT ROWNUM AS RNUM, PT.* FROM (
+	</sql>
+
+	<sql id="GOMP.pagingTotalCount">
+		COUNT(*) OVER() AS TOTAL_COUNT,
+	</sql>
+
+	<sql id="GOMP.pagingEnd">
+			) PT WHERE ROWNUM &lt;= #page.endRow#
+		)
+		WHERE RNUM >= #page.startRow#
+	</sql>
+
+</sqlMap>

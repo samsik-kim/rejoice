@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DisplayDeploy">
+
+	<select id="DisplayDeploy.findRightVerifyReqVer" parameterClass="string" resultClass="string">
+		SELECT /* DisplayDeploy.findRightVerifyReqVer bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+			B.VERIFY_REQ_VER
+		FROM TBL_PD_CONTS A
+		INNER JOIN TBL_CT_CONTS B ON (A.CID = B.CID AND A.VERIFY_REQ_VER = B.VERIFY_REQ_VER)
+		WHERE A.AGRMNT_STAT = 'PD005002'
+		  AND B.AGRMNT_STAT = 'PD005002'
+		  AND A.CID = #cid#
+	</select>
+
+	<!-- count TBL_DP_PROD by cid -->
+	<select id="DisplayDeploy.checkDpProd" parameterClass="map" resultClass="string">
+		SELECT /* DisplayDeploy.checkDpProd bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */ 
+			PROD_ID 
+		FROM  TBL_DP_PROD
+		WHERE PROD_ID = #cid#
+		  AND ROWNUM &lt; 2
+	</select>
+	
+	<!-- Insert TBL_DP_PROD -->
+	<insert id="DisplayDeploy.insertDpProd" parameterClass="map">
+		INSERT /* DisplayDeploy.insertDpProd bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_PROD(
+			PROD_ID
+			, CID
+			, AID
+			, SVC_GRP_CD
+			, PROD_NM
+			, PROD_DESC
+			, PROD_DTL_DESC
+			, PROD_INTR_DESC
+			, PROD_USE_DESC
+			, PROD_AMT
+			, PROD_CHRG_CLS
+			, PROD_STAT_CD
+			, MBR_NO
+			, PROD_GRD_CD
+			, PLAT_CLS_CD
+			, DRM_YN
+			, DRM_SET_OPT
+			, DRM_SET_VAL
+			, PROD_GBN
+			, REG_ID
+			, REG_DT
+			, REG_TM
+			, UPD_ID
+			, UPD_DT
+			, UPD_TM
+			, CORP_PROD_NO
+			, EXPOSURE_DEV_NM)
+		SELECT 
+			B.PID
+			, B.CID
+			, B.AID
+			, 'DP000201'
+			, A.PROD_NM
+			, A.PROD_DESC_SMMR
+			, A.PROD_DESC_DTL
+			, NULL
+			, A.PROMOTION_URL
+			, A.PROD_PRC
+			, A.PAID_YN
+			, A.SALE_STAT
+			, A.INS_BY
+			, B.GAME_DELIB_GRD
+			, B.VM_TYPE
+			, B.DRM_YN
+			, B.DRM_SET_OPT
+			, B.DRM_SET_VAL
+			, A.PROD_GBN
+			, A.INS_BY
+			, LPAD(A.INS_DTTM, 8)
+			, SUBSTR(A.INS_DTTM, 9)
+			, A.UPD_BY
+			, LPAD(A.UPD_DTTM, 8)
+			, SUBSTR(A.UPD_DTTM, 9)
+			, A.CORP_PROD_NO
+			, A.EXPOSURE_DEV_NM
+		FROM TBL_PD_CONTS A
+		INNER JOIN TBL_CT_CONTS B ON (A.CID = B.CID AND B.VERIFY_REQ_VER = #verify_req_ver#)
+		WHERE A.CID = #cid#
+	</insert>
+	
+	<!-- UPDATE TBL_DP_PROD -->
+	<update id="DisplayDeploy.updateDpProd" parameterClass="map">
+		UPDATE /* DisplayDeploy.updateDpProd bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */  
+		TBL_DP_PROD X
+		SET (
+		 	CID
+			, AID
+			, SVC_GRP_CD
+			, PROD_NM
+			, PROD_DESC
+			, PROD_DTL_DESC
+			, PROD_INTR_DESC
+			, PROD_USE_DESC
+			, PROD_AMT
+			, PROD_CHRG_CLS
+			, PROD_STAT_CD
+			, MBR_NO
+			, PROD_GRD_CD
+			, PLAT_CLS_CD
+			, DRM_YN
+			, DRM_SET_OPT
+			, DRM_SET_VAL
+			, PROD_GBN
+			, UPD_ID
+			, UPD_DT
+			, UPD_TM
+			, CORP_PROD_NO
+			, EXPOSURE_DEV_NM
+		) = (
+		SELECT 
+			B.CID
+			, B.AID
+			, 'DP000201'
+			, A.PROD_NM
+			, A.PROD_DESC_SMMR
+			, A.PROD_DESC_DTL
+			, NULL
+			, A.PROMOTION_URL
+			, A.PROD_PRC
+			, A.PAID_YN
+			, A.SALE_STAT
+			, A.INS_BY
+			, B.GAME_DELIB_GRD
+			, B.VM_TYPE
+			, B.DRM_YN
+			, B.DRM_SET_OPT
+			, B.DRM_SET_VAL
+			, A.PROD_GBN
+			, A.UPD_BY
+			, LPAD(A.UPD_DTTM, 8)
+			, SUBSTR(A.UPD_DTTM, 9)
+			, A.CORP_PROD_NO
+			, A.EXPOSURE_DEV_NM
+		FROM TBL_PD_CONTS A
+		INNER JOIN TBL_CT_CONTS B ON (A.CID = B.CID AND B.VERIFY_REQ_VER = #verify_req_ver#)
+		WHERE A.CID = #cid#
+		)
+		WHERE X.PROD_ID = #cid#
+	</update>
+	
+	<delete id="DisplayDeploy.deleteDpCatProd" parameterClass="map">
+		DELETE /* DisplayDeploy.deleteDpCatProd bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */ 
+		FROM TBL_DP_CAT_PROD
+		WHERE PROD_ID = #cid#
+	</delete>
+	
+	<insert id="DisplayDeploy.insertDpCatProd" parameterClass="map">
+		INSERT /* DisplayDeploy.insertDpCatProd bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */  
+		INTO TBL_DP_CAT_PROD(
+			DP_CAT_NO
+			, PROD_ID
+			, DP_YN
+			, DP_ORDER
+			, REG_ID
+			, REG_DT
+			, REG_TM
+			, UPD_ID
+			, UPD_DT
+			, UPD_TM)
+		SELECT 
+			CTGR_CD
+			, CID
+			, CASE (SELECT SALE_STAT FROM TBL_PD_CONTS WHERE CID=#cid#) WHEN 'PD000404' THEN 'Y' ELSE 'N' END
+			, 0
+			, INS_BY
+			, LPAD(INS_DTTM, 8)
+			, SUBSTR(INS_DTTM, 9)
+			, UPD_BY
+			, LPAD(UPD_DTTM, 8)
+			, SUBSTR(UPD_DTTM, 9)
+		FROM TBL_PD_TARGET_CTG
+		WHERE CID = #cid#
+	</insert>
+	
+	<delete id="DisplayDeploy.deleteDpTagInfo" parameterClass="map">
+		DELETE /* DisplayDeploy.deleteDpTagInfo bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		FROM TBL_DP_TAG_INFO
+		WHERE PROD_ID = #cid#
+	</delete>
+	
+	<insert id="DisplayDeploy.insertDpTagInfo" parameterClass="map">
+		INSERT /* DisplayDeploy.insertDpTagInfo bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_TAG_INFO(
+			PROD_ID
+			, TAG_INFO_SEQ
+			, TAG_NM
+			, REG_ID
+			, REG_DT
+			, UPD_ID
+			, UPD_DT)
+		SELECT 
+			CID
+			, TAG_INFO_SEQ
+			, TAG_NM
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY
+			, UPD_DTTM
+		FROM TBL_TAG_INFO
+		WHERE CID = #cid#
+	</insert>
+	
+	<delete id="DisplayDeploy.deleteDpProdImg" parameterClass="map">
+		DELETE /* DisplayDeploy.deleteDpProdImg bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		FROM TBL_DP_PROD_IMG
+		WHERE PROD_ID = #cid#
+	</delete>
+	
+	<insert id="DisplayDeploy.insertDpProdImg" parameterClass="map">
+		INSERT /* DisplayDeploy.insertDpProdImg bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_PROD_IMG(
+			PROD_ID
+			, IMG_CLS
+			, FILE_POS
+			, FILE_NM
+			, FILE_SIZE
+			, INS_BY
+			, INS_DTS
+			, UPD_BY
+			, UPD_DTS)
+		SELECT 
+			CID
+			, IMG_GBN
+			, FILE_POS
+			, FILE_NM
+			, FILE_SIZE
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY
+			, UPD_DTTM
+		FROM TBL_PD_CONTS_IMG
+		WHERE CID = #cid#
+	</insert>
+	
+	
+	<delete id="DisplayDeploy.deleteDpSprtHp" parameterClass="map">
+		DELETE /* DisplayDeploy.deleteDpSprtHp bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		FROM TBL_DP_SPRT_HP
+		WHERE PROD_ID = #cid#
+	</delete>
+	
+	<delete id="DisplayDeploy.deleteDpSubConts" parameterClass="map">
+		DELETE /* DisplayDeploy.deleteDpSubConts bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		FROM TBL_DP_SUB_CONTS
+		WHERE PROD_ID = #cid#
+	</delete>
+
+	<insert id="DisplayDeploy.insertDpSubConts" parameterClass="map">
+		INSERT /* DisplayDeploy.insertDpSubConts bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_SUB_CONTS(SUB_CONTS_ID
+			, PROD_ID
+			, VM_VER_MIN
+			, VM_VER_MAX
+			, VM_TARGET
+			, PKG_NM
+			, FILE_NM
+			, FILE_POS
+			, FILE_SIZE
+			, VER_CD
+			, VER_NM
+			, REG_ID
+			, REG_DT
+			, UPD_ID
+			, UPD_DT)
+		SELECT SCID
+			, CID
+			, VM_VER_MIN
+			, VM_VER_MAX
+			, VM_VER_TARGET
+			, PKG_NM
+			, RUN_FILE_NM
+			, RUN_FILE_POS
+			, RUN_FILE_SIZE
+			, VERSION_CODE
+			, VERSION_NAME
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY
+			, UPD_DTTM
+		FROM TBL_CT_SUB_CONTS
+		WHERE CID = #cid#
+		  AND VERIFY_REQ_VER = #verify_req_ver# 
+	</insert>
+	
+	<insert id="DisplayDeploy.insertDpSprtHp" parameterClass="map">
+		INSERT /* DisplayDeploy.insertDpSprtHp bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_SPRT_HP(
+			SUB_CONTS_ID
+			, PHONE_MODEL_CD
+			, PROD_ID)
+		SELECT SCID
+			, PHONE_MODEL_CD
+			, #cid#
+		FROM TBL_CT_SPRT_PHONE
+		WHERE SCID IN (SELECT SCID FROM TBL_CT_SUB_CONTS WHERE CID = #cid#)
+		  AND VERIFY_REQ_VER = #verify_req_ver#
+	</insert>
+	
+	<select id="DisplayDeploy.selectPdUpdApplyDivisionCd" parameterClass="map" resultClass="string">
+		SELECT /* DisplayDeploy.selectPdUpdApplyDivisionCd bcpark 2011.05.16 : DisplayDeploy_SqlMap.xml */
+			UPD_APPLY_DIVISION_CD
+		FROM TBL_PD_CONTS
+		WHERE CID = #cid#
+	</select>
+	
+	<update id="DisplayDeploy.updateAppUpdate" parameterClass="map">
+		UPDATE /* DisplayDeploy.updateAppUpdate bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		TBL_DP_APP_UPDATE SET 
+			PROD_UPD_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		WHERE PROD_ID = #cid#
+	</update>
+	
+	<update id="DisplayDeploy.updatePdUpdApplyDivisionCd" parameterClass="map" >
+		UPDATE /* DisplayDeploy.updatePdUpdApplyDivisionCd bcpark 2011.05.16 : DisplayDeploy_SqlMap.xml */
+		TBL_PD_CONTS SET
+			UPD_APPLY_DIVISION_CD = #upd_apply_division_cd#
+		WHERE CID = #cid#
+	</update>
+	
+	
+	<select id="DisplayDeploy.checkProdPrchs" parameterClass="map" resultClass="string">
+		SELECT /* DisplayDeploy.checkProdPrchs bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+			PROD_ID 
+		FROM TBL_DP_PROD_PRCHS
+		WHERE PROD_ID = #cid#
+		  AND ROWNUM &lt; 2
+	</select>
+	
+	<insert id="DisplayDeploy.insertProdPrchs" parameterClass="map">
+		INSERT /* DisplayDeploy.insertProdPrchs bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_PROD_PRCHS(
+			PROD_ID
+			, PRCHS_CNT
+			, REG_DT
+		)VALUES(
+			#cid#
+			, 0
+			, TO_CHAR(SYSDATE, 'YYYYMMDD')
+		)
+	</insert>
+	
+	<select id="DisplayDeploy.checkProdDwld" parameterClass="map" resultClass="string">
+		SELECT /* DisplayDeploy.checkProdDwld bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+			PROD_ID 
+		FROM TBL_DP_PROD_DWLD
+		WHERE PROD_ID = #cid#
+		  AND ROWNUM &lt; 2
+	</select>
+	
+	<insert id="DisplayDeploy.insertProdDwld" parameterClass="map">
+		INSERT /* DisplayDeploy.insertProdDwld bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_PROD_DWLD(
+			PROD_ID
+			, DWLD_CNT
+			, REG_DT
+		)VALUES(
+			#cid#
+			, 0
+			, TO_CHAR(SYSDATE, 'YYYYMMDD')
+		)
+	</insert>
+	
+	<select id="DisplayDeploy.checkProdAvg" parameterClass="map" resultClass="string">
+		SELECT /* DisplayDeploy.checkProdAvg bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+			PROD_ID 
+		FROM TBL_DP_PROD_AVG
+		WHERE PROD_ID = #cid#
+		  AND ROWNUM &lt; 2
+	</select>
+	
+	<insert id="DisplayDeploy.insertProdAvg" parameterClass="map">
+		INSERT /* DisplayDeploy.insertProdAvg bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_PROD_AVG(
+			PROD_ID
+			, AVG_SCORE
+			, TOT_AVG_SCORE
+			, PART_CNT
+		)VALUES(
+			#cid#
+			, 0.00
+			, 0
+			, 0
+		)
+	</insert>
+	
+	<!-- =================== 정산율 관리 테이블 ==================-->
+	<!-- 
+		상품 최초 전시 될 때 정산율 관리 테이블에 기본 정산율 값을 넣는다.
+		앞단 Business 로직의 변경에 영향을 받지 않고, DP FULL 배포시  무조건 체크함.
+	 -->
+	<select id="DisplayDeploy.checkProdSettl" parameterClass="map" resultClass="string">
+		SELECT /* DisplayDeploy.checkProdSettl bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+			PROD_ID 
+		FROM TBL_PROD_SETTL
+		WHERE PROD_ID = #cid#
+		  AND ROWNUM &lt; 2
+	</select>
+	
+	<insert id="DisplayDeploy.insertProdSettl" parameterClass="map">
+		INSERT /* DisplayDeploy.insertProdSettl bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_PROD_SETTL(
+			PROD_ID
+			, EFF_STRT_DT
+			, SETTL_RT
+			, EFF_END_DT
+			, REG_ID
+			, REG_DT, MBR_NO
+		)
+		SELECT 
+			CID
+			, to_char(SYSDATE,'YYYYMMDD' )
+			, ADJ_RATE
+			, '99991231'
+			, 'admin'
+			, to_char(SYSDATE, 'YYYYMMDDHH24MISS')
+			, DEV_USER_ID
+		FROM TBL_PD_CONTS
+		WHERE CID = #cid#
+	</insert>
+	
+	<!-- =================== DP NEW FREE ==================-->
+	<!-- 
+		상품 최초 전시 될 때 DP NEW FREE에 신규상품 정보를 넣는다.
+		앞단 Business 로직의 변경에 영향을 받지 않고, DP FULL 배포시  무조건 체크함.
+	 -->
+	<select id="DisplayDeploy.checkNewfree" parameterClass="map" resultClass="string">
+		SELECT /* DisplayDeploy.checkNewfree bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+			DP_CAT_NO 
+		FROM TBL_DP_NEWFREE
+		WHERE PROD_ID = #cid#
+		  AND DP_CAT_NO != 'DP01'
+		  AND ROWNUM &lt; 2
+	</select>
+	<insert id="DisplayDeploy.insertNewfree" parameterClass="map">
+		INSERT /* DisplayDeploy.insertNewfree bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_NEWFREE(
+			PROD_ID
+			, DP_CAT_NO
+			, PAY_YN
+			, EXPO_YN
+			, EXPO_PRIOR
+			, REG_ID
+			, REG_DT
+			, UPD_ID
+			, UPD_DT
+		)
+		SELECT 
+			A.PROD_ID
+			, B.DP_CAT_NO
+			, A.PROD_CHRG_CLS
+			, 'Y'
+			, 99999
+			, 'admin'
+			, to_char(SYSDATE, 'YYYYMMDDHH24MISS')
+			, 'admin'
+			, to_char(SYSDATE, 'YYYYMMDDHH24MISS')
+		FROM TBL_DP_PROD A
+		INNER JOIN TBL_DP_CAT_PROD B ON (A.PROD_ID = B.PROD_ID)
+		WHERE A.PROD_ID = #cid#
+	</insert>
+	<!-- 업데이트 할 경우는 FULL 배포인 경우에만 upd_dt를 업데이트한다. -->
+	<update id="DisplayDeploy.updateNewfree" parameterClass="map">
+		UPDATE /* DisplayDeploy.updateNewfree bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		TBL_DP_NEWFREE X SET (
+			DP_CAT_NO
+			, PAY_YN
+			<dynamic>
+				<isEqual property="isMainConts"  compareValue="false" prepend=" , ">UPD_DT</isEqual>
+			</dynamic>
+		) = (
+			SELECT B.DP_CAT_NO
+				, A.PROD_CHRG_CLS
+				<dynamic>
+					<isEqual property="isMainConts"  compareValue="false" prepend=" , ">to_char(SYSDATE, 'YYYYMMDDHH24MISS')</isEqual>
+				</dynamic>
+			FROM TBL_DP_PROD A
+			INNER JOIN TBL_DP_CAT_PROD B ON (A.PROD_ID = B.PROD_ID)
+			WHERE A.PROD_ID = #cid#
+		)
+		WHERE X.PROD_ID = #cid#
+		  AND DP_CAT_NO = #beforeCategory#
+	</update>
+	
+	<select id="DisplayDeploy.checkNewfreeMain" parameterClass="map" resultClass="string">
+		SELECT /* DisplayDeploy.checkNewfreeMain bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+			DP_CAT_NO 
+		FROM TBL_DP_NEWFREE
+		WHERE PROD_ID = #cid#
+		  AND DP_CAT_NO = 'DP01'
+		  AND ROWNUM &lt; 2
+	</select>
+	<insert id="DisplayDeploy.insertNewfreeMain" parameterClass="map">
+		INSERT /* DisplayDeploy.insertNewfreeMain bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		INTO TBL_DP_NEWFREE(
+			PROD_ID
+			, DP_CAT_NO
+			, PAY_YN
+			, EXPO_YN
+			, EXPO_PRIOR
+			, REG_ID
+			, REG_DT
+			, UPD_ID
+			, UPD_DT
+		)
+		SELECT 
+			A.PROD_ID
+			, 'DP01'
+			, A.PROD_CHRG_CLS
+			, 'Y'
+			, 99999
+			, 'admin'
+			, to_char(SYSDATE, 'YYYYMMDDHH24MISS')
+			, 'admin'
+			, to_char(SYSDATE, 'YYYYMMDDHH24MISS')
+		FROM TBL_DP_PROD A
+		WHERE A.PROD_ID = #cid#
+	</insert>
+	<!-- 업데이트 할 경우는 FULL 배포인 경우에만 upd_dt를 업데이트한다. -->
+	<update id="DisplayDeploy.updateNewfreeMain" parameterClass="map">
+		UPDATE /* DisplayDeploy.updateNewfreeMain bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		TBL_DP_NEWFREE X SET (
+			PAY_YN
+			<dynamic>
+				<isEqual property="isMainConts"  compareValue="false" prepend=" , ">UPD_DT</isEqual>
+			</dynamic>
+		) = (
+			SELECT A.PROD_CHRG_CLS
+				<dynamic>
+					<isEqual property="isMainConts"  compareValue="false" prepend=" , ">to_char(SYSDATE, 'YYYYMMDDHH24MISS')</isEqual>
+				</dynamic>
+			FROM TBL_DP_PROD A
+			WHERE A.PROD_ID = #cid#
+		)
+		WHERE X.PROD_ID = #cid#
+		  AND DP_CAT_NO = #beforeCategory#
+	</update>
+	
+	<!-- =================== 판매상태 변경 ==================-->
+	<!-- 
+		어드민POC 및 개발자POC에서 상품의 상태를 판매중 -> 판매중지, 판매중 -> 판매금지, 
+		판매중지(판매금지) -> 판매중 으로 변경시 DP의 상품 상태를 같이 변경해준다.
+	 -->
+	<update id="DisplayDeploy.updateDpProdSaleStat" parameterClass="map">
+		UPDATE /* DisplayDeploy.updateDpProdSaleStat bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		TBL_DP_PROD SET 
+			PROD_STAT_CD = #saleStat#
+		WHERE PROD_ID = #cid# 
+	</update>
+	<update id="DisplayDeploy.updateDpCatProdDpYn" parameterClass="map">
+		UPDATE /* DisplayDeploy.updateDpCatProdDpYn bcpark 2011.05.11 : DisplayDeploy_SqlMap.xml */
+		TBL_DP_CAT_PROD SET 
+			DP_YN = #dpYn#
+		WHERE PROD_ID = #cid#
+	</update>
+	
+	
+</sqlMap>

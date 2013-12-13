@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ARMManager">
+
+	<select id="ARMManager.getContentBaseInfo" resultClass="com.omp.commons.product.model.arm.ARMContent">
+		SELECT
+			/* ARMManager.getContentBaseInfo jhsong 2011.05.11 : ARMManager_SqlMap.xml */   
+			CID cid
+			, PID pid
+			, AID appid
+			, PROD_NM appname
+			, VERIFY_REQ_VER appversion
+			, DRM_YN drmYn
+			, DRM_SET_OPT drmSetOpt
+			, DRM_SET_VAL drmSetVal
+			, SALE_STAT status
+			, DEV_USER_ID userid
+		FROM 
+			TBL_PD_CONTS
+		WHERE CID = #cid#	
+	</select>
+
+
+	<select id="ARMManager.getOtaDeveloperPhoneList" resultClass="com.omp.commons.product.model.arm.ARMDevice">
+		SELECT
+			/* ARMManager.getOtaDeveloperPhoneList jhsong 2011.05.11 : ARMManager_SqlMap.xml */   
+			REPLACE(UPPER(MAC_ADDR), ':', '') macAddr
+		FROM
+			TBL_US_OTA_PHONE
+		WHERE 
+			MBR_NO = #mbrNo#		
+	</select>
+	
+	<select id="ARMManager.getOtaTesterPhoneList" resultClass="com.omp.commons.product.model.arm.ARMDevice">
+ 		SELECT
+ 			/* ARMManager.getOtaTesterPhoneList jhsong 2011.05.11 : ARMManager_SqlMap.xml */   
+			DISTINCT(REPLACE(UPPER(MAC_ADDR), ':', '')) gdid
+		FROM
+			TBL_AD_OTA_PHONE
+		WHERE MAC_ADDR = #macAddr#	
+    </select>        
+         
+</sqlMap>
+

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Communicate">
+
+	<typeAlias alias="CommonEmailModel" type="com.omp.commons.communicate.mail.impl.CommonEmailModel"/>
+	<typeAlias alias="CommonSmsModel" type="com.omp.commons.communicate.sms.impl.CommonSmsModel"/>
+
+
+	<insert id="Communicate.insertRequestMainSend"
+		parameterClass="CommonEmailModel">
+		<selectKey type="post" resultClass="java.lang.Long">
+			select seq_comm_email.currval from dual
+		</selectKey>
+		/* Communicate.insertRequestMainSend kbeui 2011.05.11 : Communicate_SqlMap.xml */
+		insert into
+		       tbl_comm_email
+		       ( mail_id
+		       , template_id
+		       , ref_app_id
+		       , ref_data_id
+		       , status
+		       , to_addr
+		       , to_name
+		       , from_addr
+		       , from_name
+		       , return_addr
+		       , subject
+		       , content_data
+		<isNotNull property="attachement">		       
+		       , attachement
+		       , attache_file_name
+		</isNotNull>
+		<isNotEmpty property="reserveDttm">
+		       , reserve_dttm
+		</isNotEmpty>
+		       , send_dttm
+		       , send_result
+		       , reg_dttm
+		       , reg_id
+		       , upd_dttm
+		       , upd_id)
+		values
+		       ( seq_comm_email.nextval
+		       , #templateId#
+		       , #refAppId#
+		       , #refDataId#
+		       , 'requested'
+		       , #toAddr#
+		       , #toName#
+		       , #fromAddr#
+		       , #fromName#
+		       , #returnAddr#
+		       , #subject#
+		       , #contentDataExpr#
+		<isNotNull property="attachement">		       
+		       , #attachement.absolutePath#
+		       , #attacheFileName#
+		</isNotNull>
+		<isNotEmpty property="reserveDttm">
+		       , #reserveDttm#
+		</isNotEmpty>		       
+		       , #sendDttm#
+		       , #sendResult#
+		       , to_char(sysdate, 'yyyymmddhh24miss')
+		       , #updId#
+		       , to_char(sysdate, 'yyyymmddhh24miss')
+		       , #updId#)	
+	</insert>
+
+	<insert id="Communicate.insertRequestSmsSend"
+		parameterClass="CommonSmsModel">
+		<selectKey type="post" resultClass="java.lang.Long">
+			select seq_comm_sms.currval from dual
+		</selectKey>
+		/* Communicate.insertRequestSmsSend kbeui 2011.05.11 : Communicate_SqlMap.xml */
+		insert into
+		       tbl_comm_sms
+		       ( sms_id
+		       , ref_app_id
+		       , ref_data_id
+		       , status
+		       , to_no
+		       , from_no
+		       , message
+		<isNotEmpty property="reserveDttm">
+		       , reserve_dttm
+		</isNotEmpty>
+		       , send_dttm
+		       , send_result
+		       , reg_dttm
+		       , reg_id
+		       , upd_dttm
+		       , upd_id)
+		values
+		       ( seq_comm_sms.nextval
+		       , #refAppId#
+		       , #refDataId#
+		       , 'requested'
+		       , #toNo#
+		       , #fromNo#
+		       , #message#
+		<isNotEmpty property="reserveDttm">
+		       , #reserveDttm#
+		</isNotEmpty>
+		       , #sendDttm#
+		       , #sendResult#
+		       , to_char(sysdate, 'yyyymmddhh24miss')
+		       , #updId#
+		       , to_char(sysdate, 'yyyymmddhh24miss')
+		       , #updId#)
+	</insert>
+         
+</sqlMap>
+

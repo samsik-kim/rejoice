@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="iMath library archive builder" default="all" basedir="." >
+	
+	<target name="all" depends="javadoc">
+	</target>
+	
+	<target name="javadoc">
+		<javadoc2 sourcepath="src/main/java" destdir="doc" charset="UTF-8" encoding="UTF-8">
+		</javadoc2>
+	</target>
+	
+</project>
