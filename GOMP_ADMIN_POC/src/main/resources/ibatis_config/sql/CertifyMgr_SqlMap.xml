@@ -1,0 +1,1194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="certifyMgr">
+
+	<typeAlias alias="SearchResultCertifyAppList" type="com.omp.admin.certify.model.SearchResultCertifyAppList" />
+	
+	<typeAlias alias="SearchConditionCertifyApp" type="com.omp.admin.certify.model.SearchConditionCertifyApp" />
+	
+	<typeAlias alias="CertifyAppInfomation" type="com.omp.admin.certify.model.CertifyAppInfomation" />
+	
+	<typeAlias alias="SearchConditionCertifyAppDetail" type="com.omp.admin.certify.model.SearchConditionCertifyAppDetail" />
+	
+	<typeAlias alias="CerfifyTargetTestCase" type="com.omp.admin.certify.model.CerfifyTargetTestCase" />
+	
+	<typeAlias alias="CertifyAppSubInfomation" type="com.omp.admin.certify.model.CertifyAppSubInfomation" />
+	
+	<typeAlias alias="CertifySupportPhone" type="com.omp.admin.certify.model.CertifySupportPhone" />
+	
+	<typeAlias alias="CertifyReportAddFile" type="com.omp.admin.certify.model.CertifyReportAddFile" />
+	
+	<typeAlias alias="CertifyTestCase" type="com.omp.admin.certify.model.CertifyTestCase" />
+	
+	<typeAlias alias="SearchConPhoneInfo" type="com.omp.admin.certify.model.SearchConPhoneInfo" />
+	
+	<typeAlias alias="SearchResultPhoneInfoList" type="com.omp.admin.certify.model.SearchResultPhoneInfoList" />
+	
+	<typeAlias alias="CertifyAppHistoryList" type="com.omp.admin.certify.model.CertifyAppHistoryList" />
+	
+	<typeAlias alias="SearchConditionCertifyTesterApp" type="com.omp.admin.certify.model.SearchConditionCertifyTesterApp" />
+	
+	<typeAlias alias="SearchConditionCertifyAppHistory" type="com.omp.admin.certify.model.SearchConditionCertifyAppHistory" />
+	
+	<typeAlias alias="SearchResultCertifyTestAppList" type="com.omp.admin.certify.model.SearchResultCertifyTestAppList" />
+	
+	<typeAlias alias="CertifyAppSubContsKeyList" type="com.omp.admin.certify.model.CertifyAppSubContsKeyList" />
+	
+	<typeAlias alias="CertifyAppSimpleInfomation" type="com.omp.admin.certify.model.CertifyAppSimpleInfomation" />
+	
+	<typeAlias alias="CerfifyTestCategory" type="com.omp.admin.certify.model.CerfifyTestCategory" />
+	
+	<typeAlias alias="SaveTestStatus" type="com.omp.admin.certify.model.SaveTestStatus" />
+	
+	<typeAlias alias="CertifyCompletedInfo" type="com.omp.admin.certify.model.CertifyCompletedInfo" />
+	
+	<typeAlias alias="CertifyAppSubSimpleInfomation" type="com.omp.admin.certify.model.CertifyAppSubSimpleInfomation" />
+	
+	<typeAlias alias="AdMgr" type="com.omp.admin.adminmgr.auth.model.AdMgr" />
+	
+	<typeAlias alias="ContentMailModel" type="com.omp.commons.model.ContentMailModel"/>
+	
+	
+	
+	<resultMap id="resultMap-selectCertifyAppInfomationView" class="CertifyAppInfomation" groupBy="cid">
+		<result property="cid" column="cid" nullValue=""/>
+		<result property="verifyReqVer" column="verify_req_ver" nullValue=""/>
+		<result property="aid" column="aid" nullValue=""/>
+		<result property="verifyPrgrYn" column="verify_prgr_yn" nullValue=""/>
+		<result property="testerCtStat" column="tester_ct_stat" nullValue=""/>
+		<result property="ctEndDt" column="ct_end_dt" nullValue=""/>
+		<result property="testEndDt" column="test_end_dt" nullValue=""/>
+		<result property="prodNm" column="prod_nm" nullValue=""/>
+		<result property="gameDelibGrd" column="game_delib_grd" nullValue=""/>
+		<result property="verifyScnrFile" column="verify_scnr_file" nullValue=""/>
+		<result property="verifyScnrFileNm" column="verify_scnr_file_nm" nullValue=""/>
+		<result property="verifyCommentCd" column="verify_comment_cd" nullValue=""/>
+		<result property="verifyEtcCmt" column="verify_etc_cmt" nullValue=""/>
+		<result property="testerNm" column="tester_nm" nullValue=""/>
+		<result property="ctAssignDt" column="ct_assign_dt" nullValue=""/>
+		<result property="ctEndExDt" column="ct_end_ex_dt" nullValue=""/>
+		<result property="testMemo" column="test_memo" nullValue=""/>
+		<result property="testRejectCmt" column="test_reject_cmt" nullValue=""/>
+		<result property="directPassYn" column="direct_pass_yn" nullValue="N"/>
+		<result property="insBy" column="ins_by" nullValue=""/>
+		<result property="insDttm" column="ins_dttm" nullValue=""/>
+		<result property="updBy" column="upd_by" nullValue=""/>
+		<result property="updDttm" column="upd_dttm" nullValue=""/>
+		<result property="agrmntStat" column="agrmnt_stat" nullValue=""/>
+		<result property="vmType" column="vm_type" nullValue=""/>
+		<result property="drmYn" column="drm_yn" nullValue="N"/>
+		<result property="drmSetOpt" column="drm_set_opt" nullValue=""/>
+		<result property="drmSetVal" column="drm_set_val" nullValue=""/>
+		<result property="drmSetVal" column="drm_set_val" nullValue=""/>
+		<result property="reCertifyReqYn" column="re_certify_req_yn" nullValue=""/>
+		<result property="signOption" column="sign_option" nullValue=""/>
+		<result property="mbrGrCd" column="mbr_gr_cd" nullValue=""/>
+		<result property="mbrId" column="mbr_id" nullValue=""/>
+		<result property="testCaseList" resultMap="certifyMgr.resultMap-selectCertifyAppInfomationView-Group-By-Cid"/>
+	</resultMap>
+	
+	<resultMap id="resultMap-selectCertifyAppInfomationView-Group-By-Cid" class="CerfifyTargetTestCase">
+		<result property="testCaseTitleNm" column="test_case_title_nm" nullValue=""/>
+		<result property="ctCtgSeq" column="ct_ctg_seq" nullValue=""/>
+	</resultMap>
+
+
+	<resultMap id="resultMap-selectCertifyAppSubInfomationView" class="CertifyAppSubInfomation" groupBy="scid">
+		<result property="scid" column="scid" nullValue=""/>
+		<result property="verifyReqVer" column="verify_req_ver" nullValue=""/>
+		<result property="cid" column="cid" nullValue=""/>
+		<result property="agrmntStat" column="agrmnt_stat" nullValue=""/>
+		<result property="vmVerMin" column="vm_ver_min" nullValue=""/>
+		<result property="vmVerMax" column="vm_ver_max" nullValue=""/>
+		<result property="vmVerTarget" column="vm_ver_target" nullValue=""/>
+		<result property="pkgNm" column="pkg_nm" nullValue=""/>
+		<result property="versionCode" column="version_code" nullValue=""/>
+		<result property="versionName" column="version_name" nullValue=""/>
+		<result property="runFilePos" column="run_file_pos" nullValue=""/>
+		<result property="runFileNm" column="run_file_nm" nullValue=""/>
+		<result property="runFileSize" column="run_file_size" nullValue=""/>
+		<result property="appCtResultFile" column="app_ct_result_file" nullValue=""/>
+		<result property="appCtResultFileNm" column="app_ct_result_file_nm" nullValue=""/>
+		<result property="appCtCmt" column="app_ct_cmt" nullValue=""/>
+		<result property="testerCtStat" column="tester_ct_stat" nullValue=""/>
+		<result property="vmType" column="vm_type" nullValue=""/>
+		<result property="verifyPrgrYn" column="verify_prgr_yn" nullValue=""/>
+		<result property="supportPhoneList" resultMap="certifyMgr.resultMap-selectCertifyAppSubInfomationView-Group-By-Scid"/>
+	</resultMap>
+
+
+	<resultMap id="resultMap-selectCertifyAppSubInfomationView-Group-By-Scid" class="CertifySupportPhone">
+		<result property="sprtPhoneSeq" column="sprt_phone_seq" nullValue=""/>
+		<result property="scid" column="scid" nullValue=""/>
+		<result property="verifyReqVer" column="verify_req_ver" nullValue=""/>
+		<result property="phoneModelCd" column="phone_model_cd" nullValue=""/>
+		<result property="mgmtPhoneModelNm" column="mgmt_phone_model_nm" nullValue=""/>
+		<result property="modelNm" column="model_nm" nullValue=""/>
+		<result property="vmVer" column="vm_ver" nullValue=""/>
+		<result property="lcdSize" column="lcd_size" nullValue=""/>
+		<result property="targetYn" column="target_yn" nullValue=""/>
+	</resultMap>
+	
+	<resultMap id="resultMap-selectCertifyHistoryAppInfomationView" class="CertifyAppSimpleInfomation" groupBy="cid">
+		<result property="cid" column="cid" nullValue=""/>
+		<result property="verifyReqVer" column="verify_req_ver" nullValue=""/>
+		<result property="agrmntStat" column="agrmnt_stat" nullValue=""/>
+		<result property="testerNm" column="tester_nm" nullValue=""/>
+		<result property="testCaseList" resultMap="certifyMgr.resultMap-selectCertifyHistoryAppInfomationView-Group-By-Cid"/>
+	</resultMap>	
+	
+	<resultMap id="resultMap-selectCertifyHistoryAppInfomationView-Group-By-Cid" class="CerfifyTargetTestCase">
+		<result property="testCaseTitleNm" column="test_case_title_nm" nullValue=""/>
+	</resultMap>
+
+    <!--
+         Certifiaction Application List
+     -->
+    <select id="certifyMgr.selectCertifyAppPagingList" parameterClass="SearchConditionCertifyApp" resultClass="SearchResultCertifyAppList">
+        <include refid="GOMP.pagingStart"/>
+		SELECT /* certifyMgr.selectCertifyAppPagingList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */ 
+		       <include refid="GOMP.pagingTotalCount"/>
+               ct_conts.cid AS "cid"
+              ,ct_conts.aid AS "aid"
+		      ,ct_conts.vm_type AS "vmType"
+		      ,ct_conts.prod_nm AS "prodNm"
+		      ,ct_conts.ins_dttm AS "insDttm"
+		      ,ct_conts.verify_req_ver AS "verifyReqVer"
+		      ,ct_conts.verify_prgr_yn AS "verifyPrgrYn"
+		      ,ct_conts.ct_assign_dt AS "ctAssignDt"
+		      ,ct_conts.ct_end_ex_dt AS "ctEndExDt"
+              ,(SELECT ad_mgr.mgr_nm FROM tbl_ad_mgr ad_mgr WHERE ad_mgr.mgr_id = ct_conts.tester_id) AS "testerNm"
+              ,ct_conts.ct_end_dt AS "ctEndDt"
+		  FROM tbl_ct_conts ct_conts
+		WHERE 1=1
+		  <isNotEmpty property="makeComp">
+		  	<isNotEmpty property="modelNm">
+			  	AND EXISTS (
+			  	             SELECT 1
+			  	               FROM tbl_phone_info phone_info
+			  	                   ,tbl_ct_sprt_phone ct_sprt_phone
+			  	                   ,tbl_ct_sub_conts ct_sub_conts
+			  	              WHERE 1=1
+			  	                AND phone_info.model_nm = #modelNm#
+			  	                AND phone_info.phone_model_cd = ct_sprt_phone.phone_model_cd
+			  	                AND ct_sub_conts.scid = ct_sprt_phone.scid
+			  	                AND ct_sub_conts.verify_req_ver = ct_sprt_phone.verify_req_ver
+			  	                AND ct_sub_conts.cid = ct_conts.cid
+			  	                AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver
+			  	           )		  	
+		  	</isNotEmpty>
+		  	<isEmpty property="modelNm">
+			  	AND EXISTS (
+			  	             SELECT 1
+			  	               FROM tbl_phone_info phone_info
+			  	                   ,tbl_ct_sprt_phone ct_sprt_phone
+			  	                   ,tbl_ct_sub_conts ct_sub_conts
+			  	              WHERE 1=1
+			  	                AND phone_info.make_comp = #makeComp#
+			  	                AND phone_info.phone_model_cd = ct_sprt_phone.phone_model_cd
+			  	                AND ct_sub_conts.scid = ct_sprt_phone.scid
+			  	                AND ct_sub_conts.verify_req_ver = ct_sprt_phone.verify_req_ver
+			  	                AND ct_sub_conts.cid = ct_conts.cid
+			  	                AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver
+			  	           )		  	
+		  	</isEmpty>		  	
+		  </isNotEmpty>
+		  <isNotEmpty property="vmType">
+		  	AND ct_conts.vm_type = #vmType#
+		  </isNotEmpty>
+		  <isNotEmpty property="certifyPrgrYnAll">
+		  	<isEqual property="certifyPrgrYnAll" compareValue="ALL">
+		  		AND ct_conts.verify_prgr_yn IN ('PD005301', 'PD005302', 'PD005303', 'PD005304', 'PD005305')
+		  	</isEqual>
+		  </isNotEmpty>
+		  <isEmpty property="certifyPrgrYnAll">
+			  <isNotEmpty property="certifyPrgrYnArrayList">
+				   <iterate prepend="AND ct_conts.verify_prgr_yn IN " property="certifyPrgrYnArrayList" open="(" close=")" conjunction=",">
+					   #certifyPrgrYnArrayList[]#
+				   </iterate>  		  
+			  </isNotEmpty>
+		  </isEmpty>
+	  		AND (ct_conts.ins_dttm BETWEEN #certifyRequestDtFrom# || '000000' AND #certifyRequestDtTo# || '235959'
+	  		OR ct_conts.ct_assign_dt BETWEEN #ctAssignDtFrom# AND #ctAssignDtTo#
+	  		OR ct_conts.ct_end_dt BETWEEN #ctEndDtFrom# AND #ctEndDtTo#)
+		  <isNotEmpty property="searchType">
+		  	<isEqual property="searchType" compareValue="testerId">
+		  		<isNotEmpty property="searchValue">
+		  		AND ct_conts.tester_id LIKE '%' || #searchValue# || '%'
+		  		</isNotEmpty>
+		  	</isEqual>	
+		  	<isEqual property="searchType" compareValue="prodNm">
+		  		<isNotEmpty property="searchValue">
+		  		AND ct_conts.prod_nm LIKE '%' || #searchValue# || '%'
+		  		</isNotEmpty>
+		  	</isEqual>	
+		  	<isEqual property="searchType" compareValue="devId">
+		  		<isNotEmpty property="searchValue">
+		  		AND ct_conts.ins_by LIKE '%' || #searchValue# || '%'
+		  		</isNotEmpty>
+		  	</isEqual>	
+		  	<isEqual property="searchType" compareValue="aid">
+		  		<isNotEmpty property="searchValue">
+		  		AND ct_conts.aid LIKE '%' || #searchValue# || '%'
+		  		</isNotEmpty>
+		  	</isEqual>			  			  			  		  	
+		  </isNotEmpty>		  
+		  ORDER BY ct_conts.cid DESC, ct_conts.verify_req_ver DESC
+        <include refid="GOMP.pagingEnd"/>
+    </select> 
+
+
+    <!--
+		Certification Application Sub Contents Key List
+     -->
+    <select id="certifyMgr.selectCertifySubContsKeyList" parameterClass="SearchConditionCertifyAppDetail" resultClass="CertifyAppSubContsKeyList">
+    	SELECT /* certifyMgr.selectCertifySubContsKeyList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       COUNT(ct_sub_conts.scid) OVER() AS "totalCount"
+    	      ,ct_sub_conts.cid AS "cid"
+    	      ,ct_sub_conts.scid AS "scid"
+    	      ,ct_sub_conts.verify_req_ver AS "verifyReqVer"
+    	  FROM tbl_ct_conts ct_conts
+    	      ,tbl_ct_sub_conts ct_sub_conts
+    	 WHERE 1=1
+    	   AND ct_sub_conts.cid = ct_conts.cid
+    	   AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver
+    	   AND ct_sub_conts.cid = #cid#
+    	   AND ct_sub_conts.verify_req_ver = #verifyReqVer#
+    </select>
+
+
+    <!--
+		Certification Application Infomation View
+     -->
+    <select id="certifyMgr.selectCertifyAppInfomationView" parameterClass="SearchConditionCertifyAppDetail" resultMap="resultMap-selectCertifyAppInfomationView">
+    	SELECT /* certifyMgr.selectCertifyAppInfomationView jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	         ct_conts.cid
+    	        ,ct_conts.verify_req_ver
+				,ct_conts.aid
+				,ct_conts.verify_prgr_yn
+				,ct_conts.tester_ct_stat
+				,ct_conts.ct_end_dt
+				,ct_conts.test_end_dt
+				,ct_conts.prod_nm
+				,ct_conts.game_delib_grd
+				,ct_conts.verify_scnr_file
+				,ct_conts.verify_scnr_file_nm
+				,ct_conts.verify_comment_cd
+				,ct_conts.verify_etc_cmt
+				,(SELECT ad_mgr.mgr_nm FROM tbl_ad_mgr ad_mgr WHERE ad_mgr.mgr_id = ct_conts.tester_id) AS tester_nm
+				,ct_conts.ct_assign_dt
+				,ct_conts.ct_end_ex_dt
+				,ct_conts.test_memo
+				,ct_conts.test_reject_cmt
+				,ct_conts.direct_pass_yn
+				,ct_conts.ins_by
+				,ct_conts.ins_dttm
+				,ct_conts.upd_by
+				,ct_conts.upd_dttm
+				,ct_conts.agrmnt_stat
+				,ct_conts.vm_type
+				,ct_conts.drm_yn
+				,ct_conts.drm_set_opt
+				,ct_conts.drm_set_val 
+				,(SELECT pd_conts.sign_option FROM tbl_pd_conts pd_conts WHERE pd_conts.cid = ct_conts.cid) AS sign_option
+				,(SELECT us_member.mbr_gr_cd FROM tbl_us_member us_member WHERE us_member.mbr_no = ct_conts.ins_by) AS mbr_gr_cd
+				,(SELECT us_member.mbr_id FROM tbl_us_member us_member WHERE us_member.mbr_no = ct_conts.ins_by)AS mbr_id  
+				,(SELECT 'Y'
+				    FROM tbl_ct_conts x
+				   WHERE 1=1
+				     AND x.cid = ct_conts.cid
+				     AND x.verify_req_ver &lt; ct_conts.verify_req_ver
+				     AND x.agrmnt_stat IN ('PD005002', 'PD005003')
+				     AND ROWNUM = 1
+				  ) AS re_certify_req_yn
+				,ct_target_test_ctg.ct_ctg_seq
+    	        ,(SELECT ct_ctg.title_nm
+    	            FROM tbl_ct_ctg ct_ctg
+    	           WHERE 1=1
+    	             AND ct_ctg.ct_ctg_seq = ct_target_test_ctg.ct_ctg_seq
+    	          ) AS test_case_title_nm
+    	  FROM tbl_ct_conts ct_conts
+    	      ,(
+    	          SELECT ct_target_test_ctg.cid, ct_target_test_ctg.verify_req_ver, ct_test_case.ct_ctg_seq
+    	            FROM tbl_ct_target_test_ctg ct_target_test_ctg
+    	                ,tbl_ct_test_case ct_test_case
+    	           WHERE 1=1
+    	             AND ct_target_test_ctg.test_case_seq = ct_test_case.test_case_seq
+    	             AND ct_target_test_ctg.cid = #cid#
+    	             AND ct_target_test_ctg.verify_req_ver = #verifyReqVer#
+    	        GROUP BY ct_target_test_ctg.cid, ct_target_test_ctg.verify_req_ver, ct_test_case.ct_ctg_seq
+    	        ) ct_target_test_ctg
+    	 WHERE 1=1
+    	   AND ct_conts.cid = ct_target_test_ctg.cid(+)
+    	   AND ct_conts.verify_req_ver = ct_target_test_ctg.verify_req_ver(+)
+    	   AND ct_conts.cid = #cid#
+    	   AND ct_conts.verify_req_ver = #verifyReqVer#
+    </select>
+    
+    <!-- 
+    	Select Certification Application DIRECT_PASS_YN Y or null
+     -->
+     <select id="certifyMgr.selectCertifyAppDirectPassYN" parameterClass="SearchConditionCertifyAppDetail" resultClass="java.lang.String">
+		SELECT /* certifyMgr.selectCertifyAppDirectPassYN jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+			   DIRECT_PASS_YN 
+		  FROM TBL_CT_CONTS 
+		 WHERE CID = #cid# 
+		   AND VERIFY_REQ_VER = #verifyReqVer#     	
+     </select>
+    
+    <!--
+		Certification Application Sub Infomation View
+     -->
+    <select id="certifyMgr.selectCertifyAppSubInfomationView" parameterClass="SearchConditionCertifyAppDetail" resultMap="resultMap-selectCertifyAppSubInfomationView">
+    	SELECT /* certifyMgr.selectCertifyAppSubInfomationView jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+				 ct_sub_conts.scid
+				,ct_sub_conts.verify_req_ver
+				,ct_sub_conts.cid
+				,ct_sub_conts.agrmnt_stat
+				,ct_sub_conts.vm_ver_min
+				,ct_sub_conts.vm_ver_max
+				,ct_sub_conts.vm_ver_target
+				,ct_sub_conts.pkg_nm
+				,ct_sub_conts.version_code
+				,ct_sub_conts.version_name
+				,ct_sub_conts.run_file_pos
+				,ct_sub_conts.run_file_nm
+				,ct_sub_conts.run_file_size
+				,ct_sub_conts.app_ct_result_file
+				,ct_sub_conts.app_ct_result_file_nm
+				,ct_sub_conts.app_ct_cmt
+				,ct_sub_conts.ins_by
+				,phone_info.phone_model_cd
+				,phone_info.mgmt_phone_model_nm
+				,phone_info.model_nm
+				,phone_info.vm_ver
+				,phone_info.lcd_size
+				,ct_sprt_phone.sprt_phone_seq
+				,ct_sprt_phone.target_yn
+				,ct_conts.tester_ct_stat
+				,ct_conts.vm_type
+				,ct_conts.verify_prgr_yn
+    	  FROM tbl_ct_conts ct_conts
+    	      ,tbl_ct_sub_conts ct_sub_conts
+    	      ,tbl_ct_sprt_phone ct_sprt_phone
+    	      ,tbl_phone_info phone_info
+    	 WHERE 1=1
+    	   AND ct_sub_conts.cid = ct_conts.cid 
+    	   AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver
+    	   AND ct_sub_conts.scid = ct_sprt_phone.scid
+    	   AND ct_sub_conts.verify_req_ver = ct_sprt_phone.verify_req_ver
+    	   AND ct_sprt_phone.phone_model_cd = phone_info.phone_model_cd
+    	   AND ct_sub_conts.cid = #cid#
+    	   AND ct_sub_conts.scid = #scid#
+    	   AND ct_sub_conts.verify_req_ver = #verifyReqVer#
+    	   <isEmpty property="directPassFlag">
+    	   	AND ct_sprt_phone.target_yn = 'Y'
+    	   </isEmpty>
+      ORDER BY phone_info.lcd_size ASC, phone_info.mgmt_phone_model_nm ASC, phone_info.phone_model_cd ASC, phone_info.vm_ver ASC
+    </select>    
+    
+    
+    <!--
+		Certification Application Sub Infomation List
+     -->
+    <select id="certifyMgr.selectCertifyAppSubInfomationList" parameterClass="SearchConditionCertifyAppDetail" resultMap="resultMap-selectCertifyAppSubInfomationView">
+    	SELECT /* certifyMgr.selectCertifyAppSubInfomationList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+				 ct_sub_conts.scid
+				,ct_sub_conts.verify_req_ver
+				,ct_sub_conts.cid
+				,ct_sub_conts.agrmnt_stat
+				,ct_sub_conts.vm_ver_min
+				,ct_sub_conts.vm_ver_max
+				,ct_sub_conts.vm_ver_target
+				,ct_sub_conts.pkg_nm
+				,ct_sub_conts.version_code
+				,ct_sub_conts.version_name
+				,ct_sub_conts.run_file_pos
+				,ct_sub_conts.run_file_nm
+				,ct_sub_conts.run_file_size
+				,ct_sub_conts.app_ct_result_file
+				,ct_sub_conts.app_ct_result_file_nm
+				,ct_sub_conts.app_ct_cmt
+				,ct_sub_conts.ins_by
+				,phone_info.phone_model_cd
+				,phone_info.mgmt_phone_model_nm
+				,phone_info.model_nm
+				,phone_info.vm_ver
+				,phone_info.lcd_size
+				,ct_sprt_phone.sprt_phone_seq
+				,ct_sprt_phone.target_yn
+				,ct_conts.tester_ct_stat
+				,ct_conts.vm_type
+				,ct_conts.verify_prgr_yn
+    	  FROM tbl_ct_conts ct_conts
+    	      ,tbl_ct_sub_conts ct_sub_conts
+    	      ,tbl_ct_sprt_phone ct_sprt_phone
+    	      ,tbl_phone_info phone_info
+    	 WHERE 1=1
+    	   AND ct_sub_conts.cid = ct_conts.cid 
+    	   AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver
+    	   AND ct_sub_conts.scid = ct_sprt_phone.scid
+    	   AND ct_sub_conts.verify_req_ver = ct_sprt_phone.verify_req_ver
+    	   AND ct_sprt_phone.phone_model_cd = phone_info.phone_model_cd
+    	   AND ct_sub_conts.cid = #cid#
+    	   AND ct_sub_conts.verify_req_ver = #verifyReqVer#
+      ORDER BY ct_sub_conts.scid ASC, phone_info.lcd_size ASC, phone_info.mgmt_phone_model_nm ASC, phone_info.vm_ver ASC
+    </select>       
+    
+    
+    <!--
+		Certification Report Add File Infomation List
+     -->
+    <select id="certifyMgr.selectCertifyRefortAddFileInfomationList" parameterClass="SearchConditionCertifyAppDetail" resultClass="CertifyReportAddFile">
+    	SELECT /* certifyMgr.selectCertifyRefortAddFileInfomationList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+				 ct_add_file.scid AS "scid"
+				,ct_add_file.verify_req_ver AS "verifyReqVer"
+				,ct_add_file.add_file_seq AS "addFileSeq"
+				,ct_add_file.add_file AS "addFile"
+				,ct_add_file.add_file_nm AS "addFileNm"
+    	  FROM tbl_ct_conts ct_conts
+    	      ,tbl_ct_sub_conts ct_sub_conts
+    	      ,tbl_ct_add_file ct_add_file
+    	 WHERE 1=1
+    	   AND ct_sub_conts.cid = ct_conts.cid 
+    	   AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver
+    	   AND ct_add_file.scid = ct_sub_conts.scid
+    	   AND ct_add_file.verify_req_ver = ct_sub_conts.verify_req_ver
+    	   AND ct_add_file.scid = #scid#
+    	   AND ct_add_file.verify_req_ver = #verifyReqVer#
+      ORDER BY ct_add_file.add_file_seq ASC
+    </select>
+    
+    
+    <!--
+		Certification Tester List
+     -->
+    <select id="certifyMgr.selectCertifyTesterList" resultClass="AdMgr">
+    	SELECT /* certifyMgr.selectCertifyTesterList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+			   ad_mgr.mgr_id AS "mgrId"
+			  ,ad_mgr.mgr_nm AS "mgrNm"
+    	  FROM tbl_ad_mgr ad_mgr
+    	 WHERE 1=1
+    	   AND ad_mgr.auth_gbn = 'AD000103'
+      ORDER BY ad_mgr.mgr_nm ASC
+    </select>    
+    
+    <!--
+		Certification Tester Assign Info Update
+     -->
+    <update id="certifyMgr.updateTesterAssign" parameterClass="CertifyAppInfomation">
+    	UPDATE /* certifyMgr.updateTesterAssign jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_ct_conts
+    	   SET tester_id = #testerId#
+    	      ,ct_end_ex_dt = #ctEndExDt#
+    	      ,test_memo = #testMemo#
+    	      ,verify_prgr_yn = 'PD005302'
+    	      ,tester_ct_stat = 'PD010901'
+    	      ,ct_assign_dt = TO_CHAR(SYSDATE, 'YYYYMMDD')
+    	      ,upd_by = #updBy#
+    	      ,upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND cid = #cid#
+    	   AND verify_req_ver = #verifyReqVer#
+    	   AND verify_prgr_yn = 'PD005301'
+    	   AND agrmnt_stat = 'PD005001'
+    	   AND tester_ct_stat IS NULL
+    </update>   
+    
+    <!--
+		Certification Product Contents Info Update By Tester Assign
+     -->
+    <update id="certifyMgr.updateCertifyIng" parameterClass="CertifyAppInfomation">
+    	UPDATE /* certifyMgr.updateCertifyIng jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_pd_conts pd_conts
+    	   SET pd_conts.verify_prgr_yn = 'PD005302'
+    	      ,pd_conts.upd_by = #updBy#
+    	      ,pd_conts.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND pd_conts.cid = #cid#
+    	   AND pd_conts.verify_prgr_yn = 'PD005301'
+    	   AND EXISTS (
+    	                SELECT 1
+    	                  FROM tbl_ct_conts ct_conts
+    	                 WHERE 1=1
+    	                   AND ct_conts.cid = pd_conts.cid
+    	                   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	                   AND ct_conts.verify_prgr_yn = 'PD005302'
+    	                   AND ct_conts.tester_ct_stat = 'PD010901'
+    	              )
+    </update>        
+
+    <!--
+		Certification Test Case List
+     -->
+    <select id="certifyMgr.selectCertifyTestCaseInfomationList" parameterClass="SearchConditionCertifyAppDetail" resultClass="CertifyTestCase">
+    	SELECT /* certifyMgr.selectCertifyTestCaseInfomationList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+				 ct_test_case.vm_type AS "vmType"
+				,ct_test_case.ct_ctg_seq AS "ctCtgSeq"
+				,ct_ctg.title_nm AS "titleNm"
+    	  FROM tbl_ct_test_case ct_test_case
+    	      ,tbl_ct_ctg ct_ctg
+    	 WHERE 1=1
+    	   AND ct_test_case.ct_ctg_seq = ct_ctg.ct_ctg_seq 
+    	   AND ct_test_case.use_yn = 'Y'
+    	   AND ct_ctg.use_yn = 'Y'
+    	   AND EXISTS (
+    	                 SELECT 1
+    	                   FROM tbl_ct_conts ct_conts
+    	                  WHERE 1=1
+    	                    AND ct_conts.cid = #cid#
+    	                    AND ct_conts.verify_req_ver = #verifyReqVer#
+    	                    AND ct_conts.vm_type = ct_test_case.vm_type
+    	              )
+      GROUP BY ct_test_case.vm_type, ct_test_case.ct_ctg_seq, ct_ctg.title_nm   	              
+    </select>             
+    
+    <!--
+		Certification Target Phone Update
+     -->    
+    <update id="certifyMgr.updateCertifyTargetPhone" parameterClass="CertifySupportPhone">
+    	UPDATE /* certifyMgr.updateCertifyTargetPhone jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_ct_sprt_phone ct_sprt_phone
+    	   SET ct_sprt_phone.target_yn = #targetYn#
+    	      ,upd_by = #updBy#
+    	      ,upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND ct_sprt_phone.scid = #scid#
+    	   AND ct_sprt_phone.verify_req_ver = #verifyReqVer#
+    	   AND ct_sprt_phone.sprt_phone_seq = #sprtPhoneSeq#
+    	   AND EXISTS (
+    	               SELECT 1
+    	                 FROM tbl_ct_conts ct_conts
+    	                     ,tbl_ct_sub_conts ct_sub_conts
+    	                WHERE 1=1
+    	                  AND ct_conts.cid = ct_sub_conts.cid
+    	                  AND ct_conts.verify_req_ver = ct_sub_conts.verify_req_ver
+    	                  AND ct_sub_conts.scid = ct_sprt_phone.scid
+    	                  AND ct_sub_conts.verify_req_ver = ct_sprt_phone.verify_req_ver
+    	                  AND ct_conts.verify_prgr_yn = 'PD005301'
+    	                  AND ct_conts.agrmnt_stat = 'PD005001'
+    	                  AND ct_sub_conts.agrmnt_stat = 'PD005001'
+    	             )
+    </update>
+    
+    <!--
+		Certification Target Test Case Insert
+     -->       
+    <insert id="certifyMgr.insertCertifyTargetTestCtg" parameterClass="CerfifyTestCategory">
+    	INSERT INTO /* certifyMgr.insertCertifyTargetTestCtg jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */ 
+    	tbl_ct_target_test_ctg
+    	(
+			 cid    	
+			,verify_req_ver
+			,target_test_ctg_seq
+			,test_case_seq
+			,ins_by
+			,ins_dttm
+    	)
+    	SELECT #cid#
+    	      ,#verifyReqVer#
+    	      ,ROWNUM
+    	      ,ct_test_case.test_case_seq
+    		  ,#insBy#
+    		  ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')    	      
+    	  FROM tbl_ct_test_case ct_test_case
+    	      ,tbl_ct_ctg ct_ctg
+    	 WHERE 1=1
+    	   AND ct_test_case.ct_ctg_seq = ct_ctg.ct_ctg_seq 
+    	   AND ct_test_case.use_yn = 'Y'
+    	   AND ct_ctg.use_yn = 'Y'
+		   <iterate prepend="AND ct_ctg.ct_ctg_seq IN " property="ctCtgSeqList" open="(" close=")" conjunction=",">
+			   #ctCtgSeqList[]#
+		   </iterate>  		      	   
+    	   AND EXISTS (
+    	                 SELECT 1
+    	                   FROM tbl_ct_conts ct_conts
+    	                  WHERE 1=1
+    	                    AND ct_conts.cid = #cid#
+    	                    AND ct_conts.verify_req_ver = #verifyReqVer#
+    	                    AND ct_conts.vm_type = ct_test_case.vm_type
+    	              )
+    </insert>
+    
+    
+    <!--
+		Certification Sub Contents Result Report
+     -->
+    <update id="certifyMgr.updateCertifySubContentsResultReport" parameterClass="CertifyAppSubInfomation">
+    	UPDATE /* certifyMgr.updateCertifySubContentsResultReport jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */ 
+    	   tbl_ct_sub_conts ct_sub_conts
+    	   SET ct_sub_conts.app_ct_result_file = #appCtResultFile#
+    	      ,ct_sub_conts.app_ct_result_file_nm = #appCtResultFileNm#
+    	      ,ct_sub_conts.app_ct_cmt = #appCtCmt#
+    	      ,ct_sub_conts.upd_by = #updBy#
+    	      ,ct_sub_conts.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	      ,ct_sub_conts.agrmnt_stat = #agrmntStat#
+    	 WHERE 1=1
+    	   AND ct_sub_conts.scid = #scid#
+    	   AND ct_sub_conts.verify_req_ver = #verifyReqVer#
+    	   AND EXISTS (
+    	                 SELECT 1
+    	                   FROM tbl_ct_conts ct_conts
+    	                  WHERE 1=1
+    	                    AND ct_conts.cid = ct_sub_conts.cid
+    	                    AND ct_conts.verify_req_ver = ct_sub_conts.verify_req_ver 
+    	                    AND ct_conts.agrmnt_stat = 'PD005001'
+    	                    AND ct_conts.tester_ct_stat = 'PD010902' 
+    	               )
+    </update>       
+    
+    <!--
+		Certification Result Etc Report Delete
+     -->    
+    <delete id="certifyMgr.deleteCertifySubContentsResultEtcReport" parameterClass="CertifyReportAddFile">
+    	DELETE /* certifyMgr.deleteCertifySubContentsResultEtcReport jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	  FROM tbl_ct_add_file
+    	 WHERE 1=1
+    	   AND scid = #scid# 
+    	   AND verify_req_ver = #verifyReqVer# 
+    </delete>    
+    
+    
+    <!--
+		Certification Result Etc Report Delete
+     -->    
+    <insert id="certifyMgr.insertCertifySubContentsResultEtcReport" parameterClass="CertifyReportAddFile">
+    	INSERT INTO /* certifyMgr.insertCertifySubContentsResultEtcReport jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */ 
+    	tbl_ct_add_file
+    	(
+			 scid
+			,verify_req_ver
+			,add_file_seq
+			,add_file
+			,add_file_nm
+			,ins_by
+			,ins_dttm
+			,upd_by
+			,upd_dttm
+    	)
+    	VALUES
+    	(
+			 #scid#
+			,#verifyReqVer#
+			,(SELECT NVL(MAX(add_file_seq),0) + 1 FROM tbl_ct_add_file WHERE scid = #scid# AND verify_req_ver = #verifyReqVer#)
+			,#addFile#
+			,#addFileNm#
+			,#insBy#
+			,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+			,#insBy#
+			,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')    	
+    	)
+    </insert>      
+
+
+    <!--
+         Certifiaction Tester List
+     -->
+    <select id="certifyMgr.selectCertifyTestPagingList" parameterClass="SearchConditionCertifyTesterApp" resultClass="SearchResultCertifyTestAppList">
+        <include refid="GOMP.pagingStart"/>
+		SELECT /* certifyMgr.selectCertifyTestPagingList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */ 
+		       <include refid="GOMP.pagingTotalCount"/>
+               ct_conts.cid AS "cid"
+              ,ct_conts.aid AS "aid"
+		      ,ct_conts.vm_type AS "vmType"
+		      ,ct_conts.prod_nm AS "prodNm"
+		      ,ct_conts.verify_req_ver AS "verifyReqVer"
+		      ,ct_conts.tester_ct_stat AS "testerCtStat"
+		      ,ct_conts.ct_assign_dt AS "ctAssignDt"
+		      ,ct_conts.ct_end_ex_dt AS "ctEndExDt"
+		  FROM tbl_ct_conts ct_conts
+		WHERE 1=1
+		  AND ct_conts.tester_id = #loginId#
+		  AND ct_conts.verify_prgr_yn IN ('PD005301', 'PD005302', 'PD005305')
+		  AND ct_conts.agrmnt_stat = 'PD005001'
+          AND ct_conts.tester_ct_stat IN ('PD010901', 'PD010902', 'PD010904')		
+		  <isNotEmpty property="vmType">
+		  	AND ct_conts.vm_type = #vmType#
+		  </isNotEmpty>
+		  	AND (ct_conts.ct_assign_dt BETWEEN #ctAssignDtFrom# AND #ctAssignDtTo#
+		  	    OR ct_conts.ct_end_ex_dt BETWEEN #ctEndExDtFrom# AND #ctEndExDtTo#)
+		  <isNotEmpty property="searchType">
+		  	<isEqual property="searchType" compareValue="prodNm">
+		  		<isNotEmpty property="searchValue">
+		  		AND ct_conts.prod_nm LIKE '%' || #searchValue# || '%'
+		  		</isNotEmpty>
+		  	</isEqual>	
+		  </isNotEmpty>		  
+		  ORDER BY ct_conts.cid DESC, ct_conts.verify_req_ver DESC
+        <include refid="GOMP.pagingEnd"/>
+    </select> 
+
+
+    <!--
+         Certifiaction Test Case List
+     -->
+    <select id="certifyMgr.selectCertifyTestCaseList" parameterClass="CerfifyTargetTestCase" resultClass="CertifyTestCase">
+    	SELECT /* certifyMgr.selectCertifyTestCaseList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       ROWNUM AS "seqNo"
+    	      ,ct_test_case.vm_type AS "vmType"
+    	      ,ct_test_case.title_nm AS "titleNm"
+    	      ,ct_test_case.explain AS "explain"
+    	      ,ct_test_case.step_file AS "stepFile"
+    	      ,ct_test_case.step_file_nm AS "stepFileNm"
+    	  FROM tbl_ct_target_test_ctg ct_target_test_ctg
+    	      ,tbl_ct_test_case ct_test_case
+    	 WHERE 1=1
+    	   AND ct_target_test_ctg.test_case_seq = ct_test_case.test_case_seq
+    	   AND ct_target_test_ctg.cid = #cid#
+    	   AND ct_target_test_ctg.verify_req_ver = #verifyReqVer#
+    	   AND ct_test_case.ct_ctg_seq = #ctCtgSeq#
+    	   AND ct_test_case.use_yn = 'Y'
+      ORDER BY ct_test_case.test_case_seq
+    </select>
+    
+    
+    <!--
+         Certifiaction Application History List
+     -->
+    <select id="certifyMgr.selectCertifyHistoryAppPagingList" parameterClass="SearchConditionCertifyAppHistory" resultClass="CertifyAppHistoryList">
+    	<include refid="GOMP.pagingStart"/>    
+    	SELECT /* certifyMgr.selectCertifyHistoryAppPagingList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    			<include refid="GOMP.pagingTotalCount"/>     	
+				 ct_conts.cid AS "cid"
+				,ct_conts.verify_req_ver AS "verifyReqVer"
+				,ct_conts.agrmnt_stat AS "agrmntStat"			
+				,ct_conts.ct_end_dt AS "ctEndDt"
+				,ct_conts.verify_prgr_yn AS "verifyPrgrYn"
+    	  FROM tbl_ct_conts ct_conts
+    	 WHERE 1=1
+    	   AND ct_conts.cid = #cid#
+    	   AND ct_conts.verify_prgr_yn IN ('PD005301', 'PD005302', 'PD005303', 'PD005304', 'PD005305')
+    	 ORDER BY ct_conts.verify_req_ver DESC
+      	<include refid="GOMP.pagingEnd"/>    	   
+    </select>    
+    
+    
+    <!--
+         Certifiaction Application History Binary List
+     -->
+    <select id="certifyMgr.selectCertifyHistoryAppBinaryList" resultClass="CertifyAppSubSimpleInfomation">
+    	SELECT /* certifyMgr.selectCertifyHistoryAppBinaryList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+				 ct_conts.cid AS "cid"
+				,ct_sub_conts.scid AS "scid"
+				,ct_sub_conts.run_file_nm AS "runFileNm"
+				,ct_sub_conts.run_file_pos AS "runFilePos"
+				,ct_sub_conts.run_file_size AS "runFileSize"
+    	  FROM tbl_ct_conts ct_conts
+    	      ,tbl_ct_sub_conts ct_sub_conts
+    	 WHERE 1=1
+    	   AND ct_conts.cid = ct_sub_conts.cid
+    	   AND ct_conts.verify_req_ver = ct_sub_conts.verify_req_ver
+    	   AND ct_conts.verify_prgr_yn IN ('PD005301', 'PD005302', 'PD005303', 'PD005304', 'PD005305')
+    	   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	   AND ct_conts.cid = #cid#
+    </select>       
+    
+    
+    <!--
+		Certification Application History View
+     -->
+    <select id="certifyMgr.selectCertifyHistoryAppInfomationView" parameterClass="SearchConditionCertifyAppDetail" resultMap="resultMap-selectCertifyHistoryAppInfomationView">
+    	SELECT /* certifyMgr.selectCertifyHistoryAppInfomationView jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	         ct_conts.cid
+    	        ,ct_conts.verify_req_ver
+				,ct_conts.agrmnt_stat
+				,(SELECT ad_mgr.mgr_nm FROM tbl_ad_mgr ad_mgr WHERE ad_mgr.mgr_id = ct_conts.tester_id) AS tester_nm
+		        ,(SELECT ct_ctg.title_nm
+    	            FROM tbl_ct_ctg ct_ctg
+    	           WHERE 1=1
+    	             AND ct_ctg.ct_ctg_seq = ct_target_test_ctg.ct_ctg_seq
+    	          ) AS test_case_title_nm
+    	  FROM tbl_ct_conts ct_conts
+    	      ,(
+    	          SELECT ct_target_test_ctg.cid, ct_target_test_ctg.verify_req_ver, ct_test_case.ct_ctg_seq
+    	            FROM tbl_ct_target_test_ctg ct_target_test_ctg
+    	                ,tbl_ct_test_case ct_test_case
+    	           WHERE 1=1
+    	             AND ct_target_test_ctg.test_case_seq = ct_test_case.test_case_seq
+    	             AND ct_target_test_ctg.cid = #cid#
+    	             AND ct_target_test_ctg.verify_req_ver = #verifyReqVer#
+    	        GROUP BY ct_target_test_ctg.cid, ct_target_test_ctg.verify_req_ver, ct_test_case.ct_ctg_seq
+    	        ) ct_target_test_ctg
+    	 WHERE 1=1
+    	   AND ct_conts.cid = ct_target_test_ctg.cid(+)
+    	   AND ct_conts.verify_req_ver = ct_target_test_ctg.verify_req_ver(+)
+    	   AND ct_conts.cid = #cid#
+    	   AND ct_conts.verify_req_ver = #verifyReqVer#
+    </select>
+    
+    
+    
+    <!--
+         Certifiaction Target Phone History List
+     -->
+    <select id="certifyMgr.selectCertifyHistoryTargetPhoneList" parameterClass="SearchConditionCertifyAppDetail" resultClass="CertifySupportPhone">
+    	SELECT /* certifyMgr.selectCertifyHistoryTargetPhoneList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+				 phone_info.phone_model_cd AS "phoneModelCd"
+				,phone_info.mgmt_phone_model_nm AS "mgmtPhoneModelNm"
+				,phone_info.model_nm AS "modelNm"
+				,phone_info.vm_ver AS "vmVer"
+				,phone_info.lcd_size AS "lcdSize"
+				,ct_sprt_phone.target_yn AS "targetYn"
+    	  FROM tbl_ct_conts ct_conts
+    	      ,tbl_ct_sub_conts ct_sub_conts
+    	      ,tbl_ct_sprt_phone ct_sprt_phone
+    	      ,tbl_phone_info phone_info
+    	 WHERE 1=1
+    	   AND ct_sub_conts.cid = ct_conts.cid 
+    	   AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver
+    	   AND ct_sub_conts.scid = ct_sprt_phone.scid
+    	   AND ct_sub_conts.verify_req_ver = ct_sprt_phone.verify_req_ver
+    	   AND ct_sprt_phone.phone_model_cd = phone_info.phone_model_cd
+    	   AND ct_sub_conts.cid = #cid#
+    	   AND ct_sub_conts.verify_req_ver = #verifyReqVer#
+      ORDER BY ct_sprt_phone.target_yn DESC, phone_info.lcd_size ASC, phone_info.mgmt_phone_model_nm ASC, phone_info.vm_ver ASC
+    </select>
+    
+    
+    <!--
+         Phone List
+     -->
+    <select id="certifyMgr.selectPhoneList" parameterClass="SearchConPhoneInfo" resultClass="SearchResultPhoneInfoList">
+    	SELECT /* certifyMgr.selectPhoneList jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+			   phone_info.model_nm AS "modelNm"
+    	  FROM tbl_phone_info phone_info
+    	 WHERE 1=1
+    	   AND phone_info.make_comp = #makeComp#
+    	   AND phone_info.svc_cd = 'US005203'
+    	   AND phone_info.del_yn = 'N'
+      GROUP BY phone_info.model_nm
+    </select>    
+    
+    
+    
+    <!--
+		Certification Test Ing Update
+     -->
+    <update id="certifyMgr.updateTestIng" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateTestIng jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_ct_conts
+    	   SET tester_ct_stat = 'PD010902'
+    	      ,upd_by = #updBy#
+    	      ,upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND cid = #cid#
+    	   AND verify_req_ver = #verifyReqVer#
+    	   AND verify_prgr_yn IN ('PD005302', 'PD005305')
+    	   AND tester_ct_stat IN ('PD010901', 'PD010904')
+    	   AND agrmnt_stat = 'PD005001'
+    </update>      
+    
+    
+    <!--
+         Test End Check
+     -->
+    <select id="certifyMgr.selectTestEndCheck" parameterClass="SaveTestStatus" resultClass="String">
+    	SELECT /* certifyMgr.selectTestEndCheck jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+			   'Y'
+    	  FROM tbl_ct_conts ct_conts
+    	 WHERE 1=1
+    	   AND ct_conts.cid = #cid#
+    	   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	   AND ct_conts.verify_prgr_yn IN ('PD005302', 'PD005305')
+    	   AND ct_conts.tester_ct_stat = 'PD010902'
+    	   AND ct_conts.agrmnt_stat = 'PD005001'
+    	   AND NOT EXISTS (
+    	                SELECT 1
+    	                  FROM tbl_ct_sub_conts ct_sub_conts
+    	                 WHERE 1=1
+    	                   AND ct_sub_conts.cid = ct_conts.cid
+    	                   AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver
+    	                   AND ct_sub_conts.agrmnt_stat = 'PD005001'
+    	                   )
+    </select>     
+    
+    <!--
+		Certification Test End Update
+     -->
+    <update id="certifyMgr.updateTestEnd" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateTestEnd jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_ct_conts ct_conts
+    	   SET ct_conts.verify_prgr_yn = 'PD005304'
+    	      ,ct_conts.tester_ct_stat = 'PD010903'
+    	      ,ct_conts.test_end_dt = TO_CHAR(SYSDATE, 'YYYYMMDD')
+    	      ,ct_conts.upd_by = #updBy#
+    	      ,ct_conts.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND ct_conts.cid = #cid#
+    	   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	   AND ct_conts.verify_prgr_yn IN ('PD005302', 'PD005305')
+    	   AND ct_conts.tester_ct_stat = 'PD010902'
+    	   AND ct_conts.agrmnt_stat = 'PD005001'
+    	   AND NOT EXISTS (
+    	                SELECT 1
+    	                  FROM tbl_ct_sub_conts ct_sub_conts
+    	                 WHERE 1=1
+    	                   AND ct_sub_conts.cid = ct_conts.cid
+    	                   AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver
+    	                   AND ct_sub_conts.agrmnt_stat = 'PD005001'
+    	                   )
+    </update>         
+    
+    <!--
+		Certification Test Reject Update
+     -->
+    <update id="certifyMgr.updateTestReject" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateTestReject jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_ct_conts ct_conts
+    	   SET ct_conts.verify_prgr_yn = 'PD005305'
+    	      ,ct_conts.tester_ct_stat = 'PD010904'
+    	      ,ct_conts.test_end_dt = NULL
+    	      ,ct_conts.test_reject_cmt = #testRejectCmt#
+    	      ,ct_conts.upd_by = #updBy#
+    	      ,ct_conts.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND ct_conts.cid = #cid#
+    	   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	   AND ct_conts.verify_prgr_yn = 'PD005304'
+    	   AND ct_conts.tester_ct_stat = 'PD010903'
+    	   AND ct_conts.agrmnt_stat = 'PD005001'
+    </update>      
+    
+    <!--
+		Certification Agreement Update
+     -->
+    <update id="certifyMgr.updateCertifyAgreement" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateCertifyAgreement jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_ct_conts ct_conts
+    	   SET ct_conts.verify_prgr_yn = 'PD005303'
+    	      ,agrmnt_stat = CASE WHEN EXISTS (SELECT 1 FROM tbl_ct_sub_conts ct_sub_conts WHERE ct_sub_conts.cid = ct_conts.cid AND ct_sub_conts.verify_req_ver = ct_conts.verify_req_ver AND ct_sub_conts.agrmnt_stat = 'PD005003')
+    	                          THEN 'PD005003'
+    	                          ELSE 'PD005002'
+    	                     END
+              ,ct_conts.ct_end_dt = TO_CHAR(SYSDATE, 'YYYYMMDD')
+    	      ,ct_conts.upd_by = #updBy#
+    	      ,ct_conts.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND ct_conts.cid = #cid#
+    	   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	   AND ct_conts.verify_prgr_yn = 'PD005304'
+    	   AND ct_conts.tester_ct_stat = 'PD010903'
+    	   AND ct_conts.agrmnt_stat = 'PD005001'
+    </update>
+    
+    <select id="certifyMgr.selectFirstAgrmntCount" parameterClass="SaveTestStatus" resultClass="java.util.HashMap">
+    	SELECT /* certifyMgr.selectFirstAgrmntCount jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    		   count(cid) count
+    		 , MAX((SELECT agrmnt_stat FROM tbl_ct_conts WHERE cid= #cid# AND verify_req_ver = #verifyReqVer#)) agrmntStat  
+    	  FROM tbl_ct_conts 
+    	 WHERE cid = #cid# 
+    	   AND agrmnt_stat = 'PD005002'
+    </select>
+    
+    <update id="certifyMgr.updateProductFirstAgrmntDt" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateProductFirstAgrmntDt jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    			tbl_pd_conts
+		   SET first_agrmnt_dt = to_char(sysdate, 'yyyyMMdd')
+		 WHERE cid= #cid#
+    </update>
+    
+    <!--  
+    	Certification result Mail Send Data Select
+    -->    
+    <select id="crtifyMgr.selectCtResultMailSendData" parameterClass="SaveTestStatus" resultClass="ContentMailModel">
+    	SELECT /* crtifyMgr.selectCtResultMailSendData jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    			  (SELECT mbr_id FROM tbl_us_member WHERE mbr_no = ct_conts.ins_by) devUserId
+    			, (SELECT email_addr FROM tbl_us_member WHERE mbr_no = ct_conts.ins_by) devEmailAddr
+		        , ct_conts.prod_nm prodNm
+		        , ct_conts.ins_dttm ctReqDt
+		        , ct_conts.ct_end_dt ctEndDt
+		        , (SELECT cd_nm FROM tbl_comm_cd WHERE dtl_full_cd = ct_conts.agrmnt_stat) agrmntStat
+		  FROM tbl_ct_conts ct_conts    
+		 WHERE ct_conts.cid = #cid#
+		   AND ct_conts.verify_req_ver = #verifyReqVer#   
+    </select>
+    
+    
+    <!--
+         Certify Agreement Info
+     -->
+    <select id="certifyMgr.selectCertifyAgreementInfo" parameterClass="SaveTestStatus" resultClass="CertifyCompletedInfo">
+    	SELECT /* certifyMgr.selectCertifyAgreementInfo jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+			 ct_conts.agrmnt_stat AS "agrmntStat"
+			,ct_conts.direct_pass_yn AS "directPassYn"
+			,ct_conts.verify_comment_cd AS "verifyCommentCd" 
+			,(SELECT 'Y'
+			    FROM tbl_ct_conts x
+			   WHERE 1=1
+			     AND x.cid = ct_conts.cid
+			     AND x.verify_req_ver &lt; ct_conts.verify_req_ver
+			     AND x.agrmnt_stat IN ('PD005002', 'PD005003')
+			     AND ROWNUM = 1
+			  ) AS "reCertifyReqYn"
+			 ,(SELECT pd_conts.sale_stat FROM tbl_pd_conts pd_conts WHERE pd_conts.cid = ct_conts.cid) AS "curSaleStat"
+    	  FROM tbl_ct_conts ct_conts
+    	 WHERE 1=1
+    	   AND ct_conts.cid = #cid#
+    	   AND ct_conts.verify_req_ver = #verifyReqVer#
+    </select>     
+    
+    <!--
+		Insert Product Sale Status History
+     -->
+    <insert id="certifyMgr.insertProudctSaleStatusHistory" parameterClass="SaveTestStatus">
+    	INSERT INTO /* certifyMgr.insertProudctSaleStatusHistory jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_pd_sale_stat_his
+    	       (
+    	         cid
+    	        ,chng_dttm
+    	        ,sale_stat
+    	        ,admin_chng_yn
+    	        ,ins_by
+    	       )
+         SELECT 
+    	         pd_conts.cid
+    	        ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	        ,'PD000403'
+    	        ,'Y'
+    	        ,#updBy#         
+           FROM tbl_pd_conts pd_conts
+    	  WHERE 1=1
+    	   AND pd_conts.cid = #cid#      
+    	   AND pd_conts.sale_stat = 'PD000402'   
+    	   AND EXISTS (
+    	                SELECT 1
+    	                  FROM tbl_ct_conts ct_conts
+    	                 WHERE 1=1
+    	                   AND ct_conts.cid = pd_conts.cid
+    	                   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	                   AND ct_conts.agrmnt_stat = 'PD005002'
+    	              )               
+    </insert>    
+    
+    <!--
+		Product Update By Certification Agreement Update
+     -->
+    <update id="certifyMgr.updateProductByCertifyAgreement" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateProductByCertifyAgreement jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_pd_conts pd_conts
+    	   SET pd_conts.verify_prgr_yn = 'PD005303'
+    	      ,pd_conts.agrmnt_stat = CASE WHEN pd_conts.agrmnt_stat = 'PD005001'
+    	                                   THEN 'PD005002'
+    	                                   ELSE pd_conts.agrmnt_stat
+    	                              END
+              ,pd_conts.sale_stat = CASE WHEN pd_conts.sale_stat = 'PD000402'
+                                         THEN 'PD000403'
+                                         ELSE pd_conts.sale_stat
+                                    END
+              ,verify_req_ver = #verifyReqVer#
+    	      ,pd_conts.upd_by = #updBy#
+    	      ,pd_conts.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	      ,pd_conts.upd_apply_division_cd = CASE WHEN pd_conts.upd_apply_division_cd = 'PD011202'
+    	      										 THEN 'PD011203'
+    	      										 ELSE pd_conts.upd_apply_division_cd
+    	      									END
+    	 WHERE 1=1
+    	   AND pd_conts.cid = #cid#
+    	   AND EXISTS (
+    	                SELECT 1
+    	                  FROM tbl_ct_conts ct_conts
+    	                 WHERE 1=1
+    	                   AND ct_conts.cid = pd_conts.cid
+    	                   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	                   AND ct_conts.agrmnt_stat = 'PD005002'
+    	              )
+    </update>  
+    
+    <!--
+		Product Update By Certification Agreement Reject Update
+     -->
+    <update id="certifyMgr.updateProductByCertifyAgreementReject" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateProductByCertifyAgreementReject jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_pd_conts pd_conts
+    	   SET pd_conts.verify_prgr_yn = 'PD005303'
+    	      ,pd_conts.upd_by = #updBy#
+    	      ,pd_conts.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND pd_conts.cid = #cid#
+    	   AND EXISTS (
+    	                SELECT 1
+    	                  FROM tbl_ct_conts ct_conts
+    	                 WHERE 1=1
+    	                   AND ct_conts.cid = pd_conts.cid
+    	                   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	                   AND ct_conts.agrmnt_stat = 'PD005003'
+    	              )
+    </update>  
+    
+    
+    <!--
+		Certification Product Update History Update
+     -->
+    <update id="certifyMgr.updateProudctUpdateHistory" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateProudctUpdateHistory jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_pd_conts_update pd_conts_update
+    	   SET 
+			   pd_conts_update.conts_upd_dt = CASE WHEN EXISTS (SELECT 1 FROM tbl_ct_conts x WHERE x.cid = pd_conts_update.cid AND x.cid = #cid# AND x.verify_req_ver &lt; #verifyReqVer# AND x.agrmnt_stat IN ('PD005002', 'PD005003'))
+			                                       THEN (SELECT x.ct_end_dt FROM tbl_ct_conts x WHERE x.cid = #cid# AND x.verify_req_ver = #verifyReqVer#)
+			                                       ELSE pd_conts_update.conts_upd_dt
+			                                  END
+			  ,pd_conts_update.verify_req_ver = #verifyReqVer#
+			  ,pd_conts_update.upd_by = #updBy#
+			  ,pd_conts_update.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	  WHERE 1=1
+    	   AND pd_conts_update.cid = #cid#
+    	   AND pd_conts_update.verify_req_ver IS NULL
+    	   AND EXISTS (
+    	                SELECT 1
+    	                  FROM tbl_ct_conts ct_conts
+    	                 WHERE 1=1
+    	                   AND ct_conts.cid = pd_conts_update.cid
+    	                   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	                   AND ct_conts.agrmnt_stat = 'PD005002'
+    	              )
+    </update>
+    
+    
+    
+    <!--
+		Certification Contents Pass Update
+     -->
+    <update id="certifyMgr.updateCertifyPassByConts" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateCertifyPassByConts jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_ct_conts ct_conts
+    	   SET ct_conts.verify_prgr_yn = 'PD005303'
+    	      ,ct_conts.agrmnt_stat = 'PD005002'
+    	      ,ct_conts.tester_ct_stat = NULL
+    	      ,ct_conts.direct_pass_yn = 'Y'
+              ,ct_conts.ct_end_dt = TO_CHAR(SYSDATE, 'YYYYMMDD')
+    	      ,ct_conts.upd_by = #updBy#
+    	      ,ct_conts.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND ct_conts.cid = #cid#
+    	   AND ct_conts.verify_req_ver = #verifyReqVer#
+    	   AND ct_conts.verify_prgr_yn = 'PD005301'
+    	   AND ct_conts.agrmnt_stat = 'PD005001'
+    </update>           
+    
+    
+    <!--
+		Certification Sub Contents Pass Update
+     -->
+    <update id="certifyMgr.updateCertifyPassBySubConts" parameterClass="SaveTestStatus">
+    	UPDATE /* certifyMgr.updateCertifyPassBySubConts jhhan 2011.03.23 : CertifyMgr_SqlMap.xml */
+    	       tbl_ct_sub_conts ct_sub_conts
+    	   SET ct_sub_conts.agrmnt_stat = 'PD005002'
+    	      ,ct_sub_conts.upd_by = #updBy#
+    	      ,ct_sub_conts.upd_dttm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+    	 WHERE 1=1
+    	   AND ct_sub_conts.cid = #cid#
+    	   AND ct_sub_conts.verify_req_ver = #verifyReqVer#
+    	   AND EXISTS (
+    	                SELECT 1
+    	                  FROM tbl_ct_conts ct_conts
+    	                 WHERE 1=1
+				    	   AND ct_conts.cid = ct_sub_conts.cid
+				    	   AND ct_conts.verify_req_ver = ct_sub_conts.verify_req_ver
+				    	   AND ct_conts.verify_prgr_yn = 'PD005303'
+				    	   AND ct_conts.agrmnt_stat = 'PD005002'
+				    	   AND ct_conts.direct_pass_yn = 'Y'    	   
+    	              )
+    </update>                 
+</sqlMap>

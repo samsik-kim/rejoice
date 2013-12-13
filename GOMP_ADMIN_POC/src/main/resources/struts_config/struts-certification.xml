@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="cert" extends="dev-common" namespace="/cert">
+		<action name="cf" class="com.omp.dev.certification.action.CertificationAction" method="cf">
+			<result type="redirectAction" name="authEmailChange">
+				<param name="namespace">/mypage</param>
+				<param name="actionName"><![CDATA[mypageEmailAuthResult?param=${param}&mbrNo=${mbrNo}]]></param>
+			</result>
+			<result type="redirectAction" name="authMemChange">
+				<param name="namespace">/mypage</param>
+				<param name="actionName"><![CDATA[mypageTransResult?param=${param}]]></param>
+			</result>
+			<result name="duplicate" type="mredirect">
+            	<param name="message">이미 사용중인 정보 입니다. 메인 화면으로 이동 합니다.</param>
+            	<param name="to"><![CDATA[${redirectUrl}/main/main.omp]]></param>
+       		</result>
+       		<result name="sessOut" type="mredirect">
+            	<param name="message">정보 변경을 위해서 재 로그인이 필요합니다.</param>
+            	<param name="to"><![CDATA[${redirectUrl}]]></param>
+       		</result>
+		</action>
+		
+		<action name="q" class="com.omp.dev.certification.action.CertificationAction" method="q">
+			<result type="redirectAction">
+				<param name="namespace">/member</param>
+				<param name="actionName"><![CDATA[memberJoinCertification?param=${param}]]></param>
+			</result>
+		</action>
+		
+	</package>
+	
+</struts>

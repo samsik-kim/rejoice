@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	
+	<package name="settlementaccounts" extends="common" namespace="/settlement/accounts">
+		<!-- 당월정산 현황  리스트 -->
+		<action name="monthAccountsList" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="monthAccountsList">
+			<result name="success">/${loc.language}/jsp/settlement/accounts/monthAccountsList.jsp</result>
+		</action>
+		
+		<!-- 당월정산 현황 엑셀다운로드 -->
+		<action name="monthAccountsExcelList" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="monthAccountsExcelList">
+			<result name="success" type="stream">
+            	<param name="contentType">${downloadFile.contentType}</param>
+                <param name="inputName">downloadFile.inputStream</param>
+                <param name="contentDisposition">${downloadFile.saveAs}</param>
+                <param name="contentLength">${downloadFile.length}</param>
+                <param name="bufferSize">${downloadFile.bufferSize}</param>
+            </result>
+		</action>
+		
+		<!-- 정산마감 어드민 패스워드 확인 -->
+		<action name="popConfirmAccounts" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="popConfirmAccounts">
+			<result name="success" type="chain">monthAccountsBundleEnd</result>
+			<result name="error" >/${loc.language}/jsp/settlement/accounts/popAccountsPswdNo.jsp</result>
+			<result name="none" >/${loc.language}/jsp/settlement/accounts/popAccountsPswdNo.jsp</result>
+		</action>
+		
+		
+		<!-- 정산마감 일괄처리 -->
+		<action name="monthAccountsBundleEnd" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="monthAccountsBundleEnd">
+			<result>/${loc.language}/jsp/settlement/accounts/popAccountsPswdNoSuccess.jsp</result>
+		</action>
+		
+		
+		
+		<!-- 정산마감 일괄처리 
+		<action name="monthAccountsBundleEnd" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="monthAccountsBundleEnd">
+			<result name="success" type="chain">monthAccountsList</result>
+		</action>-->
+		
+		
+		<!-- 영수증 처리  리스트 -->
+		<action name="receiptProcessList" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="receiptProcessList">
+			<result name="success">/${loc.language}/jsp/settlement/accounts/receiptProcessList.jsp</result>
+		</action>
+		
+		<!-- 영수증 처리  Local, National 엑셀 다운로드 -->
+		<action name="receiptProcessLoNaExcelList" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="receiptProcessLoNaExcelList">
+			<result name="success" type="stream">
+            	<param name="contentType">${downloadFile.contentType}</param>
+                <param name="inputName">downloadFile.inputStream</param>
+                <param name="contentDisposition">${downloadFile.saveAs}</param>
+                <param name="contentLength">${downloadFile.length}</param>
+                <param name="bufferSize">${downloadFile.bufferSize}</param>
+            </result>
+		</action>
+		
+		
+		<!-- 영수증 처리 상세 정보 조회 -->
+		<action name="receiptProcessInfo" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="receiptProcessInfo">
+			<result name="success">/${loc.language}/jsp/settlement/accounts/receiptProcessInfo.jsp</result>
+		</action>
+		
+		<!-- 영수증 처리 수정  초기 조회 -->
+		<action name="editStartReceiptProcessInfo" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="editStartReceiptProcessInfo">
+			<result name="success">/${loc.language}/jsp/settlement/accounts/editStartReceiptProcessInfo.jsp</result>
+		</action>
+		
+		
+		<!-- 영수증 처리 수정 완료 -->
+		<action name="editEndReceiptProcessInfo" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="editEndReceiptProcessInfo">
+			<result name="success" type="chain">receiptProcessList</result>
+		</action>
+		
+		
+		<!-- 영수증(조정액) 처리 상세 정보 조회 -->
+		<action name="adjustmentMoneyInfo" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="adjustmentMoneyInfo">
+			<result name="success">/${loc.language}/jsp/settlement/accounts/adjustmentMoneyInfo.jsp</result>
+		</action>
+		
+		<!-- 영수증(조정액) 처리 수정  초기 조회 -->
+		<action name="editStartAdjustmentMoneyInfo" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="editStartAdjustmentMoneyInfo">
+			<result name="success">/${loc.language}/jsp/settlement/accounts/editStartAdjustmentMoneyInfo.jsp</result>
+		</action>
+		
+		
+		<!-- 영수증(조정액) 처리 수정 완료 -->
+		<action name="editEndAdjustmentMoneyInfo" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="editEndAdjustmentMoneyInfo">
+			<result name="success" type="chain">receiptProcessList</result>
+		</action>
+		
+		<!-- 영수증마감 어드민 패스워드 처리 -->
+		<action name="popConfirmReceipt" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="popConfirmReceipt">
+			<result name="success" type="chain">updateReceiptProcessBundleEnd</result>
+			<result name="error" >/${loc.language}/jsp/settlement/accounts/popReceiptPswdNo.jsp</result>
+			<result name="none" >/${loc.language}/jsp/settlement/accounts/popReceiptPswdNo.jsp</result>
+		</action>
+		
+		<!-- 영수증마감처리 -->
+		<action name="updateReceiptProcessBundleEnd" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="updateReceiptProcessBundleEnd">
+			<result>/${loc.language}/jsp/settlement/accounts/popReceiptPswdNoSuccess.jsp</result>
+		</action>
+		
+		<!-- 영수증마감처리 
+		<action name="updateReceiptProcessBundleEnd" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="updateReceiptProcessBundleEnd">
+			<result name="success" type="chain">receiptProcessList</result>
+		</action>-->
+		
+		<!-- 조정액 수정popup  -->
+		<action name="popUpAdjAmt" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="popUpAdjAmt">
+			<result name="success">/${loc.language}/jsp/settlement/accounts/popUpAdjAmt.jsp</result>
+		</action>
+		
+		<!-- 조정액 view popup  -->
+		<action name="popUpAdjAmtView" class="com.omp.admin.settlement.action.accounts.SettlementAccountsAdmAction" method="popUpAdjAmtView">
+			<result name="success">/${loc.language}/jsp/settlement/accounts/popUpAdjAmtView.jsp</result>
+		</action>
+		
+		
+		
+		
+		
+			
+			
+	</package>
+	
+	
+</struts>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="contentverify" extends="dev-common" namespace="/content">
+		<action name="getContentsVerifyList" 
+			class="com.omp.dev.contents.action.ContentVerifyAction" method="getVerifyList">
+			<result name="success">/${loc.language}/jsp/content/verify/ContentsVerifyList.jsp</result>
+		</action>
+		
+		<action name="getContentVerifyDetail"
+			class="com.omp.dev.contents.action.ContentVerifyAction" method="getContentVerifyDetailView">
+			<result name="success">/${loc.language}/jsp/content/verify/ContentVerifyDetail.jsp</result>
+		</action>
+		
+		<action name="ajaxDitailVerifyState"
+			class="com.omp.dev.contents.action.ContentVerifyAction" method="ditailVerifyStateAjax">
+			<result name="success">/${loc.language}/jsp/content/verify/SubContentsVerifyStateDiv.jsp</result>
+		</action>
+		
+		<action name="ajaxDitailVerifyHistory"
+			class="com.omp.dev.contents.action.ContentVerifyAction" method="ditailVerifyHistoryAjax">
+			<result name="success">/${loc.language}/jsp/content/verify/SubContentsVerifyHisDiv.jsp</result>
+		</action>
+		
+		<action name="contentVerifyCancel"
+			class="com.omp.dev.contents.action.ContentVerifyAction" method="contentVerifyCancel">
+			<result name="success">/${loc.language}/jsp/content/verify/ContentVerifyDetail.jsp</result>
+		</action>
+		
+		<action name="popupSubContentsVerifyDetailView"
+			class="com.omp.dev.contents.action.ContentVerifyAction" method="popupSubContentsVerifyDetailView">
+			<result name="success">/${loc.language}/jsp/content/verify/popupSubContentsVerifyDetailView.jsp</result>	
+		</action>
+	</package>
+</struts>

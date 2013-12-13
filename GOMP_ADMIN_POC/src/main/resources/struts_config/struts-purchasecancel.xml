@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="purchasecancel" extends="struts-default" namespace="/purchasecancel">
+		
+		<action name="purchasecancel"
+			class="com.omp.admin.purchaseCancel.action.PurchaseCancelAction" method="purchaseCancel">
+			<result name="CANCELDONE">/${loc.language}/jsp/purchasecancel/popcancelresult.jsp</result>
+			<result name="FAIL">/${loc.language}/jsp/purchasecancel/popfail_cancel.jsp</result>
+		</action>
+		
+		<action name="purchaseRefundCash"
+			class="com.omp.admin.purchaseCancel.action.PurchaseCancelAction" method="purchaseRefundCash">
+			<result name="CANCELDONE">/${loc.language}/jsp/purchasecancel/popcancelresult.jsp</result>
+			<result name="FAIL">/${loc.language}/jsp/purchasecancel/popfail_cancel.jsp</result>
+		</action>
+		
+		<action name="purchaseCancelMulti"
+			class="com.omp.admin.purchaseCancel.action.PurchaseCancelAction" method="purchaseCancelMulti">
+			<result name="CANCELDONE">/${loc.language}/jsp/purchasecancel/popcancelresult.jsp</result>
+			<result name="FAIL">/${loc.language}/jsp/purchasecancel/popfail_cancel.jsp</result>
+		</action>
+									
+	</package>
+
+</struts>

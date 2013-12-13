@@ -1,0 +1,93 @@
+@charset "UTF-8";
+
+/* Login, Download Best */
+#mcleft {float:left;width:209px;height:100%;}
+#mcleft .mlogin {float:left;width:209px;padding:16px 0 15px 0;margin:0 0 20px 0;background: url('../images/main/login_bg.gif') no-repeat left top;}
+#mcleft .mlogin h3 {padding:0 0 7px 15px;font-size:1%;} /* 0503 수정 */
+#mcleft .mlogin ul {float:left;padding-left:14px;} /* 0503 수정 */
+#mcleft .mlogin li {float:left;padding:0 0 3px 0;font-size:12px;color:#6b6d70;}
+#mcleft .mlogin li.txt01 {padding:4px 7px 0 0;font-size:12px;color:#6e594b;background: url('../images/main/sideline.gif') no-repeat right 8px;}
+#mcleft .mlogin li.txt02 {padding:4px 0 0 7px;font-size:12px;color:#444;}
+#mcleft .mlogin li a {color:#444;text-decoration:none;}
+#mcleft .mlogin li a:hover {color:#ff6600;text-decoration:none;font-weight:bold;}
+#mcleft .mlogin input.w130 {width:114px;height:13px;padding:5px 0 2px 3px;margin-right:5px;color:#6b6d70;border:1px solid #bfbfbf;}
+#mcleft .mdown {position:relative;float:left;width:209px;margin:23px 0 20px 0;}
+#mcleft .mdown h3 {padding-bottom:5px;border-bottom:1px solid #c7c7c7;font-size:100%;}
+#mcleft .pay {position:absolute;right:0;top:0;}
+#mcleft .mdown ul {margin-top:9px;_margin-top:11px;}
+#mcleft .mdown ul li {position:relative;padding-bottom:3px;_padding-bottom:6px;}
+#mcleft .mdown ul li.on {color:#ff6600;font-weight:bold;}
+#mcleft .mdown ul li span {position:absolute;right:0;top:0;font-size:90%;font-family:Verdana;}
+#mcleft .mdown li img {vertical-align:middle;padding:2px 0 3px 0;}
+#mcleft .mdown li a {color:#666;text-decoration:none;}
+#mcleft .mdown li a:hover {color:#ff6600;text-decoration:none;font-weight:bold;}
+
+/* Login_After ver3 */
+#mcleft .mloginB {width:211px;height:100%;padding:14px 0 0 0;_padding-top:15px;} /* background: url('../images/main/login_bg02.gif') no-repeat left top;} */
+#mcleft .mloginB .member {width:194px;padding:12px 0 9px 16px;color:#444;font-size:100%;line-height:160%;background: url('../images/main/login_bg_top.gif') no-repeat left top;}
+#mcleft .mloginB .tcolor01 {color:#994c19;font-weight:bold;}
+#mcleft .mloginB .state {float:left;width:189px;padding:13px 5px 13px 15px;line-height:180%;color:#ff6600;font-size:90%;font-weight:bold;background: url('../images/main/login_bg_mid.gif') repeat-y left top;word-wrap:break-word;} /*--- 민정 수정 ---*/
+#mcleft .mloginB .state .sta01 {background: url('../images/main/li_icon1.gif') no-repeat left 4px;}
+#mcleft .mloginB .state .sta02 {background: url('../images/main/li_icon2.gif') no-repeat left 4px;}
+#mcleft .mloginB .state .sta03 {background: url('../images/main/li_icon3.gif') no-repeat left 4px;}
+#mcleft .mloginB .state .sta04 {background: url('../images/main/li_icon3.gif') no-repeat left 3px;color:#994c19;}
+#mcleft .mloginB .state .sta04 a {color:#994c19;}
+#mcleft .mloginB .state li span {display:inline-block;width:75px;padding-left:17px;margin-right:7px;color:#666;background: url('../images/main/li_bar.gif') no-repeat right 3px;font-weight:normal;}
+html* #mcleft .mloginB .state li span {width:80px;margin-right:7px;letter-spacing:-1px;}
+#mcleft .mloginB .state li a {color:#ff6600;letter-spacing:-1px;}
+#mcleft .mloginB .state li .sta_won {padding-left:103px;color:#994c19;}
+#mcleft .mloginB .state li .sta_won a {color:#994c19;}
+#mcleft .mloginB .proli {float:left;width:199px;height:23px;padding:9px 0 0 10px;background: url('../images/main/login_bg_bot.gif') no-repeat left top;}
+#mcleft .mloginB .proli li {float:left;padding:0 4px;color:#777;}
+#mcleft .mloginB .proli li a {color:#777;text-decoration:none;}
+#mcleft .mloginB .proli li a:hover {color:#ff6600;text-decoration:none;font-weight:bold;}
+
+
+/* 상품등록, 검증, 판매 및 정산가이드 */
+#mcright {float:right;width:752px;height:426px;}
+#mcright h3.gh3 {padding:0 0 18px 0;}
+#mcright .guide1 {position:relative;float:left;width:246px;height:125px;padding-top:17px;color:#666;background: url('../images/main/guide_bg01.gif') no-repeat left top;}
+#mcright .guide1 .more {position:absolute;left:106px;top:23px;}
+#mcright .guide1 .gtxt {position:absolute;left:82px;top:50px;}
+#mcright .guide2 {position:relative;float:left;width:241px;height:125px;padding:17px 0 0 20px;color:#666;background: url('../images/main/guide_bg02.gif') no-repeat left top;}
+#mcright .guide2 .more {position:absolute;left:126px;top:23px;}
+#mcright .guide2 .gtxt {position:absolute;left:106px;top:50px;}
+#mcright .guide3 {position:relative;float:left;width:225px;height:125px;padding:17px 0 0 20px;color:#666;background: url('../images/main/guide_bg03.gif') no-repeat left top;}
+#mcright .guide3 .more {position:absolute;left:126px;top:23px;}
+#mcright .guide3 .gtxt {position:absolute;left:88px;top:50px;}
+
+/* Developer Center News */
+#mcright .devnews {width:752px;clear:both;border-bottom:2px solid #edefed;}
+#mcright .devnews .tit {width:752px;padding-bottom:7px;border-bottom:1px solid #c7c7c7;overflow:hidden;}
+#mcright .devnews dl {clear:both;border-bottom:1px solid #f1f1f1;padding:12px 0 12px 0;}
+#mcright .devnews dt {position:relative;padding:0 0 5px 6px;color:#444;font-size:13px;font-weight:bold;background: url('../images/main/dot02.gif') no-repeat left 7px;}
+#mcright .devnews dt span {position:absolute;right:0;top:0;color:#777;font-size:11px;font-weight:normal;font-family:Verdana;}
+#mcright .devnews dd {color:#666;padding:0 0 0 6px;font-size:13px;}
+#mcright .devnews dt a {color:#444;text-decoration:none;}
+#mcright .devnews dt a:hover {color:#ff6600;text-decoration:none;}
+#mcright .devnews .bbnone {border-bottom:none;}
+
+/* Sitemap */
+#mcbtm {width:998px;overflow:hidden;}
+#mcbtm h3 {float:left;margin-right:44px;padding-top:20px;display:inline;}
+#mcbtm h4 {float:left;color:#444;padding:21px 0 8px 0;font-size:100%;}
+#mcbtm .sitebox {float:left;width:199px;height:112px;margin-right:20px;display:inline;line-height:150%;background: url('../images/main/sideline01.gif') no-repeat right 2px;}
+#mcbtm ul.sitemap {float:left;width:120px;padding-top:18px;}
+#mcbtm ul.sitemap li {float:left;width:100px;padding-left:10px;color:#666;background: url('../images/main/site_dot.gif') no-repeat 14px 7px;}
+#mcbtm ul.sitemap li a {color:#666;text-decoration:none;}
+#mcbtm ul.sitemap li a:hover {color:#ff6600;text-decoration:none;}
+#mcbtm .sitebox01 {float:left;width:190px;height:112px;line-height:150%;}
+#mcbtm ul.sitemap01 {float:left;width:120px;padding-top:18px;}
+#mcbtm ul.sitemap01 li {float:left;width:100px;padding-left:10px;color:#666;background: url('../images/main/site_dot.gif') no-repeat 4px 7px;}
+#mcbtm ul.sitemap01 li a {color:#666;text-decoration:none;}
+#mcbtm ul.sitemap01 li a:hover {color:#ff6600;text-decoration:none;}
+
+/*--- 20110411 로그인 추가 ---*/
+#mcleft .mlogin input.idshow {width:114px;height:13px;padding:5px 0 2px 3px;margin-right:5px;color:#6b6d70;border:1px solid #bfbfbf;background:#fff url("../images/main/txt_id.gif") no-repeat left top;}
+#mcleft .mlogin input.idhide {width:114px;height:13px;padding:5px 0 2px 3px;margin-right:5px;color:#6b6d70;border:1px solid #bfbfbf;background:#fff none;}
+#mcleft .mlogin input.pwshow {width:114px;height:13px;padding:5px 0 2px 3px;margin-right:5px;color:#6b6d70;border:1px solid #bfbfbf;background:#fff url("../images/main/txt_pw.gif") no-repeat left top;}
+#mcleft .mlogin input.pwhide {width:114px;height:13px;padding:5px 0 2px 3px;margin-right:5px;color:#6b6d70;border:1px solid #bfbfbf;background:#fff none;}
+
+/* 20110503 추가 */
+html* #mcleft .mlogin input.idshow {margin-right:0;}
+html* #mcleft .mlogin input.idhide {margin-right:0;}

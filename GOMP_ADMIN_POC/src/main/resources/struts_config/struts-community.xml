@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="community" extends="common" namespace="/community">
+
+				
+		<!-- Use Postscript -->
+		<action name="postscriptList" class="com.omp.admin.community.postscript.action.PostscriptAction" method="selectDpProdNotiList">
+			<result>/${loc.language}/jsp/community/postscript/postscriptList.jsp</result>
+		</action>
+
+		<action name="popBadnotiRegist" class="com.omp.admin.community.postscript.action.PostscriptAction" method="selectDpBadnoti">
+			<result>/${loc.language}/jsp/community/postscript/popBadnotiRegist.jsp</result>
+		</action>
+
+		<action name="popBadnotiView" class="com.omp.admin.community.postscript.action.PostscriptAction" method="selectDpBadnoti">
+			<result>/${loc.language}/jsp/community/postscript/popBadnotiView.jsp</result>
+		</action>
+		
+		<action name="popInsertBadnoti" class="com.omp.admin.community.postscript.action.PostscriptAction" method="insertBadnoti">
+			<result>/${loc.language}/jsp/community/postscript/popBadnotiSuccess.jsp?pageNo=${dpProdNoti.page.no}&amp;searchType=${dpProdNoti.searchType}&amp;searchValue=${dpProdNoti.searchValue}&amp;srchBadnotiYn=${dpProdNoti.srchBadnotiYn}&amp;srchDelYn=${dpProdNoti.srchDelYn}&amp;startDate=${dpProdNoti.startDate}&amp;endDate=${dpProdNoti.endDate}</result>
+		</action>
+
+		<action name="updateProdNotiDelYn" class="com.omp.admin.community.postscript.action.PostscriptAction" method="updateProdNotiDelYn">
+			<!-- <result type="chain">postscriptList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+			    <!-- <param name="message">변경되었습니다.</param> -->
+				<param name="message">變更完畢。</param>
+			    <param name="to">/community/postscriptList.omp?srchFlag=TRUE&amp;pageNo=${dpProdNoti.page.no}&amp;searchType=${dpProdNoti.searchType}&amp;searchValue=${dpProdNoti.searchValue}&amp;srchBadnotiYn=${dpProdNoti.srchBadnotiYn}&amp;srchDelYn=${dpProdNoti.srchDelYn}&amp;startDate=${dpProdNoti.startDate}&amp;endDate=${dpProdNoti.endDate}</param>
+			</result>
+		</action>
+
+		<action name="noticeList" class="com.omp.admin.community.notice.action.NoticeAction" method="selectNoticeList">
+			<result>/${loc.language}/jsp/community/notice/noticeList.jsp?ctgrCd=${ctgrCd}</result>
+		</action>
+
+		<action name="noticeView" class="com.omp.admin.community.notice.action.NoticeAction" method="selectNotice">
+			<result>/${loc.language}/jsp/community/notice/noticeView.jsp?ctgrCd=${ctgrCd}</result>
+		</action>
+
+		<action name="updateNotice" class="com.omp.admin.community.notice.action.NoticeAction" method="updateNoticeList">
+			<!-- <result type="chain">noticeList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+			    <!-- <param name="message">삭제되었습니다.</param> -->
+			    <param name="message">刪除完畢。</param>
+			    <param name="to">/community/noticeList.omp?srchFlag=TRUE&amp;ctgrCd=${ctgrCd}&amp;pageNo=${notice.page.no}&amp;searchType=${notice.searchType}&amp;searchValue=${notice.searchValue}&amp;searchOpenYn=${notice.searchOpenYn}&amp;startDate=${notice.startDate}&amp;endDate=${notice.endDate}</param>
+			</result>
+		</action>
+
+		<action name="updateNoticeList" class="com.omp.admin.community.notice.action.NoticeAction" method="updateNoticeList">
+			<!-- <result type="chain">noticeList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+			    <!-- <param name="message">변경되었습니다.</param> -->
+				<param name="message">變更完畢。</param>
+			    <param name="to">/community/noticeList.omp?srchFlag=TRUE&amp;ctgrCd=${ctgrCd}&amp;pageNo=${notice.page.no}&amp;searchType=${notice.searchType}&amp;searchValue=${notice.searchValue}&amp;searchOpenYn=${notice.searchOpenYn}&amp;startDate=${notice.startDate}&amp;endDate=${notice.endDate}</param>
+			</result>
+		</action>
+
+		<action name="processNotice" class="com.omp.admin.community.notice.action.NoticeAction" method="processNotice">
+			<!-- <result type="chain">noticeList</result> -->
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">11534336</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"/>
+			<result name="input" type="mredirect">
+				<!-- <param name="message">파일의 허용 크기를 넘었습니다.</param> -->
+				<param name="message">檔案超限.</param>
+				<param name="to">/community/noticeList.omp?srchFlag=TRUE&amp;ctgrCd=${ctgrCd}</param>
+			</result>
+			<result name="success" type="mredirect">
+			    <!-- <param name="message">처리되었습니다.</param> -->
+			    <!-- <param name="message">變更完畢。</param> -->
+			    <!-- <param name="message">등록되었습니다.</param> -->
+			    <param name="message">儲存完畢。</param>
+			    <param name="to">/community/noticeList.omp?srchFlag=TRUE&amp;ctgrCd=${ctgrCd}&amp;pageNo=${notice.page.no}&amp;searchType=${notice.searchType}&amp;searchValue=${notice.searchValue}&amp;searchOpenYn=${notice.searchOpenYn}&amp;startDate=${notice.startDate}&amp;endDate=${notice.endDate}</param>
+			</result>
+			<result name="success_update" type="mredirect">
+			    <!-- <param name="message">수정되었습니다.</param> -->
+			    <param name="message">變更完畢。</param>
+			    <param name="to">/community/noticeList.omp?srchFlag=TRUE&amp;ctgrCd=${ctgrCd}&amp;pageNo=${notice.page.no}&amp;searchType=${notice.searchType}&amp;searchValue=${notice.searchValue}&amp;searchOpenYn=${notice.searchOpenYn}&amp;startDate=${notice.startDate}&amp;endDate=${notice.endDate}</param>
+			</result>
+		</action>
+
+		<action name="categoryList" class="com.omp.admin.community.faq.action.FaqAction" method="selectCtgrList">
+			<result>/${loc.language}/jsp/community/faq/categoryList.jsp</result>
+		</action>
+
+		<action name="processCtgr" class="com.omp.admin.community.faq.action.FaqAction" method="processCtgr">
+			<!-- <result type="chain">categoryList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+			    <!-- <param name="message">저장되었습니다.</param> -->
+				<param name="message">儲存完畢。</param>
+			    <param name="to">/community/categoryList.omp?ctgrCd=${ctgrCd}</param>
+			</result>
+		</action>
+
+		<action name="faqList" class="com.omp.admin.community.faq.action.FaqAction" method="selectFaqList">
+			<result>/${loc.language}/jsp/community/faq/faqList.jsp</result>
+		</action>
+
+		<action name="faqView" class="com.omp.admin.community.faq.action.FaqAction" method="selectFaq">
+			<result>/${loc.language}/jsp/community/faq/faqView.jsp</result>
+		</action>
+
+		<action name="updateFaqList" class="com.omp.admin.community.faq.action.FaqAction" method="updateFaqList">
+			<!-- <result type="chain">faqList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+			    <!-- <param name="message">처리되었습니다.</param> -->
+			    <param name="message">變更完畢。</param>
+			    <param name="to">/community/faqList.omp?srchFlag=TRUE&amp;ctgrCd=${ctgrCd}&amp;pageNo=${faq.page.no}&amp;searchType=${faq.searchType}&amp;searchValue=${faq.searchValue}&amp;searchOpenYn=${faq.searchOpenYn}&amp;startDate=${faq.startDate}&amp;endDate=${faq.endDate}</param>
+			</result>
+		</action>
+
+		<action name="updateFaqSortList" class="com.omp.admin.community.faq.action.FaqAction" method="updateFaqSortList">
+			<!-- <result type="chain">faqList</result> -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="mredirect">
+			    <!-- <param name="message">변경되었습니다.</param> -->
+				<param name="message">變更完畢。</param>
+			    <param name="to">/community/faqList.omp?srchFlag=TRUE&amp;ctgrCd=${ctgrCd}&amp;pageNo=${faq.page.no}&amp;searchType=${faq.searchType}&amp;searchValue=${faq.searchValue}&amp;searchOpenYn=${faq.searchOpenYn}&amp;startDate=${faq.startDate}&amp;endDate=${faq.endDate}</param>
+			</result>
+		</action>
+
+		<action name="processFaq" class="com.omp.admin.community.faq.action.FaqAction" method="processFaq">
+			<!-- <result type="chain">faqList</result> -->
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">11534336</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"/>
+			<result name="input" type="mredirect">
+				<!-- <param name="message">파일의 허용 크기를 넘었습니다.</param> -->
+				<param name="message">檔案超限.</param>
+				<param name="to">/community/faqList.omp?srchFlag=TRUE&amp;ctgrCd=${ctgrCd}</param>
+			</result>
+			<result type="mredirect">
+			    <!-- <param name="message">저장되었습니다.</param> -->
+				<param name="message">儲存完畢。</param>
+			    <param name="to">/community/faqList.omp?srchFlag=TRUE&amp;ctgrCd=${ctgrCd}&amp;pageNo=${faq.page.no}&amp;searchType=${faq.searchType}&amp;searchValue=${faq.searchValue}&amp;searchOpenYn=${faq.searchOpenYn}&amp;startDate=${faq.startDate}&amp;endDate=${faq.endDate}</param>
+			</result>
+		</action>
+
+	</package>
+</struts>

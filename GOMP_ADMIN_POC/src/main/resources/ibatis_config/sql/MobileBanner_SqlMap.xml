@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="mobileBanner">
+	<typeAlias alias="MobileBanner" type="com.omp.admin.mobileBanner.model.MobileBanner"/>
+
+	<resultMap id="mobileBanner-resultMap" class="MobileBanner">
+		<result property="totalCount" column="total_count"/>
+		<result property="rnum"       column="rnum"/>
+		<result property="bnrNo" 	  column="BNR_NO"/>  
+		<result property="title" 	  column="TITLE"/>   
+		<result property="bannerType" column="BANNER_TYPE"/>  
+		<result property="bnrStartDt"   column="BNR_START_DT"/> 
+		<result property="bnrEndDt" column="BNR_END_DT"/> 
+		<result property="prodId" 	  column="PROD_ID"/> 
+		<result property="horImgSize"   column="H_IMG_SIZE"/> 
+		<result property="imgNm" 	  column="IMG_NM"/> 
+		<result property="imgOrgNm"   column="IMG_ORG_NM"/> 
+		<result property="imgPos" 	  column="IMG_POS"/> 
+		<result property="imgSize" 	  column="IMG_SIZE"/> 
+		<result property="openOrder"  column="OPEN_ORDER"/> 
+		<result property="openYn" 	  column="OPEN_YN"/> 
+		<result property="state" 	  column="STATE"/> 
+		<result property="regDttm" 	  column="REG_DTTM"/>
+	</resultMap>
+	<resultMap id="BannerDetail-resultMap" class="MobileBanner">
+		<result property="bnrNo" 	  column="BNR_NO"/>  
+		<result property="title" 	  column="TITLE"/>   
+		<result property="bannerType" column="BANNER_TYPE"/>  
+		<result property="bnrStartDt"   column="BNR_START_DT"/> 
+		<result property="bnrEndDt" column="BNR_END_DT"/> 
+		<result property="startH"   column="START_H"/> 
+		<result property="endH" column="END_H"/>
+		<result property="prodId" 	  column="PROD_ID"/> 
+		<result property="horImgSize"   column="H_IMG_SIZE"/> 
+		<result property="imgNm" 	  column="IMG_NM"/> 
+		<result property="imgOrgNm"   column="IMG_ORG_NM"/> 
+		<result property="imgPos" 	  column="IMG_POS"/> 
+		<result property="imgSize" 	  column="IMG_SIZE"/> 
+		<result property="openOrder"  column="OPEN_ORDER"/> 
+		<result property="openYn" 	  column="OPEN_YN"/> 
+		<result property="state" 	  column="STATE"/> 
+		<result property="regDttm" 	  column="REG_DTTM"/>
+	</resultMap>
+	<statement id="mobileBanner.getMobileBannerList" parameterClass="MobileBanner" resultMap="mobileBanner-resultMap">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* mobileBanner.getMobileBannerList aylee 2011.05.11 : MobileBanner_SqlMap.xml */
+			<include refid="GOMP.pagingTotalCount"/>
+			  BNR_NO,
+              TITLE,
+              (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD=BANNER_TYPE) AS BANNER_TYPE,
+              (CASE WHEN TO_CHAR(BNR_END_DT,'YYYYMMDD')='99991231' THEN '' ELSE TO_CHAR(BNR_START_DT,'YYYYMMDDHH24MISS') END) AS BNR_START_DT,
+              (CASE WHEN TO_CHAR(BNR_END_DT,'YYYYMMDD')='99991231' THEN '' ELSE TO_CHAR(BNR_END_DT,'YYYYMMDDHH24MISS') END) AS BNR_END_DT,
+              PROD_ID,
+              (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD=H_IMG_SIZE) AS H_IMG_SIZE,
+              IMG_NM,
+              IMG_ORG_NM,
+              IMG_POS,
+              IMG_SIZE,
+              OPEN_ORDER,
+              OPEN_YN,
+              SUBSTR(REG_DTTM,1,8) AS REG_DTTM,
+              (CASE WHEN (OPEN_YN='Y' AND (BNR_END_DT>SYSDATE OR BNR_END_DT IS NULL)) THEN 'PROGRESS' ELSE '' END) AS STATE
+		FROM  TBL_DP_MOBILE_BANNER
+		WHERE SUBSTR(REG_DTTM,1,8) BETWEEN #startDate# AND #endDate#
+		AND   DEL_YN='N'
+		<isNotEmpty property="openYn">
+			AND OPEN_YN = #openYn#
+		</isNotEmpty>
+		<isNotEmpty property="horImgSize">
+			AND H_IMG_SIZE = #horImgSize#
+		</isNotEmpty>
+		<isNotEmpty property="bannerType">
+			AND BANNER_TYPE = #bannerType#
+		</isNotEmpty>
+		<isNotEmpty property="keyWord">
+			AND TITLE LIKE '%'||#keyWord#||'%'
+		</isNotEmpty>
+		ORDER BY OPEN_ORDER,REG_DTTM DESC
+        <include refid="GOMP.pagingEnd"/>
+	</statement>
+	<statement id="mobileBanner.removeBanner" parameterClass="java.lang.Integer">
+		UPDATE /* mobileBanner.removeBanner aylee 2011.05.11 : MobileBanner_SqlMap.xml */
+			   TBL_DP_MOBILE_BANNER
+		SET	   DEL_YN= 'Y'
+		WHERE  BNR_NO = #bnrNo#
+	</statement>
+	<statement id="mobileBanner.modifyBanner" parameterClass="MobileBanner">
+		  UPDATE /* mobileBanner.modifyBanner aylee 2011.05.11 : MobileBanner_SqlMap.xml */
+		  		TBL_DP_MOBILE_BANNER 
+                SET
+                OPEN_ORDER = #openOrder#,
+                OPEN_YN = #openYn#,
+                UPD_ID = #insId#,
+                UPD_DTTM = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+          WHERE BNR_NO = #bnrNo#
+	</statement>
+	<statement id="mobileBanner.getBannerDetail" parameterClass="java.lang.Integer" resultMap="BannerDetail-resultMap">
+		  SELECT /* mobileBanner.getBannerDetail aylee 2011.05.11 : MobileBanner_SqlMap.xml */
+		  		 BNR_NO,
+                 TITLE,
+                 BANNER_TYPE,
+                 SUBSTR(TO_CHAR(BNR_START_DT,'YYYYMMDDHH24MISS'),1,8) AS BNR_START_DT,
+                 SUBSTR(TO_CHAR(BNR_END_DT,'YYYYMMDDHH24MISS'),1,8) AS BNR_END_DT,
+                 SUBSTR(TO_CHAR(BNR_START_DT,'YYYYMMDDHH24MISS'),9,14) AS START_H,
+                 SUBSTR(TO_CHAR(BNR_END_DT,'YYYYMMDDHH24MISS'),9,14) AS END_H,
+                 PROD_ID,
+                 H_IMG_SIZE,
+                 IMG_NM,
+                 IMG_ORG_NM,
+                 IMG_POS,
+                 IMG_SIZE,
+                 OPEN_ORDER,
+                 OPEN_YN,
+                 SUBSTR(REG_DTTM,1,8) AS REG_DTTM,
+                 (CASE WHEN (OPEN_YN='Y' AND (BNR_END_DT>SYSDATE) OR BNR_END_DT IS NULL) THEN 'PROGRESS' ELSE '' END) AS STATE
+		  FROM  TBL_DP_MOBILE_BANNER
+		  WHERE DEL_YN='N'
+		  AND   BNR_NO = #bnrNo#
+	</statement>
+	<statement id="mobileBanner.getMaxOpenOrder" resultClass="java.lang.Integer">
+		  SELECT /* mobileBanner.getMaxOpenOrder aylee 2011.05.11 : MobileBanner_SqlMap.xml */
+		  		NVL(MAX(OPEN_ORDER)+1,1)
+		  FROM  TBL_DP_MOBILE_BANNER
+		  WHERE DEL_YN='N'
+	</statement>
+	<statement id="mobileBanner.insertBanner" parameterClass="MobileBanner">
+		INSERT /* mobileBanner.insertBanner aylee 2011.05.11 : MobileBanner_SqlMap.xml */
+		INTO TBL_DP_MOBILE_BANNER(
+               BNR_NO,
+               TITLE,
+               BANNER_TYPE,
+               BNR_START_DT,
+               BNR_END_DT,
+               PROD_ID,
+               H_IMG_SIZE,
+               IMG_NM,
+               IMG_ORG_NM,
+               IMG_POS,
+               IMG_SIZE,
+               OPEN_ORDER,
+               OPEN_YN,
+               DEL_YN,
+               REG_ID,
+               REG_DTTM,
+               UPD_ID,
+               UPD_DTTM
+               )
+        VALUES (
+               (SELECT NVL(MAX(BNR_NO)+1,1) FROM TBL_DP_MOBILE_BANNER),
+               #title#,
+               #bannerType#,
+               TO_DATE(#bnrStartDt#,'YYYYMMDDHH24MISS'),
+               TO_DATE(#bnrEndDt#,'YYYYMMDDHH24MISS'),
+               #prodId#,
+               #horImgSize#,
+               #imgNm#,
+               #imgOrgNm#,
+               #imgPos#,
+               #imgSize#,
+               #openOrder#,
+               #openYn#,
+               'N',
+               #insId#,
+               TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+               '',
+               ''
+               )
+	</statement>
+	<statement id="mobileBanner.updateBanner" parameterClass="MobileBanner">
+		 UPDATE /* mobileBanner.updateBanner aylee 2011.05.11 : MobileBanner_SqlMap.xml */
+		 		TBL_DP_MOBILE_BANNER 
+		 SET    TITLE = #title#,
+                BANNER_TYPE = #bannerType#,
+                BNR_START_DT = TO_DATE(#bnrStartDt#,'YYYYMMDDHH24MISS'),
+                BNR_END_DT = TO_DATE(#bnrEndDt#,'YYYYMMDDHH24MISS'),
+                PROD_ID = #prodId#,
+                H_IMG_SIZE = #horImgSize#,
+                <isNotEmpty property="imgNm">
+                	IMG_NM = #imgNm#,
+                	IMG_ORG_NM = #imgOrgNm#,
+                	IMG_POS = #imgPos#,
+                	IMG_SIZE = #imgSize#,
+                </isNotEmpty>
+                OPEN_ORDER = #openOrder#,
+                OPEN_YN = #openYn#,
+                UPD_ID = #insId#,
+                UPD_DTTM = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		 WHERE  BNR_NO = #bnrNo#
+	</statement>
+</sqlMap>

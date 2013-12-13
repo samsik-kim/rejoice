@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="qna" extends="common" namespace="/qna">
+        
+		<action name="searchSCQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="searchQnA">
+			<result name="success">/${loc.language}/jsp/community/qna/qna_list.jsp</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="searchDQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="searchQnA">
+			<result name="success">/${loc.language}/jsp/community/qna/qna_list.jsp</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<!-- second category list ajax-->  
+		<action name="getAjaxSecondCategoryList" class="com.omp.admin.community.qna.action.QnaAction" method="getAjaxSecondCategoryList"/>
+		<action name="removeQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="removeQnA">
+			<result name="success" type="chain">searchSCQnA</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="removeDQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="removeQnA">
+			<result name="success" type="chain">searchDQnA</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="displayQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="displayDetailQnA">
+			<result name="success">/${loc.language}/jsp/community/qna/qna_details.jsp</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="displayDQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="displayDetailQnA">
+			<result name="success">/${loc.language}/jsp/community/qna/qna_details.jsp</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="sendMail"
+			class="com.omp.admin.community.qna.action.QnaAction" method="sendHtmlMail">
+		</action>
+		<action name="sendDMail"
+			class="com.omp.admin.community.qna.action.QnaAction" method="sendHtmlMail">
+		</action>
+		<action name="ajaxQnaFileUpload"
+			class="com.omp.admin.community.qna.action.QnaAction" method="ajaxQnaFileUpload">
+		</action>
+		<action name="saveCtgrQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="saveCtgrQnA">
+			<result name="success" type="chain">registerCtgr</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="saveDCtgrQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="saveCtgrQnA">
+			<result name="success" type="chain">registerCtgr</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="deleteCtgrQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="deleteCtgrQnA">
+			<result name="success" type="chain">registerCtgr</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="deleteDCtgrQnA"
+			class="com.omp.admin.community.qna.action.QnaAction" method="deleteCtgrQnA">
+			<result name="success" type="chain">registerCtgr</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="registerDCtgr"
+			class="com.omp.admin.community.qna.action.QnaAction" method="categoryQnA">
+			<result name="success">/${loc.language}/jsp/community/qna/qna_ctgr.jsp</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="registerCtgr"
+			class="com.omp.admin.community.qna.action.QnaAction" method="categoryQnA">
+			<result name="success">/${loc.language}/jsp/community/qna/qna_ctgr.jsp</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="downloadSCQnaList" class="com.omp.admin.community.qna.action.QnaAction" method="downloadQnaList">
+			<result name="success" type="stream">
+            	<param name="contentType">${downloadFile.contentType}</param>
+                <param name="inputName">downloadFile.inputStream</param>
+                <param name="contentDisposition">${downloadFile.saveAs}</param>
+                <param name="contentLength">${downloadFile.length}</param>
+                <param name="bufferSize">${downloadFile.bufferSize}</param>
+            </result>
+		</action>
+		<action name="downloadDevQnaList" class="com.omp.admin.community.qna.action.QnaAction" method="downloadQnaList">
+			<result name="success" type="stream">
+            	<param name="contentType">${downloadFile.contentType}</param>
+                <param name="inputName">downloadFile.inputStream</param>
+                <param name="contentDisposition">${downloadFile.saveAs}</param>
+                <param name="contentLength">${downloadFile.length}</param>
+                <param name="bufferSize">${downloadFile.bufferSize}</param>
+            </result>
+		</action>
+		
+	</package>
+</struts>

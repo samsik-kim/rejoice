@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="verify">
+	<typeAlias alias="ctVerify" type="com.omp.dev.contents.model.ContentsVerify"/>
+	<typeAlias alias="subCtVerify" type="com.omp.dev.contents.model.SubContentsVerify"/>
+	<typeAlias alias="verifyItemCd" type="com.omp.dev.contents.model.VerifyItemCd"/>
+	<typeAlias alias="contentVerifyDetail" type="com.omp.dev.contents.model.verify.ContentVerifyDetail"/>
+	
+	<resultMap class="ctVerify" id="verify.resultMap-ctVerifiListMap">
+		<result property="rnum" column="rnum" nullValue=""/>
+		<result property="vmType" column="VM_TYPE" nullValue="" />
+		<result property="cid" column="CID" nullValue="" />
+		<result property="verifyReqVer" column="VERIFY_REQ_VER" nullValue=""/>
+		<result property="prodNm" column="PROD_NM" nullValue="" />
+		<result property="insDttm" column="INS_DTTM" nullValue="" />
+		<result property="verifyPrgrYn" column="VERIFY_PRGR_YN" nullValue="" />
+		<result property="agrmntStat" column="AGRMNT_STAT" nullValue="" />
+		<result property="ctEndExDt" column="ctEndExDt" nullValue="" />
+		<result property="ctEndDt" column="ctEndDt" nullValue="" />
+		<result property="filePos" column="FILE_POS" nullValue=""/>
+		<result property="totalCount" column="total_count" nullValue="" />
+	</resultMap>
+	
+	<resultMap class="subCtVerify" id="verify.resultMap-subCtVerifyListMap" groupBy="scid">
+		<result property="contentsVerify.insDttm" column="INS_DTTM" nullValue="" />
+		<result property="contentsVerify.ctEndDt" column="ctEndDt" nullValue="" />
+		<result property="contentsVerify.verifyPrgrYn" column="VERIFY_PRGR_YN" nullValue="" />
+		<result property="contentsVerify.agrmntStat" column="agrmntStat" nullValue="" />
+		<result property="vmVerMin" column="VM_VER_MIN" nullValue="" />
+		<result property="vmVerTarget" column="VM_VER_TARGET" nullValue="" />
+		<result property="vmVerMax" column="VM_VER_MAX" nullValue="" />
+		<result property="versionCode" column="VERSION_CODE" nullValue="" />
+		<result property="versionName" column="VERSION_NAME" nullValue="" />
+		<result property="pkgNm" column="PKG_NM" nullValue="" />
+		<result property="runFileNm" column="RUN_FILE_NM" nullValue="" />
+		<result property="appCtResultFile" column="APP_CT_RESULT_FILE" nullValue=""/>
+		<result property="appCtResultFileNm" column="APP_CT_RESULT_FILE_NM" nullValue=""/>
+		<result property="cid" column="CID" nullValue=""/>
+		<result property="verifyReqVer" column="VERIFY_REQ_VER" nullValue=""/>
+		<result property="scid" column="SCID" nullValue=""/>
+		<result property="itemCdList" resultMap="verify.resultMap-itemCdSubQuery" />
+	</resultMap>
+	
+	<resultMap class="verifyItemCd" id="verify.resultMap-itemCdSubQuery" groupBy="itemCd">
+		<result property="itemCd" column="ITEM_CD" nullValue="" />
+	</resultMap>
+	
+	<resultMap class="ctVerify" id="verify.resultMap-subCtVerifyHisList">
+		<result property="rnum" column="rnum" nullValue=""/>
+		<result property="ctEndDt" column="ctEndDt" nullValue="" />
+		<result property="ctEndExDt" column="ctEndExDt" nullValue="" />
+		<result property="verifyReqVer" column="verifyReqVer" nullValue=""/>
+		<result property="verifyPrgrYn" column="verifyPrgrYn" nullValue="" />
+		<result property="agrmntStat" column="agrmntStat" nullValue="" />
+		<result property="insDttm" column="insDttm" nullValue="" />
+		<result property="cid" column="cid" nullValue="" />
+		<result property="totalCount" column="totalCount" nullValue="" />
+	</resultMap>
+	
+	<resultMap class="subCtVerify" id="verify.resultMap-subCtVerifyHisList-subQuery">
+		<result property="versionCode" column="versionCode" nullValue="" />
+		<result property="versionName" column="versionName" nullValue="" />
+		<result property="runFileNm" column="runFileNm" nullValue="" />
+	</resultMap>  
+	
+	<sql id="DdayCalCulate">
+		, CASE WHEN ct_conts.verify_prgr_yn IN('PD005302' ,'PD005304' ,'PD005305')
+               THEN TO_CHAR(trunc(sysdate - to_date(ct_conts.ct_end_ex_dt, 'YYYYMMDD')) - 1) 
+               ELSE ''
+          END AS ctEndExDt
+        , CASE WHEN ct_conts.verify_prgr_yn IN ('PD005302', 'PD005304', 'PD005305')
+        	   THEN ct_conts.ct_end_ex_dt
+        	   WHEN ct_conts.verify_prgr_yn = 'PD005303'
+        	   THEN ct_conts.ct_end_dt
+        	   ELSE ''
+          END AS ctEndDt
+	</sql>
+	
+	<select id="Verify.getCtVerifyList" parameterClass="ctVerify" resultMap="verify.resultMap-ctVerifiListMap">
+		SELECT * FROM (
+			SELECT ROWNUM AS RNUM, T1.* FROM (
+				SELECT PT.*, COUNT(*) OVER() AS TOTAL_COUNT FROM(
+				SELECT /* Verify.getCtVerifyList jhhan 2011.03.23 : Contents_Verify_SqlMap.xml */
+					  RANK() OVER(PARTITION BY ct_conts.cid ORDER BY ct_conts.cid ASC, ct_conts.verify_req_ver DESC) AS RANK_NO
+					, ct_conts.cid
+					, ct_conts.verify_req_ver
+					, ct_conts.vm_type
+		            , ct_conts.prod_nm
+		            , ct_conts.ins_dttm
+		            , ct_conts.verify_prgr_yn
+		            , ct_conts.agrmnt_stat
+		            <include refid="DdayCalCulate"/>
+		            , pd_conts_img.file_pos
+				 FROM tbl_ct_conts ct_conts, tbl_pd_conts_img pd_conts_img
+				WHERE ct_conts.cid = pd_conts_img.cid
+		          AND pd_conts_img.img_gbn = 'DP000108'
+		          AND ct_conts.ins_by = pd_conts_img.ins_by
+		          <isNotEmpty property="insBy">
+					  AND ct_conts.ins_by = #insBy#
+					</isNotEmpty>
+					<isNotEmpty property="startDate">
+					  AND ct_conts.ins_dttm BETWEEN REPLACE(#startDate#, '-', '') || '000000'  AND REPLACE(#endDate#, '-', '') || '235959'
+					</isNotEmpty>
+					<isNotEmpty property="searchVmType">
+						AND ct_conts.vm_type IN
+						<iterate property="searchVmType" open="(" close=")" conjunction=",">
+					 					#searchVmType[]#
+					 	</iterate>
+					</isNotEmpty>
+					<isNotEmpty property="prodNm">
+					AND   UPPER(ct_conts.prod_nm) LIKE '%' || UPPER(#prodNm#) || '%'
+					</isNotEmpty>
+				ORDER BY ct_conts.ins_dttm DESC) PT
+		          WHERE RANK_NO = 1
+		          <isNotEmpty property="searchVerifyPrgrYn">
+						AND   PT.verify_prgr_yn IN 
+						<iterate property="searchVerifyPrgrYn" open="(" close=")" conjunction=",">
+												#searchVerifyPrgrYn[]#
+						</iterate>
+					</isNotEmpty>
+					<isNotEmpty property="searchAgrmntStat">
+					AND   PT.agrmnt_stat IN
+						<iterate property="searchAgrmntStat" open="(" close=")" conjunction=","> 
+										#searchAgrmntStat[]#
+						</iterate>
+					</isNotEmpty>)T1
+			WHERE ROWNUM &lt;= #page.endRow#)
+ 		WHERE RNUM >= #page.startRow#
+	</select>
+	
+	<!-- 검증현황 상세페이지 START -->
+	<select id="Verify.getContentVerifyDetailHead" parameterClass="ctVerify" resultClass="contentVerifyDetail">
+		SELECT /* Verify.getContentVerifyDetailHead jhhan 2011.03.23 : Contents_Verify_SqlMap.xml */
+				pd_conts.cid AS "cid"
+			  , pd_conts.prod_nm AS "prodNm"
+			  , pd_conts.prod_Desc_Smmr AS "prodDescSmmr"
+	          , pd_conts.vm_type AS "vmType"
+	          , pd_conts.aid AS "aid"
+	          , pd_conts.game_delib_grd AS "gameDelibGrd"
+	          , pd_conts.ins_dttm AS "insDttm"
+	          , ct_conts.verify_req_ver AS "verifyReqVer"
+	          , (SELECT file_pos FROM tbl_pd_conts_img WHERE cid = pd_conts.cid AND img_gbn = 'DP000109') AS "filePos"
+	          , (SELECT dp_cat_nm FROM tbl_dp_cat WHERE dp_cat_no = (SELECT ctgr_cd FROM tbl_pd_target_ctg WHERE cid = pd_conts.cid)) AS "ctgrCd"
+	          , (SELECT COUNT(*) FROM tbl_ct_sprt_phone where scid IN (SELECT scid FROM tbl_ct_sub_conts WHERE cid = #cid#) AND verify_req_ver = #verifyReqVer#) AS "sprtPhoneCnt"
+	    FROM tbl_pd_conts pd_conts, tbl_ct_conts ct_conts
+	   WHERE pd_conts.cid = ct_conts.cid
+	     AND pd_conts.cid = #cid#
+	     AND ct_conts.verify_req_ver = #verifyReqVer#
+	     AND pd_conts.del_yn = 'N'
+	     AND pd_conts.ins_by = #insBy#
+	</select>
+	
+	<select id="Verify.getSubContentsVerifyDetailState" parameterClass="ctVerify" resultClass="contentVerifyDetail">
+		SELECT /* Verify.getSubContentsVerifyDetailState jhhan 2011.03.23 : Contents_Verify_SqlMap.xml */
+			   ct_conts.cid AS "cid"
+			 , ct_conts.ins_dttm AS "ctInsDttm"
+        	 <include refid="DdayCalCulate"/>
+        	 , ct_conts.verify_req_ver AS "verifyReqVer"
+        	 , ct_conts.verify_prgr_yn AS "verifyPrgrYn"
+        	 , ct_conts.agrmnt_stat AS "agrmntStat"
+        	 , ct_conts.upd_dttm AS "updDttm"  
+		  FROM tbl_ct_conts ct_conts
+		 WHERE 1=1
+		   AND ct_conts.cid = (SELECT cid FROM tbl_pd_conts WHERE cid = #cid# AND ins_by = #insBy# AND del_yn = 'N')
+	       AND ct_conts.verify_req_ver = #verifyReqVer#
+	</select>
+	
+	<select id="Verify.getContentVerifyDetailBody" parameterClass="ctVerify" resultMap="verify.resultMap-subCtVerifyListMap">
+		SELECT /* Verify.getContentVerifyDetailBody jhhan 2011.03.23 : Contents_Verify_SqlMap.xml */
+      			ct_conts.ins_dttm
+      		  , DECODE (ct_conts.verify_prgr_yn, 'PD005302', (TO_CHAR(SYSDATE, 'yyyyMMdd') - ct_conts.ct_end_ex_dt)
+      		  			,'PD005304', (TO_CHAR(SYSDATE, 'yyyyMMdd') - ct_conts.ct_end_ex_dt) 
+      		  			,'PD005305', (TO_CHAR(SYSDATE, 'yyyyMMdd') - ct_conts.ct_end_ex_dt), 'PD005303', ct_conts.ct_end_dt) AS ctEndDt
+      		  , ct_conts.verify_prgr_yn
+      		  , DECODE (ct_conts.agrmnt_stat, 'PD005001', '-', ct_conts.agrmnt_stat) AS agrmntStat
+      		  , CASE 
+	            WHEN (ct_sub_conts.vm_ver_min IS NOT NULL)
+	            THEN (SELECT add_field1 
+	                    FROM tbl_comm_cd 
+	                   WHERE grp_cd = 'PD0091' 
+	                     AND cd_nm = ct_sub_conts.vm_ver_min) || '(' || ct_sub_conts.vm_ver_min || ')'
+	            ELSE ct_sub_conts.vm_ver_min
+	            END AS vm_ver_min
+	          , CASE 
+	            WHEN (ct_sub_conts.vm_ver_target IS NOT NULL AND ct_sub_conts.vm_ver_target != 'N/A')
+	            THEN (SELECT add_field1 
+	                    FROM tbl_comm_cd 
+	                   WHERE grp_cd = 'PD0091' 
+	                     AND cd_nm = ct_sub_conts.vm_ver_target) || '(' || ct_sub_conts.vm_ver_target || ')'
+	            ELSE ct_sub_conts.vm_ver_target
+	            END AS vm_ver_target
+	          , CASE 
+  	            WHEN (ct_sub_conts.vm_ver_max IS NOT NULL)
+	            THEN (SELECT add_field1 
+	                    FROM tbl_comm_cd 
+	                   WHERE grp_cd = 'PD0091' 
+	                     AND cd_nm = ct_sub_conts.vm_ver_max) || '(' || ct_sub_conts.vm_ver_max || ')'
+	            ELSE ct_sub_conts.vm_ver_max
+	            END AS vm_ver_max
+      		  , ct_sub_conts.version_code
+      		  , ct_sub_conts.version_name
+      		  , ct_sub_conts.pkg_nm
+      		  , ct_sub_conts.run_file_nm
+      		  , ct_sub_conts.app_ct_result_file
+      		  , ct_sub_conts.app_ct_result_file_nm
+      		  , ct_sub_conts.app_ct_cmt
+      		  , ct_provision_item.item_cd
+      		  , ct_conts.cid
+      		  , ct_conts.verify_req_ver
+      		  , ct_sub_conts.scid
+		FROM tbl_ct_conts ct_conts
+		   , tbl_ct_sub_conts ct_sub_conts
+		   , tbl_ct_provision_item ct_provision_item
+		WHERE ct_conts.cid = ct_sub_conts.cid
+		  AND ct_conts.verify_req_ver = ct_sub_conts.verify_req_ver 
+		  AND ct_sub_conts.scid = ct_provision_item.scid
+		  AND ct_sub_conts.verify_req_ver = ct_provision_item.verify_req_ver
+		  AND ct_conts.cid = #cid#
+		  AND ct_conts.verify_req_ver = #verifyReqVer#
+		ORDER BY ct_sub_conts.scid ASC, ct_provision_item.item_cd DESC 		  
+	</select>
+	
+	<select id="Verify.getContentVerifyDetailAddFile" parameterClass="ctVerify" resultClass="subCtVerify">
+		SELECT  /* Verify.getContentVerifyDetailAddFile jhhan 2011.03.23 : Contents_Verify_SqlMap.xml */
+				ct_add_file.add_file as addFile
+	          , ct_add_file.add_file_nm as addFileNm
+	          , ct_add_file.scid as scid
+		FROM tbl_ct_sub_conts ct_sub_conts, tbl_ct_add_file ct_add_file
+		WHERE ct_sub_conts.scid = ct_add_file.scid
+		  AND ct_sub_conts.verify_req_ver = ct_add_file.verify_req_ver
+		  AND ct_add_file.verify_req_ver = #verifyReqVer#
+		  AND ct_add_file.scid = #scid#
+		ORDER BY ct_add_file.add_file_nm
+	</select>
+	<!-- 검증현황 상세페이지 END -->
+	
+	<!-- 검증취소 START -->
+	<update id="Verify.updateContentVerifyCancel_TBL_PD_CONTS" parameterClass="java.util.HashMap">
+		UPDATE /* Verify.updateContentVerifyCancel_TBL_PD_CONTS jhhan 2011.03.23 : Contents_Verify_SqlMap.xml */
+			   tbl_pd_conts
+		   SET verify_prgr_yn = (DECODE((SELECT 'Y'
+							   	   FROM tbl_ct_conts x
+							      WHERE 1=1
+							        AND x.cid = #cid#
+							        AND x.verify_req_ver &lt; 99999999999999
+							        AND x.agrmnt_stat IN ('PD005002', 'PD005003')
+							        AND ROWNUM = 1), 'Y','PD005303', 'PD005399'))
+				,upd_by = #insBy#
+		        ,upd_dttm = TO_CHAR(sysdate, 'yyyyMMddHH24MISS')
+		 WHERE cid = #cid# 
+		   AND ins_by = #insBy#
+	</update>
+	
+	<update id="Verify.updateContentVerifyCancel_TBL_CT_CONTS" parameterClass="java.util.HashMap">
+		UPDATE /* Verify.updateContentVerifyCancel_TBL_CT_CONTS jhhan 2011.03.23 : Contents_Verify_SqlMap.xml */
+			   tbl_ct_conts 
+		   SET verify_prgr_yn = #verifyPrgrYn#
+		      ,upd_by = #insBy#
+		      ,upd_dttm = TO_CHAR(sysdate, 'yyyyMMddHH24MISS')
+		 WHERE cid = #cid#
+		   AND ins_by = #insBy#
+		   AND verify_prgr_yn = #verifyWaitFlag#
+	</update>
+	
+	<select id="Verify.getSubContents" parameterClass="ctVerify" resultMap="verify.resultMap-subCtVerifyHisList-subQuery">
+			SELECT /* Verify.getSubContents jhhan 2011.03.23 : Contents_Verify_SqlMap.xml */
+			  	ct_sub_conts.version_code AS "versionCode"
+	          , ct_sub_conts.version_name AS "versionName"
+	          , ct_sub_conts.run_file_nm AS "runFileNm"
+			FROM tbl_ct_conts ct_conts, tbl_ct_sub_conts ct_sub_conts
+			WHERE ct_conts.cid = ct_sub_conts.cid
+			  AND ct_conts.verify_req_ver = ct_sub_conts.verify_req_ver
+			  AND ct_conts.cid = #cid#
+			  AND ct_conts.verify_req_ver = #verifyReqVer#
+			  AND ct_conts.ins_by = #insBy#
+	        ORDER BY ct_sub_conts.scid ASC
+	</select>
+	<!-- 검증취소 END -->
+	
+	<select id="Verify.getSubContentsVerifyHisList" parameterClass="ctVerify" resultMap="verify.resultMap-subCtVerifyHisList">
+		SELECT * FROM (
+			SELECT ROWNUM AS RNUM, PT.* FROM (
+			SELECT /* Verify.getSubContentsVerifyHisList jhhan 2011.03.23 : Contents_Verify_SqlMap.xml */
+				COUNT(*) OVER() AS "totalCount"
+			  ,	ct_conts.verify_req_ver AS "verifyReqVer"
+	          <include refid="DdayCalCulate"/>
+	          , ct_conts.verify_prgr_yn AS "verifyPrgrYn"
+	          , ct_conts.agrmnt_stat AS "agrmntStat"
+	          , REPLACE(ct_conts.ins_dttm, '-', '') AS "insDttm"
+	          , ct_conts.cid AS "cid"
+			FROM tbl_ct_conts ct_conts
+			WHERE 1=1
+			  AND ct_conts.cid = #cid#
+			  AND ct_conts.ins_by = #insBy#
+			ORDER BY ct_conts.verify_req_ver DESC
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+</sqlMap>
