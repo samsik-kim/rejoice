@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="phModelDown">
+	
+	<select id="phModelDown.selectPhoneModel" parameterClass="java.lang.String" resultClass="java.lang.String">
+	SELECT APP_PATH
+  	FROM TBL_DP_COREAPP DC, TBL_DP_COREAPP_HP DCH
+ 	WHERE DC.COREAPP_ID = DCH.COREAPP_ID
+   	AND DC.APP_TYPE = 'DP002821'
+   	AND DCH.PHONE_MODEL_CD = #modelCd#
+   	AND DCH.VER_STATUS = 'DP005403'
+	</select>
+</sqlMap>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="main">
+	
+	<typeAlias alias="memberModel" type="com.omp.dev.member.model.Member" />
+	<typeAlias alias="downloadBest" type="com.omp.dev.main.model.MainDownloadBest" />
+	<typeAlias alias="notice" type="com.omp.dev.community.model.Notice"/>
+	
+	<resultMap id="main-resultMap" class="memberModel">
+		<result property="mbrClsCd"  		column="MBR_CLS_CD"/>
+		<result property="mbrCatCd"  		column="MBR_CAT_CD"/>
+	</resultMap>
+	
+	<select id="main.getmember" parameterClass="java.lang.String" resultMap="main-resultMap">
+		SELECT MBR_CLS_CD,
+		       MBR_CAT_CD
+		  FROM TBL_US_MEMBER
+		 WHERE MBR_NO = #mbrNo#	
+	</select>
+	
+	<!-- Free & Pay Download Best 5 -->
+	<resultMap id="downBest-resultMap" class="downloadBest">
+		<result property="prodID"  		column="PROD_ID"/>
+		<result property="prodNm"  		column="PROD_NM"/>
+		<result property="dwldCnt"  		column="DWLD_CNT"/>
+		<result property="expoPrior"  		column="EXPO_PRIOR"/>
+	</resultMap>
+	
+	<!-- Pay Download Best5 -->
+	<statement id="main.payDownloadBest" parameterClass="java.lang.String" resultMap="downBest-resultMap">
+		SELECT
+			*
+		FROM (
+			SELECT
+				A.*,
+				ROWNUM AS RNUM
+			FROM (
+		              SELECT
+							DB.PROD_ID,
+							P.PROD_NM,
+							DB.DWLD_CNT,
+							DB.EXPO_PRIOR
+		                FROM
+		                	TBL_DP_PAY_DWLD_BEST DB,
+							TBL_DP_PROD P
+						WHERE
+							DB.PROD_ID = P.PROD_ID
+							AND DB.EXPO_YN = 'Y'
+							AND DB.DP_CAT_NO = 'DP01'
+							AND TO_CHAR((SYSDATE - 1),'YYYYMMDD') BETWEEN DB.WK_END_DT AND DB.WK_END_DT
+						ORDER BY DB.EXPO_PRIOR, DB.DWLD_CNT DESC
+		             )A
+		       )
+		<![CDATA[
+			WHERE RNUM <= 5
+		]]>
+	</statement>
+	
+	<!-- Free Download Best5 -->
+	<statement id="main.freeDownloadBest" resultMap="downBest-resultMap">
+		SELECT
+			*
+		FROM (
+			SELECT
+				A.*,
+				ROWNUM AS RNUM
+			FROM (
+		              SELECT
+							DB.PROD_ID,
+							P.PROD_NM,
+							DB.DWLD_CNT,
+							DB.EXPO_PRIOR
+		                FROM
+		                	TBL_DP_FREE_DWLD_BEST DB,
+							TBL_DP_PROD P
+						WHERE
+							DB.PROD_ID = P.PROD_ID
+							AND DB.EXPO_YN = 'Y'
+							AND DB.DP_CAT_NO = 'DP01'
+			                AND TO_CHAR((SYSDATE - 1),'YYYYMMDD') BETWEEN DB.WK_END_DT AND DB.WK_END_DT
+		               ORDER BY DB.EXPO_PRIOR, DB.DWLD_CNT DESC
+		             )A
+		       )
+		<![CDATA[
+			WHERE RNUM <= 5
+		]]>
+	</statement>
+	
+	<!-- Main Page Notice List -->
+	<resultMap id="mainNotice-resultMap" class="notice">
+		<result property="noticeId" column="NOTICEID"/>
+		<result property="title" column="TITLE"/>
+		<result property="dscr" column="DSCR"/>
+		<result property="insDttm" column="INSDTTM"/>
+		<result property="newYn" column="NEW_YN"/>
+		<result property="downYn" column="DOWN_YN"/>
+		<result property="down_ofnm" column="DOWN_OFNM"/>
+		<result property="down_path" column="DOWN_PATH"/>
+	</resultMap>
+	<statement id="main.selectMainNotice" parameterClass="java.lang.String" resultMap="mainNotice-resultMap">
+	<![CDATA[
+		SELECT
+			B.*
+		FROM(
+			SELECT
+				ROWNUM AS RNUM,
+				A.*
+			FROM(
+				SELECT
+				    TBL.NOTICEID,
+				    TBL.TITLE,
+				    TBL.DSCR,
+				    TBL.INSDTTM,
+				    MAX(TBL.NEW_YN) as NEW_YN,
+				    MAX(TBL.DOWN_YN) as DOWN_YN,
+				    MAX(TBL.DOWN_OFNM) as DOWN_OFNM,
+				    MAX(TBL.DOWN_PATH) as DOWN_PATH
+				FROM(
+					SELECT
+						NOTI.NOTICE_ID AS NOTICEID,
+						NOTI.TITLE,
+						NOTI.DSCR,
+						NOTI.INS_DTTM AS INSDTTM,
+						(CASE WHEN NOTI.INS_DTTM BETWEEN TO_CHAR(SYSDATE-7, 'YYYYMMDDHH24MISS') AND TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') 
+						         THEN 'Y'
+						         ELSE ''
+						END) as NEW_YN,
+						(CASE CFUG.SEQ WHEN 2 THEN 'Y' ELSE '' END) as DOWN_YN,
+						(CASE CFUG.SEQ WHEN 2 THEN CFU.OFNM	ELSE '' END) as DOWN_OFNM,
+						(CASE CFUG.SEQ WHEN 2 THEN CFU.FNM ELSE '' END) as DOWN_PATH
+					FROM
+						TBL_NOTICE NOTI,
+						TBL_COMM_FILE_UPLOAD_GRP CFUG,
+						TBL_COMM_FILE_UPLOAD CFU
+					WHERE
+						NOTI.CTGR_CD = #ctgrcd#
+						AND NOTI.GID = CFUG.GID(+)
+						AND CFUG.FID = CFU.FID(+)
+						AND NOTI.DEL_YN = 'N'
+						AND NOTI.OPEN_YN = 'Y'
+				) TBL
+				GROUP BY TBL.NOTICEID, TBL.TITLE, TBL.DSCR, TBL.INSDTTM
+				ORDER BY TBL.INSDTTM DESC
+			) A
+		) B
+		WHERE RNUM <= 2
+		]]>
+	</statement>
+	
+</sqlMap>

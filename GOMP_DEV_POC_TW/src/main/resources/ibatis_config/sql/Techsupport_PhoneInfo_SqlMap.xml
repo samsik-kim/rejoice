@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="phone">
+	<typeAlias alias="phoneInfo" type="com.omp.dev.techsupport.phone.model.PhoneInfo"/>
+	
+	<resultMap class="phoneInfo" id="resultMap-phoneInfoList">
+		<result property="phoneModelCd" column="PHONE_MODEL_CD" nullValue=""/>
+		<result property="mgmtPhoneModelNm" column="MGMT_PHONE_MODEL_NM" nullValue=""/>
+		<result property="modelNm" column="MODEL_NM" nullValue=""/>
+		<result property="makeComp" column="MAKE_COMP" nullValue=""/>
+		<result property="vmType" column="VM_TYPE" nullValue=""/>
+		<result property="vmVer" column="VM_VER" nullValue=""/>
+		<result property="lcdSize" column="LCD_SIZE" nullValue=""/>
+		<result property="networkCd" column="NETWORK_CD" nullValue=""/>
+		<result property="listImgPos" column="LIST_IMG_POS" nullValue=""/>
+		<result property="totalCount" column="total_count" nullValue=""/>
+	</resultMap>
+	
+	<select id="phone.phoneInfoList" parameterClass="phoneInfo" resultMap="resultMap-phoneInfoList">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* Community_PhoneInfo_SqlMap.xml , Community_phoneInfo.phoneInfoList, DevPoC */
+				<include refid="GOMP.pagingTotalCount"/>
+				PHONE_MODEL_CD
+			  , MGMT_PHONE_MODEL_NM
+	          , MODEL_NM 
+	          , MAKE_COMP
+	          , VM_TYPE
+	          , VM_VER
+	          , LCD_SIZE
+	          , NETWORK_CD
+	          , LIST_IMG_POS
+		FROM TBL_PHONE_INFO
+		WHERE DEL_YN = 'N'
+		  AND SVC_CD = 'US005203'
+		<isEqual property="searchType" compareValue="makeComp">
+		  AND MAKE_COMP = #searchSelect#
+		</isEqual>
+		
+		<isEqual property="searchType" compareValue="modelNm">
+			<isNotEmpty property="searchText">
+				AND MGMT_PHONE_MODEL_NM LIKE '%'||#searchText#||'%'
+			</isNotEmpty>
+		</isEqual>
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+
+</sqlMap>

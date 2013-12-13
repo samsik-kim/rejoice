@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="false" enhancementEnabled="false" lazyLoadingEnabled="false" maxRequests="100" maxSessions="100" maxTransactions="100" useStatementNamespaces="false" />
+	
+    <typeAlias alias="String" type="java.lang.String"/>
+    <typeAlias alias="Integer" type="java.lang.Integer"/>
+    <typeAlias alias="Long" type="java.lang.Long"/>
+    <typeAlias alias="Double" type="java.lang.Double"/>
+    <typeAlias alias="Map" type="java.util.Map"/>
+    <typeAlias alias="HashMap" type="java.util.HashMap"/>
+    <typeAlias alias="List" type="java.util.List"/>
+    <typeAlias alias="ArrayList" type="java.util.ArrayList"/>
+    
+	<transactionManager type="JDBC">
+		<dataSource type="DBCP">
+			<property name="driverClassName"   			value="${omp.dev.db.default.driver}"  />
+			<property name="url"      					value="${omp.dev.db.default.url}"   />
+			<property name="username"     				value="${omp.dev.db.default.user}" />
+			<property name="password"     				value="${omp.dev.db.default.passwd}" />
+			<property name="maxActive"     				value="${omp.dev.db.default.max}"/>
+			<property name="initialSize"     			value="1"/>
+			<property name="removeAbandoned"    		value="true"/>
+			<property name="removeAbandonedTimeout"  	value="60"/>
+			<property name="logAbandoned"    			value="true"/>
+			<property name="Driver.SetBigStringTryClob" value="true"/>
+		</dataSource>		
+	</transactionManager>
+ 	<sqlMap resource="ibatis_config/sql/GOMP_SqlMap.xml"/>						<!-- 시스템 전체 공통 -->
+ 	<sqlMap resource="ibatis_config/sql/Communicate_SqlMap.xml"/>				<!-- 메일 및 sms 전송 요청 모듈용 -->
+	<sqlMap resource="ibatis_config/sql/Paging_SqlMap.xml"/>					<!-- Paging_SqlMap.xml 을 맨위로 놔주세요  -->
+	<sqlMap resource="ibatis_config/sql/Member_SqlMap.xml"/>
+	<sqlMap resource="ibatis_config/sql/MyPage_SqlMap.xml"/>					<!-- mypage -->
+	<sqlMap resource="ibatis_config/sql/Content_Status_SqlMap.xml"/>			<!-- Contents Status -->
+	<sqlMap resource="ibatis_config/sql/Content_DetailInfo_SqlMap.xml"/>		<!-- Contents Detail Info -->
+	<sqlMap resource="ibatis_config/sql/Content_DevBinary_SqlMap.xml"/>			<!-- Contents Dev Binary -->
+	<sqlMap resource="ibatis_config/sql/Contents_Verify_SqlMap.xml"/>           <!-- Contents Verify -->
+	<sqlMap resource="ibatis_config/sql/User_SqlMap.xml"/>						<!--  -->
+	<sqlMap resource="ibatis_config/sql/Main_SqlMap.xml"/>						<!--  -->
+	<sqlMap resource="ibatis_config/sql/Contents_TestPhSet_SqlMap.xml"/>        <!-- Contents OTA -->
+	<sqlMap resource="ibatis_config/sql/Community_Notice_SqlMap.xml"/>
+	<sqlMap resource="ibatis_config/sql/Community_Faq_SqlMap.xml"/>
+	<sqlMap resource="ibatis_config/sql/Community_Qna_SqlMap.xml"/>
+	<sqlMap resource="ibatis_config/sql/Community_WebNotice_SqlMap.xml"/>
+	<sqlMap resource="ibatis_config/sql/Community_WebFaq_SqlMap.xml"/>
+	<sqlMap resource="ibatis_config/sql/PhoneModel_Down_SqlMap.xml"/>
+
+	<sqlMap resource="ibatis_config/sql/Techsupport_PhoneInfo_SqlMap.xml"/>
+	<sqlMap resource="ibatis_config/sql/Common_SqlMap.xml"/>
+	
+	<sqlMap resource="ibatis_config/sql/TwID_Generate_SqlMap.xml"/>		<!-- Temp TWID Generate -->
+	<!-- PRODUCT HISTORY -->
+	<sqlMap resource="ibatis_config/sql/ProductHistory_SqlMap.xml"/>
+	<!-- PRODUCT DOWNLOAD DEPLOY -->
+	<sqlMap resource="ibatis_config/sql/DownloadDeploy_SqlMap.xml"/>
+	<!-- PRODUCT DISPLAY DEPLOY -->
+	<sqlMap resource="ibatis_config/sql/DisplayDeploy_SqlMap.xml"/>
+	<!-- PURCHASE -->
+	<sqlMap resource="ibatis_config/sql/Purchase_SqlMap.xml"/>
+	<!-- PRODUCT ARM  -->
+	<sqlMap resource="ibatis_config/sql/ARMManager_SqlMap.xml"/>
+	
+	<sqlMap resource="ibatis_config/sql/Settlement_DailySale_SqlMap.xml"/>
+	<sqlMap resource="ibatis_config/sql/Settlement_ProductSale_SqlMap.xml"/>
+	<sqlMap resource="ibatis_config/sql/Settlement_Report_SqlMap.xml"/>
+	
+</sqlMapConfig>

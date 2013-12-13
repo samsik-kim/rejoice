@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="login" extends="dev-common" namespace="/login">
+	
+		<action name="loginMain" class="com.omp.dev.user.action.LoginAction" method="loginMain">
+			<result>/${loc.language}/jsp/user/login.jsp</result>
+		</action>
+		
+		<action name="login" class="com.omp.dev.user.action.LoginAction" method="login">
+			<result>/${loc.language}/jsp/user/loginResult.jsp</result>
+		</action>
+		
+		<action name="ajaxLogin" class="com.omp.dev.user.action.LoginAction" method="ajaxLogin"/>
+		
+		<action name="loginResult" class="com.omp.dev.user.action.LoginAction" method="loginResult">
+			<result>/${loc.language}/jsp/user/loginResult.jsp</result>
+		</action>
+		
+		<action name="ajaxReEmailCertification" class="com.omp.dev.user.action.LoginAction" method="ajaxReEmailCertification">
+			<result>/${loc.language}/jsp/user/pop/popupReEmailCertification.jsp</result>
+		</action>
+		
+		<action name="reEmailCertification" class="com.omp.dev.user.action.LoginAction" method="reEmailCertification" />
+		
+		<action name="ajaxSendTempPassword" class="com.omp.dev.user.action.LoginAction" method="ajaxSendTempPassword">
+			<result>/${loc.language}/jsp/user/pop/popupSendTempPassword.jsp</result>
+		</action>
+		
+		<action name="find*" class="com.omp.dev.user.action.LoginAction" method="find{1}">
+			<result name="input" type="chain">findId</result>
+        	<result name="inputP" type="chain">findPw</result>
+			<result>/${loc.language}/jsp/user/find{1}.jsp</result>
+		</action>
+		
+	</package>
+	
+	<package name="user" extends="dev-common" namespace="/user">
+		<action name="email*" class="com.omp.dev.user.action.LoginAction" method="email{1}">
+			<result name="successV">/${loc.language}/jsp/user/pop/popupEmailReConfirm.jsp</result>
+			<result name="success"></result>
+		</action>
+	</package>
+	
+	<package name="logout" extends="dev-common" namespace="/logout" >
+		<action name="logout" class="com.omp.dev.user.action.LogoutAction" method="logout">
+			<result type="redirectAction">
+				<param name="actionName">main</param>
+				<param name="namespace">/main</param>
+			</result>
+        </action>
+	</package>
+
+</struts>

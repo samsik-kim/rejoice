@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="member">
+
+	<typeAlias alias="memberModel" type="com.omp.dev.member.model.Member" />
+
+	<resultMap id="member-resultMap" class="memberModel">
+		<result property="mbrId"  			column="MBR_ID"/>
+		<result property="emailCertYn"  	column="EMAIL_CERT_YN"/>
+	</resultMap>
+ 	
+ 	<!-- [CHECK] ps_reg_no, mbr_nm -->
+	<statement id="member.registCheck" parameterClass="memberModel" resultClass="java.lang.Integer">
+		SELECT COUNT(0) 
+			FROM TBL_US_MEMBER
+		WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		  AND MBR_CLS_CD = #mbrClsCd#
+		  AND MBR_STAT_CD IN ('US000500', 'US000503', 'US000504')
+		<dynamic>
+			<isNotEmpty property="psRegNo">
+				AND PS_REG_NO = #psRegNo#
+			</isNotEmpty>
+			<isNotEmpty property="mbrNm">
+				<isEqual property="mbrClsCd" compareValue="US000101">
+					AND MBR_NM = #mbrNm#
+				</isEqual>
+				<isEqual property="mbrClsCd" compareValue="US000102">
+					AND COMP_NM = #mbrNm#
+				</isEqual>
+				<isEqual property="mbrClsCd" compareValue="US000103">
+					AND MBR_NM = #mbrNm#
+				</isEqual>
+			</isNotEmpty>
+		</dynamic>
+	</statement>
+	
+	<!-- Email Check -->
+	<select id="member.emailCheck" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+		SELECT COUNT(0)
+			FROM TBL_US_MEMBER
+		WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		  AND MBR_STAT_CD IN ('US000500', 'US000503', 'US000504')
+		  AND EMAIL_ADDR  = #email#
+	</select>
+	
+	<!-- ID Check -->
+	<select id="member.idCheck" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+		SELECT COUNT(0)
+			FROM TBL_US_MEMBER
+		WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		  AND MBR_ID  = #mbrId#		
+	</select>
+	
+	<!-- MBR_NO -->
+	<select id="member.getMbrNo" parameterClass="java.lang.String" resultClass="java.lang.String">
+		SELECT MBR_NO
+			FROM TBL_US_MEMBER
+		WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		  AND MBR_ID  = #mbrId# 
+	</select>
+	
+	<select id="member.getEmailCert" parameterClass="java.lang.String" resultMap="member-resultMap">
+		SELECT MBR_ID, EMAIL_CERT_YN
+			FROM TBL_US_MEMBER
+		WHERE MBR_NO = #mbrNo#
+	</select>
+	
+	<!--  -->
+	<select id="member.secedeIdCheck" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+	<![CDATA[
+		SELECT COUNT (0)
+		  FROM TBL_US_MEMBER
+		 WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+			 AND TO_CHAR (SYSDATE, 'yyyymmdd') <=
+		          (SELECT TO_CHAR (ADD_MONTHS (SUBSTR(MBR_END_DT, 1, 8), 6), 'yyyymmdd')
+		             FROM TBL_US_MEMBER
+	]]>
+		            WHERE MBR_NO = #mbrNo#)
+		       AND MBR_NO = #mbrNo#
+		       
+	</select>
+	
+	<!-- INSERT MEMBER -->
+	<insert id="member.insertMember" parameterClass="memberModel">
+		INSERT 
+		INTO TBL_US_MEMBER(
+			MBR_NO, MBR_CLS_CD, MBR_CAT_CD, DEV_MBR_STAT_CD, MBR_GR_CD, MBR_START_DT,
+			MBR_ID, MBR_PW, HP_NO, CITY, EMAIL_ADDR, REG_DTTM, PS_REG_NO,  
+			MBR_STAT_REG_DT, MBR_STAT_CD
+			<isNotEmpty property="mbrNm">,MBR_NM</isNotEmpty>
+			<isNotEmpty property="mbrEndDt">,MBR_END_DT</isNotEmpty>
+			<isNotEmpty property="mbrApprDt">,MBR_APPR_DT</isNotEmpty>
+			<isNotEmpty property="emailCertYn">,EMAIL_CERT_YN</isNotEmpty>
+			<isNotEmpty property="telNo">,TEL_NO</isNotEmpty>
+			<isNotEmpty property="birthDt">,BIRTH_DT</isNotEmpty>
+			<isNotEmpty property="naCd">,NA_CD</isNotEmpty>
+			<isNotEmpty property="sex">,SEX</isNotEmpty>
+			<isNotEmpty property="zipCd">,ZIP_CD</isNotEmpty>
+			<isNotEmpty property="homeAddrDtl">,HOME_ADDR_DTL</isNotEmpty>
+			<isNotEmpty property="newsYn">,NEWS_YN</isNotEmpty>
+			<isNotEmpty property="webSiteUrl">,WEB_SITE_URL</isNotEmpty>
+			<isNotEmpty property="opNm">,OP_NM</isNotEmpty>
+			<isNotEmpty property="opEmailAddr">,OP_EMAIL_ADDR</isNotEmpty>
+			<isNotEmpty property="opTelNo">,OP_TEL_NO</isNotEmpty>
+			<isNotEmpty property="opHpNo">,OP_HP_NO</isNotEmpty>
+			<isNotEmpty property="compNm">,COMP_NM</isNotEmpty>
+			<isNotEmpty property="bizCatCd">,BIZ_CAT_CD</isNotEmpty>
+			<isNotEmpty property="updId">,UPD_ID</isNotEmpty>
+			<isNotEmpty property="updDttm">,UPD_DTTM</isNotEmpty>
+		)VALUES(
+    		TO_CHAR(SEQ_US_MEMBER.NEXTVAL, 'FM000000000000000000000000000000'), #mbrClsCd#, 'US000205', 'US000801', 'US005001', TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),
+			#mbrId#, #mbrPw#, #hpNo#, #city#, #emailAddr#, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'), #psRegNo#, 
+			TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'), 'US000500'
+			<isNotEmpty property="mbrNm">,#mbrNm#</isNotEmpty>
+			<isNotEmpty property="mbrEndDt">,#mbrEndDt#</isNotEmpty>
+			<isNotEmpty property="mbrApprDt">,#mbrApprDt#</isNotEmpty>
+			<isNotEmpty property="emailCertYn">,#emailCertYn#</isNotEmpty>
+			<isNotEmpty property="telNo">,#telNo#</isNotEmpty>
+			<isNotEmpty property="birthDt">,#birthDt#</isNotEmpty>
+			<isNotEmpty property="naCd">,#naCd#</isNotEmpty>
+			<isNotEmpty property="sex">,#sex#</isNotEmpty>
+			<isNotEmpty property="zipCd">,#zipCd#</isNotEmpty>
+			<isNotEmpty property="homeAddrDtl">,#homeAddrDtl#</isNotEmpty>
+			<isNotEmpty property="newsYn">,#newsYn#</isNotEmpty>
+			<isNotEmpty property="webSiteUrl">,#webSiteUrl#</isNotEmpty>
+			<isNotEmpty property="opNm">,#opNm#</isNotEmpty>
+			<isNotEmpty property="opEmailAddr">,#opEmailAddr#</isNotEmpty>
+			<isNotEmpty property="opTelNo">,#opTelNo#</isNotEmpty>
+			<isNotEmpty property="opHpNo">,#opHpNo#</isNotEmpty>
+			<isNotEmpty property="compNm">,#compNm#</isNotEmpty>
+			<isNotEmpty property="bizCatCd">,#bizCatCd#</isNotEmpty>
+			<isNotEmpty property="updId">,#updId#</isNotEmpty>
+			<isNotEmpty property="updDttm">,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')</isNotEmpty>
+		)
+	</insert>
+	
+	<!-- MEMBER_HIST -->
+	<insert id="member.insertMemberHst" parameterClass="java.lang.String">
+		INSERT INTO TBL_US_MEMBER_SUB_HIST (MBR_NO, FREE_DEV_START_DT)
+		   SELECT MBR_NO, MBR_START_DT
+		     FROM TBL_US_MEMBER
+		    WHERE MBR_NO = #mbrNo#
+	</insert>
+	
+	<!-- [JOIN] MEMBER UPDATE  -->
+	<update id="member.updateMemberJoin" parameterClass="java.lang.String">
+		UPDATE TBL_US_MEMBER
+		  SET
+			DEV_MBR_STAT_CD = 'US000802',
+			MBR_STAT_CD		= 'US000503',
+			MBR_APPR_DT		= TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),
+			EMAIL_CERT_YN	= 'Y',
+			MBR_STAT_REG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),
+			UPD_ID			= #mbrNo#,
+			UPD_DTTM		= TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') 
+		WHERE MBR_NO = #mbrNo#
+	</update>
+	
+</sqlMap>

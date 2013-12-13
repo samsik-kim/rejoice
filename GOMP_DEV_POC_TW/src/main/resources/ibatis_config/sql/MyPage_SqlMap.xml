@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MyPage">
+	<select id="MyPage.selectCertificationPassword" parameterClass="java.util.HashMap" resultClass="java.lang.String" >
+		SELECT DECODE(MBR_PW, #usrPw#, 'SUCCESS', 'FAIL')
+		FROM TBL_US_MEMBER
+		WHERE MBR_NO = #mbrNo#
+	</select>
+	
+	<typeAlias alias="memberModel" type="com.omp.dev.member.model.Member" />
+	<typeAlias alias="memberWithdrawModel" type="com.omp.dev.member.model.MemberWithdrawInfo" />
+	<typeAlias alias="bankModel" type="com.omp.dev.member.model.Bank" />
+	
+	<resultMap id="profile-resultMap" class="memberModel">
+		<result property="mbrNo"  			column="MBR_NO"/>
+		<result property="mbrClsCd"  		column="MBR_CLS_CD"/>
+		<result property="mbrCatCd"  		column="MBR_CAT_CD"/>
+		<result property="devMbrStatCd"  	column="DEV_MBR_STAT_CD"/>
+		<result property="mbrId"  			column="MBR_ID"/>
+		<result property="mbrPw"  			column="MBR_PW"/>
+		<result property="mbrNm"  			column="MBR_NM"/>
+		<result property="telNo"  			column="TEL_NO"/>
+		<result property="hpNo"  			column="HP_NO"/>
+		<result property="naCd"  			column="NA_CD"/>
+		<result property="city"  			column="CITY"/>
+		<result property="zipCd"  			column="ZIP_CD"/>
+		<result property="homeAddrDtl"  	column="HOME_ADDR_DTL"/>
+		<result property="emailAddr"  		column="EMAIL_ADDR"/>
+		<result property="webSiteUrl"  		column="WEB_SITE_URL"/>
+		<result property="opNm"  			column="OP_NM"/>
+		<result property="opEmailAddr"  	column="OP_EMAIL_ADDR"/>
+		<result property="opTelNo"  		column="OP_TEL_NO"/>
+		<result property="opHpNo"  			column="OP_HP_NO"/>
+		<result property="psRegNo"  		column="PS_REG_NO"/>
+		<result property="compNm"  			column="COMP_NM"/>
+		<result property="payTransDt"  		column="PAY_TRANS_DT"/>
+		<result property="lastTransRegDt"	column="LAST_TRANS_REG_DT"/>
+	</resultMap>
+	
+	<resultMap class="bankModel" id="bankModel-resultMap">
+		<result property="cdNm"				column="CD_NM"/>
+		<result property="dtlFullCd"		column="DTL_FULL_CD"/>
+		<result property="addField1"		column="ADD_FIELD1"/>
+	</resultMap>
+	
+	<select id="MyPage.selectCommCdList" parameterClass="java.lang.String" resultMap="bankModel-resultMap">
+		SELECT
+			BANK_CD as DTL_FULL_CD,
+			BANK_NM as CD_NM,
+			BANK_BRIEF_NM as ADD_FIELD1
+		FROM TBL_COMM_BANK_CD
+		WHERE
+			BANK_NM LIKE '%' ||  #cdNm# || '%'
+			OR BANK_BRIEF_NM LIKE '%' || #cdNm# || '%'
+		ORDER BY BANK_CD ASC
+	</select>
+	
+	<select id="MyPage.selectMemberProfile" parameterClass="java.lang.String" resultMap="profile-resultMap" >
+		SELECT MBR_NO, MBR_CLS_CD, MBR_CAT_CD, DEV_MBR_STAT_CD, MBR_NM, PS_REG_NO, MBR_ID, EMAIL_ADDR, MBR_PW, NA_CD, CITY,
+			   HOME_ADDR_DTL, ZIP_CD, TEL_NO, HP_NO, WEB_SITE_URL, OP_NM, OP_EMAIL_ADDR, OP_TEL_NO, OP_HP_NO, COMP_NM, 
+			   TO_CHAR(TO_DATE(PAY_TRANS_DT, 'YYYYMMDDHH24MISS'), 'YYYY.MM.DD') PAY_TRANS_DT,
+			   TO_CHAR(TO_DATE(LAST_TRANS_REG_DT, 'YYYYMMDDHH24MISS'), 'YYYYMMDD') LAST_TRANS_REG_DT 
+		FROM TBL_US_MEMBER
+		<dynamic>
+		WHERE MBR_NO = #mbrNo#
+		</dynamic>
+	</select>
+	
+	<update id="MyPage.updateMemberInfo" parameterClass="memberModel">
+		UPDATE TBL_US_MEMBER SET
+		<dynamic>
+		MBR_ID = #mbrId#
+		<isNotEmpty property="emailAddr">, EMAIL_ADDR = #emailAddr#</isNotEmpty>
+		, UPD_ID = #mbrNo#
+		, UPD_DTTM = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		</dynamic>
+		WHERE MBR_NO = #mbrNo#
+	</update>
+	
+	
+	<update id="MyPage.updateMemberProfile" parameterClass="memberModel">
+		UPDATE TBL_US_MEMBER SET
+		<dynamic>
+		MBR_ID = #mbrId#
+		, WEB_SITE_URL = #webSiteUrl#
+		, ZIP_CD = #zipCd#
+		<isNotEmpty property="mbrPw">, MBR_PW = #mbrPw#</isNotEmpty>
+		<isNotEmpty property="city">, CITY = #city#</isNotEmpty>
+		<isNotEmpty property="homeAddrDtl">, HOME_ADDR_DTL = #homeAddrDtl#</isNotEmpty>
+		<isNotEmpty property="telNo">, TEL_NO = #telNo#</isNotEmpty>
+		<isNotEmpty property="hpNo">, HP_NO = #hpNo#</isNotEmpty>
+		<isNotEmpty property="opNm">, OP_NM = #opNm#</isNotEmpty>
+		<isNotEmpty property="opEmailAddr">, OP_EMAIL_ADDR = #opEmailAddr#</isNotEmpty>
+		<isNotEmpty property="opTelNo">, OP_TEL_NO = #opTelNo#</isNotEmpty>
+		<isNotEmpty property="opHpNo">, OP_HP_NO = #opHpNo#</isNotEmpty>
+		<isNotEmpty property="naCd">, NA_CD = #naCd#</isNotEmpty>
+		<isNotEmpty property="emailAddr">, EMAIL_ADDR = #emailAddr#</isNotEmpty>
+		, UPD_ID = #mbrNo#
+		, UPD_DTTM = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		</dynamic>
+		WHERE MBR_NO = #mbrNo#
+	</update>
+	
+	<typeAlias alias="transHistModel" type="com.omp.dev.member.model.MemberTransHist" />
+	
+	<resultMap id="calculInfo-resultMap" class="transHistModel">
+		<result property="bizCatCd"  		column="BIZ_CAT_CD"/>
+		<result property="acctNm"  			column="ACCT_NM"/>
+		<result property="bankNm"  			column="BACK_NM"/>
+		<result property="bankCd"  			column="BACK_CD"/>
+		<result property="banckBranchNm"  	column="BACK_BRANCH_NM"/>
+		<result property="banckBranchCd"  	column="BACK_BRANCH_CD"/>
+		<result property="acctNo"  			column="ACCT_NO"/>
+		<result property="currentcyUnit"  	column="CURRENCY_UNIT"/>
+		<result property="bankGlCd"  		column="BACK_GL_CD"/>
+		<result property="bankGlType"  		column="BACK_GL_TYPE"/>
+		<result property="acctDocNm"  		column="ACCT_DOC"/>
+		<result property="identityDocNm"  	column="ID_DOC"/>
+		<result property="identityDocPath"  column="ID_DOC_PATH"/>
+		<result property="acctDocPath"  	column="ACCT_DOC_PATH"/>
+	</resultMap>
+	
+	<select id="MyPage.selectCurrentCalculateInfo" parameterClass="java.util.HashMap" resultMap="calculInfo-resultMap">
+		SELECT BIZ_CAT_CD, ACCT_NM, BACK_NM, BACK_CD, BACK_BRANCH_NM, BACK_BRANCH_CD,
+		       ACCT_NO, CURRENCY_UNIT, BACK_GL_CD, BACK_GL_TYPE,
+		       MAX(CASE DOC_HM_CD WHEN 'US001904' THEN FILE_NM ELSE NULL END) AS ACCT_DOC, 
+		       MAX(CASE DOC_HM_CD WHEN 'US001904' THEN NULL ELSE FILE_NM END) AS ID_DOC,
+		       MAX(CASE DOC_HM_CD WHEN 'US001904' THEN FILE_PATH ELSE NULL END) AS ACCT_DOC_PATH, 
+		       MAX(CASE DOC_HM_CD WHEN 'US001904' THEN NULL ELSE FILE_PATH END) AS ID_DOC_PATH 
+		  FROM TBL_US_TRANS_HIST A, 
+		       TBL_US_MEMBER_DOC B 
+		 WHERE A.MBR_NO = B.MBR_NO 
+		   AND A.TRANS_NO = B.TRANS_NO 
+		   <dynamic>
+		   AND A.MBR_NO = #mbrNo# 
+		   AND A.TRANS_NO = #transNo# 
+		   </dynamic>
+		 GROUP BY BIZ_CAT_CD, ACCT_NM, BACK_NM, BACK_CD, BACK_BRANCH_NM, BACK_BRANCH_CD, ACCT_NO, CURRENCY_UNIT, BACK_GL_CD, BACK_GL_TYPE
+	</select>
+	
+	<select id="MyPage.selectCurrentCalculateStat" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+		SELECT TO_CHAR(TRANS_NO) TRANS_NO,
+		      CASE PRC_STAT_CD
+		         WHEN 'US000805' THEN 'EDIT'
+		         WHEN 'US000809' THEN 'VIEW'
+		         WHEN 'US000810' THEN 'EDIT'
+		         WHEN 'US000811' THEN 'REJECT'
+		         WHEN 'US000812' THEN 'EDIT'
+		         WHEN 'US000813' THEN 'POP'
+		      END
+		         AS DISP_STAT
+		FROM (	SELECT TRANS_NO, PRC_STAT_CD
+				FROM TBL_US_TRANS_HIST
+				<dynamic>
+				WHERE MBR_NO = #mbrNo#
+				</dynamic>
+				AND ACCT_NO IS NOT NULL
+				AND PRC_STAT_CD IN
+		                       ('US000805',
+		                        'US000809',
+		                        'US000810',
+		                        'US000811',
+		                        'US000812',
+		                        'US000813')
+		       ORDER BY TRANS_NO DESC)
+		WHERE ROWNUM = 1
+	</select>
+	
+	<select id="MyPage.selectLastValidTransNo" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+		SELECT /*+ INDEX_DESC(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_01) */
+				TO_CHAR(TRANS_NO) TRANS_NO,
+				'EDIT' AS DISP_STAT
+		FROM TBL_US_TRANS_HIST
+		WHERE MBR_NO = #mbrNo#
+		  AND ACCT_NO IS NOT NULL
+		  AND PRC_STAT_CD IN ('US000805', 'US000810', 'US000813')
+		  AND ROWNUM = 1
+	</select>
+	
+	<select id="MyPage.selectTransSEQ" resultClass="java.lang.String">
+		SELECT SEQ_US_TRANS_HIST.NEXTVAL
+		FROM DUAL
+	</select>
+	
+	<insert id="MyPage.insertUsTransHistByModel" parameterClass="transHistModel">
+		INSERT INTO TBL_US_TRANS_HIST (
+		TRANS_NO
+		, MBR_NO
+		<dynamic>
+		<isNotEmpty property="city">, CITY</isNotEmpty>
+		<isNotEmpty property="zipCd">, ZIP_CD</isNotEmpty>
+		<isNotEmpty property="homeAddrDtl">, HOME_ADDR_DTL</isNotEmpty>
+		<isNotEmpty property="webSiteUrl">, WEB_SITE_URL</isNotEmpty>
+		<isNotEmpty property="opNm">, OP_NM</isNotEmpty>
+		<isNotEmpty property="opEmail">, OP_EMAIL_ADDR</isNotEmpty>
+		<isNotEmpty property="opTelNo">, OP_TEL_NO</isNotEmpty>
+		<isNotEmpty property="opHpNo">, OP_HP_NO</isNotEmpty>
+		<isNotEmpty property="acctNo">, ACCT_NO</isNotEmpty>
+		<isNotEmpty property="bankNm">, BACK_NM</isNotEmpty>
+		<isNotEmpty property="bankCd">, BACK_CD</isNotEmpty>
+		<isNotEmpty property="banckBranchNm">, BACK_BRANCH_NM</isNotEmpty>
+		<isNotEmpty property="banckBranchCd">, BACK_BRANCH_CD</isNotEmpty>
+		<isNotEmpty property="currentcyUnit">, CURRENCY_UNIT</isNotEmpty>
+		<isNotEmpty property="bankGlCd">, BACK_GL_CD</isNotEmpty>
+		<isNotEmpty property="bankGlType">, BACK_GL_TYPE</isNotEmpty>
+		<isNotEmpty property="acctNm">, ACCT_NM</isNotEmpty>
+		<isNotEmpty property="compNm">, COMP_NM</isNotEmpty>
+		<isNotEmpty property="psRegNo">, PS_REG_NO</isNotEmpty>
+		<isNotEmpty property="bizCatCd">, BIZ_CAT_CD</isNotEmpty>
+		</dynamic>
+		, TRACE_INFO
+		, PRC_STAT_CD
+		, REG_ID
+		, REG_DTTM
+		) 
+		VALUES(
+		<dynamic>
+		#transNo#
+		, #mbrNo#
+		<isNotEmpty property="city">, #city#</isNotEmpty>
+		<isNotEmpty property="zipCd">, #zipCd#</isNotEmpty>
+		<isNotEmpty property="homeAddrDtl">, #homeAddrDtl#</isNotEmpty>
+		<isNotEmpty property="webSiteUrl">, #webSiteUrl#</isNotEmpty>
+		<isNotEmpty property="opNm">, #opNm#</isNotEmpty>
+		<isNotEmpty property="opEmail">, #opEmail#</isNotEmpty>
+		<isNotEmpty property="opTelNo">, #opTelNo#</isNotEmpty>
+		<isNotEmpty property="opHpNo">, #opHpNo#</isNotEmpty>
+		<isNotEmpty property="acctNo">, #acctNo#</isNotEmpty>
+		<isNotEmpty property="bankNm">, #bankNm#</isNotEmpty>
+		<isNotEmpty property="bankCd">, #bankCd#</isNotEmpty>
+		<isNotEmpty property="banckBranchNm">, #banckBranchNm#</isNotEmpty>
+		<isNotEmpty property="banckBranchCd">, #banckBranchCd#</isNotEmpty>
+		<isNotEmpty property="currentcyUnit">, #currentcyUnit#</isNotEmpty>
+		<isNotEmpty property="bankGlCd">, #bankGlCd#</isNotEmpty>
+		<isNotEmpty property="bankGlType">, #bankGlType#</isNotEmpty>
+		<isNotEmpty property="acctNm">, #acctNm#</isNotEmpty>
+		<isNotEmpty property="compNm">, #compNm#</isNotEmpty>
+		<isNotEmpty property="psRegNo">, #psRegNo#</isNotEmpty>
+		<isNotEmpty property="bizCatCd">, #bizCatCd#</isNotEmpty>
+		, #traceInfo#
+		, #prcStatCd#
+		, #mbrNo#
+		, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		</dynamic>
+		)
+	</insert>
+	
+	<typeAlias alias="memDocModel" type="com.omp.dev.member.model.MemberDoc" />
+	
+	<insert id="MyPage.insertMemberDoc" parameterClass="memDocModel">
+		INSERT INTO TBL_US_MEMBER_DOC (
+		TRANS_NO, 
+		DOC_HM_CD, 
+		FILE_PATH, 
+		FILE_NM, 
+		FILE_SIZE, 
+		LST_VALID_YN, 
+		REG_ID, 
+		REG_DTTM, 
+		MBR_NO
+		)
+		VALUES(
+		<dynamic>
+		#transNo#
+		, #docHmCd#
+		, #filePath#
+		, #fileNm#
+		, #fileSize#
+		, 'N'
+		, #mbrNo#
+		, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		, #mbrNo#
+		</dynamic>
+		)
+	</insert>
+	
+	<update id="MyPage.updateMemberStat" parameterClass="java.util.HashMap">
+		UPDATE TBL_US_MEMBER SET 
+				DEV_MBR_STAT_CD = #devMbrStatCd#
+				<dynamic>
+					<isNotEmpty property="mbrCatCd">, MBR_CAT_CD = #mbrCatCd#</isNotEmpty>
+					<isEqual property="devMbrStatCd" compareValue="US000807">
+						, MBR_STAT_CD = #mbrStatCd#
+						, MBR_END_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+					</isEqual>
+					<isEqual property="mbrCatCd" compareValue="US000206">, PAY_TRANS_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')</isEqual>
+				</dynamic>
+				, MBR_STAT_REG_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+				, LAST_TRANS_REG_DT = (CASE WHEN #devMbrStatCd# = 'US000804'
+				                            THEN TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+				                            ELSE LAST_TRANS_REG_DT
+				                       END)
+				, UPD_ID = #mbrNo#
+				, UPD_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		WHERE MBR_NO = #mbrNo#
+	</update>
+	
+	<insert id="MyPage.insertCalculateInfoBySelect" parameterClass="transHistModel">
+		INSERT INTO TBL_US_TRANS_HIST (TRANS_NO,
+		                               MBR_NO,
+		                               CITY,
+		                               ZIP_CD,
+		                               HOME_ADDR_DTL,
+		                               WEB_SITE_URL,
+		                               OP_NM,
+		                               OP_EMAIL_ADDR,
+		                               OP_TEL_NO,
+		                               ACCT_NO,
+		                               BACK_NM,
+		                               BACK_BRANCH_CD,
+		                               BACK_BRANCH_NM,
+		                               BACK_CD,
+		                               CURRENCY_UNIT,
+		                               BACK_GL_CD,
+		                               BACK_GL_TYPE,
+		                               ACCT_NM,
+		                               ACCT_CERT_YN,
+		                               COMP_NM,
+		                               PS_REG_NO,
+		                               BIZ_CAT_CD,
+		                               TRACE_INFO,
+		                               PRC_STAT_CD,
+		                               REG_ID,
+		                               REG_DTTM,
+		                               REJ_REASON)
+		SELECT
+			   #transNo#,
+		       #mbrNo#,
+		       CITY,
+		       ZIP_CD,
+		       HOME_ADDR_DTL,
+		       WEB_SITE_URL,
+		       OP_NM,
+		       OP_EMAIL_ADDR,
+		       OP_TEL_NO,
+		       ACCT_NO,
+		       BACK_NM,
+		       BACK_BRANCH_CD,
+		       BACK_BRANCH_NM,
+		       BACK_CD,
+		       CURRENCY_UNIT,
+		       BACK_GL_CD,
+		       BACK_GL_TYPE,
+		       ACCT_NM,
+		       ACCT_CERT_YN,
+		       COMP_NM,
+		       PS_REG_NO,
+		       BIZ_CAT_CD,
+		       #traceInfo#,
+		       #prcStatCd#,
+		       #mbrNo#,
+		       TO_CHAR (SYSDATE, 'YYYYMMDDHH24MISS'),
+		       NULL
+		FROM TBL_US_MEMBER
+		WHERE MBR_NO = #mbrNo#
+	</insert>
+	
+	<insert id="MyPage.insertMemberDocBySelect" parameterClass="transHistModel">
+		INSERT INTO TBL_US_MEMBER_DOC (TRANS_NO,
+		                               DOC_HM_CD,
+		                               FILE_PATH,
+		                               FILE_NM,
+		                               FILE_SIZE,
+		                               LST_VALID_YN,
+		                               REG_ID,
+		                               REG_DTTM,
+		                               MBR_NO)
+		SELECT #transNo#,
+		       DOC_HM_CD,
+		       FILE_PATH,
+		       FILE_NM,
+		       FILE_SIZE,
+		       <isEqual property="prcStatCd" compareValue="US000812">
+		       'Y',
+		       </isEqual>
+		       <isNotEqual property="prcStatCd" compareValue="US000812">
+		       LST_VALID_YN,
+		       </isNotEqual>
+		       #mbrNo#,
+		       TO_CHAR (SYSDATE, 'YYYYMMDDHH24MISS'),
+		       #mbrNo#
+		FROM TBL_US_MEMBER_DOC
+		WHERE MBR_NO = #mbrNo#
+		  AND TRANS_NO =
+				(SELECT /*+ INDEX_DESC(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_01) */
+				       TRANS_NO
+				  FROM TBL_US_TRANS_HIST
+				  WHERE MBR_NO = #mbrNo# AND ROWNUM = 1)
+	</insert>
+	
+	<update id="MyPage.updateMemberDocLastValid" parameterClass="transHistModel">
+		UPDATE TBL_US_MEMBER_DOC 
+		SET LST_VALID_YN = 'N' 
+		WHERE MBR_NO = #mbrNo# 
+		  AND TRANS_NO != #transNo#
+	</update>
+	
+	<update id="MyPage.updateMemberPaySubHist" parameterClass="java.lang.String">
+		UPDATE TBL_US_MEMBER_SUB_HIST
+		SET PAY_DEV_START_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		WHERE MBR_NO = #mbrNo#
+	</update>
+	
+	<update id="MyPage.updateMemberSubHist" parameterClass="memberWithdrawModel">
+		UPDATE TBL_US_MEMBER_SUB_HIST SET
+			<dynamic>
+				<isEqual property="mbrCatcd" compareValue="US000205">
+					FREE_DEV_END_REQ_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),
+					FREE_DEV_END_REASON_CD = #freeDevEndReasonCd#,
+					<isEqual property="freeDevEndReasonCd" compareValue="US001709">
+						FREE_DEV_END_REASON_DSCR = #freeDevEndReasonDscr#
+					</isEqual>
+					<isNotEqual property="freeDevEndReasonCd" compareValue="US001709">
+						FREE_DEV_END_REASON_DSCR = (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = #freeDevEndReasonCd#)
+					</isNotEqual>
+				</isEqual>
+				<isEqual property="mbrCatcd" compareValue="US000206">
+					PAY_DEV_END_REQ_DT = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),
+					PAY_DEV_END_REASON_CD = #payDevEndReasonCd#,
+					<isEqual property="payDevEndReasonCd" compareValue="US001809">
+						PAY_DEV_END_REASON_DSCR = #payDevEndReasonDscr#
+					</isEqual>
+					<isNotEqual property="payDevEndReasonCd" compareValue="US001809">
+						PAY_DEV_END_REASON_DSCR = (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = #payDevEndReasonCd#)
+					</isNotEqual>
+				</isEqual>
+			</dynamic>
+		WHERE
+			MBR_NO = #mbrNo#
+	</update>
+	
+	<insert id="MyPage.insertMemberDocByRecent" parameterClass="memDocModel">
+		INSERT INTO TBL_US_MEMBER_DOC (TRANS_NO,
+		                               DOC_HM_CD,
+		                               FILE_PATH,
+		                               FILE_NM,
+		                               FILE_SIZE,
+		                               LST_VALID_YN,
+		                               REG_ID,
+		                               REG_DTTM,
+		                               MBR_NO)
+		SELECT #transNo#,
+		       DOC_HM_CD,
+		       FILE_PATH,
+		       FILE_NM,
+		       FILE_SIZE,
+		       'N',
+		       #mbrNo#,
+		       TO_CHAR (SYSDATE, 'YYYYMMDDHH24MISS'),
+		       #mbrNo#
+		FROM TBL_US_MEMBER_DOC
+		WHERE MBR_NO = #mbrNo#
+		  AND DOC_HM_CD = #docHmCd#
+		  AND LST_VALID_YN = 'Y'
+	</insert>
+	
+	<insert id="MyPage.insertTransHistTransComplete" parameterClass="transHistModel">
+		INSERT INTO TBL_US_TRANS_HIST (TRANS_NO,
+		                               MBR_NO,
+		                               CITY,
+		                               ZIP_CD,
+		                               HOME_ADDR_DTL,
+		                               WEB_SITE_URL,
+		                               OP_NM,
+		                               OP_EMAIL_ADDR,
+		                               OP_TEL_NO,
+		                               OP_HP_NO,
+		                               COMP_NM,
+		                               PS_REG_NO,
+		                               BIZ_CAT_CD,
+		                               TRACE_INFO,
+		                               PRC_STAT_CD,
+		                               REG_ID,
+		                               REG_DTTM)
+		SELECT /*+ INDEX_DESC(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_01) */
+				#transNo#,
+				#mbrNo#,
+				CITY,
+				ZIP_CD,
+				HOME_ADDR_DTL,
+				WEB_SITE_URL,
+				OP_NM,
+				OP_EMAIL_ADDR,
+				OP_TEL_NO,
+				OP_HP_NO,
+				COMP_NM,
+				PS_REG_NO,
+				BIZ_CAT_CD,
+				#traceInfo#,
+				#prcStatCd#,
+				#mbrNo#,
+				TO_CHAR (SYSDATE, 'YYYYMMDDHH24MISS')
+		FROM TBL_US_TRANS_HIST
+		WHERE MBR_NO = #mbrNo#
+		  AND PRC_STAT_CD = 'US000804'
+		  AND ROWNUM = 1
+	</insert>
+	
+	<update id="MyPage.updateMemberTransComplete" parameterClass="transHistModel">
+		UPDATE TBL_US_MEMBER 
+		SET (	MBR_CLS_CD,
+				MBR_NM,
+				TEL_NO,
+				HP_NO,
+				CITY,
+				ZIP_CD,
+				HOME_ADDR_DTL,
+				WEB_SITE_URL,
+				OP_NM,
+				OP_EMAIL_ADDR,
+				OP_TEL_NO,
+				OP_HP_NO,
+				COMP_NM,
+				PS_REG_NO,
+				BIZ_CAT_CD,
+				DEV_MBR_STAT_CD,
+				UPD_ID,
+				UPD_DTTM) =
+			(	SELECT 'US000102',
+						NULL,
+						NULL,
+						NULL,
+						CITY,
+						ZIP_CD,
+						HOME_ADDR_DTL,
+						WEB_SITE_URL,
+						OP_NM,
+						OP_EMAIL_ADDR,
+						OP_TEL_NO,
+						OP_HP_NO,
+						COMP_NM,
+						PS_REG_NO,
+						BIZ_CAT_CD,
+						#prcStatCd#,
+						#mbrNo#,
+						TO_CHAR (SYSDATE, 'YYYYMMDDHH24MISS')
+				FROM TBL_US_TRANS_HIST
+		        WHERE MBR_NO = #mbrNo#
+		          AND PRC_STAT_CD = 'US000804'
+		          AND ROWNUM = 1)
+		WHERE MBR_NO = #mbrNo#
+	</update>
+	
+	<select id="MyPage.selectIsPersonalMember" parameterClass="java.lang.String" resultClass="java.lang.String" >
+		SELECT DECODE(MBR_CLS_CD, 'US000101', 'TRUE', 'FALSE')
+		FROM TBL_US_MEMBER
+		WHERE MBR_NO = #mbrNo#
+	</select>
+	
+	<select id="MyPage.selectLastTransHist" parameterClass="java.util.HashMap" resultClass="transHistModel" >
+		SELECT /*+ INDEX_DESC(TBL_US_TRANS_HIST, IDX_US_TRANS_HIST_01) */
+				TRANS_NO AS transNo,
+				MBR_NO AS mbrNo,
+				CITY AS city,
+				ZIP_CD AS zipCd,
+				HOME_ADDR_DTL AS homeAddrDtl,
+				WEB_SITE_URL AS webSiteUrl,
+				OP_NM AS opNm,
+				OP_EMAIL_ADDR AS opEmail,
+				OP_TEL_NO AS opTelNo,
+				OP_HP_NO AS opHpNo,
+				ACCT_NO AS acctNo,
+				BACK_NM AS bankNm,
+				BACK_CD AS bankCd,
+				BACK_BRANCH_NM AS banckBranchNm,
+				BACK_BRANCH_CD AS banckBranchCd,
+				CURRENCY_UNIT AS currentcyUnit,
+				BACK_GL_CD AS bankGlCd,
+				BACK_GL_TYPE AS bankGlType,
+				ACCT_NM AS acctNm,
+				ACCT_CERT_YN AS acctCertYn,
+				COMP_NM AS compNm,
+				PS_REG_NO AS psRegNo,
+				BIZ_CAT_CD AS bizCatCd,
+				TRACE_INFO AS traceInfo,
+				PRC_STAT_CD AS prcStatCd,
+				REJ_REASON AS rejReason
+		FROM TBL_US_TRANS_HIST
+		WHERE MBR_NO = #mbrNo#
+		  AND PRC_STAT_CD = #prcStatCd#
+		  AND ROWNUM = 1
+	</select>
+	
+	<select id="MyPage.selectIsValidPrcStat" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" >
+		SELECT	CASE DEV_MBR_STAT_CD
+				WHEN 'US000802' THEN 'TRUE'
+				WHEN 'US000805' THEN 'TRUE'
+				WHEN 'US000806' THEN 'TRUE'
+				WHEN 'US000810' THEN 'TRUE'
+				WHEN 'US000811' THEN 'TRUE'
+				WHEN 'US000812' THEN 'TRUE'
+		<dynamic>
+			<isEqual property="menuCat" compareValue="PROFILE">
+				WHEN 'US000809' THEN 'TRUE'
+				WHEN 'US000810' THEN 'TRUE'
+				WHEN 'US000813' THEN 'TRUE'
+			</isEqual>
+		</dynamic>
+				ELSE 'FALSE'
+				END AS PRC_VALID,
+				CD_NM
+		FROM TBL_US_MEMBER A,
+			 TBL_COMM_CD B
+		WHERE MBR_NO = #mbrNo#
+		  AND A.DEV_MBR_STAT_CD = B.DTL_FULL_CD
+	</select>
+</sqlMap>

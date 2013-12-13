@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Settlement">
+
+	<typeAlias alias="Report" type="com.omp.dev.settlement.model.Report" />
+
+	<!-- 영수증 처리 상세 정보  -->
+	<select id="Settlement.report.selectSettlementReport" parameterClass="Report" resultClass="Report">
+		SELECT /* Settlement_Report_SqlMap.xml, Settlement.report.selectReportList, DevPoC :  */
+			VV.*
+		FROM (
+			<include refid="GOMP.pagingStart"/>
+			SELECT <include refid="GOMP.pagingTotalCount"/>
+				A.SALE_YM AS SALEYM,  /* 정산_년월   */
+				A.MBR_NO AS MBRNO,  /*  개발자번호  */
+				A.TOTL_CNT AS TOTLCNT,  /*  총건수  */ 
+				TRUNC(A.TOTL_PAY_AMT,0) AS TOTLPAYAMT,  /*  총결제금액  */
+				A.ADJ_AMT AS ADJAMT ,  /*  조정액  */
+				TRUNC(A.DEV_BU_ADJ_AMT_SUM,0) AS DEVBUADJAMTSUM,  /*  개발자 조정 배분 금액 합계  */ 
+				TRUNC(A.DEV_BU_DV_AMT_SUM,0) AS DEVBUDVAMTSUM,  /*  개발자_초기_배분_금액_합계  */
+				A.OMP_DV_AMT_SUM AS OMPDVAMTSUM,  /*  OMP_배분_금액_합계  */
+				TRUNC(A.BEFORE_TAX_AMT,0) AS BEFORETAXAMT,   /*  세전금액  */
+				TRUNC(A.TXT_AMT,0) AS TXTAMT,  /*  세금  */
+				A.AGGT_STAT_CD AS AGGTSTATCD,  /*  정산_상태_코드  */
+				A.CURRENCY_UNIT AS CURRENCYUNIT,   /*  통화단위코드  */
+				A.ADJ_REASON AS ADJREASON,  /*  조정사유  */
+				A.RMT_REQ_REASON AS RMTREQREASON,  /* 송금신청 에러 사유   */
+				A.DISPLAY_YN AS DISPLAYYN,   /*  표시여부  */
+				A.INS_DTTM AS INSDTTM,  /*  등록일시  */
+				A.INS_BY AS INSBY,  /*  등록자  */
+				A.UPD_DTTM AS UPDDTTM,  /* 수정일시   */
+				A.UPD_BY AS UPDBY,  /*  수정자  */		
+				B.MBR_NM AS MBRNM,  /*  성명  */
+				B.MBR_ID AS MBRID,  /*  아이디  */
+				A.RMT_REQ_DT AS RMTREQYYYYMM,   /*  송금신청년월  */
+				D.ADJ_STAT_CD AS WHOLEADJSTATCD,   /*  특정월 전체 정산 상태 코드   */
+				B.MBR_CLS_CD AS MBRCLSCD,   /*  회원구분코드  */
+				B.MBR_GR_CD AS MBRGRCD,  /*  회원등급코드  */
+				E.RMT_REASON AS RMTREASON /*  송금포기사유  */ 
+			FROM TBL_ADJ_YM_AGGT A, /*  정산_년월집계  */
+					 TBL_US_MEMBER B ,/*  회원   */
+					 TBL_ADJ_STATE D, /*   월별정산상태   */
+					 TBL_ADJ_RMT_REQ_RSLT E /*   정산_송금_요청_결과   */
+			WHERE A.MBR_NO = B.MBR_NO
+				  AND A.SALE_YM = D.SALE_YM
+				  AND A.SALE_YM = E.SALE_YM(+)
+				  AND A.MBR_NO = E.MBR_NO(+)
+				  AND A.AGGT_STAT_CD BETWEEN 'PD004102' AND 'PD004124' /*  영수증처리 가능 및 영수증처리 내역을 확인가능한 정산마감 이상의 상태 데이타만 추출  */
+				  AND B.MBR_NO = #mbrNo#   /*  개발자번호  */
+			ORDER BY A.SALE_YM DESC
+			<include refid="GOMP.pagingEnd"/>
+		) VV						
+	</select>
+	
+	<!-- 계좌정보 조회 -->
+	<select id="Settlement.report.selectBankInfo" parameterClass="Report" resultClass="Report">
+		/* Settlement_Report_SqlMap.xml, Settlement.report.selectBankInfo, DevPoC :  */
+		SELECT /* Settlement_Report_SqlMap.xml, Settlement.report.selectBankInfo, DevPoC :  */
+			ACCT_NM AS ACCTNM /* 예금주명 */
+			,BACK_NM AS BACKNM  /*  은행명 */
+			,ACCT_NO AS ACCTNO  /*  계좌번호 */
+			,MBR_CLS_CD  AS MBRCLSCD /* 회원구분코드 */
+		FROM TBL_US_MEMBER WHERE MBR_NO=#mbrNo#
+   </select>
+   
+   <!-- 조정배분금액 합계 조회 -->
+	<select id="Settlement.report.selectTransferAmt" parameterClass="Report" resultClass="java.util.HashMap">
+		/* Settlement_Report_SqlMap.xml, Settlement.report.selectTransferAmt, DevPoC :  */
+		SELECT /* Settlement_Report_SqlMap.xml, Settlement.report.selectTransferAmt, DevPoC :  */
+			TO_CHAR(nvl(SUM(DEV_BU_ADJ_AMT_SUM),0)) AS DEVBUADJAMTSUM /* 조정배분금액합계 */
+		FROM TBL_ADJ_YM_AGGT
+		WHERE MBR_NO=#mbrNo#
+			AND (AGGT_STAT_CD = 'PD004102' OR AGGT_STAT_CD = 'PD004107') /*  정산마감 상태와 이월처리 상태 데이타 */ 
+	</select>
+   
+   
+   <!-- 송금요청 -->
+	<update id="Settlement.report.updateSettlementRequest" parameterClass="Report" >
+		/* Settlement_Report_SqlMap.xml, Settlement.report.updateSettlementRequest, DevPoC :  */
+		UPDATE TBL_ADJ_YM_AGGT 
+			SET AGGT_STAT_CD = 'PD004103',
+				RMT_REQ_DT = TO_CHAR(SYSDATE,'YYYYMMDD'),
+				UPD_BY     = #updBy#,
+		    	UPD_DTTM   = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE MBR_NO = #mbrNo# 
+			 AND SALE_YM = #saleYm#
+    </update>
+   
+   
+   <!-- 외국인 송금요청 -->
+	<update id="Settlement.report.updateForeignSettlementRequest" parameterClass="Report" >
+		/* Settlement_Report_SqlMap.xml, Settlement.report.updateForeignSettlementRequest, DevPoC :  */
+		UPDATE TBL_ADJ_YM_AGGT 
+			SET AGGT_STAT_CD = 'PD004103',
+				RMT_REQ_DT = TO_CHAR(SYSDATE,'YYYYMMDD'),
+				UPD_BY     = #updBy#,
+		    	UPD_DTTM   = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE MBR_NO = #mbrNo# 
+			 AND (AGGT_STAT_CD='PD004102' OR AGGT_STAT_CD='PD004107' ) /* 정산마감이나 이월처리 금액에 대해서 송금요청  */
+    </update>
+   
+   
+   <!-- 미송금결과정보 조회 -->
+	<select id="Settlement.report.selectSettlementContInfo" parameterClass="Report" resultClass="Report">
+		SELECT /* Settlement_Report_SqlMap.xml, Settlement.report.selectSettlementContInfo, DevPoC :  */
+			SALE_YM AS SALEYM /* 판매월 */
+			,RMT_REASON AS RMTREASON  /*  송금결과사유 */
+		FROM TBL_ADJ_RMT_REQ_RSLT 
+		WHERE 
+			MBR_NO = #mbrNo# 
+			AND SALE_YM = #saleYm#
+   </select>
+   
+   
+	
+	
+	
+	
+
+</sqlMap>

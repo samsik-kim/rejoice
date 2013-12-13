@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE daoConfig
+    PUBLIC "-//ibatis.apache.org//DTD DAO Configuration 2.0//EN"
+    "http://ibatis.apache.org/dtd/dao-2.dtd">
+
+<daoConfig>
+	<context>
+		<transactionManager type="SQLMAP">
+			<property name="SqlMapConfigResource" value="ibatis_config/sql-map-config.xml"/>
+		</transactionManager>
+
+		<!-- Common -->
+		<dao interface="com.omp.commons.persistence.dao.CommonDAO" implementation="com.omp.commons.persistence.dao.CommonDAOImpl"/>
+
+		<!-- Member -->
+		<dao implementation="com.omp.dev.member.persistence.dao.MemberDAOImpl" interface="com.omp.dev.member.persistence.dao.MemberDAO"/>
+	
+		<dao interface="com.omp.dev.community.persistence.dao.NoticeDAO" implementation="com.omp.dev.community.persistence.dao.NoticeDAOImpl"/>
+		
+		<dao interface="com.omp.dev.community.persistence.dao.FaqDAO" implementation="com.omp.dev.community.persistence.dao.FaqDAOImpl"/>
+		
+		<dao interface="com.omp.dev.community.persistence.dao.QnaDAO" implementation="com.omp.dev.community.persistence.dao.QnaDAOImpl"/>
+		
+		<dao interface="com.omp.dev.community.persistence.dao.ComDAO" implementation="com.omp.dev.community.persistence.dao.ComDAOImpl"/>
+	</context>
+</daoConfig>

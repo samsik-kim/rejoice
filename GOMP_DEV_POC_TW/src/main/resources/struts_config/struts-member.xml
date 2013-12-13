@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="member" extends="dev-common" namespace="/member">
+		<action name="registMain" class="com.omp.dev.member.action.MemberAction" method="registMain">
+			<result>/${loc.language}/jsp/member/regist/registMain.jsp</result>
+		</action>
+		
+		<!-- Check -->
+		<action name="registCheck" class="com.omp.dev.member.action.MemberAction" method="registCheck">
+			<result name="person">/${loc.language}/jsp/member/regist/registPerson.jsp</result>
+			<result name="company">/${loc.language}/jsp/member/regist/registCompany.jsp</result>
+			<result name="foreigner">/${loc.language}/jsp/member/regist/registForeigner.jsp</result>
+		</action>
+		
+		<!-- Agree -->
+		<action name="registAgreement" class="com.omp.dev.member.action.MemberAction" method="registAgreement">
+			<result>/${loc.language}/jsp/member/regist/registAgreement.jsp</result>
+		</action>
+		
+		<!-- Join CertificationAction -->
+		<action name="memberJoinCertification" class="com.omp.dev.member.action.MemberAction" method="memberJoinCertification">
+			<result name="finsh">/${loc.language}/jsp/member/certification/memberJoinCertificationFinsh.jsp</result>
+			<result name="already">/${loc.language}/jsp/member/certification/memberJoinCertificationAlready.jsp</result>
+		</action>
+		
+		<!-- registFinish -->
+		<action name="registFinish" class="com.omp.dev.member.action.MemberAction" method="registFinish">
+			<result type="redirectAction">
+				<param name="actionName"><![CDATA[registJoinSendEmail?member.mbrId=${member.mbrId}&member.emailAddr=${member.emailAddr}]]></param>
+			</result>
+		</action>
+		
+		<action name="registJoinSendEmail" class="com.omp.dev.member.action.MemberAction" method="registJoinSendEmail">
+			<result>/${loc.language}/jsp/member/regist/registFinish.jsp</result>
+		</action>
+		
+		<!-- JoinForm -->
+		<action name="registJoinForm" class="com.omp.dev.member.action.MemberAction" method="registJoinForm">
+			<result name="person">/${loc.language}/jsp/member/join/personJoinForm.jsp</result>
+			<result name="company">/${loc.language}/jsp/member/join/companyJoinForm.jsp</result>
+			<result name="foreigner">/${loc.language}/jsp/member/join/foreignerJoinForm.jsp</result>
+		</action>
+			
+		<!-- Person -->
+		<action name="registPerson" class="com.omp.dev.member.action.MemberAction" method="registPerson">
+			<result>/${loc.language}/jsp/member/regist/registPerson.jsp</result>
+		</action>
+		
+		<!-- Company -->
+		<action name="registCompany" class="com.omp.dev.member.action.MemberAction" method="registCompany">
+			<result>/${loc.language}/jsp/member/regist/registCompany.jsp</result>
+		</action>
+		
+		<!-- Foreigner -->
+		<action name="registForeigner" class="com.omp.dev.member.action.MemberAction" method="registForeigner">
+			<result>/${loc.language}/jsp/member/regist/registForeigner.jsp</result>
+		</action>
+		
+		<!-- ajax -->
+		<action name="ajax*" class="com.omp.dev.member.action.MemberAction" method="ajax{1}"/>
+		
+		<!-- [CHECK] ID -->
+		<action name="ajaxDuplicateIdCheck" class="com.omp.dev.member.action.MemberAction" method="ajaxDuplicateIdCheck">
+			<result>/${loc.language}/jsp/member/pop/popupDuplicateIdCheck.jsp</result>
+		</action>
+		
+		<!-- [Popup] Email -->
+		<action name="popupRetrySendEmail" class="com.omp.dev.member.action.MemberAction" method="popupRetrySendEmail">
+			<result>/${loc.language}/jsp/member/pop/popupRetrySendEmail.jsp</result>
+		</action>
+		
+		
+	</package>
+	
+</struts>

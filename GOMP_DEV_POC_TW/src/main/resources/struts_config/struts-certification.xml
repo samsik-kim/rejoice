@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="cert" extends="dev-common" namespace="/cert">
+		<action name="cf" class="com.omp.dev.certification.action.CertificationAction" method="cf">
+			<result type="redirectAction" name="authEmailChange">
+				<param name="namespace">/mypage</param>
+				<param name="actionName"><![CDATA[mypageEmailAuthResult?param=${param}]]></param>
+			</result>
+			<result type="redirectAction" name="authMemChange">
+				<param name="namespace">/mypage</param>
+				<param name="actionName"><![CDATA[mypageTransResult?param=${param}]]></param>
+			</result>
+		</action>
+		
+		<action name="q" class="com.omp.dev.certification.action.CertificationAction" method="q">
+			<result type="redirectAction">
+				<param name="namespace">/member</param>
+				<param name="actionName"><![CDATA[memberJoinCertification?param=${param}]]></param>
+			</result>
+		</action>
+		
+	</package>
+	
+</struts>

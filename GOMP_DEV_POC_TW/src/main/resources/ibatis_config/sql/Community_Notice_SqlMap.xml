@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Community_Notice">
+	<typeAlias alias="notice" type="com.omp.dev.community.model.Notice"/>
+	
+	<resultMap id="notice-resultMap" class="notice">
+		<result property="totalCount" column="total_count"/>
+		<result property="rnum" column="rnum"/>
+		<result property="noticeId" column="NOTICEID"/>
+		<result property="title" column="TITLE"/>
+		<result property="hit" column="HIT"/>
+		<result property="insDttm" column="INSDTTM"/>
+		<result property="downYn" column="DOWN_YN"/>
+	</resultMap>
+	
+	<select id="Community_Notice.selectNoticeList" parameterClass="notice" resultMap="notice-resultMap">
+		<include refid="GOMP.pagingStart"/>
+		SELECT 
+			<include refid="GOMP.pagingTotalCount"/>
+				TBL.NOTICEID,
+				TBL.TITLE,
+				TBL.HIT,
+				TBL.INSDTTM,
+				MAX(TBL.DOWN_YN) as DOWN_YN
+			FROM (
+				SELECT
+					NOTI.NOTICE_ID AS NOTICEID,
+					NOTI.TITLE,
+					NOTI.HIT,
+					NOTI.INS_DTTM AS INSDTTM,
+					(CASE CFUG.SEQ WHEN 2 THEN 'Y' ELSE '' END) as DOWN_YN
+				FROM
+					TBL_NOTICE NOTI,
+					TBL_COMM_FILE_UPLOAD_GRP CFUG,
+					TBL_COMM_FILE_UPLOAD CFU
+				WHERE
+					NOTI.CTGR_CD = #ctgrCd#
+					AND NOTI.GID = CFUG.GID(+)
+					AND CFUG.FID = CFU.FID(+)
+					AND NOTI.DEL_YN = 'N'
+					AND NOTI.OPEN_YN = 'Y'
+					<dynamic>
+						<isNotEmpty property="searchWord">
+							<isEqual property="searchType" compareValue="title">
+								AND NOTI.TITLE LIKE '%'||#searchWord#||'%'
+							</isEqual>
+							<isEqual property="searchType" compareValue="title_dscr">
+								AND (NOTI.TITLE LIKE '%'||#searchWord#||'%' OR NOTI.DSCR LIKE '%'||#searchWord#||'%')
+							</isEqual>
+						</isNotEmpty>
+					</dynamic>
+				) TBL
+			GROUP BY TBL.NOTICEID, TBL.TITLE, TBL.HIT, TBL.INSDTTM
+			ORDER BY TBL.INSDTTM DESC
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+
+	<update id="Community_Notice.updateNoticeHit" parameterClass="notice">
+		UPDATE TBL_NOTICE SET
+			HIT = HIT + 1
+		WHERE
+			NOTICE_ID = #noticeId#
+			AND CTGR_CD = #ctgrCd#
+	</update>
+
+	<resultMap id="view-resultMap" class="notice">
+		<result property="noticeId" column="NOTICEID"/>
+		<result property="title" column="TITLE"/>
+		<result property="dscr" column="DSCR"/>
+		<result property="hit" column="HIT"/>
+		<result property="insDttm" column="INSDTTM"/>
+		<result property="down_ofnm" column="DOWN_OFNM"/>
+		<result property="down_path" column="DOWN_PATH"/>
+		<result property="imgYn" column="IMG_YN"/>
+		<result property="img_path" column="IMG_PATH"/>
+	</resultMap>
+	<select id="Community_Notice.selectNotice" parameterClass="notice" resultMap="view-resultMap">
+		SELECT
+		    TBL.NOTICEID,
+		    TBL.TITLE,
+		    TBL.DSCR,
+		    TBL.HIT,
+		    TBL.INSDTTM,
+		    MAX(TBL.IMG_YN) as IMG_YN,
+		    MAX(TBL.IMG_PATH) as IMG_PATH,
+		    MAX(TBL.DOWN_OFNM) as DOWN_OFNM,
+		    MAX(TBL.DOWN_PATH) as DOWN_PATH
+		FROM (
+			SELECT
+				NOTI.NOTICE_ID AS NOTICEID,
+				NOTI.TITLE,
+				NOTI.DSCR,
+				NOTI.HIT,
+				NOTI.INS_DTTM AS INSDTTM,
+				(CASE CFUG.SEQ WHEN 1 THEN 'Y' ELSE '' END) as IMG_YN,
+				(CASE CFUG.SEQ WHEN 1 THEN CFU.FURL || CFU.FNM ELSE '' END) as IMG_PATH,
+				(CASE CFUG.SEQ WHEN 2 THEN CFU.OFNM	ELSE '' END) as DOWN_OFNM,
+				(CASE CFUG.SEQ WHEN 2 THEN CFU.FNM ELSE '' END) as DOWN_PATH
+			FROM
+				TBL_NOTICE NOTI,
+				TBL_COMM_FILE_UPLOAD_GRP CFUG,
+				TBL_COMM_FILE_UPLOAD CFU
+			WHERE
+				NOTI.NOTICE_ID = #noticeId#
+				AND NOTI.CTGR_CD = #ctgrCd#
+				AND NOTI.GID = CFUG.GID(+)
+				AND CFUG.FID = CFU.FID(+)
+				AND NOTI.DEL_YN = 'N'
+				AND NOTI.OPEN_YN = 'Y'
+			) TBL
+		GROUP BY TBL.NOTICEID, TBL.TITLE, TBL.DSCR, TBL.HIT, TBL.INSDTTM
+		ORDER BY TBL.INSDTTM DESC
+	</select>
+
+</sqlMap>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	
+	<package name="settlement" extends="dev-common" namespace="/settlement/report">
+		
+		<!-- 정산리포트  --> 
+		<action name="settlementReport" class="com.omp.dev.settlement.action.report.SettlementDevReportAction" method="settlementReport">
+			<result>/${loc.language}/jsp/settlement/report/settlementReport.jsp</result>
+		</action>
+		
+		<!-- 송금요청  --> 
+		<action name="settlementRequest" class="com.omp.dev.settlement.action.report.SettlementDevReportAction" method="settlementRequest">
+			<result name="success" type="chain">settlementReport</result>
+		</action>
+		
+		<!-- 외국인 송금요청  --> 
+		<action name="foreignSettlementRequest" class="com.omp.dev.settlement.action.report.SettlementDevReportAction" method="foreignSettlementRequest">
+			<result name="success" type="chain">settlementReport</result>
+		</action>
+		
+		
+		<!-- 이월처리내용 조회  --> 
+		<action name="popUpSettlementTransferInfo" class="com.omp.dev.settlement.action.report.SettlementDevReportAction" method="popUpSettlementTransferInfo">
+			<result>/${loc.language}/jsp/settlement/report/popUpSettlementTransferInfo.jsp</result>
+		</action>
+		
+		<!-- 송금포기내용 조회  --> 
+		<action name="popUpSettlementGiveUpInfo" class="com.omp.dev.settlement.action.report.SettlementDevReportAction" method="popUpSettlementGiveUpInfo">
+			<result>/${loc.language}/jsp/settlement/report/popUpSettlementGiveUpInfo.jsp</result>
+		</action>
+		
+	</package>
+	
+	
+</struts>

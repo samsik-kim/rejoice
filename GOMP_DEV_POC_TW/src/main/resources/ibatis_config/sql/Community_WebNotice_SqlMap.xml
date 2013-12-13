@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="WebNotice">
+	<typeAlias alias="Notice" type="com.omp.dev.community.model.Notice"/>
+	
+	<resultMap id="noticePagingResult" class="Notice" >
+		<result property="totalCount" column="total_count"/>
+		<result property="rnum" column="rnum"/>
+		<result column="NOTICE_ID" property="noticeId" />
+		<result column="TITLE" property="title" />
+		<result column="DSCR" property="dscr" />
+		<result column="HIT" property="hit" />
+		<result column="INS_DTTM" property="insDttm" />
+		<result column="UPD_DTTM" property="updDttm" />
+	</resultMap>  
+	<resultMap id="noticeResult" class="Notice" >
+		<result column="NOTICE_ID" property="noticeId" />
+		<result column="GID" property="gid" />
+		<result column="CTGR_CD" property="ctgrCd" />
+		<result column="TITLE" property="title" />
+		<result column="DSCR" property="dscr" />
+		<result column="HIT" property="hit" />
+		<result column="INS_DTTM" property="insDttm" />
+	</resultMap>
+	<resultMap id="file-default-result" class="Notice" >
+		<result property="fnm" column="fnm" />
+		<result property="ofnm" column="ofnm" />
+		<result property="fsz" column="fsz" />
+		<result property="furl" column="furl" />
+		<result property="ftype" column="ftype" />
+  	</resultMap>
+	
+	<select id="WebNotice.selectNoticePagingList" parameterClass="Notice" resultMap="noticePagingResult" cacheModel="Notice-cache">
+	   	<include refid="GOMP.pagingStart"/>
+		SELECT
+	   	<include refid="GOMP.pagingTotalCount"/>
+		        NOTICE_ID
+		       ,TITLE
+		       ,DSCR
+		       ,HIT
+		       ,INS_DTTM
+		       ,UPD_DTTM
+		  FROM  TBL_NOTICE N
+		 WHERE  N.DEL_YN = #delYn#
+		 AND  N.CTGR_CD = #ctgrCd#
+		 AND  N.OPEN_YN = #openYn#
+		 ORDER BY INS_DTTM DESC
+   	<include refid="GOMP.pagingEnd"/>
+	</select>
+	<select id="WebNotice.selectNotice" parameterClass="Notice" resultMap="noticeResult">
+		SELECT  
+		        NOTICE_ID
+		       ,GID
+		       ,CTGR_CD
+		       ,TITLE
+		       ,DSCR
+		       ,HIT
+		       ,INS_DTTM
+		  FROM  TBL_NOTICE N
+		 WHERE  NOTICE_ID = #noticeId#
+	</select>
+	<select id="WebNotice.selectFileDownloadList"  parameterClass="java.lang.Integer" resultMap="file-default-result">
+		SELECT 
+		       B.FNM
+		      ,B.OFNM
+		      ,B.FSZ
+		      ,B.FURL
+		      ,B.FTYPE
+		  FROM TBL_COMM_FILE_UPLOAD_GRP A, TBL_COMM_FILE_UPLOAD B
+		 WHERE A.FID = B.FID
+		   AND A.USE_YN = 'Y'
+		   AND A.GID = #gid#    
+		 ORDER BY SEQ
+    </select>
+    <update id="WebNotice.updateNoticeHit" parameterClass="Notice">
+		UPDATE TBL_NOTICE SET
+			HIT = HIT + 1
+		WHERE
+			NOTICE_ID = #noticeId#
+			AND CTGR_CD = #ctgrCd#
+	</update>
+</sqlMap>
