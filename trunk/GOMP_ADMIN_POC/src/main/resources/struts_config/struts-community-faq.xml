@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="faq" extends="dev-common" namespace="/community">
+		<action name="listFaq" class="com.omp.dev.community.action.FaqAction" method="listFaq">
+			<result>/${loc.language}/jsp/community/faq/faqList.jsp</result>
+		</action>
+		
+		<action name="ajaxFaqHitIncrease" class="com.omp.dev.community.action.FaqAction" method="ajaxFaqHitIncrease" />
+		
+		<!-- 삭제예정 
+			 지적 재산권 관련 FAQ 이동 
+		<action name="listFaqIprCenter" class="com.omp.dev.community.action.FaqAction" method="listFaqIprCenter">
+			<result>/${loc.language}/jsp/community/faq/faqList.jsp</result>
+		</action>
+		-->
+	</package>
+</struts>

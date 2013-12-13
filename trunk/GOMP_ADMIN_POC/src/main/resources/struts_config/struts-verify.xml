@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="verify" extends="common" namespace="/verify">
+        
+		<action name="verifyCase"
+			class="com.omp.admin.verify.action.VerifyAction" method="verifyCase">
+			<result name="success">/${loc.language}/jsp/verify/verify_case_list.jsp</result>
+			<result name="fail">/${loc.language}/jsp/common/exception/ServiceException.jsp</result>
+		</action>
+		<action name="getAjaxSecondCategoryList" class="com.omp.admin.verify.action.VerifyAction" method="getAjaxSecondCategoryList"/>
+		<action name="popCategory"
+			class="com.omp.admin.verify.action.VerifyAction" method="popupCategory">
+			<result name="success">/${loc.language}/jsp/verify/popupCategory.jsp</result>
+		</action>
+		<action name="saveCategory" class="com.omp.admin.verify.action.VerifyAction" method="saveCategory">
+			<result name="success">/${loc.language}/jsp/verify/popupCategory.jsp</result>
+		</action>
+		<action name="popCase"
+			class="com.omp.admin.verify.action.VerifyAction" method="popupCase">
+			<result name="success">/${loc.language}/jsp/verify/popupCase.jsp</result>
+		</action>
+		<action name="saveCase" class="com.omp.admin.verify.action.VerifyAction" method="saveCase"></action>
+	</package>
+</struts>

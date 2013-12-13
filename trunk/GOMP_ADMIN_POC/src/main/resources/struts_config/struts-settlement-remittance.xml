@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	
+	<package name="settlementremittance" extends="common" namespace="/settlement/remittance">
+		<!-- 송금결과 처리 리스트 -->
+		<action name="remittanceRstList" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceRstList">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/remittanceRstList.jsp</result>
+		</action>
+		
+		<!-- 송금결과 처리 엑셀 다운로드 -->
+		<action name="remittanceRstExcelList" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceRstExcelList">
+			<result name="success" type="stream">
+            	<param name="contentType">${downloadFile.contentType}</param>
+                <param name="inputName">downloadFile.inputStream</param>
+                <param name="contentDisposition">${downloadFile.saveAs}</param>
+                <param name="contentLength">${downloadFile.length}</param>
+                <param name="bufferSize">${downloadFile.bufferSize}</param>
+            </result>
+		</action>
+		
+		<!-- 송금결과 마감 어드민 패스워드 확인 -->
+		<action name="popConfirmRemittance" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="popConfirmRemittance">
+			<result name="success" type="chain">popUpUpdateRemittanceRstBundleEnd</result>
+			<result name="error" >/${loc.language}/jsp/settlement/remittance/popRemittancePswdNo.jsp</result>
+			<result name="none" >/${loc.language}/jsp/settlement/remittance/popRemittancePswdNo.jsp</result>
+		</action>
+		
+		<!-- 송금결과 마감 일괄처리 -->
+		<action name="popUpUpdateRemittanceRstBundleEnd" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="popUpUpdateRemittanceRstBundleEnd">
+			<result>/${loc.language}/jsp/settlement/remittance/popRemittancePswdNoSuccess.jsp</result>
+			<!-- <result name="success" type="chain">remittanceRstList</result>   
+			<result name="success" type="chain">popUpRemittanceEndRst</result> -->
+		</action>
+		
+		<!-- 송금결과 처리 내용조회 -->
+		<action name="remittanceRstInfo" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceRstInfo">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/remittanceRstInfo.jsp</result>
+		</action>
+		
+		<!-- 송금마감처리 팝업 -->
+		<action name="popUpRemittanceEnd" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="popUpRemittanceEnd">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/popUpRemittanceEnd.jsp</result>
+		</action>
+		
+		<!-- 송금마감처리결과 팝업 -->
+		<action name="popUpRemittanceEndRst" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="popUpRemittanceEndRst">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/popUpRemittanceEndRst.jsp</result>
+		</action>
+		
+		<!-- 송금결과 처리 시작  -->
+		<action name="editStartRemittanceRstInfo" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="editStartRemittanceRstInfo">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/editStartRemittanceRstInfo.jsp</result>
+		</action>
+		
+		
+		<!-- 송금결과 처리 완료  -->
+		<action name="editEndRemittanceRstInfo" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="editEndRemittanceRstInfo">
+			<result name="success" type="chain">remittanceRstList</result>
+		</action>
+		
+		<!-- 송금포기 현황 리스트 -->
+		<action name="remittanceGiveUpList" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceGiveUpList">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/remittanceGiveUpList.jsp</result>
+		</action>
+		
+		<!-- 송금포기 현황 엑셀 다운로드 -->
+		<action name="remittanceGiveUpExcelList" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceGiveUpExcelList">
+			<result name="success" type="stream">
+            	<param name="contentType">${downloadFile.contentType}</param>
+                <param name="inputName">downloadFile.inputStream</param>
+                <param name="contentDisposition">${downloadFile.saveAs}</param>
+                <param name="contentLength">${downloadFile.length}</param>
+                <param name="bufferSize">${downloadFile.bufferSize}</param>
+            </result>
+		</action>
+		
+		
+		<!-- 송금포기 현황 수정 -->
+		<action name="editRemittanceGiveUpInfo" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="editRemittanceGiveUpInfo">
+			<result name="success" type="chain">remittanceGiveUpList</result>
+		</action>
+		
+		<!-- 송금포기 현황 조회 -->
+		<action name="remittanceGiveUpInfo" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceGiveUpInfo">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/remittanceGiveUpInfo.jsp</result>
+		</action>
+		
+		
+		<!-- 송금결과현황 조회 리스트 -->
+		<action name="remittanceEndRstList" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceEndRstList">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/remittanceEndRstList.jsp</result>
+		</action>
+		
+		<!-- 송금결과현황 엑셀 다운로드 -->
+		<action name="remittanceEndRstExcelList" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceEndRstExcelList">
+			<result name="success" type="stream">
+            	<param name="contentType">${downloadFile.contentType}</param>
+                <param name="inputName">downloadFile.inputStream</param>
+                <param name="contentDisposition">${downloadFile.saveAs}</param>
+                <param name="contentLength">${downloadFile.length}</param>
+                <param name="bufferSize">${downloadFile.bufferSize}</param>
+            </result>
+		</action>
+		
+		<!-- 송금결과현황 상세 조회리스트 -->
+		<action name="remittanceEndRstInfoList" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceEndRstInfoList">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/remittanceEndRstInfoList.jsp</result>
+		</action>
+		
+		<!-- 송금결과현황 상세 엑셀 다운로드 -->
+		<action name="remittanceEndRstInfoExcelList" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="remittanceEndRstInfoExcelList">
+			<result name="success" type="stream">
+            	<param name="contentType">${downloadFile.contentType}</param>
+                <param name="inputName">downloadFile.inputStream</param>
+                <param name="contentDisposition">${downloadFile.saveAs}</param>
+                <param name="contentLength">${downloadFile.length}</param>
+                <param name="bufferSize">${downloadFile.bufferSize}</param>
+            </result>
+		</action>
+		
+		<!-- 송금결과 현황 송금결과 사유조회 -->
+		<action name="popUpRmtReasonInfo" class="com.omp.admin.settlement.action.remittance.SettlementRemittanceAdmAction" method="popUpRmtReasonInfo">
+			<result name="success">/${loc.language}/jsp/settlement/remittance/popUpRmtReasonInfo.jsp</result>
+		</action>
+		
+		
+		
+			
+	</package>
+	
+	
+</struts>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="contentManagement" extends="dev-common" namespace="/content">
+	
+		<!-- Content Management SubMain Page -->
+		<action name="contentsSubMain" class="com.omp.dev.contents.action.ContentManagementAction" method="contentsSubMain">
+			<result name="success">/${loc.language}/jsp/content/contentsSubMain.jsp</result>
+		</action>
+		
+		<!-- Content Management Status List Page -->
+		<action name="contentsStatusList" class="com.omp.dev.contents.action.ContentManagementAction" method="contentsStatusList">
+			<result name="success">/${loc.language}/jsp/content/contentsStatusList.jsp</result>
+		</action>
+		
+		<!-- New Content Register Page -->
+		<action name="registContentWrite" class="com.omp.dev.contents.action.ContentManagementAction" method="registContentWrite">
+			<result name="success">/${loc.language}/jsp/content/registContentWrite.jsp</result>
+		</action>
+		
+		<!-- New Content Register Confirm -->
+		<action name="ajaxRegistConfirm" class="com.omp.dev.contents.action.ContentManagementAction" method="ajaxRegistConfirm" >
+			<result name="success">/${loc.language}/jsp/content/popup/popCreateNewContent.jsp</result>
+			<result name="error">/${loc.language}/jsp/content/popup/popCreateNewContentError.jsp</result>
+		</action>
+		
+		<!-- Content Delete -->
+		<action name="ajaxContentDelete" class="com.omp.dev.contents.action.ContentManagementAction" method="ajaxContentDelete" />
+		
+		<!-- Verify Request Comment Popup -->
+		<action name="ajaxVerifyReqComnt" class="com.omp.dev.contents.action.ContentManagementAction" method="ajaxVerifyReqComnt" >
+			<result name="firstVerifyRequest">/${loc.language}/jsp/content/popup/popFirstVerifyReqComnt.jsp</result>
+			<result name="reVerifyRequest">/${loc.language}/jsp/content/popup/popReVerifyReqComnt.jsp</result>
+		</action>
+		
+		<action name="ajaxVerifyReq" class="com.omp.dev.contents.action.ContentManagementAction" method="ajaxVerifyReq" />
+		
+		<action name="ajaxVerifyCancel" class="com.omp.dev.contents.action.ContentManagementAction" method="ajaxVerifyCancel" />
+	
+		<action name="ajaxChangeSaleStatus" class="com.omp.dev.contents.action.ContentManagementAction" method="ajaxChangeSaleStatus" >
+			<result name="success">/${loc.language}/jsp/content/contentsSubMain.jsp</result>
+		</action>
+		
+		<!-- Content Sale Changed History List Popup -->
+		<action name="popContentSaleStatList" class="com.omp.dev.contents.action.ContentManagementAction" method="popContentSaleStatList">
+			<result name="success">/${loc.language}/jsp/content/popup/popContentSaleStatList.jsp</result>
+			<result name="error">/${loc.language}/jsp/content/popup/popContentSaleStatList.jsp</result>
+		</action>
+			
+		<action name="popItemPreview" class="com.omp.dev.contents.action.ContentManagementAction" method="popItemPreview" >
+			<result name="success">/${loc.language}/jsp/content/popup/popItemPreview.jsp</result>
+		</action>
+		
+		<!-- Check Contents Session and Status Ajax Process -->
+		<action name="ajaxStatusCheck" class="com.omp.dev.contents.action.ContentManagementAction" method="ajaxStatusCheck" />
+
+	</package>
+</struts>

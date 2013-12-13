@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AdminMgr">
+			
+	<typeAlias alias="adMgr" type="com.omp.admin.adminmgr.auth.model.AdMgr"/>
+	<typeAlias alias="adMenuMgrauth" type="com.omp.admin.adminmgr.auth.model.AdMenuMgrauth"/>
+	<typeAlias alias="adMgrauth" type="com.omp.admin.adminmgr.auth.model.AdMgrauth"/>
+
+	<typeAlias alias="commCd" type="com.omp.admin.adminmgr.code.model.CommCd"/>
+
+	<typeAlias alias="adMenu" type="com.omp.admin.adminmgr.menu.model.AdMenu"/>
+
+	<resultMap id="adMgrPagingResult" class="adMgr" >
+		<result property="totalCount" column="total_count"/>
+		<result column="MGR_ID" property="mgrId" />
+		<result column="PSWD_NO" property="pswdNo" />
+		<result column="MGR_NM" property="mgrNm" />
+		<result column="COMP_NM" property="compNm" />
+		<result column="DEPT_NM" property="deptNm" />
+		<result column="JOB_GRD_NM" property="jobGrdNm" />
+		<result column="MNO_CD" property="mnoCd" />
+		<result column="HP1_NO" property="hp1No" />
+		<result column="HP2_NO" property="hp2No" />
+		<result column="HP3_NO" property="hp3No" />
+		<result column="BIZ_TEL1_NO" property="bizTel1No" />
+		<result column="BIZ_TEL2_NO" property="bizTel2No" />
+		<result column="BIZ_TEL3_NO" property="bizTel3No" />
+		<result column="EMAIL_ADDR_ID" property="emailAddrId" />
+		<result column="EMAIL_ADDR" property="emailAddr" />
+		<result column="ETC_DSCR" property="etcDscr" />
+		<result column="REG_ID" property="regId" />
+		<result column="REG_DT" property="regDt" />
+		<result column="UPD_ID" property="updId" />
+		<result column="UPD_DT" property="updDt" />
+		<result column="LST_ACC_DTS" property="lstAccDts" />
+		<result column="AUTH_GBN" property="authGbn" />
+		<result column="AUTH_GBN_NM" property="authGbnNm" />
+	</resultMap>
+
+	<resultMap id="adMgrResult" class="adMgr" >
+		<result column="MGR_ID" property="mgrId" />
+		<result column="PSWD_NO" property="pswdNo" />
+		<result column="MGR_NM" property="mgrNm" />
+		<result column="COMP_NM" property="compNm" />
+		<result column="DEPT_NM" property="deptNm" />
+		<result column="JOB_GRD_NM" property="jobGrdNm" />
+		<result column="MNO_CD" property="mnoCd" />
+		<result column="HP1_NO" property="hp1No" />
+		<result column="HP2_NO" property="hp2No" />
+		<result column="HP3_NO" property="hp3No" />
+		<result column="BIZ_TEL1_NO" property="bizTel1No" />
+		<result column="BIZ_TEL2_NO" property="bizTel2No" />
+		<result column="BIZ_TEL3_NO" property="bizTel3No" />
+		<result column="EMAIL_ADDR_ID" property="emailAddrId" />
+		<result column="EMAIL_ADDR" property="emailAddr" />
+		<result column="ETC_DSCR" property="etcDscr" />
+		<result column="REG_ID" property="regId" />
+		<result column="REG_DT" property="regDt" />
+		<result column="UPD_ID" property="updId" />
+		<result column="UPD_DT" property="updDt" />
+		<result column="LST_ACC_DTS" property="lstAccDts" />
+		<result column="AUTH_GBN" property="authGbn" />
+		<result column="AUTH_GBN_NM" property="authGbnNm" />
+	</resultMap>
+
+	<resultMap id="adMenuMgrauthResult" class="adMenuMgrauth" >
+		<result column="MGR_ID" property="mgrId" />
+		<result column="MENU_ID" property="menuId" />
+		<result column="MENU_NM" property="menuNm" />
+		<result column="UP_MENU_ID" property="upMenuId" />
+		<result column="MENU_PRIOR" property="menuPrior" />
+		<result column="MENU_DEPTH" property="menuDepth" />
+		<result column="PAGE_URL" property="pageUrl" />
+	</resultMap>
+
+	<resultMap id="commCdPagingResult" class="commCd" >
+		<result property="totalCount" column="total_count"/>
+		<result column="GRP_CD" property="grpCd" />
+		<result column="DTL_CD" property="dtlCd" />
+		<result column="DTL_FULL_CD" property="dtlFullCd" />
+		<result column="CD_NM" property="cdNm" />
+		<result column="ADD_FIELD1" property="addField1" />
+		<result column="ADD_FIELD2" property="addField2" />
+		<result column="USE_YN" property="useYn" />
+		<result column="DESCRIPTION" property="description" />
+		<result column="DISPLAY_ORDER" property="displayOrder" />
+		<result column="TAGS" property="tags" />
+		<result column="CNT_DTL_CD" property="cntDtlCd" />
+	</resultMap>
+
+	<resultMap id="commCdResult" class="commCd" >
+		<result column="GRP_CD" property="grpCd" />
+		<result column="DTL_CD" property="dtlCd" />
+		<result column="DTL_FULL_CD" property="dtlFullCd" />
+		<result column="CD_NM" property="cdNm" />
+		<result column="ADD_FIELD1" property="addField1" />
+		<result column="ADD_FIELD2" property="addField2" />
+		<result column="USE_YN" property="useYn" />
+		<result column="DESCRIPTION" property="description" />
+		<result column="DISPLAY_ORDER" property="displayOrder" />
+		<result column="TAGS" property="tags" />
+		<result column="CNT_DTL_CD" property="cntDtlCd" />
+	</resultMap>
+
+	<resultMap id="adMenuPagingResult" class="adMenu" >
+		<result property="totalCount" column="total_count"/>
+		<result column="MENU_ID" property="menuId" />
+		<result column="UP_MENU_ID" property="upMenuId" />
+		<result column="MENU_NM" property="menuNm" />
+		<result column="PAGE_URL" property="pageUrl" />
+		<result column="MENU_PRIOR" property="menuPrior" />
+		<result column="MENU_DEPTH" property="menuDepth" />
+		<result column="SUB_MENU_YN" property="subMenuYn" />
+		<result column="USE_YN" property="useYn" />
+		<result column="REG_ID" property="regId" />
+		<result column="REG_DT" property="regDt" />
+		<result column="UPD_ID" property="updId" />
+		<result column="UPD_DT" property="updDt" />
+	</resultMap>
+
+	<resultMap id="adMenuResult" class="adMenu" >
+		<result column="MENU_ID" property="menuId" />
+		<result column="UP_MENU_ID" property="upMenuId" />
+		<result column="MENU_NM" property="menuNm" />
+		<result column="PAGE_URL" property="pageUrl" />
+		<result column="MENU_PRIOR" property="menuPrior" />
+		<result column="MENU_DEPTH" property="menuDepth" />
+		<result column="SUB_MENU_YN" property="subMenuYn" />
+		<result column="USE_YN" property="useYn" />
+		<result column="REG_ID" property="regId" />
+		<result column="REG_DT" property="regDt" />
+		<result column="UPD_ID" property="updId" />
+		<result column="UPD_DT" property="updDt" />
+	</resultMap>
+
+
+	<update id="AdminMgr.adminLoginDateUpdate" parameterClass="string">
+		UPDATE /* AdminMgr.adminLoginDateUpdate, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TBL_AD_MGR
+		   SET  LST_ACC_DTS = SYSDATE
+		 WHERE  MGR_ID = #mgrId#
+	</update>
+
+	<statement id="AdminMgr.selectGroupCdCount" parameterClass="commCd" resultClass="Integer">
+		SELECT count(*) FROM TBL_COMM_CD WHERE dtl_full_cd = #dtlFullCd#
+	</statement>
+	
+	<statement id="AdminMgr.adminLogin" parameterClass="adMgr" resultMap="adMgrResult">
+	<![CDATA[
+		SELECT /* AdminMgr.adminLogin, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TA.MGR_ID
+		       ,TA.PSWD_NO
+		       ,TA.MGR_NM
+		       ,TA.COMP_NM
+		       ,TA.DEPT_NM
+		       ,TA.JOB_GRD_NM
+		       ,TA.MNO_CD
+		       ,TA.HP1_NO
+		       ,TA.HP2_NO
+		       ,TA.HP3_NO
+		       ,TA.BIZ_TEL1_NO
+		       ,TA.BIZ_TEL2_NO
+		       ,TA.BIZ_TEL3_NO
+		       ,TA.EMAIL_ADDR_ID
+		       ,TA.EMAIL_ADDR
+		       ,TA.ETC_DSCR
+		       ,TA.REG_ID
+		       ,TA.REG_DT
+		       ,TA.UPD_ID
+		       ,TA.UPD_DT
+		       ,TA.LST_ACC_DTS
+		       ,TA.AUTH_GBN
+		       ,(SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = TA.AUTH_GBN) as AUTH_GBN_NM
+		  FROM  TBL_AD_MGR TA
+		 WHERE  TA.MGR_ID = #mgrId#
+		   AND  TA.PSWD_NO = #pswdNo#
+	]]>
+	</statement>
+
+	<statement id="AdminMgr.adminAuthLeftMenuListMap" parameterClass="adMenuMgrauth" resultMap="adMenuMgrauthResult">
+		SELECT /* AdminMgr.adminAuthLeftMenuListMap, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        P.MENU_NM
+		       ,P.MENU_ID
+		       ,P.MENU_DEPTH
+		       ,P.MENU_PRIOR
+		       ,P.PAGE_URL
+		       ,P.MGR_ID
+		       ,P.UP_MENU_ID
+		  FROM (
+		        SELECT  MN.MENU_NM
+		               ,MN.UP_MENU_ID
+		               ,MN.MENU_ID
+		               ,MN.MENU_DEPTH
+		               ,MN.MENU_PRIOR
+		               ,MN.PAGE_URL
+		               ,AU.MGR_ID
+		          FROM  TBL_AD_MENU MN, (SELECT MENU_ID, MGR_ID FROM TBL_AD_MGRAUTH WHERE MGR_ID = #mgrId#) AU
+		         WHERE  MN.USE_YN = 'Y'
+		           AND  MN.MENU_ID = AU.MENU_ID 
+		        CONNECT BY PRIOR MN.MENU_ID = MN.UP_MENU_ID
+		        START WITH MN.MENU_ID = 'ROOT'
+		       ) P
+		 WHERE  1 = 1 
+	<isNotEmpty property="topMenuId">
+		   AND  P.UP_MENU_ID = #topMenuId#  
+	</isNotEmpty>
+	<isNotEmpty property="menuDepth">
+		   AND  MENU_DEPTH = #menuDepth#
+	</isNotEmpty>
+		 ORDER BY P.MENU_PRIOR
+	</statement>	
+
+	<!-- selected one id -->
+	<statement id="AdminMgr.selectAdMenuMgrIdList" parameterClass="adMenuMgrauth" resultMap="adMenuMgrauthResult">
+		SELECT /* AdminMgr.selectAdMenuMgrIdList, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        P.MENU_NM
+		       ,P.MENU_ID
+		       ,P.MENU_DEPTH
+		       ,P.MENU_PRIOR
+		       ,P.PAGE_URL
+		       ,P.MGR_ID
+		       ,P.UP_MENU_ID
+		  FROM (
+		        SELECT  MN.MENU_NM
+		               ,MN.UP_MENU_ID
+		               ,MN.MENU_ID
+		               ,MN.MENU_DEPTH
+		               ,MN.MENU_PRIOR
+		               ,MN.PAGE_URL
+		               ,AU.MGR_ID
+		          FROM  TBL_AD_MENU MN, (SELECT MENU_ID, MGR_ID FROM TBL_AD_MGRAUTH WHERE MGR_ID = #mgrId#) AU
+		         WHERE  MN.USE_YN = 'Y'
+		           AND  MN.MENU_ID = AU.MENU_ID(+) 
+		        CONNECT BY PRIOR MN.MENU_ID = MN.UP_MENU_ID
+		        START WITH MN.MENU_ID = 'ROOT'
+		       ) P
+		 WHERE  1 = 1 
+	<isNotEmpty property="topMenuId">
+		   AND  P.UP_MENU_ID = #topMenuId#  
+	</isNotEmpty>
+	<isNotEmpty property="menuDepth">
+		   AND  MENU_DEPTH = #menuDepth#
+	</isNotEmpty>
+		 ORDER BY P.MENU_PRIOR
+	</statement>
+
+	<!-- selected multi id - ALL MENU -->
+	<statement id="AdminMgr.selectAdMenuList" parameterClass="adMenuMgrauth" resultMap="adMenuMgrauthResult">
+		SELECT /* AdminMgr.selectAdMenuList, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        P.MENU_NM
+		       ,P.MENU_ID
+		       ,P.MENU_DEPTH
+		       ,P.MENU_PRIOR
+		       ,P.PAGE_URL
+		       ,'' as MGR_ID
+		       ,P.UP_MENU_ID
+		  FROM (
+		        SELECT  MN.MENU_NM
+		               ,MN.UP_MENU_ID
+		               ,MN.MENU_ID
+		               ,MN.MENU_DEPTH
+		               ,MN.MENU_PRIOR
+		               ,MN.PAGE_URL
+		          FROM  TBL_AD_MENU MN
+		         WHERE  MN.USE_YN = 'Y'
+		        CONNECT BY PRIOR MN.MENU_ID = MN.UP_MENU_ID
+		        START WITH MN.MENU_ID = 'ROOT'
+		       ) P
+		 WHERE  1 = 1 
+	<isNotEmpty property="topMenuId">
+		   AND  P.UP_MENU_ID = #topMenuId#  
+	</isNotEmpty>
+	<isNotEmpty property="menuDepth">
+		   AND  MENU_DEPTH = #menuDepth#
+	</isNotEmpty>
+	<![CDATA[
+		 ORDER BY P.MENU_PRIOR
+	]]>
+	</statement>	
+
+    <statement id="AdminMgr.isAdminValidPageAuth" parameterClass="adMenuMgrauth" resultClass="string">
+		SELECT /* AdminMgr.isAdminValidPageAuth, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        COUNT(*) CNT
+		  FROM  TBL_AD_MGRAUTH
+		 WHERE  MGR_ID = #mgrId#
+		   AND  MENU_ID = #menuId#
+	</statement>
+
+	<statement id="AdminMgr.selectCommCdPagingList" parameterClass="commCd" resultMap="commCdPagingResult">
+	   	<include refid="GOMP.pagingStart"/>
+		SELECT /* AdminMgr.selectCommCdPagingList, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		   	<include refid="GOMP.pagingTotalCount"/>
+		        TA.GRP_CD
+		       ,TA.DTL_CD
+		       ,TA.DTL_FULL_CD
+		       ,TA.CD_NM
+		       ,TA.ADD_FIELD1
+		       ,TA.ADD_FIELD2
+		       ,TA.USE_YN
+		       ,TA.DESCRIPTION
+		       ,TA.DISPLAY_ORDER
+		       ,TA.TAGS
+		       ,(SELECT COUNT(*) FROM TBL_COMM_CD WHERE GRP_CD = TA.DTL_CD) as CNT_DTL_CD
+		  FROM  TBL_COMM_CD TA
+		 WHERE  1 = 1
+	<dynamic>
+		<isNotEmpty property="selectedGrpCd">
+		   AND  TA.GRP_CD = #selectedGrpCd#
+		</isNotEmpty>
+		<isEqual property="gubun" compareValue="GROUP">
+		   AND  TA.GRP_CD = '999999'
+		</isEqual>
+		<isNotEqual property="gubun" compareValue="GROUP">
+		   AND  TA.GRP_CD != '999999'
+		</isNotEqual>
+		<isNotEmpty property="srchGrpType">
+			<isNotEmpty property="srchGrpValue">
+		   AND  TA.GRP_CD = '999999'
+				<isEqual property="srchGrpType" compareValue="CD">
+		   AND  TA.DTL_CD LIKE '%$srchGrpValue$%'
+				</isEqual>
+				<isEqual property="srchGrpType" compareValue="CDNM">
+		   AND  TA.CD_NM LIKE '%$srchGrpValue$%'
+				</isEqual>
+			</isNotEmpty>
+		</isNotEmpty>
+		<isNotEmpty property="srchDtlType">
+			<isNotEmpty property="srchUseYn">
+		   AND  TA.GRP_CD != '999999'
+		   AND  TA.USE_YN = #srchUseYn#
+			</isNotEmpty>
+			<isNotEmpty property="srchDtlValue">
+		--   AND  TA.GRP_CD != '999999'
+				<isEqual property="srchDtlType" compareValue="CD">
+		   AND  TA.DTL_FULL_CD LIKE '%$srchDtlValue$%'
+				</isEqual>
+				<isEqual property="srchDtlType" compareValue="CDNM">
+		   AND  TA.CD_NM LIKE '%$srchDtlValue$%'
+				</isEqual>
+			</isNotEmpty>
+		</isNotEmpty>
+	</dynamic>
+		 ORDER BY TA.GRP_CD ASC, TA.DTL_CD ASC
+	   	<include refid="GOMP.pagingEnd"/>
+	</statement>	
+
+	<statement id="AdminMgr.selectCommCdPagingList_20110527" parameterClass="commCd" resultMap="commCdPagingResult">
+	   	<include refid="GOMP.pagingStart"/>
+		SELECT /* AdminMgr.selectCommCdPagingList, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		   	<include refid="GOMP.pagingTotalCount"/>
+		        TA.GRP_CD
+		       ,TA.DTL_CD
+		       ,TA.DTL_FULL_CD
+		       ,TA.CD_NM
+		       ,TA.ADD_FIELD1
+		       ,TA.ADD_FIELD2
+		       ,TA.USE_YN
+		       ,TA.DESCRIPTION
+		       ,TA.DISPLAY_ORDER
+		       ,TA.TAGS
+		       ,(SELECT COUNT(*) FROM TBL_COMM_CD WHERE GRP_CD = TA.DTL_CD) as CNT_DTL_CD
+		  FROM  TBL_COMM_CD TA
+		 WHERE  1 = 1
+	<dynamic>
+		<isNotEmpty property="selectedGrpCd">
+		   AND  TA.GRP_CD = #selectedGrpCd#
+		</isNotEmpty>
+		<isEqual property="gubun" compareValue="GROUP">
+		   AND  TA.GRP_CD = '999999'
+		</isEqual>
+		<isNotEqual property="gubun" compareValue="GROUP">
+		   AND  TA.GRP_CD != '999999'
+		</isNotEqual>
+		<isNotEmpty property="srchGrpType">
+			<isNotEmpty property="srchGrpValue">
+		   AND  TA.GRP_CD = '999999'
+				<isEqual property="srchGrpType" compareValue="CD">
+		   AND  TA.DTL_CD LIKE '%$srchGrpValue$%'
+				</isEqual>
+				<isEqual property="srchGrpType" compareValue="CDNM">
+		   AND  TA.CD_NM LIKE '%$srchGrpValue$%'
+				</isEqual>
+			</isNotEmpty>
+		</isNotEmpty>
+		<isNotEmpty property="srchDtlType">
+			<isNotEmpty property="srchUseYn">
+		   AND  TA.GRP_CD != '999999'
+		   AND  TA.USE_YN = #srchUseYn#
+			</isNotEmpty>
+			<isNotEmpty property="srchDtlValue">
+		   AND  TA.GRP_CD != '999999'
+				<isEqual property="srchDtlType" compareValue="CD">
+		   AND  TA.DTL_CD LIKE '%$srchDtlValue$%'
+				</isEqual>
+				<isEqual property="srchDtlType" compareValue="CDNM">
+		   AND  TA.CD_NM LIKE '%$srchDtlValue$%'
+				</isEqual>
+			</isNotEmpty>
+		</isNotEmpty>
+	</dynamic>
+		 ORDER BY TA.GRP_CD ASC, TA.DTL_CD ASC
+	   	<include refid="GOMP.pagingEnd"/>
+	</statement>	
+
+	<statement id="AdminMgr.selectCommCd" parameterClass="commCd" resultMap="commCdResult">
+		SELECT /* AdminMgr.selectCommCd, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TA.GRP_CD
+		       ,TA.DTL_CD
+		       ,TA.DTL_FULL_CD
+		       ,TA.CD_NM
+		       ,TA.ADD_FIELD1
+		       ,TA.ADD_FIELD2
+		       ,TA.USE_YN
+		       ,TA.DESCRIPTION
+		       ,TA.DISPLAY_ORDER
+		       ,TA.TAGS
+		       ,(SELECT COUNT(*) FROM TBL_COMM_CD WHERE GRP_CD = TA.DTL_CD) as CNT_DTL_CD
+		  FROM  TBL_COMM_CD TA
+		 WHERE  TA.GRP_CD = #grpCd#
+		   AND  TA.DTL_CD = #dtlCd#
+	</statement>	
+
+	<insert id="AdminMgr.insertCommCd" parameterClass="commCd" >
+		INSERT /* AdminMgr.insertCommCd, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        INTO TBL_COMM_CD
+		(
+		    GRP_CD
+	       ,DTL_CD
+	       ,DTL_FULL_CD
+	       ,CD_NM
+	       ,ADD_FIELD1
+	       ,ADD_FIELD2
+	       ,USE_YN
+	       ,DESCRIPTION
+	       ,DISPLAY_ORDER
+	       ,TAGS
+	       ,REG_DTTM
+	       ,UPD_DTTM
+		) VALUES (
+		    #grpCd#
+		   ,#dtlCd#
+		   ,#dtlFullCd#
+		   ,#cdNm#
+		   ,#addField1#
+		   ,#addField2#
+		   ,#useYn#
+		   ,#description#
+		   ,#displayOrder#
+		   ,#tags#
+		   ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		   ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		)
+	</insert>
+
+	<update id="AdminMgr.updateCommCd" parameterClass="commCd" >
+		UPDATE /* AdminMgr.updateCommCd, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TBL_COMM_CD
+		   SET  GRP_CD = #grpCd#
+		       ,DTL_CD = #dtlCd#
+		       ,DTL_FULL_CD = #dtlFullCd#
+		       ,CD_NM = #cdNm#
+		       ,ADD_FIELD1 = #addField1#
+		       ,ADD_FIELD2 = #addField2#
+		       ,USE_YN = #useYn#
+		       ,DESCRIPTION = #description#
+		       ,DISPLAY_ORDER = #displayOrder#
+		       ,TAGS = #tags#
+		       ,UPD_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		 WHERE  GRP_CD = #grpCd# 
+		   AND  DTL_CD = #dtlCd# 
+	</update>
+
+	<update id="AdminMgr.updateCommCdUseYn" parameterClass="commCd" >
+		UPDATE /* AdminMgr.updateCommCdUseYn, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TBL_COMM_CD
+		   SET  USE_YN = #useYn#
+		       ,UPD_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		 WHERE  GRP_CD = #grpCd# 
+		   AND  DTL_CD = #dtlCd# 
+	</update>
+
+	<delete id="AdminMgr.deleteCommCd" parameterClass="commCd" >
+		DELETE /* AdminMgr.deleteCommCd, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		  FROM  TBL_COMM_CD
+		 WHERE  GRP_CD = #grpCd# 
+		   AND  DTL_CD = #dtlCd# 
+	</delete>
+
+
+	<statement id="AdminMgr.selectAdMgrList" parameterClass="adMgr" resultMap="adMgrPagingResult">
+	   	<include refid="GOMP.pagingStart"/>
+		SELECT /* AdminMgr.selectAdMgrList, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		   	<include refid="GOMP.pagingTotalCount"/>
+		        TA.MGR_ID
+		       ,TA.PSWD_NO
+		       ,TA.MGR_NM
+		       ,TA.COMP_NM
+		       ,TA.DEPT_NM
+		       ,TA.JOB_GRD_NM
+		       ,TA.MNO_CD
+		       ,TA.HP1_NO
+		       ,TA.HP2_NO
+		       ,TA.HP3_NO
+		       ,TA.BIZ_TEL1_NO
+		       ,TA.BIZ_TEL2_NO
+		       ,TA.BIZ_TEL3_NO
+		       ,TA.EMAIL_ADDR_ID
+		       ,TA.EMAIL_ADDR
+		       ,TA.ETC_DSCR
+		       ,TA.REG_ID
+		       ,TA.REG_DT
+		       ,TA.UPD_ID
+		       ,TA.UPD_DT
+		       ,TA.LST_ACC_DTS
+		       ,TA.AUTH_GBN
+		       ,(SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = TA.AUTH_GBN) as AUTH_GBN_NM
+		  FROM  TBL_AD_MGR TA
+		 WHERE  1 = 1
+		<isNotNull property="mgrId">
+		   AND  TA.MGR_ID LIKE '%' ||  #mgrId# || '%'
+		</isNotNull>
+		<isNotNull property="mgrNm">
+		   AND  TA.MGR_NM LIKE '%' ||  #mgrNm# || '%'
+		</isNotNull>
+		<isNotNull property="compNm">
+		   AND  TA.COMP_NM LIKE '%' ||  #compNm# || '%'
+		</isNotNull>
+		 ORDER BY TA.REG_DT DESC, TA.MGR_ID DESC
+	   	<include refid="GOMP.pagingEnd"/>
+	</statement>
+
+	<statement id="AdminMgr.selectAdMgr" parameterClass="adMgr" resultMap="adMgrResult">
+	<![CDATA[
+		SELECT /* AdminMgr.selectAdMgr, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TA.MGR_ID
+		       ,TA.PSWD_NO
+		       ,TA.MGR_NM
+		       ,TA.COMP_NM
+		       ,TA.DEPT_NM
+		       ,TA.JOB_GRD_NM
+		       ,TA.MNO_CD
+		       ,TA.HP1_NO
+		       ,TA.HP2_NO
+		       ,TA.HP3_NO
+		       ,TA.BIZ_TEL1_NO
+		       ,TA.BIZ_TEL2_NO
+		       ,TA.BIZ_TEL3_NO
+		       ,TA.EMAIL_ADDR_ID
+		       ,TA.EMAIL_ADDR
+		       ,TA.ETC_DSCR
+		       ,TA.REG_ID
+		       ,TA.REG_DT
+		       ,TA.UPD_ID
+		       ,TA.UPD_DT
+		       ,TA.LST_ACC_DTS
+		       ,TA.AUTH_GBN
+		       ,(SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = TA.AUTH_GBN) as AUTH_GBN_NM
+		  FROM  TBL_AD_MGR TA
+		 WHERE  TA.MGR_ID = #mgrId#
+	]]>
+	</statement>
+
+    <insert id="AdminMgr.insertAdMgr" parameterClass="adMgr">
+		INSERT /* AdminMgr.insertAdMgr, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		       INTO TBL_AD_MGR (
+		        MGR_ID
+		       ,PSWD_NO
+		       ,MGR_NM
+		       ,COMP_NM
+		       ,DEPT_NM
+		       ,JOB_GRD_NM
+		       ,MNO_CD
+		       ,HP1_NO
+		       ,HP2_NO
+		       ,HP3_NO
+		       ,BIZ_TEL1_NO
+		       ,BIZ_TEL2_NO
+		       ,BIZ_TEL3_NO
+		       ,EMAIL_ADDR_ID
+		       ,EMAIL_ADDR
+		       ,ETC_DSCR
+		       ,REG_ID
+		       ,REG_DT
+		       ,LST_ACC_DTS
+		       ,AUTH_GBN
+		) VALUES (
+		        #mgrId#
+		       ,#pswdNo#
+		       ,#mgrNm#
+		       ,#compNm#
+		       ,#deptNm#
+		       ,#jobGrdNm#
+		       ,#mnoCd#
+		       ,#hp1No#
+		       ,#hp2No#
+		       ,#hp3No#
+		       ,#bizTel1No#
+		       ,#bizTel2No#
+		       ,#bizTel3No#
+		       ,#emailAddrId#
+		       ,#emailAddr#
+		       ,#etcDscr#
+		       ,#regId#
+		       ,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		       ,SYSDATE
+		       ,#authGbn#
+		)
+	</insert>
+
+    <update id="AdminMgr.updateAdMgr" parameterClass="adMgr">
+		UPDATE /* AdminMgr.updateAdMgr, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TBL_AD_MGR
+		   SET  PSWD_NO = #pswdNo#
+		       ,MGR_NM = #mgrNm#
+		       ,COMP_NM = #compNm#
+		       ,DEPT_NM = #deptNm#
+		       ,JOB_GRD_NM = #jobGrdNm#
+		       ,MNO_CD = #mnoCd#
+		       ,HP1_NO = #hp1No#
+		       ,HP2_NO = #hp2No#
+		       ,HP3_NO = #hp3No#
+		       ,BIZ_TEL1_NO = #bizTel1No#
+		       ,BIZ_TEL2_NO = #bizTel2No#
+		       ,BIZ_TEL3_NO = #bizTel3No#
+		       ,EMAIL_ADDR_ID = #emailAddrId#
+		       ,EMAIL_ADDR = #emailAddr#
+		       ,ETC_DSCR = #etcDscr#
+		       ,UPD_ID = #updId#
+		       ,UPD_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		       ,AUTH_GBN = #authGbn#
+		 WHERE  MGR_ID = #mgrId#
+	</update>
+
+    <delete id="AdminMgr.deleteAdMgr" parameterClass="adMgr">
+		DELETE /* AdminMgr.deleteAdMgr, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TBL_AD_MGR
+		 WHERE  MGR_ID = #mgrId#
+	</delete>
+
+	<insert id="AdminMgr.insertAdMgrAuth" parameterClass="adMgrauth" >
+		INSERT /* AdminMgr.insertAdMgrAuth, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        INTO TBL_AD_MGRAUTH (
+			MGR_ID, MENU_ID, REG_ID, REG_DT
+		) VALUES (
+			#mgrId#, #menuId#, #regId#, TO_CHAR(SYSDATE, 'YYYYMMDD')
+		)
+	</insert>
+
+	<delete id="AdminMgr.deleteAdMgrAuth" parameterClass="adMgrauth" > 	      
+		DELETE /* AdminMgr.deleteAdMgrAuth, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TBL_AD_MGRAUTH
+		 WHERE  MGR_ID = #mgrId#
+	</delete>
+
+	<statement id="AdminMgr.selectAdMenuMgmtPagingList" parameterClass="adMenu" resultMap="adMenuPagingResult">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* AdminMgr.selectAdMenuMgmtPagingList, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+			<include refid="GOMP.pagingTotalCount"/>
+		        MENU_ID
+		       ,UP_MENU_ID
+		       ,MENU_NM
+		       ,PAGE_URL
+		       ,MENU_PRIOR
+		       ,MENU_DEPTH
+		       ,SUB_MENU_YN
+		       ,USE_YN
+		       ,REG_ID
+		       ,REG_DT
+		       ,UPD_ID
+		       ,UPD_DT
+		  FROM  TBL_AD_MENU
+		 WHERE  UP_MENU_ID = #upMenuId#
+		 ORDER BY MENU_PRIOR ASC
+		<include refid="GOMP.pagingEnd"/>
+	</statement>
+
+	<statement id="AdminMgr.selectAdMenuMgmtList" parameterClass="adMenu" resultMap="adMenuResult">
+		SELECT /* AdminMgr.selectAdMenuMgmtList, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        MENU_ID
+		       ,UP_MENU_ID
+		       ,MENU_NM
+		       ,PAGE_URL
+		       ,MENU_PRIOR
+		       ,MENU_DEPTH
+		       ,SUB_MENU_YN
+		       ,USE_YN
+		       ,REG_ID
+		       ,REG_DT
+		       ,UPD_ID
+		       ,UPD_DT
+		  FROM  TBL_AD_MENU
+		 WHERE  1 = 1
+		<isNotEmpty property="searchValue">
+		   AND  MENU_NM LIKE '%' || #searchValue# || '%'
+		</isNotEmpty>
+		<isEmpty property="searchValue">
+		   AND  UP_MENU_ID = #upMenuId#
+		</isEmpty>
+		 ORDER BY MENU_PRIOR ASC
+	</statement>
+
+	<statement id="AdminMgr.selectAdMenuMgmt" parameterClass="adMenu" resultMap="adMenuResult">
+		SELECT /* AdminMgr.selectAdMenuMgmt, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        MENU_ID
+		       ,UP_MENU_ID
+		       ,MENU_NM
+		       ,PAGE_URL
+		       ,MENU_PRIOR
+		       ,MENU_DEPTH
+		       ,SUB_MENU_YN
+		       ,USE_YN
+		       ,REG_ID
+		       ,REG_DT
+		       ,UPD_ID
+		       ,UPD_DT
+		  FROM  TBL_AD_MENU
+		 WHERE  MENU_ID = #menuId#
+	</statement>
+
+    <insert id="AdminMgr.insertAdMenuMgmt" parameterClass="adMenu">
+		INSERT /* AdminMgr.insertAdMenuMgmt, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        INTO TBL_AD_MENU (
+		     MENU_ID
+		    ,UP_MENU_ID
+		    ,MENU_NM
+		    ,PAGE_URL
+		    ,MENU_PRIOR
+		    ,MENU_DEPTH
+		    ,SUB_MENU_YN
+		    ,USE_YN
+		    ,REG_ID
+		    ,REG_DT
+		) VALUES (
+		     #menuId#
+		    ,#upMenuId#
+		    ,#menuNm#
+		    ,#pageUrl#
+		    ,#menuPrior#
+		    ,#menuDepth#
+		    ,#subMenuYn#
+		    ,#useYn#
+		    ,#regId#
+            ,TO_CHAR(SYSDATE,'yyyyMMdd')
+		)
+    </insert>
+
+    <update id="AdminMgr.updateAdMenuMgmt" parameterClass="adMenu">
+		UPDATE /* AdminMgr.updateAdMenuMgmt, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TBL_AD_MENU
+		   SET  MENU_NM = #menuNm#
+		       ,PAGE_URL = #pageUrl#
+		       ,MENU_PRIOR = #menuPrior#
+		       ,MENU_DEPTH = #menuDepth#
+		       ,SUB_MENU_YN = #subMenuYn#
+		       ,USE_YN = #useYn#
+		       ,UPD_ID = #updId#
+		       ,UPD_DT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		 WHERE  MENU_ID = #menuId#
+	</update>
+
+    <update id="AdminMgr.updateAdMenuMgmtUseYn" parameterClass="adMenu">
+		UPDATE /* AdminMgr.updateAdMenuMgmtUseYn, AdminPoC, jslee, 2011.03.21 : AdminMgr_SqlMap.xml */
+		        TBL_AD_MENU
+		   SET  UPD_DT = TO_CHAR(SYSDATE,'yyyyMMdd')
+		       ,UPD_ID = #updId#
+		       ,USE_YN = #useYn#
+		 WHERE  MENU_ID = #menuId#
+	</update>
+
+</sqlMap>

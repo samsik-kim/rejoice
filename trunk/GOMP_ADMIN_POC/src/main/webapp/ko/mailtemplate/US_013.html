@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>T store E-mail service</title>
+<style type="text/css"> 
+<!--
+html, body, h1, h2, h3, h4, h5, h6, div, p, blockquote, pre, code, address, ul, ol, li, 
+dl, dt, dd, table, caption, th, td, form, fieldset, legend, hr, input, button, textarea {margin:0;padding:0;}
+img {vertical-align:middle;border:0;}
+-->
+</style>
+ <base href="${_url_base}"/>
+</head>
+<body>
+ 
+<table width="673" border="0" cellspacing="0" cellpadding="0" style="margin:20px;">
+	<tr>
+		<td>
+			<table width="673" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="339"><img src="DEV/images/em/em_tstore.gif" alt="T store E-mail service" border="0" /></td>
+					<td width="334" align="right"><p style="padding:12px 12px 0 0;font-size:12px;font-family:Verdana;color:#999999;">${sendDt}</p></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td background="DEV/images/em/em_bg01.gif">
+			<table width="673" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>
+						<tr>
+							<td style="font-size:0px;"><img src="DEV/images/em/em_title12.gif" alt="안녕하세요 티스토어 개발자 센터입니다. 회원님의 회원전환 완료 안내입니다." border="0" /></td>
+						</tr>
+						<tr>
+							<td background="DEV/images/em/em_bg01.gif" style="padding:0 57px;font-size:12px;font-family:Dotum;color:#444;line-height:140%;">
+								<table width="558" border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td><p style="padding-bottom:10px;"><span style="color:#994c19;font-weight:bold;">${mbrId}</span> 님, 신청하신 <strong>회사(일반영업, 소규모 영업)로의 회원전환</strong>이 정상적으로 완료되었습니다.</p></td>
+									</tr>
+									<tr>
+										<td>
+											<table style="width:100%;border-collapse:collapse;border-top:1px solid #c7c7c7;border-bottom:2px solid #edefed;">
+												<colgroup>
+													<col width="25%" />
+													<col />
+												</colgroup>
+												<tbody>
+													<tr>
+														<th scope="row" style="padding:12px 0px 11px 15px;text-align:left;font-weight:normal;color:#333;background:#f4f4f4;border-bottom:1px solid #fff;">회원전환 신청일</th>
+														<td style="padding:12px 0 11px 33px;text-align:left;color:#666;border-bottom:1px solid #edefed;">${reqDt}</td>
+													</tr>
+													<tr>
+														<th scope="row" style="padding:12px 0px 11px 15px;text-align:left;font-weight:normal;color:#333;background:#f4f4f4;border-bottom:1px solid #fff;">회원전환 완료일</th>
+														<td style="padding:12px 0 11px 33px;text-align:left;color:#666;border-bottom:1px solid #edefed;">${endDt}</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td style="font-size:0px;"><p style="margin-top:22px;text-align:center;"><a href="${mainUrl}"><img src="DEV/images/em/em_btn_dev.gif" alt="개발자 사이트 바로가기" border="0" /></a></p></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td style="font-size:0px;"><img src="DEV/images/em/em_cus.gif" border="0" /></td>
+						</tr>
+						<tr>
+							<td style="font-size:0px;"><img src="DEV/images/em/em_footer.gif" alt="본 메일은 발신 전용 메일로 회신되지 않으므로 문의 사항은 고객센터를 이용하여 주시기 바랍니다. COPYRIGHT (C) 2011 SK TELECOM. ALL RIGHTS RESERVED" border="0" /></td>
+						</tr>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

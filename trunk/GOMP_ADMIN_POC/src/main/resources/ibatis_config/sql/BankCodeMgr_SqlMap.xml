@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="BankMgr">
+
+	<typeAlias alias="bankModel" type="com.omp.admin.adminmgr.bank.model.BankCodeModel"/>
+	
+	<resultMap class="bankModel" id="bank-resultMap">
+		<result property="totalCount" column="total_count"/>
+		<result property="RNUM" column="rnum"/>
+		<result property="BANK_CD" column="BANK_CD"/>
+		<result property="CERTI_CD" column="CERTI_CD"/>
+		<result property="BANK_NM" column="BANK_NM"/>
+		<result property="BANK_BRIEF_NM" column="BANK_BRIEF_NM"/>
+		<result property="USE_YN" column="USE_YN"/>
+	</resultMap>		
+	
+	<statement id="BankMgr.commBankList" parameterClass="bankModel" resultMap="bank-resultMap" >
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* BankMgr.commBankList chpbj 2011.05.11 : BankCodeMgr_SqlMap.xml */
+		   	<include refid="GOMP.pagingTotalCount"/>
+			BANK_CD,
+			CERTI_CD,
+			BANK_NM,
+			BANK_BRIEF_NM,
+			USE_YN
+		FROM
+			TBL_COMM_BANK_CD
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty property="USE_YN">
+				AND USE_YN = #USE_YN#
+			</isNotEmpty>
+			<isNotEmpty property="searchValue">
+				<isEqual  property="searchType" compareValue="code">
+					AND BANK_CD LIKE '%' ||#searchValue#|| '%'
+				</isEqual>
+				<isEqual  property="searchType" compareValue="briefNm">
+					AND BANK_BRIEF_NM LIKE '%' ||#searchValue#|| '%'
+				</isEqual>
+				<isEqual  property="searchType" compareValue="nm">
+					AND BANK_NM LIKE '%' ||#searchValue#|| '%'
+				</isEqual>
+			</isNotEmpty>
+		</dynamic>
+		ORDER BY BANK_CD ASC
+	   	<include refid="GOMP.pagingEnd"/>
+	</statement>
+	
+	<statement id="BankMgr.getBankInfo" parameterClass="bankModel" resultClass="bankModel" >
+		SELECT /* BankMgr.getBankInfo chpbj 2011.05.11 : BankCodeMgr_SqlMap.xml */
+			BANK_CD,
+			CERTI_CD,
+			BANK_NM,
+			BANK_BRIEF_NM,
+			USE_YN
+		FROM
+			TBL_COMM_BANK_CD
+		WHERE
+			BANK_CD = #BANK_CD#
+	</statement>
+	
+	<select id="BankMgr.duplBankCount" resultClass="java.lang.String">
+		SELECT /* BankMgr.duplBankCount chpbj 2011.05.26 : BankCodeMgr_SqlMap.xml */
+			COUNT(*) as CNT
+		FROM
+			TBL_COMM_BANK_CD
+		WHERE
+			BANK_CD = #BANK_CD#
+	</select>
+	
+	<select id="BankMgr.ajaxDuplCheck" parameterClass="bankModel" resultClass="bankModel">
+		SELECT /* BankMgr.ajaxDuplCheck chpbj 2011.05.11 : BankCodeMgr_SqlMap.xml */
+			DECODE(BANK_CD, #BANK_CD#, 'N', 'Y') as BANK_CD,
+			DECODE(CERTI_CD, #CERTI_CD#, 'N', 'Y') as CERTI_CD
+		FROM
+			TBL_COMM_BANK_CD
+		WHERE
+			BANK_CD = #BANK_CD#
+	</select>
+	
+	<insert id="BankMgr.insertBankInfo" parameterClass="bankModel" >
+		INSERT INTO /* BankMgr.insertBankInfo chpbj 2011.05.11 : BankCodeMgr_SqlMap.xml */
+			TBL_COMM_BANK_CD
+		(
+			BANK_CD,
+			CERTI_CD,
+			BANK_NM,
+			BANK_BRIEF_NM,
+			USE_YN,
+			REG_ID,
+			REG_DTTM
+		) VALUES (
+			#BANK_CD#,
+			#CERTI_CD#,
+			#BANK_NM#,
+			#BANK_BRIEF_NM#,
+			#USE_YN#,
+			#REG_ID#,
+			TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		)
+	</insert>
+	
+	<update id="BankMgr.updateBankInfo" parameterClass="bankModel">
+		UPDATE /* BankMgr.updateBankInfo chpbj 2011.05.11 : BankCodeMgr_SqlMap.xml */
+			TBL_COMM_BANK_CD
+		SET
+			BANK_NM = #BANK_NM#,
+			BANK_BRIEF_NM = #BANK_BRIEF_NM#,
+			USE_YN = #USE_YN#,
+			UPD_ID = #UPD_ID#,
+			UPD_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		WHERE
+			BANK_CD = #BANK_CD#
+	</update>
+	
+	<delete id="BankMgr.deleteBankInfo" parameterClass="java.lang.String">
+		DELETE /* BankMgr.deleteBankInfo chpbj 2011.05.11 : BankCodeMgr_SqlMap.xml */
+		FROM
+			TBL_COMM_BANK_CD
+		WHERE BANK_CD = #value#
+	</delete>
+	 		
+</sqlMap>

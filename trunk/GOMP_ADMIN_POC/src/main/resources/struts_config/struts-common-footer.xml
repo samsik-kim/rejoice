@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="footer" extends="dev-common" namespace="/footer">
+		<action name="agreement" class="com.omp.commons.action.BaseAction">
+			<result>/${loc.language}/jsp/common/agreement_01.jsp</result>
+		</action>
+
+		<action name="agreement02" class="com.omp.commons.action.BaseAction">
+			<result>/${loc.language}/jsp/common/agreement_02.jsp</result>
+		</action>
+
+		<action name="agreement03" class="com.omp.commons.action.BaseAction">
+			<result>/${loc.language}/jsp/common/agreement_03.jsp</result>
+		</action>
+		<action name="agreement04" class="com.omp.commons.action.BaseAction">
+			<result>/${loc.language}/jsp/common/agreement_04.jsp</result>
+		</action>
+		<action name="info_policy" class="com.omp.commons.action.BaseAction">
+			<result>/${loc.language}/jsp/common/info_policy.jsp</result>
+		</action>
+
+		<action name="protect_teenagers" class="com.omp.commons.action.BaseAction">
+			<result>/${loc.language}/jsp/common/protect_teenagers.jsp</result>
+		</action>
+	</package>
+</struts>

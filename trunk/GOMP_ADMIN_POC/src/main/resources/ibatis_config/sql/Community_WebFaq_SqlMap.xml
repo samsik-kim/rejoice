@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="WebFaq">
+	<typeAlias alias="WebFaq" type="com.omp.dev.community.model.WebFaq"/>
+	
+	<resultMap id="faqPagingResult" class="WebFaq" >
+		<result property="totalCount" column="total_count"/>
+		<result property="rnum" column="rnum"/>
+		<result column="FAQ_ID" property="faqId" />
+		<result column="CTGR_CD" property="ctgrCd" />
+		<result column="CTGR_NM" property="ctgrNm" />
+		<result column="TITLE" property="title" />
+		<result column="DSCR" property="dscr" />
+		<result column="HIT" property="hit" />
+		<result column="SORT" property="sort" />
+		<result column="INS_DTTM" property="insDttm" />
+	</resultMap>
+	<resultMap id="faqResult" class="WebFaq" >
+		<result column="FAQ_ID" property="faqId" />
+		<result column="GID" property="gid" />
+		<result column="CTGR_CD" property="ctgrCd" />
+		<result column="CTGR_NM" property="ctgrNm" />
+		<result column="TITLE" property="title" />
+		<result column="DSCR" property="dscr" />
+		<result column="HIT" property="hit" />
+		<result column="SORT" property="sort" />
+	</resultMap>
+	<resultMap id="file-default-result" class="WebFaq" >
+		<result property="fnm" column="fnm" />
+		<result property="ofnm" column="ofnm" />
+		<result property="fsz" column="fsz" />
+		<result property="furl" column="furl" />
+		<result property="ftype" column="ftype" />
+  	</resultMap>
+  	<resultMap id="ctgr-result" class="WebFaq" >
+		<result property="ctgrCd" column="CTGR_CD" />
+		<result property="ctgrNm" column="CTGR_NM" />
+  	</resultMap>
+	
+	<select id="WebFaq.selectFaqPagingList" parameterClass="WebFaq" resultMap="faqPagingResult" >
+	   	<include refid="GOMP.pagingStart"/>
+		SELECT  /* WebFaq.selectFaqPagingList aylee 2011.05.11 : Community_WebFaq_SqlMap.xml */
+	   	<include refid="GOMP.pagingTotalCount"/>
+		        TA.FAQ_ID
+		       ,TA.CTGR_CD
+		       ,TB.CTGR_NM
+		       ,TA.TITLE
+		       ,TA.DSCR
+		       ,TA.HIT
+		       ,TA.SORT
+		       ,TA.INS_DTTM
+		  FROM  TBL_FAQ TA, TBL_CTGR TB
+		 WHERE  TB.CTGR_CD = TA.CTGR_CD
+		   AND  TA.DEL_YN = 'N'
+		   AND  TB.HIGH_CTGR = #ctgrCd#
+		   AND  TA.OPEN_YN = #openYn#
+	<dynamic>
+	<isNotEmpty property="searchValue">
+		<isEmpty property="searchType">
+			AND  (TA.DSCR like '%$searchValue$%' OR TA.TITLE like '%$searchValue$%')
+		</isEmpty>
+		<isNotEmpty property="searchType">
+			AND  TA.CTGR_CD = #searchType#
+			AND  (TA.DSCR like '%$searchValue$%' OR TA.TITLE like '%$searchValue$%')
+		</isNotEmpty>
+		</isNotEmpty>
+	</dynamic>
+		 ORDER BY SORT ASC, INS_DTTM DESC
+   	<include refid="GOMP.pagingEnd"/>
+	</select>
+	<select id="WebFaq.selectFaq" parameterClass="WebFaq" resultMap="faqResult" >
+		SELECT  /* WebFaq.selectFaq aylee 2011.05.11 : Community_WebFaq_SqlMap.xml */
+		        TA.FAQ_ID
+		       ,TA.GID
+		       ,TA.CTGR_CD
+		       ,TB.CTGR_NM
+		       ,TA.TITLE
+		       ,TA.DSCR
+		       ,TA.HIT
+		       ,TA.SORT
+		  FROM  TBL_FAQ TA, TBL_CTGR TB
+		 WHERE  TB.CTGR_CD = TA.CTGR_CD
+		   AND  TA.FAQ_ID = #faqId#
+	</select>
+	<select id="WebFaq.selectFileDownloadList"  parameterClass="java.lang.Integer" resultMap="file-default-result">
+		SELECT /* WebFaq.selectFileDownloadList aylee 2011.05.11 : Community_WebFaq_SqlMap.xml */
+		       B.FNM
+		      ,B.OFNM
+		      ,B.FSZ
+		      ,B.FURL
+		      ,B.FTYPE
+		  FROM TBL_COMM_FILE_UPLOAD_GRP A, TBL_COMM_FILE_UPLOAD B
+		 WHERE A.FID = B.FID
+		   AND A.USE_YN = 'Y'
+		   AND A.GID = #gid#    
+		 ORDER BY SEQ
+    </select>
+    <update id="WebFaq.updateFaqHit" parameterClass="WebFaq">
+		UPDATE /* WebFaq.updateFaqHit aylee 2011.05.11 : Community_WebFaq_SqlMap.xml */
+			   TBL_FAQ
+		   SET HIT = HIT + 1
+		 WHERE FAQ_ID = #faqId#
+		   AND DEL_YN = 'N'
+	</update>
+	<select id="WebFaq.selectCategoryList"  parameterClass="java.lang.String" resultMap="ctgr-result">
+		SELECT /* WebFaq.selectCategoryList aylee 2011.05.11 : Community_WebFaq_SqlMap.xml */
+        TA.CTGR_CD
+       ,TA.CTGR_NM
+  		FROM  TBL_CTGR TA
+ 		WHERE TA.HIGH_CTGR = #ctgrCd#
+   		AND  TA.OPEN_YN = 'Y'
+   		AND  TA.DEL_YN = 'N'
+ 		ORDER BY TO_NUMBER(TA.DISPLAY_ORDER) ASC, TA.INS_DTTM ASC
+    </select>
+</sqlMap>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE daoConfig
+	PUBLIC "-//ibatis.apache.org//DTD DAO Configuration 2.0//EN"
+	"http://ibatis.apache.org/dtd/dao-2.dtd">
+
+<daoConfig>
+
+  <context>
+
+	<transactionManager type="SQLMAP">
+	  <property name="SqlMapConfigResource"
+		value="ibatis_config/sql-map-config.xml"/>
+	</transactionManager>
+
+	<dao interface="com.omp.commons.persistence.dao.CommonDAO"
+		implementation="com.omp.commons.persistence.dao.CommonDAOImpl"/>
+	
+	<!-- 	
+	<dao interface="com.omp.commons.com.persistence.dao.ComDAO"
+		implementation="com.omp.commons.com.persistence.dao.ComDAOImpl"/>
+ 	-->
+	<dao interface="com.omp.admin.common.persistence.dao.FileSupportDao"
+		implementation="com.omp.admin.common.persistence.dao.FileSupportDaoImpl"/>
+
+    <!-- purchaseCancel -->    
+	<dao interface="com.omp.admin.purchaseCancel.persistence.dao.PurchaseCancelDAO"
+		implementation="com.omp.admin.purchaseCancel.persistence.dao.PurchaseCancelDAOImpl"/>
+			  
+  </context>
+
+</daoConfig>

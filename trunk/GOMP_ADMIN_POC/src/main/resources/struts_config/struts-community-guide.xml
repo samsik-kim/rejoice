@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="guide" extends="dev-common" namespace="/community">
+		
+		<action name="memberGuide" class="com.omp.dev.community.action.GuideAction" method="memberGuide">
+			<result>/${loc.language}/jsp/community/guide/member_guide.jsp</result>
+		</action>
+		
+		<action name="basicInfoGuide" class="com.omp.dev.community.action.GuideAction" method="basicInfoGuide">
+			<result>/${loc.language}/jsp/community/guide/prod_regmgr_basicinfo_guide.jsp</result>
+		</action>
+		
+		<action name="detailInfoGuide" class="com.omp.dev.community.action.GuideAction" method="detailInfoGuide">
+			<result>/${loc.language}/jsp/community/guide/prod_regmgr_detailinfo_guide.jsp</result>
+		</action>
+		
+		<action name="devInfoGuide" class="com.omp.dev.community.action.GuideAction" method="devInfoGuide">
+			<result>/${loc.language}/jsp/community/guide/prod_regmgr_devinfo_guide.jsp</result>
+		</action>
+		
+		<action name="prodVerificationGuide" class="com.omp.dev.community.action.GuideAction" method="prodVerificationGuide">
+			<result>/${loc.language}/jsp/community/guide/prod_auth_guide.jsp</result>
+		</action>
+		
+		<action name="saleCalculateGuide" class="com.omp.dev.community.action.GuideAction" method="saleCalculateGuide">
+			<result>/${loc.language}/jsp/community/guide/sale_calculate_guide.jsp</result>
+		</action>
+		
+		<action name="appDrmGuide" class="com.omp.dev.community.action.GuideAction" method="appDrmGuide">
+			<result>/${loc.language}/jsp/community/guide/app_drm_guide.jsp</result>
+		</action>
+		
+	</package>
+</struts>

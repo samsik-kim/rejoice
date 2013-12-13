@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="PhoneMapping">
+	<typeAlias alias="phoneMappingContents" type="com.omp.admin.phonemapping.model.PhoneMappingContents"/>
+	<typeAlias alias="phoneMappingParam" type="com.omp.admin.phonemapping.model.PhoneMappingParam" />
+	<typeAlias alias="contentInfo" type="com.omp.commons.product.model.phone.file.ContentInfo"/>
+	<typeAlias alias="phoneRemMgr" type="com.omp.admin.phonemapping.model.PhoneRemMgr" />
+	<typeAlias alias="phoneRemScid" type="com.omp.admin.phonemapping.model.PhoneRemScid" />
+	<typeAlias alias="searchParam" type="com.omp.admin.phonemapping.model.SearchParam"/>
+	
+	<!-- 해당 폰이 유효한 폰인지 확인 -->
+	<select id="PhoneMapping.selectPhoneInfo" parameterClass="string" resultClass="hashmap">
+		SELECT /* PhoneMapping.selectPhoneInfo bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			DEL_YN, SVC_CD
+		FROM TBL_PHONE_INFO
+		WHERE PHONE_MODEL_CD = #phoneModelCd#
+	</select>
+	
+	<!-- 유효한 검증 버전이 있는지 확인 -->
+	<select id="PhoneMapping.selectContentsInfo" parameterClass="phoneMappingParam" resultClass="hashmap">
+		SELECT /* PhoneMapping.selectContentsInfo bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			CID, ''||MAX(VERIFY_REQ_VER) AS VERIFYREQVER
+		FROM TBL_CT_CONTS
+		WHERE AID = #aid#
+		  AND AGRMNT_STAT = 'PD005002'
+		GROUP BY CID
+	</select>
+	
+	<!-- 단말 등록시 이미 폰매핑이 되어 있는지 확인 -->
+	<select id="PhoneMapping.getAlreadyMappingCnt" parameterClass="phoneMappingParam" resultClass="int">
+		SELECT /* PhoneMapping.getAlreadyMappingCnt bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			COUNT(*) AS CNT
+		FROM TBL_CT_SUB_CONTS A
+		INNER JOIN TBL_CT_SPRT_PHONE B  ON (A.SCID = B.SCID AND A.VERIFY_REQ_VER = B.VERIFY_REQ_VER)
+		WHERE A.CID = #cid#
+		  AND A.VERIFY_REQ_VER = #verifyReqVer#
+		  AND B.PHONE_MODEL_CD = #addDevice#
+		  AND ROWNUM &lt; 2
+	</select> 
+	
+	<!-- 단말 삭제시 해당 단말이 매핑되어 있는 상품이 맞는지 확인 -->
+	<select id="PhoneMapping.getAlreadyExistCnt" parameterClass="phoneMappingParam" resultClass="int">
+		SELECT /* PhoneMapping.getAlreadyExistCnt bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			COUNT(*) AS CNT
+		FROM TBL_CT_SUB_CONTS A
+		INNER JOIN TBL_CT_SPRT_PHONE B  ON (A.SCID = B.SCID AND A.VERIFY_REQ_VER = B.VERIFY_REQ_VER)
+		WHERE A.CID = #cid#
+		  AND A.VERIFY_REQ_VER = #verifyReqVer#
+		  AND B.PHONE_MODEL_CD = #delDevice#
+		  AND ROWNUM &lt; 2
+	</select>
+	
+	<!-- 단말 등록시 필요한 CID/SCID 검색 -->
+	<select id="PhoneMapping.getScidForMapping" parameterClass="phoneMappingParam" resultClass="contentInfo">
+		SELECT /* PhoneMapping.getScidForMapping bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			A.CID
+			, A.SCID
+		FROM TBL_CT_SUB_CONTS A
+		INNER JOIN TBL_CT_SPRT_PHONE B  ON (A.SCID = B.SCID AND A.VERIFY_REQ_VER = B.VERIFY_REQ_VER)
+		WHERE A.CID = #cid#
+		  AND A.VERIFY_REQ_VER = #verifyReqVer#
+		  AND B.PHONE_MODEL_CD = #baseDevice#
+		  AND ROWNUM &lt; 2
+	</select>
+	
+	<select id="PhoneMapping.searchScidForMapping" parameterClass="phoneMappingParam" resultClass="contentInfo">
+		SELECT /* PhoneMapping.searchScidForMapping bcpark 2011.05.26 : PhoneMapping_SqlMap.xml */
+			A.CID
+			, A.SCID
+		FROM TBL_CT_SUB_CONTS A
+		INNER JOIN (SELECT (SELECT CD_NM FROM TBL_COMM_CD WHERE DTL_FULL_CD = X.VM_VER) AS VM_VER,LCD_SIZE 
+					FROM TBL_PHONE_INFO X WHERE PHONE_MODEL_CD = #addDevice#) C 
+					ON (C.VM_VER BETWEEN A.VM_VER_MIN and NVL(A.VM_VER_MAX,99999))
+		INNER JOIN TBL_CT_SPRT_PHONE B  ON (A.SCID = B.SCID AND A.VERIFY_REQ_VER = B.VERIFY_REQ_VER AND B.PHONE_MODEL_CD = #baseDevice#)
+		INNER JOIN TBL_CT_PROVISION_ITEM  D ON (A.SCID = D.SCID AND D.VERIFY_REQ_VER = #verifyReqVer# AND D.ITEM_CD = C.LCD_SIZE)
+		WHERE A.CID = #cid#
+		  AND A.VERIFY_REQ_VER = #verifyReqVer#
+		AND ROWNUM &lt; 2
+	</select>
+	
+	<!-- 단말매핑 테이블에 기록 -->
+	<insert id="PhoneMapping.insertPhoneRemMgr" parameterClass="phoneRemMgr">
+		INSERT /* PhoneMapping.insertPhoneRemMgr bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+		INTO TBL_PD_SPRT_PHONE_REM_MGR (
+			TX_ID
+			, MAPPING_TYPE
+			, TARGET_PHONE_MODEL_CD
+			, STANDARD_PHONE_MODEL_CD
+			, INS_DTTM
+			, INS_BY
+			, INS_IP
+			, MAPPING_STAT
+		)VALUES(
+			#txId#
+			, #mappingType#
+			, #targetPhoneModelCd#
+			, #standardPhoneModelCd#
+			, SYSDATE
+			, #insBy#
+			, #insIp#
+			, #mappingStat#
+		)
+	</insert>
+	
+	<!-- 단말매핑 상세 테이블에 기록 -->
+	<insert id="PhoneMapping.insertPhoneRemScid" parameterClass="map">
+		INSERT /* PhoneMapping.insertPhoneRemScid bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+		INTO TBL_PD_SPRT_PHONE_REM_SCID (
+			TX_ID
+			, CID
+			, SCID
+			, INS_DTTM
+			, INS_BY
+		)VALUES(
+			#txId#
+			, #cid#
+			, #scid#
+			, sysdate
+			, #adminId#
+		)
+	</insert>
+	
+	<!-- 2차 ACK를 받은 후 CID, SCID 리스트를 가져온다. -->
+	<select id="PhoneMapping.selectPhoneRemScid" parameterClass="map" resultClass="hashmap">
+		SELECT /* PhoneMapping.selectPhoneRemScid bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			CID
+			, SCID
+			, #targetPhoneModelCd# AS TARGETPHONEMODELCD
+			, #insBy# AS INSBY
+		FROM TBL_PD_SPRT_PHONE_REM_SCID
+		WHERE TX_ID = #txId#
+	</select>
+	
+	<!-- 단말매핑 : DP 이미 매핑 되어 있는지 다시 한번 확인 -->
+	<select id="PhoneMapping.selectDpSprtPhone" parameterClass="map" resultClass="int">
+		SELECT /* PhoneMapping.selectDpSprtPhone bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			COUNT(*) AS CNT 
+		FROM TBL_DP_SPRT_HP 
+		WHERE PROD_ID = #CID#
+		  AND PHONE_MODEL_CD = #TARGETPHONEMODELCD#
+	</select>
+	
+	<!-- 단말매핑 : DP -->
+	<insert id="PhoneMapping.insertDpSprtPhone" parameterClass="map">
+		INSERT /* PhoneMapping.insertDpSprtPhone bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+		INTO TBL_DP_SPRT_HP(
+			SUB_CONTS_ID
+			, PHONE_MODEL_CD
+			, PROD_ID
+		)VALUES( 
+			#SCID#
+			, #TARGETPHONEMODELCD#
+			, #CID#
+		)
+	</insert>
+	
+	<!-- 단말매핑 : PD 이미 매핑 되어 있는지 다시 한번 확인 -->
+	<select id="PhoneMapping.selectPdSprtPhone" parameterClass="map" resultClass="int">
+		SELECT /* PhoneMapping.selectPdSprtPhone bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			COUNT(*) AS CNT
+		FROM TBL_PD_SPRT_PHONE A
+		INNER JOIN TBL_PD_SUB_CONTS B ON (A.SCID=B.SCID)
+		WHERE B.CID = #CID#
+		  AND A.PHONE_MODEL_CD = #TARGETPHONEMODELCD#
+	</select>	
+	
+	<!-- 단말매핑 : PD -->
+	<insert id="PhoneMapping.insertPdSprtPhone" parameterClass="map">
+		INSERT /* PhoneMapping.insertPdSprtPhone bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+		INTO TBL_PD_SPRT_PHONE (
+			SCID
+			, SPRT_PHONE_SEQ
+			, PHONE_MODEL_CD
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY, UPD_DTTM
+		)
+		SELECT 
+			#SCID#
+			, NVL(MAX(SPRT_PHONE_SEQ), 0) +1 
+			, #TARGETPHONEMODELCD#
+			, #INSBY#
+			, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+			, #INSBY#
+			, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		FROM TBL_PD_SPRT_PHONE
+		WHERE SCID = #SCID#
+	</insert>
+	
+	<!-- 단말매핑 : CT 이미 매핑 되어 있는지 다시 한번 확인 -->
+	<select id="PhoneMapping.selectCtSprtPhone" parameterClass="map" resultClass="int">
+		SELECT /* PhoneMapping.selectCtSprtPhone bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			COUNT(*) AS CNT
+		FROM TBL_CT_SPRT_PHONE A
+		INNER JOIN TBL_CT_SUB_CONTS B ON (A.SCID=B.SCID AND A.VERIFY_REQ_VER = B.VERIFY_REQ_VER AND B.VERIFY_REQ_VER = (SELECT MAX(VERIFY_REQ_VER) FROM TBL_CT_CONTS WHERE CID = #CID# AND AGRMNT_STAT = 'PD005002'))
+		WHERE B.CID = #CID#
+		  AND A.PHONE_MODEL_CD = #TARGETPHONEMODELCD#
+	</select>
+	
+	<!-- 단말매핑 : CT -->
+	<insert id="PhoneMapping.insertCtSprtPhone" parameterClass="map">
+		INSERT /* PhoneMapping.insertCtSprtPhone bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+		INTO TBL_CT_SPRT_PHONE (
+			SCID
+			, VERIFY_REQ_VER
+			, SPRT_PHONE_SEQ
+			, PHONE_MODEL_CD
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY
+			, UPD_DTTM
+		)
+		SELECT 
+			#SCID#
+			, C.VERIFY_REQ_VER
+			, NVL(MAX(C.SPRT_PHONE_SEQ), 0) +1 
+			, #TARGETPHONEMODELCD#
+			, #INSBY#
+			, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+			, #INSBY#
+			, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		FROM TBL_CT_SPRT_PHONE C 
+		WHERE SCID = #SCID#
+		AND C.VERIFY_REQ_VER = (
+				SELECT MAX(VERIFY_REQ_VER) 
+				FROM TBL_CT_CONTS 
+				WHERE CID = #CID# 
+				  AND AGRMNT_STAT = 'PD005002'
+			)
+		GROUP BY C.VERIFY_REQ_VER
+	</insert>
+	
+	<!-- 단말삭제 : DP -->
+	<delete id="PhoneMapping.deleteDpSprtPhone" parameterClass="map">
+		DELETE /* PhoneMapping.deleteDpSprtPhone bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+		FROM TBL_DP_SPRT_HP
+		WHERE (SUB_CONTS_ID, PHONE_MODEL_CD) IN (
+			SELECT C.SUB_CONTS_ID, A.TARGET_PHONE_MODEL_CD
+			FROM TBL_PD_SPRT_PHONE_REM_MGR A
+			INNER JOIN TBL_PD_SPRT_PHONE_REM_SCID B ON (A.TX_ID = B.TX_ID)
+			INNER JOIN TBL_DP_SPRT_HP C ON (B.CID = C.PROD_ID AND B.SCID = C.SUB_CONTS_ID)
+			WHERE A.TX_ID = #txId#
+			  AND C.PHONE_MODEL_CD = A.TARGET_PHONE_MODEL_CD 
+		)
+	</delete>
+	
+	<!-- 단말삭제 : PD -->
+	<delete id="PhoneMapping.deletePdSprtPhone" parameterClass="map">
+		DELETE /* PhoneMapping.deletePdSprtPhone bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+		FROM TBL_PD_SPRT_PHONE
+		WHERE (SCID, PHONE_MODEL_CD) IN (
+			SELECT C.SCID, A.TARGET_PHONE_MODEL_CD
+			FROM TBL_PD_SPRT_PHONE_REM_MGR A
+			INNER JOIN TBL_PD_SPRT_PHONE_REM_SCID B ON (A.TX_ID = B.TX_ID)
+			INNER JOIN TBL_PD_SPRT_PHONE C ON (C.SCID = B.SCID)
+			WHERE A.TX_ID = #txId#
+			  AND C.PHONE_MODEL_CD = A.TARGET_PHONE_MODEL_CD
+		)
+	</delete>
+	
+	<!-- 단말삭제 : CT -->
+	<delete id="PhoneMapping.deleteCtSprtPhone" parameterClass="map">
+		DELETE /* PhoneMapping.deleteCtSprtPhone bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+		FROM TBL_CT_SPRT_PHONE
+		WHERE (SCID, VERIFY_REQ_VER, PHONE_MODEL_CD ) IN (
+			SELECT C.SCID, C.VERIFY_REQ_VER, A.TARGET_PHONE_MODEL_CD
+			FROM TBL_PD_SPRT_PHONE_REM_MGR A
+			INNER JOIN TBL_PD_SPRT_PHONE_REM_SCID B ON (A.TX_ID = B.TX_ID)
+			INNER JOIN TBL_CT_SPRT_PHONE C ON (
+				C.SCID = B.SCID 
+				AND C.VERIFY_REQ_VER = (
+					SELECT MAX(VERIFY_REQ_VER) 
+					FROM TBL_CT_CONTS 
+					WHERE CID = B.CID 
+					  AND AGRMNT_STAT = 'PD005002'
+					)
+			)
+			WHERE A.TX_ID = #txId#
+			  AND C.PHONE_MODEL_CD = A.TARGET_PHONE_MODEL_CD
+		)
+	</delete>
+	
+	<!-- 2차 ACK가 오면 어떤 요청에 대한 ACK인지 확인(등록/삭제) -->
+	<select id="PhoneMapping.getPhoneRemMgr" parameterClass="map" resultClass="phoneRemMgr" >
+		SELECT /* PhoneMapping.getPhoneRemMgr bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			A.TX_ID AS TXID
+			, A.MAPPING_TYPE AS MAPPINGTYPE
+			, B.CD_NM AS MAPPINGTYPENM
+			, A.TARGET_PHONE_MODEL_CD AS TARGETPHONEMODELCD 
+			, A.STANDARD_PHONE_MODEL_CD AS STANDARDPHONEMODELCD
+			, A.MAPPING_STAT AS MAPPINGSTAT
+			, C.CD_NM AS MAPPINGSTATNM
+			, A.INS_DTTM AS INSDTTM
+			, A.INS_BY AS INSBY
+			, A.INS_IP AS INSIP
+			, A.UPD_DTTM  AS UPDDTTM
+			, A.UPD_BY AS UPDBY
+		FROM TBL_PD_SPRT_PHONE_REM_MGR A
+		INNER JOIN TBL_COMM_CD B ON (A.MAPPING_TYPE = B.DTL_FULL_CD)
+		INNER JOIN TBL_COMM_CD C ON (A.MAPPING_STAT = C.DTL_FULL_CD)
+		WHERE TX_ID = #txId#
+	</select>
+
+	<!-- 2차 ACK 업데이트 -->
+	<update id="PhoneMapping.updatePhoneRemMgr" parameterClass="map">
+		UPDATE /* PhoneMapping.updatePhoneRemMgr bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+		TBL_PD_SPRT_PHONE_REM_MGR SET
+			MAPPING_STAT = #mappingStat#
+			, UPD_BY = 'DL'
+			, UPD_DTTM = SYSDATE
+		WHERE TX_ID = #txId#
+	</update>
+	
+	<!-- 대상단말에 매핑된 상품 정보를 엑셀로 만들기 위한 Query [쿼리튜닝] 
+	<select id="PhoneMapping.getContentsByTargetDevice" parameterClass="string" resultClass="phoneMappingContents">
+		SELECT /* PhoneMapping.getContentsByTargetDevice bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			COUNT(*) OVER() AS TOTAL_COUNT,
+			AID
+			, PID
+			, CID
+			, SCID
+			, VERIFY_REQ_VER AS VERIFYREQVER
+			, PROD_NM AS PRODNM
+			, SALE_STAT AS SALESTAT
+			, CD_NM AS SALESTATNM
+			, SUBSTR(MAX(SYS_CONNECT_BY_PATH(PHONE_MODEL_CD,';')),2) AS PHONEMODELCD
+		FROM
+		(
+		SELECT  Z.AID, Z.PID, Y.CID, Y.SCID, Y.VERIFY_REQ_VER, Z.PROD_NM, Z.SALE_STAT,TCC.CD_NM, K.PHONE_MODEL_CD,
+		ROW_NUMBER () OVER (PARTITION BY Y.SCID ORDER BY  K.PHONE_MODEL_CD) RNUM
+		from   (
+		        SELECT /*+ USE_NL (p s c) */
+		               c.cid,s.scid,c.verify_req_ver,
+		               RANK() OVER (PARTITION BY c.cid order by c.verify_req_ver desc) rn
+		        FROM   TBL_CT_CONTS c,
+		               TBL_CT_SUB_CONTS s,
+		               TBL_CT_SPRT_PHONE p
+		        WHERE  1=1
+		        AND    p.phone_model_cd = #phone_model_cd#
+		        AND    S.SCID = p.scid
+		        AND    s.verify_req_ver = p.verify_req_ver
+		        AND    c.cid = s.cid
+		        AND    c.verify_req_ver = s.verify_req_ver
+		        AND    c.agrmnt_stat = 'PD005002'
+		        ) Y,
+		TBL_PD_CONTS Z,
+		TBL_CT_SPRT_PHONE K,
+		TBL_COMM_CD TCC
+		WHERE   Y.rn = 1
+		AND    EXISTS (SELECT 'x' FROM TBL_CT_SPRT_PHONE X
+		               WHERE  X.phone_model_cd = #phone_model_cd#
+		               AND    X.VERIFY_REQ_VER = Y.verify_req_ver)
+		AND Y.CID = Z.CID
+		AND Y.SCID = K.SCID
+		AND Y.VERIFY_REQ_VER = K.VERIFY_REQ_VER
+		AND TCC.DTL_FULL_CD = Z.SALE_STAT
+		)
+		START WITH RNUM = 1
+		CONNECT BY PRIOR RNUM = RNUM -1
+		AND PRIOR SCID = SCID
+		GROUP BY AID, PID, CID, SCID, VERIFY_REQ_VER, PROD_NM, SALE_STAT, CD_NM
+	</select>
+	-->
+	
+	<select id="PhoneMapping.getContentsByTargetDevice" parameterClass="string" resultClass="phoneMappingContents">
+		SELECT /* PhoneMapping.getContentsByTargetDevice bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			<include refid="GOMP.pagingTotalCount"/>
+			AID
+			, PID
+			, CID
+			, SCID
+			, VERIFY_REQ_VER AS VERIFYREQVER
+			, PROD_NM AS PRODNM
+			, SALE_STAT AS SALESTAT
+			, CD_NM AS SALESTATNM
+			, SUBSTR(MAX(SYS_CONNECT_BY_PATH(PHONE_MODEL_CD,';')),2) AS PHONEMODELCD
+		FROM
+		(
+			SELECT Z.AID, Z.PID, Y.CID, Y.SCID, Y.VERIFY_REQ_VER, Z.PROD_NM, Z.SALE_STAT,TCC.CD_NM, K.PHONE_MODEL_CD,
+			ROW_NUMBER () OVER (PARTITION BY Y.SCID ORDER BY  K.PHONE_MODEL_CD) RNUM
+			FROM 
+			(	SELECT CID, MAX(VERIFY_REQ_VER) AS VERIFY_REQ_VER
+				FROM TBL_CT_CONTS
+				WHERE AGRMNT_STAT = 'PD005002'
+				GROUP BY CID
+			) X,
+			(
+				SELECT CID, SCID, VERIFY_REQ_VER
+				FROM TBL_CT_SUB_CONTS B
+				WHERE EXISTS(
+					SELECT 1 
+					FROM TBL_CT_SPRT_PHONE  C 
+					WHERE B.SCID = C.SCID 
+					  AND B.VERIFY_REQ_VER = C.VERIFY_REQ_VER 
+					  AND C.PHONE_MODEL_CD = #phone_model_cd#
+				)
+			) Y,
+			TBL_PD_CONTS Z,
+			TBL_CT_SPRT_PHONE K,
+			TBL_COMM_CD TCC
+			WHERE X.CID = Y.CID
+			AND X.VERIFY_REQ_VER = Y.VERIFY_REQ_VER
+			AND X.CID = Z.CID
+			AND Y.SCID = K.SCID
+			AND Y.VERIFY_REQ_VER = K.VERIFY_REQ_VER
+			AND TCC.DTL_FULL_CD = Z.SALE_STAT
+		)
+		START WITH RNUM = 1
+		CONNECT BY PRIOR RNUM = RNUM -1
+		AND PRIOR SCID = SCID
+		GROUP BY AID, PID, CID, SCID, VERIFY_REQ_VER, PROD_NM, SALE_STAT, CD_NM
+	</select>
+	
+	<select id="PhoneMapping.selectPhoneRemMgrList" parameterClass="searchParam" resultClass="phoneRemMgr">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* PhoneMapping.selectPhoneRemMgrList bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			<include refid="GOMP.pagingTotalCount"/> 
+			A.TX_ID AS TXID
+			, A.MAPPING_TYPE AS MAPPINGTYPE
+			, A.MAPPING_STAT AS MAPPINGSTAT
+			, A.TARGET_PHONE_MODEL_CD AS TARGETPHONEMODELCD
+			, NVL(A.STANDARD_PHONE_MODEL_CD,'-') AS STANDARDPHONEMODELCD
+			, A.INS_DTTM AS INSDTTM
+			, A.UPD_DTTM AS UPDDTTM
+		FROM TBL_PD_SPRT_PHONE_REM_MGR A
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty property="targetPhoneModelCd" prepend=" AND ">
+				UPPER(A.TARGET_PHONE_MODEL_CD) LIKE '%'||UPPER(#targetPhoneModelCd#) ||'%'
+			</isNotEmpty>
+			<isNotEmpty property="standardPhoneModelCd" prepend=" AND ">
+				UPPER(A.STANDARD_PHONE_MODEL_CD) LIKE '%'||UPPER(#standardPhoneModelCd#) ||'%'
+			</isNotEmpty>
+			<isNotEmpty property="mappingType" prepend=" AND ">
+				A.MAPPING_TYPE = #mappingType#
+			</isNotEmpty>
+			<isNotEmpty property="mappingStat" prepend=" AND ">
+				A.MAPPING_STAT = #mappingStat#
+			</isNotEmpty>
+			<isNotEmpty property="searchText" prepend=" AND ">
+				EXISTS (
+				  	SELECT 1 
+					FROM TBL_PD_SPRT_PHONE_REM_SCID B
+					INNER JOIN TBL_PD_CONTS C ON (B.CID = C.CID)
+					INNER JOIN TBL_US_MEMBER D ON (C.DEV_USER_ID = D.MBR_NO)
+					WHERE A.TX_ID = B.TX_ID
+					<isEqual property="searchType" compareValue="prodNm" prepend=" AND ">
+						C.PROD_NM LIKE '%'||#searchText#||'%'
+					</isEqual>
+					<isEqual property="searchType" compareValue="aid" prepend=" AND ">
+						C.AID LIKE '%'||#searchText#||'%'
+					</isEqual>
+					<isEqual property="searchType" compareValue="mbrId" prepend=" AND ">
+						D.MBR_ID LIKE  '%'||#searchText#||'%'
+					</isEqual>
+				  )	
+			</isNotEmpty>
+			
+			<isNotEmpty property="startDateDB">
+				<isNotEmpty property="endDateDB">
+					AND A.INS_DTTM BETWEEN to_date(#startDateDB#,'YYYYMMDD') AND to_date(#endDateDB#,'YYYYMMDD') +1
+				</isNotEmpty>
+			</isNotEmpty>
+		  </dynamic>
+		ORDER BY A.INS_DTTM DESC
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+	
+	
+	<select id="PhoneMapping.selectPhoneRemScidList" parameterClass="searchParam" resultClass="phoneRemScid">
+		<include refid="GOMP.pagingStart"/>
+		SELECT /* PhoneMapping.selectPhoneRemScidList bcpark 2011.05.11 : PhoneMapping_SqlMap.xml */
+			<include refid="GOMP.pagingTotalCount"/> 
+			A.CID AS CID
+			, A.SCID AS SCID
+			, B.AID AS AID
+			, B.PROD_NM AS PRODNM
+			, C.CTGR_CD AS CTGRCD2
+			, (	SELECT DP_CAT_NM 
+				FROM TBL_DP_CAT 
+				WHERE DP_CAT_NO = C.CTGR_CD
+			) AS CTGRNM2
+			, D.MBR_ID AS MBRID
+			, B.SALE_STAT AS SALESTAT
+			, (SELECT CD_NM FROM TBL_COMM_CD WHERE B.SALE_STAT = DTL_FULL_CD) AS SALESTATNM
+		FROM TBL_PD_SPRT_PHONE_REM_SCID A
+		INNER JOIN TBL_PD_CONTS B ON (A.CID = B.CID )
+		INNER JOIN TBL_PD_TARGET_CTG C ON (B.CID = C.CID )
+		INNER JOIN TBL_US_MEMBER D ON (B.DEV_USER_ID = D.MBR_NO)
+		where A.TX_ID = #txId#
+		<dynamic>
+			<isNotEmpty property="subSearchText" >
+				<isEqual property="subSearchType" compareValue="prodNm" prepend=" AND ">
+					B.PROD_NM LIKE '%'||#subSearchText#||'%'
+				</isEqual>
+				<isEqual property="subSearchType" compareValue="aid" prepend=" AND ">
+					B.AID LIKE '%'||#subSearchText#||'%'
+				</isEqual>
+				<isEqual property="subSearchType" compareValue="mbrId" prepend=" AND ">
+					D.MBR_ID LIKE  '%'||#subSearchText#||'%'
+				</isEqual>
+			</isNotEmpty>
+		  </dynamic>
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+	
+	<select id="PhoneMapping.getDPContentInfoList" parameterClass="searchParam" resultClass="contents">
+		<include refid="GOMP.pagingStart"/>
+		SELECT
+			<include refid="GOMP.pagingTotalCount"/> 
+		    PROD_NM prodNm, CONTS.CID, AID, TO_CHAR(TO_DATE(SALE_START_DT, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD') saleStartDt
+		    , NVL((SELECT MBR_ID FROM TBL_US_MEMBER WHERE MBR_NO = DEV_USER_ID), '') devUserId 
+		    , SALE_STAT, VERIFY_PRGR_YN
+		    , DWLD.dwld_cnt dwldCount
+		    , (	SELECT DP_CAT_NM 
+	            FROM TBL_DP_CAT DP
+	            WHERE DP_CAT_NO = CTGR.CTGR_CD
+	            AND DP_CAT_NO != 'DP01'
+		        ) AS CTGRNM2
+		FROM TBL_PD_CONTS CONTS
+		, TBL_PD_TARGET_CTG CTGR
+		, 
+		(
+			SELECT
+			CASE
+			    WHEN pay_prod_id is not null AND free_prod_id is not null THEN pay_prod_id
+			    WHEN pay_prod_id is null AND free_prod_id is not null THEN free_prod_id 
+			    WHEN pay_prod_id is not null AND free_prod_id is null THEN pay_prod_id
+			END PROD_ID, dwld_cnt
+			FROM (
+			SELECT T1.prod_id AS pay_prod_id, T2.prod_id AS free_prod_id, (nvl(T1.dwld_cnt, 0) + nvl(T2.dwld_cnt, 0)) AS dwld_cnt 
+			  FROM (SELECT prod_id, SUM(dwld_cnt) AS dwld_cnt 
+			               FROM tbl_dp_pay_dwld_best 
+			             WHERE dp_cat_no != 'DP01'
+			             GROUP BY prod_id) T1,
+			            (SELECT prod_id AS prod_id, SUM(dwld_cnt) AS dwld_cnt 
+			                FROM tbl_dp_free_dwld_best 
+			              WHERE dp_cat_no != 'DP01'
+			             GROUP BY prod_id) T2
+			WHERE T1.prod_id(+) = T2.prod_id
+			UNION
+			SELECT T1.prod_id AS pay_prod_id, T2.prod_id AS free_prod_id, (nvl(T1.dwld_cnt, 0) + nvl(T2.dwld_cnt, 0)) AS dwld_cnt 
+			  FROM (SELECT prod_id, SUM(dwld_cnt) AS dwld_cnt 
+			               FROM tbl_dp_pay_dwld_best 
+			             WHERE dp_cat_no != 'DP01'
+			             GROUP BY prod_id) T1,
+			            (SELECT prod_id AS prod_id, SUM(dwld_cnt) AS dwld_cnt 
+			                FROM tbl_dp_free_dwld_best 
+			              WHERE dp_cat_no != 'DP01'
+			             GROUP BY prod_id) T2
+			WHERE T1.prod_id = T2.prod_id(+)
+		)) DWLD
+		WHERE SALE_STAT = 'PD000404'
+		AND VERIFY_PRGR_YN = 'PD005303'
+		AND CTGR.CID = CONTS.CID
+		AND CONTS.CID = DWLD.PROD_ID(+)
+		<dynamic>
+			<isEqual property="searchType" compareValue="prodNm" prepend=" AND ">
+				<isNotEmpty property="searchText" >
+				UPPER(PROD_NM) LIKE '%'||UPPER( #searchText# )||'%'
+				</isNotEmpty>
+			</isEqual>
+			<isEqual property="searchType" compareValue="aid" prepend=" AND ">
+				<isNotEmpty property="searchText" >
+				UPPER(AID) LIKE '%'||UPPER( #searchText# )||'%'
+				</isNotEmpty>
+			</isEqual>
+		</dynamic>
+		ORDER BY CID DESC
+		<include refid="GOMP.pagingEnd"/>
+	</select>
+</sqlMap>

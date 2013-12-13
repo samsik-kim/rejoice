@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="phmodel" extends="dev-common" namespace="/phmodel">
+		<action name="phModelDown" class="com.omp.dev.phonemodel.action.PhoneModelDownAction" method="modelDown">
+			<result name="success" type="stream">
+				<param name="contentType">${downloadFile.contentType}</param>
+				<param name="inputName">downloadFile.inputStream</param>
+				<param name="contentDisposition">attachment;${downloadFile.saveAs}</param>
+				<param name="contentLength">${downloadFile.length}</param>
+				<param name="bufferSize">${downloadFile.bufferSize}</param>
+			</result>
+		</action>
+		<action name="fileWebDown" class="com.omp.dev.phonemodel.action.PhoneModelDownAction" method="fileWebDown">
+			<result name="success" type="stream">
+				<param name="contentType">${downloadFile.contentType}</param>
+				<param name="inputName">downloadFile.inputStream</param>
+				<param name="contentDisposition">attachment;${downloadFile.saveAs}</param>
+				<param name="contentLength">${downloadFile.length}</param>
+				<param name="bufferSize">${downloadFile.bufferSize}</param>
+			</result>
+		</action>
+		<action name="imgWebView" class="com.omp.dev.phonemodel.action.PhoneModelDownAction" method="imgWebView">
+			<result name="success" type="stream">
+				<param name="contentType">${downloadFile.contentType}</param>
+				<param name="inputName">downloadFile.inputStream</param>
+				<param name="contentDisposition">${downloadFile.saveAs}</param>
+				<param name="contentLength">${downloadFile.length}</param>
+				<param name="bufferSize">${downloadFile.bufferSize}</param>
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+
+	<typeAlias alias="session" type="com.omp.dev.user.model.Session" />
+
+	<resultMap id="session-resultMap" class="session">
+		<result property="mbrNo"  			column="MBR_NO"/>
+		<result property="devMbrStatCd"  	column="DEV_MBR_STAT_CD"/>
+		<result property="mbrStatCd"  		column="MBR_STAT_CD"/>
+		<result property="mbrId"  			column="MBR_ID"/>
+		<result property="emailAddr"  		column="EMAIL_ADDR"/>
+		<result property="emailCertYn"  	column="EMAIL_CERT_YN"/>
+		<result property="mbrNm"  			column="MBR_NM"/>
+	</resultMap>
+	
+	<select id="User.getDevMemberById" parameterClass="java.util.HashMap" resultClass="session">
+		SELECT /* User.getDevMemberById gbkim 2011.05.11 : User_SqlMap.xml */ 
+			MBR_ID as mbrId
+			 , EMAIL_ADDR as emailAddr
+			 , MBR_NO as mbrNo
+		  FROM TBL_US_MEMBER
+		 WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		   AND MBR_STAT_CD IN ('US000500', 'US000503', 'US000504')
+		   AND ROWNUM = 1
+		<isEqual property="flag" compareValue="name">
+			AND MBR_NM = #reqNm#
+			AND PS_REG_NO = #psReqNo#
+		</isEqual>
+		<isEqual property="flag" compareValue="compNm">
+			AND COMP_NM = #reqNm#
+			AND PS_REG_NO = #psReqNo#
+		</isEqual>
+		<isEqual property="flag" compareValue="email">
+			AND EMAIL_ADDR = #reqNm#
+		</isEqual>
+		<isNotEmpty property="mbrClsCd">
+			AND MBR_CLS_CD = #mbrClsCd#
+		</isNotEmpty>
+	</select>
+	
+	<select id="User.getMbrId" parameterClass="session" resultClass="java.lang.String">
+		SELECT /* User.getMbrId gbkim 2011.05.11 : User_SqlMap.xml */
+			MBR_ID
+		  FROM TBL_US_MEMBER
+		 WHERE MBR_NO = #mbrNo#
+	</select>
+	
+	<select id="User.getDevMemberByEmail" parameterClass="java.lang.String" resultClass="session">
+		SELECT /* User.getDevMemberByEmail gbkim 2011.05.11 : User_SqlMap.xml */
+			EMAIL_ADDR emailAddr
+			 , MBR_NO mbrNo
+			 , MBR_ID mbrId
+		FROM   TBL_US_MEMBER
+		WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		  AND MBR_STAT_CD IN ('US000500', 'US000503', 'US000504')
+		  AND MBR_ID = #userId#
+		  AND ROWNUM = 1
+	</select>
+	
+	<update id="User.tempPwUpdate" parameterClass="java.util.HashMap">
+		UPDATE /* User.tempPwUpdate gbkim 2011.05.11 : User_SqlMap.xml */
+			TBL_US_MEMBER 
+		   SET MBR_PW = #password#,
+			   UPD_ID = (SELECT MBR_NO 
+			   			   FROM TBL_US_MEMBER 
+					      WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		  				    AND MBR_ID  = #userId#
+		  				    AND ROWNUM = 1),
+			   UPD_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		 WHERE MBR_ID = #userId#
+		   AND ROWNUM = 1
+	</update>
+	
+	<!-- ID Check -->
+	<select id="User.idCheck" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+		SELECT /* User.idCheck gbkim 2011.05.11 : User_SqlMap.xml */
+			COUNT(*)
+			FROM TBL_US_MEMBER
+		WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		  AND MBR_STAT_CD IN ('US000500', 'US000503', 'US000504')
+		  AND MBR_ID  = #mbrId#		
+	</select>
+	
+	<!-- PW Check -->
+	<select id="User.pwCheck" parameterClass="session" resultClass="java.lang.Integer">
+		SELECT /* User.pwCheck gbkim 2011.05.11 : User_SqlMap.xml */
+			COUNT(*)
+			FROM TBL_US_MEMBER
+		WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		  AND MBR_STAT_CD IN ('US000500', 'US000503', 'US000504')
+		  AND MBR_ID  = #mbrId#
+		  AND MBR_PW  = #mbrPw#		
+	</select>	
+	
+	<select id="User.getSessionInfo" parameterClass="java.lang.String" resultMap="session-resultMap">
+		SELECT /* User.getSessionInfo gbkim 2011.05.11 : User_SqlMap.xml */
+				MBR_NO,
+		       DEV_MBR_STAT_CD,
+		       MBR_STAT_CD,
+		       MBR_ID,
+		       EMAIL_ADDR,
+		       EMAIL_CERT_YN,
+		       NVL(MBR_NM, COMP_NM) AS MBR_NM
+		  FROM TBL_US_MEMBER
+		 WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		   AND MBR_STAT_CD IN ('US000500', 'US000503', 'US000504')
+		   AND MBR_ID = #mbrId#
+	</select>
+	
+	<!-- User.insertLoginInfo -->
+	<insert id="User.insertLoginInfo" parameterClass="java.util.HashMap">
+		INSERT /* User.insertLoginInfo gbkim 2011.05.11 : User_SqlMap.xml */ 
+		INTO TBL_US_LOGIN_INFO(
+				LOGIN_INFO_SEQ,
+				MBR_NO,
+				ACC_DTS,
+				IP_MAC_ADDR
+			)VALUES(
+				SEQ_US_LOGIN_INFO.NEXTVAL,
+				#mbrNo#,
+				SYSDATE,
+				#remoteAddr#
+			)
+	</insert>
+	
+	<select id="User.getLoginFailCnt" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+		SELECT /* User.getLoginFailCnt gbkim 2011.05.11 : User_SqlMap.xml */
+			NVL (LOGIN_FAIL_CNT, 0) AS LOGIN_FAIL_CNT
+		  FROM TBL_US_MEMBER
+		 WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		   AND MBR_STAT_CD IN ('US000500', 'US000503', 'US000504')
+		   AND MBR_ID = #mbrId#
+	</select>
+	
+	<update id="User.updateLoginFailCnt" parameterClass="java.util.HashMap">
+		UPDATE /* User.updateLoginFailCnt gbkim 2011.05.11 : User_SqlMap.xml */
+			TBL_US_MEMBER 
+		   SET LOGIN_FAIL_CNT = #failCnt#,
+			   UPD_ID = (SELECT MBR_NO FROM 
+						TBL_US_MEMBER 
+					   WHERE MBR_CAT_CD IN ('US000205', 'US000206')
+		  				 AND MBR_ID  = #userId#),
+			 UPD_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')		   
+		 WHERE MBR_CAT_CD IN ('US000205', 'US000206') 
+		   AND MBR_ID = #userId#
+	</update>
+	
+	<update id="User.updateEmailAddr" parameterClass="session">
+		UPDATE /* User.updateEmailAddr gbkim 2011.05.11 : User_SqlMap.xml */
+			TBL_US_MEMBER 
+		   SET EMAIL_ADDR = #emailAddr#
+		 WHERE MBR_NO = #mbrNo#
+	</update>
+	
+</sqlMap>
