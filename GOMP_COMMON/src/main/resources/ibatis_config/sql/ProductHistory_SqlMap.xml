@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ProductHistory">
+
+	<insert id="ProductHistory.insertPdContsHis" parameterClass="map">
+		INSERT /* ProductHistory.insertPdContsHis bcpark 2011.05.11 : ProductHistory_SqlMap.xml */
+		INTO TBL_PD_CONTS_HIS(
+			HIS_SEQ, HIS_DTTM
+			, CID, PID, AID
+			, PROD_GBN, VERIFY_REQ_VER, VERIFY_PRGR_YN
+			, AGRMNT_STAT, SALE_STAT, DEV_USER_ID
+			, PROD_NM, PROMOTION_URL, VM_TYPE
+			, PROD_PRC, PAID_YN, ADJ_RATE
+			, ADJ_RATE_SKT, PROD_DESC_SMMR, PROD_DESC_DTL
+			, GAME_DELIB_GRD, CONTS_TYPE, VERIFY_SCNR_FILE
+			, VERIFY_SCNR_FILE_NM, DRM_YN, DRM_SET_OPT
+			, DRM_SET_VAL, FIRST_INS_DT, FIRST_AGRMNT_DT
+			, SALE_START_DT, SIGN_OPTION, EXPOSURE_DEV_NM
+			, DEL_YN, VERIFY_COMMENT_CD, VERIFY_ETC_CMT
+			, INS_BY, INS_DTTM, UPD_BY
+			, UPD_DTTM
+		)
+		SELECT
+			SEQ_PD_CONTS_HIS.NEXTVAL, #his_dttm#
+			, CID, PID, AID
+			, PROD_GBN, VERIFY_REQ_VER, VERIFY_PRGR_YN
+			, AGRMNT_STAT, SALE_STAT, DEV_USER_ID
+			, PROD_NM, PROMOTION_URL, VM_TYPE
+			, PROD_PRC, PAID_YN, ADJ_RATE
+			, ADJ_RATE_SKT, PROD_DESC_SMMR, PROD_DESC_DTL
+			, GAME_DELIB_GRD, CONTS_TYPE, VERIFY_SCNR_FILE
+			, VERIFY_SCNR_FILE_NM, DRM_YN, DRM_SET_OPT
+			, DRM_SET_VAL, FIRST_INS_DT, FIRST_AGRMNT_DT
+			, SALE_START_DT, SIGN_OPTION, EXPOSURE_DEV_NM
+			, DEL_YN, VERIFY_COMMENT_CD, VERIFY_ETC_CMT
+			, INS_BY, INS_DTTM, UPD_BY
+			, UPD_DTTM
+		FROM TBL_PD_CONTS
+		WHERE CID = #cid#
+	</insert>
+	
+	<insert id="ProductHistory.insertPdContsImgHis" parameterClass="map">
+		INSERT /* ProductHistory.insertPdContsImgHis bcpark 2011.05.11 : ProductHistory_SqlMap.xml */
+		INTO TBL_PD_CONTS_IMG_HIS(
+			HIS_SEQ, HIS_DTTM, CID
+			, IMG_GBN, FILE_POS, FILE_NM
+			, FILE_SIZE, INS_BY, INS_DTTM
+			, UPD_BY, UPD_DTTM
+		)
+		SELECT 
+			SEQ_PD_CONTS_IMG_HIS.NEXTVAL, #his_dttm#
+			, CID
+			, IMG_GBN, FILE_POS, FILE_NM
+			, FILE_SIZE, INS_BY, INS_DTTM
+			, UPD_BY, UPD_DTTM
+		FROM TBL_PD_CONTS_IMG
+		WHERE CID = #cid#
+	</insert>
+	
+	<insert id="ProductHistory.insertPdSubContsHis" parameterClass="map">
+		INSERT /* ProductHistory.insertPdSubContsHis bcpark 2011.05.11 : ProductHistory_SqlMap.xml */
+		INTO TBL_PD_SUB_CONTS_HIS(
+			HIS_SEQ, HIS_DTTM
+			, SCID, CID, VM_VER_MIN
+			, VM_VER_MAX, VM_VER_TARGET, PKG_NM
+			, VERSION_CODE, VERSION_NAME, RUN_FILE_POS
+			, RUN_FILE_NM, RUN_FILE_SIZE
+			, INS_BY, INS_DTTM, UPD_BY
+			, UPD_DTTM
+		)
+		SELECT 
+			SEQ_PD_SUB_CONTS_HIS.NEXTVAL, #his_dttm#
+			, SCID, CID, VM_VER_MIN
+			, VM_VER_MAX, VM_VER_TARGET, PKG_NM
+			, VERSION_CODE, VERSION_NAME, RUN_FILE_POS
+			, RUN_FILE_NM, RUN_FILE_SIZE
+			, INS_BY, INS_DTTM, UPD_BY
+			, UPD_DTTM
+		FROM TBL_PD_SUB_CONTS
+		WHERE SCID = #scid#
+	</insert>
+	
+	
+	<insert id="ProductHistory.insertPdProvisionItemHis" parameterClass="map">
+		INSERT /* ProductHistory.insertPdProvisionItemHis bcpark 2011.05.11 : ProductHistory_SqlMap.xml */
+		INTO TBL_PD_PROVISION_ITEM_HIS(
+			HIS_SEQ, HIS_DTTM
+			, ITEM_SEQ, SCID, ITEM_TYPE
+			, ITEM_CD, INS_BY, INS_DTTM
+		)
+		SELECT 
+			SEQ_PD_PROVISION_ITEM_HIS.NEXTVAL, #his_dttm#
+			, ITEM_SEQ, SCID, ITEM_TYPE
+			, ITEM_CD, INS_BY, INS_DTTM
+		FROM TBL_PD_PROVISION_ITEM
+		WHERE SCID = #scid#
+	</insert>
+	
+	
+	<insert id="ProductHistory.insertPdSprtPhoneHis" parameterClass="map">
+		INSERT /* ProductHistory.insertPdSprtPhoneHis bcpark 2011.05.11 : ProductHistory_SqlMap.xml */
+		INTO TBL_PD_SPRT_PHONE_HIS(
+			HIS_SEQ, HIS_DTTM
+			, SPRT_PHONE_SEQ, SCID, PHONE_MODEL_CD
+			, INS_BY, INS_DTTM, UPD_BY
+			, UPD_DTTM
+		)
+		SELECT 
+		SEQ_PD_SPRT_PHONE_HIS.NEXTVAL, #his_dttm#
+			, SPRT_PHONE_SEQ, SCID, PHONE_MODEL_CD
+			, INS_BY, INS_DTTM, UPD_BY
+			, UPD_DTTM
+		FROM TBL_PD_SPRT_PHONE
+		WHERE SCID = #scid#
+	</insert>
+
+	<insert id="ProductHistory.insertSaleStatHis" parameterClass="map">
+		INSERT /* ProductHistory.insertSaleStatHis bcpark 2011.05.11 : ProductHistory_SqlMap.xml */
+		INTO TBL_PD_SALE_STAT_HIS (
+			CID
+			, CHNG_DTTM
+			, SALE_STAT
+			, INS_BY
+			, ADMIN_CHNG_YN
+		)VALUES(
+			#cid#, to_char(sysdate, 'yyyyMMddHH24MISS'), #sale_stat#, #ins_by#, #admin_chng_yn#
+		)
+	</insert>
+
+</sqlMap>

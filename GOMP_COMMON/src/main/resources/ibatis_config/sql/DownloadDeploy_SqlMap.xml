@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DownloadDeploy">
+	<typeAlias alias="product" type="com.omp.commons.product.model.contents.DeployProduct"/>
+	<typeAlias alias="mainContent" type="com.omp.commons.product.model.contents.DeployMainContent"/>
+	<typeAlias alias="subContent" type="com.omp.commons.product.model.contents.DeploySubContent"/>
+
+	
+	<select id="DownloadDeploy.getProduct" parameterClass="map"  resultClass="product">
+		SELECT /* DownloadDeploy.getProduct bcpark 2011.05.11 : DownloadDeploy_SqlMap.xml */
+			#cud_type# AS TYPE
+			, #tx_id# AS TX_ID
+			, A.PID AS PRODUCT_ID
+			, A.PROD_NM AS PRODUCT_NAME
+			, A.CID AS CONTENT_ID
+			, A.INS_BY AS CREATE_ID
+			, A.INS_DTTM AS CREATE_TIME
+			, A.UPD_BY AS UPDATE_ID
+			, A.UPD_DTTM AS UPDATE_TIME
+			, #cud_type# AS CUD_TYPE
+		FROM TBL_PD_CONTS A
+		WHERE A.CID = #cid#
+	</select>
+
+
+	<select id="DownloadDeploy.getMainContent" parameterClass="map"  resultClass="mainContent">
+		SELECT /* DownloadDeploy.getMainContent bcpark 2011.05.11 : DownloadDeploy_SqlMap.xml */
+			#cud_type# AS TYPE
+			, #tx_id# AS TX_ID
+			, A.CID AS CONTENT_ID
+			, A.PROD_NM AS CONTENT_NAME
+			, A.VERIFY_REQ_VER AS MAIN_CONTENT_VERSION
+			, #os_type# AS OS_TYPE
+			, #content_type# AS CONTENT_TYPE
+			, A.PROD_DESC_SMMR AS DESCRIPTION
+			, A.INS_BY AS CREATE_ID
+			, A.INS_DTTM AS CREATE_TIME
+			, A.UPD_BY AS UPDATE_ID
+			, A.UPD_DTTM AS UPDATE_TIME
+			, #cud_type# AS CUD_TYPE
+		FROM TBL_PD_CONTS A
+		WHERE A.CID = #cid#
+	</select>
+	
+	<resultMap id="subContentResultMap" class="subContent" >
+		<result column="TYPE" property="type" />
+		<result column="TX_ID" property="tx_id" />
+		<result column="SUB_CONTENT_ID" property="sub_content_id" />
+		<result column="SUB_CONTENT_NAME" property="sub_content_name" />
+		<result column="SUB_CONTENT_VERSION" property="sub_content_version" />
+		<result column="OS_TYPE" property="os_type" />
+		<result column="CONTENT_TYPE" property="content_type" />
+		<result column="CONTENT_ID" property="content_id" />
+		<result column="FILE_NAME" property="file_name" />
+		<result column="FILE_PATH" property="file_path" />
+		<result column="FILE_SIZE" property="file_size" />
+		<result column="{scid=SCID, verify_req_ver=VERIFY_REQ_VER}" property="device_list_array" select="DownloadDeploy.getSprtPhoneList" />
+		<result column="CREATE_ID" property="create_id" />
+		<result column="CREATE_TIME" property="create_time" />
+		<result column="UPDATE_ID" property="update_id" />
+		<result column="UPDATE_TIME" property="update_time" />
+		<result column="CUD_TYPE" property="cud_type" />
+		<result column="SUB_META_NAME_01" property="sub_meta_name_01" />
+		<result column="SUB_META_VALUE_01" property="sub_meta_value_01" />
+		<result column="SUB_META_NAME_02" property="sub_meta_name_02" />
+		<result column="SUB_META_VALUE_02" property="sub_meta_value_02" />
+		<result column="SUB_META_NAME_03" property="sub_meta_name_03" />
+		<result column="SUB_META_VALUE_03" property="sub_meta_value_03" />
+		<result column="SUB_META_NAME_04" property="sub_meta_name_04" />
+		<result column="SUB_META_NAME_05" property="sub_meta_name_05" />
+		<result column="SUB_META_NAME_06" property="sub_meta_name_06" />
+		<result column="SUB_META_VALUE_06" property="sub_meta_value_06" />
+		<result column="SUB_META_NAME_07" property="sub_meta_name_07" />
+		<result column="SUB_META_NAME_08" property="sub_meta_name_08" />
+		<result column="SUB_META_NAME_09" property="sub_meta_name_09" />
+		<result column="SUB_META_VALUE_09" property="sub_meta_value_09" />
+		<result column="SUB_META_NAME_10" property="sub_meta_name_10" />
+		<result column="{scid=SCID, verify_req_ver=VERIFY_REQ_VER}" property="sub_meta_value_10_array" select="DownloadDeploy.getLcdList" />
+		<result column="SUB_META_NAME_11" property="sub_meta_name_11" />
+		<result column="SUB_META_NAME_12" property="sub_meta_name_12" />
+		<result column="SUB_META_VALUE_12" property="sub_meta_value_12" />
+	</resultMap>
+	
+	<select id="DownloadDeploy.getSubContent" parameterClass="map"  resultMap="subContentResultMap">
+		SELECT /* DownloadDeploy.getSubContent bcpark 2011.05.11 : DownloadDeploy_SqlMap.xml */
+			A.SCID
+			, A.VERIFY_REQ_VER
+			, #cud_type# AS TYPE
+			, #tx_id# AS TX_ID 
+			, A.SCID AS SUB_CONTENT_ID
+			, B.PROD_NM AS SUB_CONTENT_NAME
+			, A.VERSION_CODE AS SUB_CONTENT_VERSION
+			, #os_type# AS OS_TYPE
+			, #content_type# AS CONTENT_TYPE
+			, A.CID AS CONTENT_ID
+			, A.RUN_FILE_NM AS FILE_NAME
+			, #pre_path#||A.RUN_FILE_POS AS FILE_PATH
+			, A.RUN_FILE_SIZE AS FILE_SIZE
+			, 'DEVICE_LIST' AS DEVICE_LIST
+			, A.INS_BY AS CREATE_ID
+			, A.INS_DTTM AS CREATE_TIME
+			, A.UPD_BY AS UPDATE_ID
+			, A.UPD_DTTM AS UPDATE_TIME
+			, #cud_type# AS CUD_TYPE
+			, 'CONT_GUBUN' AS SUB_META_NAME_01
+			, #cud_type# AS SUB_META_VALUE_01
+			, 'OS_VERSION_MIN' AS SUB_META_NAME_02
+			, A.VM_VER_MIN AS SUB_META_VALUE_02
+			, 'OS_VERSION_MAX' AS SUB_META_NAME_03
+			, A.VM_VER_MAX AS SUB_META_VALUE_03
+			, 'CONT_VENDER' AS SUB_META_NAME_04
+			, 'COPYRIGHT' AS SUB_META_NAME_05
+			, 'CONT_MIME_TYPE' AS SUB_META_NAME_06
+			, #cont_mime_type# AS SUB_META_VALUE_06
+			, 'LIBRARY_LIST' AS SUB_META_NAME_07
+			, 'PLAYER' AS SUB_META_NAME_08
+			, 'APPLICATION_ID' AS SUB_META_NAME_09
+			, C.AID AS SUB_META_VALUE_09
+			, 'LCD_SIZE' AS SUB_META_NAME_10
+			, 'LCD_SIZE' AS SUB_META_VALUE_10
+			, 'INSTALL_SIZE' AS SUB_META_NAME_11
+			, 'DRM_YN' AS SUB_META_NAME_12
+			, NVL(C.DRM_YN,'N') AS SUB_META_VALUE_12
+		FROM TBL_CT_SUB_CONTS A
+		INNER JOIN TBL_PD_CONTS B ON (A.CID = B.CID)
+		INNER JOIN TBL_CT_CONTS C ON (A.CID = C.CID AND A.VERIFY_REQ_VER = C.VERIFY_REQ_VER)
+		WHERE A.CID = #cid#
+		  AND A.VERIFY_REQ_VER = #verify_req_ver# 
+	</select>
+	
+	<select id="DownloadDeploy.getSprtPhoneList" parameterClass="hashmap" resultClass="string">
+		SELECT /* DownloadDeploy.getSprtPhoneList bcpark 2011.05.11 : DownloadDeploy_SqlMap.xml */ 
+			PHONE_MODEL_CD
+		FROM TBL_CT_SPRT_PHONE
+		WHERE SCID = #scid#
+		  AND VERIFY_REQ_VER = #verify_req_ver#
+	</select>
+	
+	<select id="DownloadDeploy.getLcdList" parameterClass="hashmap" resultClass="string">
+		SELECT /* DownloadDeploy.getLcdList bcpark 2011.05.11 : DownloadDeploy_SqlMap.xml */ 
+			B.ADD_FIELD1||'_'||B.ADD_FIELD2
+		FROM TBL_CT_PROVISION_ITEM A
+		INNER JOIN TBL_COMM_CD B ON (B.DTL_FULL_CD = A.ITEM_CD)
+		WHERE A.SCID = #scid#
+		  AND A.VERIFY_REQ_VER = #verify_req_ver#
+		  AND A.ITEM_TYPE = 'PD008303'
+	</select>
+	
+	<select id="DownloadDeploy.getDeleteSubContent" parameterClass="map"  resultMap="subContentResultMap">
+		SELECT /* DownloadDeploy.getDeleteSubContent bcpark 2011.05.11 : DownloadDeploy_SqlMap.xml */
+			A.SCID
+			, A.VERIFY_REQ_VER
+			, #cud_type# AS TYPE
+			, #tx_id# AS TX_ID 
+			, A.SCID AS SUB_CONTENT_ID
+			, B.PROD_NM AS SUB_CONTENT_NAME
+			, A.VERSION_CODE AS SUB_CONTENT_VERSION
+			, #os_type# AS OS_TYPE
+			, #content_type# AS CONTENT_TYPE
+			, A.CID AS CONTENT_ID
+			, A.RUN_FILE_NM AS FILE_NAME
+			, #pre_path#||A.RUN_FILE_POS AS FILE_PATH
+			, A.RUN_FILE_SIZE AS FILE_SIZE
+			, 'DEVICE_LIST' AS DEVICE_LIST
+			, A.INS_BY AS CREATE_ID
+			, A.INS_DTTM AS CREATE_TIME
+			, A.UPD_BY AS UPDATE_ID
+			, A.UPD_DTTM AS UPDATE_TIME
+			, #cud_type# AS CUD_TYPE
+			, 'CONT_GUBUN' AS SUB_META_NAME_01
+			, #cud_type# AS SUB_META_VALUE_01
+			, 'OS_VERSION_MIN' AS SUB_META_NAME_02
+			, A.VM_VER_MIN AS SUB_META_VALUE_02
+			, 'OS_VERSION_MAX' AS SUB_META_NAME_03
+			, A.VM_VER_MAX AS SUB_META_VALUE_03
+			, 'CONT_VENDER' AS SUB_META_NAME_04
+			, 'COPYRIGHT' AS SUB_META_NAME_05
+			, 'CONT_MIME_TYPE' AS SUB_META_NAME_06
+			, #cont_mime_type# AS SUB_META_VALUE_06
+			, 'LIBRARY_LIST' AS SUB_META_NAME_07
+			, 'PLAYER' AS SUB_META_NAME_08
+			, 'APPLICATION_ID' AS SUB_META_NAME_09
+			, C.AID AS SUB_META_VALUE_09
+			, 'LCD_SIZE' AS SUB_META_NAME_10
+			, 'LCD_SIZE' AS SUB_META_VALUE_10
+			, 'INSTALL_SIZE' AS SUB_META_NAME_11
+			, 'DRM_YN' AS SUB_META_NAME_12
+			, NVL(C.DRM_YN, 'N') AS SUB_META_VALUE_12
+		FROM TBL_CT_SUB_CONTS A
+		INNER JOIN TBL_PD_CONTS B ON (A.CID = B.CID)
+		INNER JOIN TBL_CT_CONTS C ON (A.CID = C.CID AND A.VERIFY_REQ_VER = C.VERIFY_REQ_VER)
+		WHERE A.CID = #cid#
+		  AND A.SCID IN (
+		  		  SELECT SCID
+				  FROM TBL_CT_SUB_CONTS
+				  WHERE CID = #cid#
+					AND VERIFY_REQ_VER = (select max(verify_req_ver) from tbl_ct_conts where cid = #cid# and verify_req_ver &lt; #verify_req_ver# and AGRMNT_STAT = 'PD005002')
+				  MINUS
+				  SELECT SCID
+				  FROM TBL_CT_SUB_CONTS
+				  WHERE CID = #cid#
+					AND VERIFY_REQ_VER = #verify_req_ver#
+		  )
+		</select>
+	
+</sqlMap>
