@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<include file="struts_config/struts-filesupport.xml" />
+	<include file="struts_config/struts-common.xml" />
+	<include file="struts_config/struts-main.xml" />
+	<include file="struts_config/struts-common-footer.xml" />
+	<include file="struts_config/struts-user.xml" />
+	<include file="struts_config/struts-content-management.xml" />	 		<!-- Content Management -->
+	<include file="struts_config/struts-content-detail.xml" />	 			<!-- Content Management -->
+	<include file="struts_config/struts-content-binary.xml" />	 			<!-- Content Management -->
+	<include file="struts_config/struts-content-verify.xml" />				<!-- Content Verify -->
+	<include file="struts_config/struts-content-testphset.xml" />			<!-- Content OTA -->
+
+	<include file="struts_config/struts-community-guide.xml" />
+	<include file="struts_config/struts-community-notice.xml" />
+	<include file="struts_config/struts-community-faq.xml" />
+	<include file="struts_config/struts-community-qna.xml" />
+	<include file="struts_config/struts-community-webnotice.xml" />
+	<include file="struts_config/struts-community-webfaq.xml" />
+	<include file="struts_config/struts-phonemodel-down.xml" />
+	<include file="struts_config/struts-techsupport-phoneInfo.xml" />
+
+	<include file="struts_config/struts-member.xml" />
+	<include file="struts_config/struts-mypage.xml" />						<!-- mypage -->
+	
+	<!-- Certification -->
+	<include file="struts_config/struts-certification.xml" />				
+	<include file="struts_config/struts-settlement_dailysale.xml" />					 <!-- Settlement -->
+	<include file="struts_config/struts-settlement_productsale.xml" />
+	<include file="struts_config/struts-settlement_report.xml" />
+		
+	<package name="dev-common" extends="struts-default">
+		<result-types>
+			<result-type name="mredirect"
+				class="com.omp.struts2.result.MessageAndRedirectResult">
+				<param name="page">/jsp/common/MessageAndRedirect.jsp</param>
+			</result-type>
+		</result-types>
+		<interceptors>
+			<interceptor name="authenticationInterceptor" class="com.omp.dev.common.interceptor.AuthenticationInterceptor"/>
+			<interceptor name="gompInterceptor" class="com.omp.struts2.interceptor.GompIntergrateInterceptor">
+				<param name="messageResult">NoticeMessage</param>
+				<param name="serviceFaultResult">ServiceFaultMessage</param>
+			</interceptor>
+			<interceptor-stack name="defaultStack">
+				<interceptor-ref name="authenticationInterceptor">
+					<param name="excludesPattern">
+						**/ajax*, **/pop*, **/pup*, /login/*, /logout/*, /main/*, /member/regist*,
+						/community/*, /cert/q.omp, /member/memberJoinCertification*, /phone/phoneInfo*, /fileSupport/bbsFileDown.omp,/phmodel/*
+					</param>
+				</interceptor-ref>
+				<interceptor-ref name="gompInterceptor"/>
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="defaultStack"/>
+
+		<!-- Global Result -->
+		<global-results>
+			<result name="NoticeMessage">/jsp/common/exception/NoticeMessage.jsp</result>
+			<result name="ServiceFaultMessage">/jsp/common/exception/ServiceFaultMessage.jsp</result>
+		</global-results>
+	</package>
+</struts>

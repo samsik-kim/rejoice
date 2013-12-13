@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="common" extends="dev-common" namespace="/common">
+		<action name="popZipCodeList" class="com.omp.dev.common.action.ZipCodeAction" method="popZipCodeList">
+			<result>/${loc.language}/jsp/common/popZipCodeList.jsp</result>
+		</action>
+		<action name="getAjaxPhoneName" class="com.omp.dev.common.action.CommonAction" method="getAjaxPhoneName"/>
+		<action name="getAjaxDpCatList" class="com.omp.dev.common.action.CommonAction" method="getAjaxDpCatList"/>
+		<action name="getAjaxScid" class="com.omp.dev.common.action.CommonAction" method="getAjaxScid"/>
+	</package>
+	
+	<package name="/redt" extends="dev-common" namespace="/redt">
+	
+		<action name="redirect" class="com.omp.commons.action.BaseAction">
+			<result>/${loc.language}/jsp/common/redirect.jsp</result>
+		</action>
+	</package>
+</struts>

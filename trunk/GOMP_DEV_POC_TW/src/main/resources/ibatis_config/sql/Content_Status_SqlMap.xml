@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" > 
+<sqlMap namespace="ContentsStatus">
+	<typeAlias alias="contents" type="com.omp.dev.contents.model.Contents"/>
+	<typeAlias alias="sprtPhone" type="com.omp.dev.contents.model.ContentSprtPhone"/>
+	<typeAlias alias="provision" type="com.omp.dev.contents.model.Provision"/>
+	
+	<sql id="ContentsStatus.Content-FieldAll">
+		CONT.CID 					cid
+		,CONT.PID 					pid
+		,CONT.AID 					aid
+		,CONT.PROD_GBN 				prodGbn
+		<!-- ,CONT.VERIFY_REQ_VER 		verifyReqVer -->
+		,CONT.VERIFY_PRGR_YN 		verifyPrgrYn
+		,CONT.AGRMNT_STAT 			agrmntStat
+		,CONT.SALE_STAT 			saleStat
+		,CONT.DEV_USER_ID 			devUserId
+		,CONT.PROD_NM 				prodNm
+		,CONT.VM_TYPE 				vmType
+		,CONT.PROD_PRC 				prodPrc
+		,CONT.PAID_YN 				paidYn
+		,CONT.ADJ_RATE 				adjRate
+		,CONT.ADJ_RATE_SKT 			adjRateSkt
+		,CONT.PROD_DESC_SMMR 		prodDescSmmr
+		,CONT.PROD_DESC_DTL 		prodDescDtl
+		,CONT.CORP_PROD_NO			corpProdNo
+		,CONT.GAME_DELIB_GRD 		gameDelibGrd
+		,CONT.CONTS_TYPE 			contsType
+		,CONT.VERIFY_SCNR_FILE 		verifyScnrFile
+		,CONT.VERIFY_SCNR_FILE_NM 	verifyScnrFileNm
+		,CONT.PROMOTION_URL			promotionUrl
+		,CONT.DRM_YN 				drmYn
+		,CONT.DRM_SET_OPT 			drmSetOpt
+		,CONT.DRM_SET_VAL 			drmSetVal	
+		,TO_DATE(CONT.FIRST_INS_DT, 'yyyyMMddHH24MISS') 	firstInsDt
+		,TO_DATE(CONT.FIRST_AGRMNT_DT, 'yyyyMMddHH24MISS') 	firstAgrmntDt
+		,TO_CHAR(TO_DATE(CONT.SALE_START_DT, 'yyyyMMddHH24MISS'),'yyyyMMdd') 	saleStartDt
+		,CONT.SIGN_OPTION 			signOption
+		,CONT.VERIFY_COMMENT_CD verifyCommentCd
+		,CONT.VERIFY_ETC_CMT 		verifyEtcCmt
+		,NVL (CONT.EXPOSURE_DEV_NM, (SELECT MBR_ID
+                                FROM TBL_US_MEMBER
+                               WHERE MBR_NO = CONT.DEV_USER_ID)) AS exposuredevnm
+		,TO_DATE(CONT.INS_DTTM, 'yyyyMMddHH24MISS') 		insDttm
+		,CONT.INS_BY 				insBy
+		,TO_CHAR(TO_DATE(CONT.UPD_DTTM, 'yyyyMMddHH24MISS'),'yyyyMMdd') 		updDttm
+		,CONT.UPD_BY 				updBy	
+		,CONT.DEL_YN 				delYn
+	</sql>
+	
+	<resultMap id="content-default-result" class="contents" >
+		<result property="cid" 				column="cid" 			nullValue="" />						
+		<result property="pid" 				column="pid" 			nullValue="" />
+		<result property="aid" 				column="aid" 			nullValue="" />		
+		<result property="prodGbn" 			column="prodGbn" 		nullValue="" />	
+		<result property="verifyPrgrYn" 	column="verifyPrgrYn" 	nullValue="" />
+		<result property="saleStat" 		column="saleStat" 		nullValue="" />
+		<result property="devUserId" 		column="devUserId" 		nullValue="" />
+		<result property="prodNm" 			column="prodNm" 		nullValue="" />
+		<result property="vmType" 			column="vmType" 		nullValue="" />
+		<result property="prodPrc" 			column="prodPrc" 		nullValue="-1" />		
+		<result property="paidYn" 			column="paidYn" 		nullValue="" />
+		<result property="adjRate" 			column="adjRate" 		nullValue="-1" />
+		<result property="adjRateSkt" 		column="adjRateSkt" 	nullValue="-1" />				
+		<result property="prodDescSmmr" 	column="prodDescSmmr" 	nullValue="" />
+		<result property="prodDescDtl" 		column="prodDescDtl" 	nullValue="" />
+		<result property="gameDelibGrd" 	column="gameDelibGrd" 	nullValue="" />
+		<result property="contsType" 		column="contsType" 		nullValue="" />
+		<result property="verifyScnrFile" 	column="verifyScnrFile" nullValue="" />
+		<result property="verifyScnrFileNm" column="verifyScnrFileNm" nullValue="" />
+		<result property="promotionUrl" 	column="promotionUrl"	nullValue="" />
+		<result property="drmYn" 			column="drmYn" 			nullValue="" />
+		<result property="drmSetOpt" 		column="drmSetOpt" 		nullValue="" />
+		<result property="drmSetVal" 		column="drmSetVal" 		nullValue="" />
+		<result property="firstInsDt" 		column="firstInsDt" 	nullValue="1900/01/01 00:00:00" />
+		<result property="firstAgrmntDt" 	column="firstAgrmntDt" 	nullValue="1900/01/01 00:00:00" />
+		<result property="saleStartDt" 		column="saleStartDt" 	nullValue="1900/01/01 00:00:00" />
+		<result property="insDttm" 			column="insDttm" 		nullValue="1900/01/01 00:00:00" />
+		<result property="insBy" 			column="insBy" 			nullValue="" />
+		<result property="updDttm" 			column="updDttm" 		nullValue="1900/01/01 00:00:00" />
+		<result property="updBy" 			column="updBy" 			nullValue="" />
+		<result property="delYn" 			column="delYn" 			nullValue="N" />
+		<result property="exposureDevNm" 	column="exposureDevNm" 	nullValue="" />
+		<result property="agrmntStat" 		column="exposureDevNm" 	nullValue="" />
+		<!-- result property="verifyReqVer" 	column="verifyReqVer" 	nullValue="" / -->
+		<result property="verifyCommentCd" 	column="verifyCommentCd" 	nullValue="" />
+		<result property="verifyEtcCmt" 	column="verifyEtcCmt" 	nullValue="" />
+		<result property="ctgrNm"			column="ctgrNm"			nullValue="" />
+	</resultMap>
+	<resultMap id="content-default2-result" class="contents" extends="content-default-result">
+		<result property="newRegistContentFlag" 	column="newRegistContentFlag" 	nullValue="N" />
+		<result property="statusImgPos"		column="statusImgPos" 	nullValue="" />
+		<result property="statusImgNm" 		column="statusImgNm" 	nullValue="" />
+		<result property="dispRowNum" 		column="dispRowNum" 	nullValue="0" />
+		<result property="totalCount" 		column="total_count"/>
+	</resultMap>
+	<resultMap id="content-newFlag-result" 	class="contents" extends="content-default-result">
+		<result property="newRegistContentFlag" 	column="newRegistContentFlag" 	nullValue="N" />
+		<result property="newSaleWaitContentFlag" 	column="newSaleWaitContentFlag" nullValue="N" />
+		<result property="statusImgPos"		column="statusImgPos" 	nullValue="" />
+		<result property="statusImgNm" 		column="statusImgNm" 	nullValue="" />
+	</resultMap>
+	<resultMap id="content-newVerifyFlag-result" 	class="contents" extends="content-default-result">
+		<result property="newRequestStartContentflag" 	column="newRequestStartContentflag" nullValue="N" />
+		<result property="newRequestEndContentflag" 	column="newRequestEndContentflag" nullValue="N" />
+		<result property="verifyCtReqInsDttm"		column="verifyCtReqInsDttm" 	nullValue="" />
+		<result property="verifyCtAgrmntStat"		column="verifyCtAgrmntStat" 	nullValue="" />
+		<result property="statusImgPos"		column="statusImgPos" 	nullValue="" />
+		<result property="statusImgNm" 		column="statusImgNm" 	nullValue="" />
+	</resultMap>
+	
+	<!-- 상품현황 조회중 7일내 신규등록된 상품과 판매대기중 상품을 조회해 온다. by 차영록 -->
+    <select id="ContentsStatus.getContentStatusList7Days" parameterClass="contents" resultMap="content-newFlag-result">        
+		SELECT /* Contents_Status_SqlMap.xml, ContentsStatus.getContentStatusList7Days, Cha Young-rock, 2009-08-12 */ 
+					*  
+				FROM 
+				  (
+				    SELECT
+				    ROWNUM RNUM, CON.*
+				    FROM (	         
+				         SELECT  	
+				         <include refid="ContentsStatus.Content-FieldAll" />
+				         ,CASE WHEN (FIRST_INS_DT >= TO_CHAR(SYSDATE-1,'yyyyMMddHHmmss') )
+				                     THEN 'Y' ELSE 'N'
+				             END newRegistContentFlag
+				         <dynamic>
+				             <isNotNull property="saleStat">
+				                 <isEqual property="saleStat" compareValue="PD000403"> 
+				                 ,CASE WHEN (FIRST_INS_DT >= TO_CHAR(SYSDATE-1,'yyyyMMddHHmmss') )
+				                         THEN 'Y' ELSE 'N'
+				                 END newSaleWaitContentFlag
+				                 </isEqual>
+				                 <isEqual property="saleStat" compareValue="PD000402"> 
+				                 ,NVL(null,'N') newSaleWaitContentFlag
+				                 </isEqual>
+				             </isNotNull>
+				             <isNull property="saleStat">
+				                 ,NVL(null,'N') newSaleWaitContentFlag
+				             </isNull>
+				         </dynamic>
+				     ,(
+				          SELECT
+				               cont_img.FILE_POS 
+				          FROM TBL_PD_CONTS_IMG cont_img
+				          WHERE 
+				              cont_img.IMG_GBN = #imgGbn#
+				          AND CONT.cid = cont_img.cid
+				      ) statusImgPos
+				     ,(
+				          SELECT
+				               cont_img.FILE_NM 
+				          FROM TBL_PD_CONTS_IMG cont_img
+				          WHERE 
+				              cont_img.IMG_GBN = #imgGbn#
+				          AND CONT.cid = cont_img.cid
+				      ) statusImgNm
+				      , (
+			          	SELECT 
+			          		TDC.DP_CAT_NM
+			          	FROM
+			          		TBL_DP_CAT TDC,
+			          		TBL_PD_TARGET_CTG TPTC
+			          	WHERE
+			          		TDC.DP_CAT_NO = TPTC.CTGR_CD
+			     		AND CONT.CID = TPTC.CID
+			          ) ctgrNm
+				     FROM TBL_PD_CONTS CONT
+				     WHERE
+				         CONT.DEV_USER_ID = #devUserId#
+				         AND PROD_GBN NOT IN ('PD000605','PD000606')
+				         AND CONT.FIRST_INS_DT >= TO_CHAR(SYSDATE - 7,'yyyyMMddHHmmss')
+				         <dynamic>
+				             <isNotEmpty property="saleStat">
+				                 AND CONT.SALE_STAT = #saleStat#
+				             </isNotEmpty>
+				             <isNotEmpty property="verifyPrgrYn">
+								AND CONT.VERIFY_PRGR_YN = #verifyPrgrYn#
+							</isNotEmpty>
+				         </dynamic>    
+				         AND (CONT.DEL_YN = 'N' OR CONT.DEL_YN IS NULL)
+				     ORDER BY CONT.FIRST_INS_DT DESC
+				) CON
+			) CON		
+		WHERE  RNUM BETWEEN 1 AND 3    
+    </select>
+    
+    <!-- 상품현황 조회중 7일내 검증진행중, 검증 완료 상품을 조회해 온다. by 차영록 -->
+    <select id="ContentsStatus.getContentVerifyStatusList7Days" parameterClass="contents" resultMap="content-newVerifyFlag-result">        
+		SELECT /* Contents_Status_SqlMap.xml, ContentsStatus.getContentStatusList7Days, Cha Young-rock, 2009-08-12 */ 
+					*  
+				FROM 
+				  (
+				    SELECT
+				    ROWNUM RNUM, CON.*
+				    FROM (	         
+				         SELECT  	
+				         <include refid="ContentsStatus.Content-FieldAll" />
+				         , TO_DATE (ctCONT.ins_dttm, 'yyyyMMddHH24MISS') verifyCtReqInsDttm
+                         , ctCONT.agrmnt_stat as verifyCtAgrmntStat
+				         , CASE
+                            WHEN (ctCONT.ins_dttm >=
+                                       TO_CHAR (SYSDATE - 1, 'yyyyMMddHHmmss')
+                                 )
+                               THEN 'Y'
+                            ELSE 'N'
+                         END newRequestStartContentflag
+                         , CASE
+                            WHEN (ctCONT.ct_end_dt >=
+                                       TO_CHAR (SYSDATE - 1, 'yyyyMMddHHmmss')
+                                 )
+                               THEN 'Y'
+                             ELSE 'N'
+                         END newRequestEndContentflag  
+				     ,(
+				          SELECT
+				               cont_img.FILE_POS 
+				          FROM TBL_PD_CONTS_IMG cont_img
+				          WHERE 
+				              cont_img.IMG_GBN = #imgGbn#
+				          AND CONT.cid = cont_img.cid
+				      ) statusImgPos
+				     ,(
+				          SELECT
+				               cont_img.FILE_NM 
+				          FROM TBL_PD_CONTS_IMG cont_img
+				          WHERE 
+				              cont_img.IMG_GBN = #imgGbn#
+				          AND CONT.cid = cont_img.cid
+				      ) statusImgNm
+				      , (
+			          	SELECT 
+			          		TDC.DP_CAT_NM
+			          	FROM
+			          		TBL_DP_CAT TDC,
+			          		TBL_PD_TARGET_CTG TPTC
+			          	WHERE
+			          		TDC.DP_CAT_NO = TPTC.CTGR_CD
+			     		AND CONT.CID = TPTC.CID
+			          ) ctgrNm
+				     FROM TBL_PD_CONTS CONT
+				     , TBL_CT_CONTS ctCONT
+				     WHERE
+				         CONT.DEV_USER_ID = #devUserId#
+				         AND PROD_GBN NOT IN ('PD000605','PD000606')
+				         <dynamic>
+				         <isEqual property="verifyPrgrYn" compareValue="PD005302">
+				         	AND ctCONT.INS_DTTM >= TO_CHAR(SYSDATE - 7,'yyyyMMddHHmmss')
+				         </isEqual>	
+				         <isEqual property="verifyPrgrYn" compareValue="PD005303">
+				         	AND ctCONT.CT_END_DT >= TO_CHAR(SYSDATE - 7,'yyyyMMddHHmmss')
+				         </isEqual>	         
+				         </dynamic>
+				         AND (CONT.DEL_YN = 'N' OR CONT.DEL_YN IS NULL)
+				         AND ctCONT.VERIFY_PRGR_YN = #verifyPrgrYn#
+				         AND CONT.CID = ctCONT.CID
+				        <!-- AND CONT.VERIFY_REQ_VER = ctCONT.VERIFY_REQ_VER -->
+				         AND CONT.VERIFY_REQ_VER  = (SELECT MAX(VERIFY_REQ_VER) FROM TBL_CT_CONTS WHERE CID = CONT.CID)
+				     ORDER BY ctCONT.INS_DTTM DESC
+				) CON
+			) CON		
+		WHERE  RNUM BETWEEN 1 AND 3    
+    </select>
+	
+	<!-- 개발자가 등록한 상품현황을 페이징하여 조회해 온다. -->
+    <select id="ContentsStatus.getContentStatusList" parameterClass="contents" resultMap="content-default2-result">
+        <include refid="GOMP.pagingStart"/>
+         SELECT ROWNUM AS dispRowNum, PROD.* FROM(SELECT
+         	 <include refid="GOMP.pagingTotalCount"/>
+	         <include refid="ContentsStatus.Content-FieldAll" />,
+	          (SELECT FILE_POS
+	             FROM TBL_PD_CONTS_IMG CONT_IMG 
+	            WHERE CONT_IMG.IMG_GBN = #imgGbn#
+	              AND CONT.CID = CONT_IMG.CID) statusImgPos,
+	          (
+	             SELECT
+	                  cont_img.FILE_NM
+	             FROM TBL_PD_CONTS_IMG cont_img
+	             WHERE 
+	                 cont_img.IMG_GBN = #imgGbn#
+	             AND CONT.cid = cont_img.cid
+	          ) statusImgNm
+	          ,(
+	          	SELECT 
+	          		TDC.DP_CAT_NM
+	          	FROM
+	          		TBL_DP_CAT TDC,
+	          		TBL_PD_TARGET_CTG TPTC
+	          	WHERE
+	          		TDC.DP_CAT_NO = TPTC.CTGR_CD
+	     		AND CONT.CID = TPTC.CID
+	          ) ctgrNm
+	           ,CASE WHEN (FIRST_INS_DT >= TO_CHAR(SYSDATE-1,'yyyyMMddHHmmss') )
+	          		THEN 'Y' ELSE 'N'
+	            END newRegistContentFlag
+	     FROM TBL_PD_CONTS CONT
+	     WHERE       
+	         CONT.DEV_USER_ID = #devUserId#
+	         AND 'Y' != NVL(DEL_YN, 'N')
+	         AND PROD_GBN NOT IN ('PD000605','PD000606')
+	         <dynamic>
+	             <isNotEmpty property="saleSearchType">
+	                 AND CONT.SALE_STAT = #saleSearchType#
+	             </isNotEmpty>
+	             <isNotEmpty property="prodNm">
+	                 AND UPPER(CONT.PROD_NM) like '%' || TRIM(UPPER(#searchValue#)) || '%'
+	             </isNotEmpty>
+	             <isNotEmpty property="searchType">
+	                 <isEqual property="searchType" compareValue="Y">
+	                     AND CONT.VERIFY_PRGR_YN = 'PD005301'
+	                 </isEqual>
+	                 <isEqual property="searchType" compareValue="N">
+	                     AND CONT.VERIFY_PRGR_YN != 'PD005301'
+	                 </isEqual>
+	             </isNotEmpty>      
+	         </dynamic>
+	     ORDER BY CONT.FIRST_INS_DT) PROD ORDER BY ROWNUM DESC
+    	 <include refid="GOMP.pagingEnd"/>    
+    </select>
+    
+    <!-- 개발자가 등록한 상품현황의 총 count 수를 구해온다. -->
+	<select id="ContentsStatus.getContentStatusCount" parameterClass="contents" resultClass="java.lang.String">
+       SELECT
+       		/* Content_Status_SqlMap.xml, ContentsStatus.getContentStatusCount, Cha Young-rock, 2009-08-12 */
+			COUNT(*) count			
+       FROM TBL_PD_CONTS CONT
+       WHERE       
+       	CONT.DEV_USER_ID = #devUserId#
+       	AND 'Y' != NVL(DEL_YN, 'N')
+       	AND PROD_GBN NOT IN ('PD000605','PD000606')
+       	<dynamic>
+       		<isNotEmpty property="saleStat">
+				AND CONT.SALE_STAT = #saleStat#
+			</isNotEmpty>
+			<isNotEmpty property="vmType">
+				AND CONT.VM_TYPE = #vmType#
+			</isNotEmpty>
+			<isNotEmpty property="prodNm">
+				AND CONT.PROD_NM like '%' || #prodNm# || '%'
+			</isNotEmpty>
+			<isNotEmpty property="verifyPrgrYn">
+				AND CONT.VERIFY_PRGR_YN = #verifyPrgrYn#
+			</isNotEmpty>
+			<isNotEmpty property="searchType">
+                 <isEqual property="searchType" compareValue ="Y">
+                     AND CONT.VERIFY_PRGR_YN = 'PD005302'
+                 </isEqual>
+                 <isEqual property="searchType" compareValue="N">
+                     AND CONT.VERIFY_PRGR_YN != 'PD005302'
+                 </isEqual>
+             </isNotEmpty>	
+       	</dynamic>
+	</select>	
+	
+	
+	<!-- 개발자가 최근 7일 신규 등록한 상품현황의 총 count 수를 구해온다. For Main -->
+	<select id="ContentsStatus.getContentStatusCount7Days" parameterClass="contents" resultClass="java.lang.String">
+    	SELECT /* Contents_Status_SqlMap.xml, ContentsStatus.getContentStatusCount7Days, Cha Young-rock, 2009-08-12 */ 
+					COUNT(1)  
+				FROM 
+				  (
+				    SELECT
+				    ROWNUM RNUM, CON.*
+				    FROM (	         
+				         SELECT  	
+				         <include refid="ContentsStatus.Content-FieldAll" />
+				         ,CASE WHEN (FIRST_INS_DT >= TO_CHAR(SYSDATE-1,'yyyyMMddHHmmss') )
+				                     THEN 'Y' ELSE 'N'
+				             END newRegistContentFlag
+				         <dynamic>
+				             <isNotNull property="saleStat">
+				                 <isEqual property="saleStat" compareValue="PD000403"> 
+				                 ,CASE WHEN (FIRST_INS_DT >= TO_CHAR(SYSDATE-1,'yyyyMMddHHmmss') )
+				                         THEN 'Y' ELSE 'N'
+				                 END newSaleWaitContentFlag
+				                 </isEqual>
+				                 <isEqual property="saleStat" compareValue="PD000402"> 
+				                 ,NVL(null,'N') newSaleWaitContentFlag
+				                 </isEqual>
+				             </isNotNull>
+				             <isNull property="saleStat">
+				                 ,NVL(null,'N') newSaleWaitContentFlag
+				             </isNull>
+				         </dynamic>
+				     ,(
+				          SELECT
+				               cont_img.FILE_POS 
+				          FROM TBL_PD_CONTS_IMG cont_img
+				          WHERE 
+				              cont_img.IMG_GBN = #imgGbn#
+				          AND CONT.cid = cont_img.cid
+				      ) statusImgPos
+				     ,(
+				          SELECT
+				               cont_img.FILE_NM 
+				          FROM TBL_PD_CONTS_IMG cont_img
+				          WHERE 
+				              cont_img.IMG_GBN = #imgGbn#
+				          AND CONT.cid = cont_img.cid
+				      ) statusImgNm
+				      , (
+			          	SELECT 
+			          		TDC.DP_CAT_NM
+			          	FROM
+			          		TBL_DP_CAT TDC,
+			          		TBL_PD_TARGET_CTG TPTC
+			          	WHERE
+			          		TDC.DP_CAT_NO = TPTC.CTGR_CD
+			     		AND CONT.CID = TPTC.CID
+			          ) ctgrNm
+				     FROM TBL_PD_CONTS CONT
+				     WHERE
+				         CONT.DEV_USER_ID = #devUserId#
+				         AND PROD_GBN NOT IN ('PD000605','PD000606')
+				         AND CONT.FIRST_INS_DT >= TO_CHAR(SYSDATE - 7,'yyyyMMddHHmmss')
+				         <dynamic>
+				             <isNotEmpty property="saleStat">
+				                 AND CONT.SALE_STAT = #saleStat#
+				             </isNotEmpty>
+				             <isNotEmpty property="verifyPrgrYn">
+								AND CONT.VERIFY_PRGR_YN = #verifyPrgrYn#
+							</isNotEmpty>
+				         </dynamic>    
+				         AND (CONT.DEL_YN = 'N' OR CONT.DEL_YN IS NULL)
+				     ORDER BY CONT.FIRST_INS_DT DESC
+				) CON
+			) CON		
+	</select>
+	
+	<!-- 상품현황 조회중 7일내 검증진행중, 검증 완료 상품을 조회해 온다. For Main -->
+    <select id="ContentsStatus.getContentVerifyStatusCount7Days" parameterClass="contents" resultClass="java.lang.String">        
+		SELECT /* Contents_Status_SqlMap.xml, ContentsStatus.getContentVerifyStatusCount7Days, Cha Young-rock, 2009-08-12 */ 
+					COUNT(1)  
+				FROM 
+				  (
+				    SELECT
+				    ROWNUM RNUM, CON.*
+				    FROM (	         
+				         SELECT  	
+				         <include refid="ContentsStatus.Content-FieldAll" />
+				         , TO_DATE (ctCONT.ins_dttm, 'yyyyMMddHH24MISS') verifyCtReqInsDttm
+                         , ctCONT.agrmnt_stat as verifyCtAgrmntStat
+				         , CASE
+                            WHEN (ctCONT.ins_dttm >=
+                                       TO_CHAR (SYSDATE - 1, 'yyyyMMddHHmmss')
+                                 )
+                               THEN 'Y'
+                            ELSE 'N'
+                         END newRequestStartContentflag
+                         , CASE
+                            WHEN (ctCONT.ct_end_dt >=
+                                       TO_CHAR (SYSDATE - 1, 'yyyyMMddHHmmss')
+                                 )
+                               THEN 'Y'
+                             ELSE 'N'
+                         END newRequestEndContentflag  
+				     ,(
+				          SELECT
+				               cont_img.FILE_POS 
+				          FROM TBL_PD_CONTS_IMG cont_img
+				          WHERE 
+				              cont_img.IMG_GBN = #imgGbn#
+				          AND CONT.cid = cont_img.cid
+				      ) statusImgPos
+				     ,(
+				          SELECT
+				               cont_img.FILE_NM 
+				          FROM TBL_PD_CONTS_IMG cont_img
+				          WHERE 
+				              cont_img.IMG_GBN = #imgGbn#
+				          AND CONT.cid = cont_img.cid
+				      ) statusImgNm
+				      , (
+			          	SELECT 
+			          		TDC.DP_CAT_NM
+			          	FROM
+			          		TBL_DP_CAT TDC,
+			          		TBL_PD_TARGET_CTG TPTC
+			          	WHERE
+			          		TDC.DP_CAT_NO = TPTC.CTGR_CD
+			     		AND CONT.CID = TPTC.CID
+			          ) ctgrNm
+				     FROM TBL_PD_CONTS CONT
+				     , TBL_CT_CONTS ctCONT
+				     WHERE
+				         CONT.DEV_USER_ID = #devUserId#
+				         AND PROD_GBN NOT IN ('PD000605','PD000606')
+				         <dynamic>
+				         <isEqual property="verifyPrgrYn" compareValue="PD005302">
+				         	AND ctCONT.INS_DTTM >= TO_CHAR(SYSDATE - 7,'yyyyMMddHHmmss')
+				         </isEqual>	
+				         <isEqual property="verifyPrgrYn" compareValue="PD005303">
+				         	AND ctCONT.CT_END_DT >= TO_CHAR(SYSDATE - 7,'yyyyMMddHHmmss')
+				         </isEqual>	         
+				         </dynamic>
+				         AND (CONT.DEL_YN = 'N' OR CONT.DEL_YN IS NULL)
+				         AND ctCONT.VERIFY_PRGR_YN = #verifyPrgrYn#
+				         AND CONT.CID = ctCONT.CID
+				        <!-- AND CONT.VERIFY_REQ_VER = ctCONT.VERIFY_REQ_VER -->
+				         AND CONT.VERIFY_REQ_VER  = (SELECT MAX(VERIFY_REQ_VER) FROM TBL_CT_CONTS WHERE CID = CONT.CID)
+				     ORDER BY ctCONT.INS_DTTM DESC
+				) CON
+			) CON		
+    </select>
+	
+	<!-- 상품 신규 추가시 Content Sequence Value를 가져 온다. -->
+	<select id="ContentsStatus.getContentSeqVal" resultClass="java.lang.Integer">
+		SELECT /* Content_Status_SqlMap.xml, ContentsStatus.getContentSeqVal, Cha Young-rock, 2009-08-12 */
+			SEQ_PD_CONTS.NEXTVAL 
+		FROM DUAL	
+	</select>
+		
+	<update id="ContentsStatus.updateContentVerifyRequest" >
+	 	UPDATE
+	 		TBL_PD_CONTS
+	 	SET
+	 		VERIFY_PRGR_YN = #verifyPrgrYn#
+	 		, VERIFY_COMMENT_CD = #verifyCommentCd#
+	 		, VERIFY_ETC_CMT = #verifyEtcCmt#
+			<isNotEmpty property="updBy">, UPD_BY = #updBy#</isNotEmpty>
+			, UPD_DTTM = TO_CHAR(SYSDATE, 'yyyyMMddHH24MISS')
+		WHERE 
+			CID = #cid#	
+	</update>
+	
+	<!-- Verify Request -->
+	<select id="ContentsStatus.getContentScidListByCid"  parameterClass="java.lang.String"  resultClass="java.lang.String" >
+		SELECT SCID scid
+		FROM TBL_PD_SUB_CONTS
+		WHERE CID = #cid#
+	</select>
+	
+	<select id="ContentsStatus.getContentSprtPhoneListByScid" parameterClass="java.lang.String" resultClass="sprtPhone" >
+		SELECT 
+			PHONE_MODEL_CD  phoneModelCd
+			, SPRT_PHONE_SEQ sprtPhoneSeq
+		FROM TBL_PD_SPRT_PHONE
+		WHERE SCID = #scid#
+		ORDER BY SPRT_PHONE_SEQ
+	</select>
+	
+	<select id="ContentsStatus.getContentProvisionItemListByScid" parameterClass="java.lang.String" resultClass="provision" >
+		SELECT 
+			ITEM_CD itemCd
+			, ITEM_SEQ itemSeq
+		FROM TBL_PD_PROVISION_ITEM
+		WHERE SCID = #scid#
+		ORDER BY ITEM_SEQ
+	</select>
+	
+	<select id="ContentStatus.getVerificationFlag" resultClass="java.lang.String">
+		SELECT
+			'true'
+		FROM 
+			TBL_CT_CONTS
+		WHERE 1 = 1
+		AND CID = #cid#
+		AND AGRMNT_STAT IN ('PD005002', 'PD005003')
+		AND ROWNUM = 1
+	</select>
+	
+	<select id="ContentStatus.getVerifyReqContentInfo" resultClass="contents">
+		SELECT 
+			CID cid
+			, PROD_NM	prodNm
+			, TO_CHAR(TO_DATE(INS_DTTM, 'yyyyMMddHH24MISS'),'yyyyMMdd')	insDttm
+			, INS_BY	insBy
+		FROM
+			TBL_CT_CONTS
+		WHERE
+			CID = #cid#
+		AND
+			VERIFY_REQ_VER
+			= (SELECT MAX(VERIFY_REQ_VER) FROM TBL_CT_CONTS WHERE CID = #cid# ) 			
+	</select>
+	
+	<!-- 상품을 등록한다. -->
+	<insert id="ContentsStatus.insertContent" parameterClass="contents">
+		INSERT /* Content_Status_SqlMap.xml, ContentsStatus.insertContent, Cha Young-rock, 2009-08-12 */
+		INTO TBL_PD_CONTS(
+			CID
+			<isNotNull property="pid">,PID</isNotNull>
+			<isNotNull property="aid">,AID</isNotNull>
+			<isNotNull property="prodGbn">,PROD_GBN</isNotNull>
+			<!-- isNotNull property="verifyReqVer">,VERIFY_REQ_VER</isNotNull -->
+			<isNotNull property="verifyPrgrYn">,VERIFY_PRGR_YN</isNotNull>
+			<isNotNull property="agrmntStat">,AGRMNT_STAT</isNotNull>
+			<isNotNull property="saleStat">,SALE_STAT</isNotNull>
+			<isNotNull property="devUserId">,DEV_USER_ID</isNotNull>
+			<isNotNull property="prodNm">,PROD_NM</isNotNull>
+			<isNotNull property="vmType">,VM_TYPE</isNotNull>
+			<isNotNull property="vmType">,CORP_PROD_NO</isNotNull>
+			<isNotNull property="prodPrc">,PROD_PRC</isNotNull>
+			<isNotNull property="paidYn">,PAID_YN</isNotNull>
+			<isNotNull property="adjRate">,ADJ_RATE</isNotNull>
+			<isNotNull property="adjRateSkt">,ADJ_RATE_SKT</isNotNull>
+			<isNotNull property="prodDescSmmr">,PROD_DESC_SMMR</isNotNull>
+			<isNotNull property="prodDescDtl">,PROD_DESC_DTL</isNotNull>
+			<isNotNull property="gameDelibGrd">,GAME_DELIB_GRD</isNotNull>
+			<isNotNull property="contsType">,CONTS_TYPE</isNotNull>
+			<isNotNull property="promotionUrl">,PROMOTION_URL</isNotNull>
+			<isNotNull property="verifyScnrFile">,VERIFY_SCNR_FILE</isNotNull>
+			<isNotNull property="verifyScnrFileNm">,VERIFY_SCNR_FILE_NM</isNotNull>
+			<isNotNull property="drmYn">,DRM_YN</isNotNull>
+			<isNotNull property="drmSetOpt">,DRM_SET_OPT</isNotNull>
+			<isNotNull property="drmSetVal">,DRM_SET_VAL</isNotNull>
+			,FIRST_INS_DT
+			<isNotNull property="firstAgrmntDt">,FIRST_AGRMNT_DT</isNotNull>
+			<isNotNull property="saleStartDt">,SALE_START_DT</isNotNull>		
+			<isNotNull property="signOption">,SIGN_OPTION</isNotNull>
+			<isNotNull property="exposureDevNm">,EXPOSURE_DEV_NM</isNotNull>
+			<isNotNull property="delYn">,DEL_YN</isNotNull>
+			<isNotNull property="verifyCommentCd">,VERIFY_COMMENT_CD</isNotNull>
+			<isNotNull property="verifyEtcCmt">,VERIFY_ETC_CMT</isNotNull>
+			<isNotNull property="insBy">,INS_BY</isNotNull>
+			,INS_DTTM
+			<isNotNull property="updBy">,UPD_BY</isNotNull>
+			,UPD_DTTM
+		)VALUES(
+			#cid#
+			<isNotNull property="pid">,#pid#</isNotNull>
+			<isNotNull property="aid">,#aid#</isNotNull>
+			<isNotNull property="prodGbn">,#prodGbn#</isNotNull>
+			<!-- isNotNull property="verifyReqVer">,#verifyReqVer#</isNotNull -->
+			<isNotNull property="verifyPrgrYn">,#verifyPrgrYn#</isNotNull>
+			<isNotNull property="agrmntStat">,#agrmntStat#</isNotNull>
+			<isNotNull property="saleStat">,#saleStat#</isNotNull>
+			<isNotNull property="devUserId">,#devUserId#</isNotNull>
+			<isNotNull property="prodNm">,TRIM(#prodNm#)</isNotNull>
+			<isNotNull property="vmType">,#vmType#</isNotNull>
+			<isNotNull property="vmType">,#corpProdNo#</isNotNull>
+			<isNotNull property="prodPrc">,#prodPrc#</isNotNull>
+			<isNotNull property="paidYn">,#paidYn#</isNotNull>
+			<isNotNull property="adjRate">,#adjRate#</isNotNull>
+			<isNotNull property="adjRateSkt">,#adjRateSkt#</isNotNull>
+			<isNotNull property="prodDescSmmr">,#prodDescSmmr#</isNotNull>
+			<isNotNull property="prodDescDtl">,#prodDescDtl#</isNotNull>
+			<isNotNull property="gameDelibGrd">,#gameDelibGrd#</isNotNull>
+			<isNotNull property="contsType">,#contsType#</isNotNull>
+			<isNotNull property="promotionUrl">,#promotionUrl#</isNotNull>
+			<isNotNull property="verifyScnrFile">,#verifyScnrFile#</isNotNull>
+			<isNotNull property="verifyScnrFileNm">,#verifyScnrFileNm#</isNotNull>
+			<isNotNull property="drmYn">,#drmYn#</isNotNull>
+			<isNotNull property="drmSetOpt">,#drmSetOpt#</isNotNull>
+			<isNotNull property="drmSetVal">,#drmSetVal#</isNotNull>
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			<isNotNull property="firstAgrmntDt">,#firstAgrmntDt#</isNotNull>
+			<isNotNull property="saleStartDt">,#saleStartDt#</isNotNull>		
+			<isNotNull property="signOption">,#signOption#</isNotNull>
+			<isNotNull property="exposureDevNm">,#exposureDevNm#</isNotNull>
+			<isNotNull property="delYn">,#delYn#</isNotNull>
+			<isNotNull property="verifyCommentCd">,#verifyCommentCd#</isNotNull>
+			<isNotNull property="verifyEtcCmt">,#verifyEtcCmt#</isNotNull>
+			<isNotNull property="insBy">,#insBy#</isNotNull>
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			<isNotNull property="updBy">,#updBy#</isNotNull>
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		) 
+	</insert>
+	
+	<insert id="ContentsStatus.insertCtContents" >
+		INSERT INTO 
+			TBL_CT_CONTS
+		(
+			CID
+			, VERIFY_REQ_VER
+			, PID
+			, AID
+			, VERIFY_PRGR_YN
+			, AGRMNT_STAT
+			, VM_TYPE
+			, PROD_NM
+			, GAME_DELIB_GRD
+			, VERIFY_SCNR_FILE
+			, VERIFY_SCNR_FILE_NM
+			, DRM_YN
+			, DRM_SET_OPT
+			, DRM_SET_VAL
+			, VERIFY_COMMENT_CD
+			, VERIFY_ETC_CMT
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY
+			, UPD_DTTM 
+		) SELECT
+			CID
+			, (SELECT NVL(MAX(VERIFY_REQ_VER), 0) + 1 FROM TBL_CT_CONTS WHERE CID = #cid#)
+			, PID
+			, AID
+			, VERIFY_PRGR_YN
+			, 'PD005001'
+			, VM_TYPE
+			, PROD_NM
+			, GAME_DELIB_GRD
+			, VERIFY_SCNR_FILE
+			, VERIFY_SCNR_FILE_NM
+			, DRM_YN
+			, DRM_SET_OPT
+			, DRM_SET_VAL
+			, VERIFY_COMMENT_CD
+			, VERIFY_ETC_CMT
+			, INS_BY
+			, TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			, UPD_BY
+			, TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		FROM 
+			TBL_PD_CONTS
+		WHERE
+			CID = #cid#	
+		AND DEL_YN = 'N'	
+	</insert>
+	
+	<insert id="ContentsStatus.insertCtSubContents" >
+		INSERT INTO 
+			TBL_CT_SUB_CONTS
+		(
+			SCID
+			, CID
+			, VERIFY_REQ_VER
+			, AGRMNT_STAT
+			, VM_VER_MIN
+			, VM_VER_MAX
+			, VM_VER_TARGET
+			, PKG_NM
+			, VERSION_CODE
+			, VERSION_NAME
+			, RUN_FILE_POS
+			, RUN_FILE_NM
+			, RUN_FILE_SIZE
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY
+			, UPD_DTTM
+		) SELECT 
+			SCID
+			, CID
+			, (SELECT MAX(VERIFY_REQ_VER) FROM TBL_CT_CONTS WHERE CID = #cid# and rownum = 1)
+			, 'PD005001'
+			, VM_VER_MIN
+			, VM_VER_MAX
+			, VM_VER_TARGET
+			, PKG_NM
+			, VERSION_CODE
+			, VERSION_NAME
+			, RUN_FILE_POS
+			, RUN_FILE_NM
+			, RUN_FILE_SIZE
+			, INS_BY
+			, TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			, UPD_BY
+			, TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		FROM
+			TBL_PD_SUB_CONTS
+		WHERE 
+			CID = #cid#		
+		AND SCID = #scid#	
+	</insert>
+	
+	<insert id="ContentsStatus.insertCtProvisionItem" >
+		INSERT INTO
+			TBL_CT_PROVISION_ITEM
+		(
+			SCID
+			, VERIFY_REQ_VER
+			, ITEM_SEQ
+			, ITEM_TYPE
+			, ITEM_CD
+			, INS_BY
+			, INS_DTTM
+		) SELECT
+			SCID
+			, (SELECT MAX(VERIFY_REQ_VER) FROM TBL_CT_CONTS WHERE CID = #cid# and rownum = 1)
+			, ITEM_SEQ
+			, ITEM_TYPE
+			, ITEM_CD
+			, INS_BY
+			, TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		FROM
+			TBL_PD_PROVISION_ITEM
+		WHERE
+			SCID = #scid#		
+		AND ITEM_SEQ = #itemSeq#	
+	</insert>
+	
+	<insert id="ContentsStatus.insertCtSprtPhone" >
+		INSERT INTO
+			TBL_CT_SPRT_PHONE
+		(
+			SCID
+			, VERIFY_REQ_VER
+			, SPRT_PHONE_SEQ
+			, PHONE_MODEL_CD
+			, INS_BY
+			, INS_DTTM
+			, UPD_BY
+			, UPD_DTTM
+			, TARGET_YN
+		) SELECT
+			SCID
+			, (SELECT MAX(VERIFY_REQ_VER) FROM TBL_CT_CONTS WHERE CID = #cid# and rownum = 1)
+			, SPRT_PHONE_SEQ
+			, PHONE_MODEL_CD
+			, INS_BY
+			, TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			, UPD_BY
+			, TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			, 'N'
+		FROM
+			TBL_PD_SPRT_PHONE
+		WHERE
+			SCID = #scid#
+		AND SPRT_PHONE_SEQ = #sprtPhoneSeq#	
+	</insert>
+
+	<update id="ContentsStatus.updateChangeSaleStatus" >
+		UPDATE
+			TBL_PD_CONTS
+		SET
+			SALE_STAT = #saleStat#
+			, UPD_DTTM = TO_CHAR(SYSDATE, 'yyyyMMddHH24MISS')
+			<isNotNull property="updBy">, UPD_BY = #updBy#</isNotNull>
+			<isNotNull property="saleStartDt">, SALE_START_DT = #saleStartDt#</isNotNull>
+		WHERE CID = #cid#		
+	</update>
+	
+	<update id="ContentStatus.modifyUpdateHistoryDate" >
+		UPDATE
+			TBL_PD_CONTS_UPDATE
+		SET
+			CONTS_UPD_DT = TO_CHAR(SYSDATE, 'yyyyMMdd')
+		WHERE CID = #cid#		
+	</update>
+	
+</sqlMap>    

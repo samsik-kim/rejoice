@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<decorators defaultdir="/layout">
+	<excludes>
+		<!-- pattern>**/pop*</pattern -->
+		<pattern>**/ajax*</pattern>
+		<pattern>**/iFrame*</pattern>
+		<pattern>**/checkPwd*</pattern>
+		<pattern>**/templet*</pattern>
+		<pattern>**/manualInstall*</pattern>
+	</excludes>
+  
+	<decorator name="popup" page="popup.jsp">
+		<pattern>**/pop*</pattern>
+	</decorator>
+
+	<decorator name="layout2" page="layout2.jsp">
+		<pattern>/member/memberJoinCertificationAction.omp</pattern>
+		<pattern>/mypage/mypageWithdrawExcute.omp</pattern>
+	</decorator>
+
+	<decorator name="layout" page="layout.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+
+	<decorator name="empty" page="empty.jsp">
+		<pattern>**/signed*</pattern>
+		<pattern>**/loginResult*</pattern>
+		<pattern>**/logout*</pattern>
+		<pattern>**/redt*</pattern>
+		<pattern>**/member/make*</pattern>
+		<pattern>/content/signedStatusChange.omp</pattern>
+	</decorator>
+
+</decorators>

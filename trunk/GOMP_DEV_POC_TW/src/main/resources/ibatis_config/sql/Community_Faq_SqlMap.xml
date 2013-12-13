@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Community_Faq">
+	<typeAlias alias="faq" type="com.omp.dev.community.model.Faq"/>
+
+	<select id="Community_Faq.selectFaqList" parameterClass="faq" resultClass="faq">
+		SELECT
+			TBL.FAQID,
+			TBL.TITLE,
+			TBL.DSCR,
+			TBL.CTGRCD,
+			MAX(TBL.IMG_YN) as IMGYN,
+			MAX(TBL.IMG_OFNM) as IMG_OFNM,
+			MAX(TBL.IMG_PATH) as IMG_PATH,
+			MAX(TBL.DOWN_YN) as DOWNYN,
+			MAX(TBL.DOWN_OFNM) as DOWN_OFNM,
+			MAX(TBL.DOWN_PATH) as DOWN_PATH
+		FROM (
+			SELECT
+				FAQ.SORT,
+				FAQ.FAQ_ID AS FAQID,
+				FAQ.TITLE,
+				FAQ.DSCR,
+				FAQ.CTGR_CD AS CTGRCD,
+				FAQ.INS_DTTM,
+				(CASE CFUG.SEQ WHEN 1 THEN 'Y' ELSE '' END) as IMG_YN,
+				(CASE CFUG.SEQ WHEN 1 THEN CFU.FNM ELSE '' END) as IMG_PATH,
+				(CASE CFUG.SEQ WHEN 1 THEN CFU.OFNM ELSE '' END) as IMG_OFNM,
+				(CASE CFUG.SEQ WHEN 2 THEN 'Y' ELSE '' END) as DOWN_YN,
+				(CASE CFUG.SEQ WHEN 2 THEN CFU.OFNM    ELSE '' END) as DOWN_OFNM,
+				(CASE CFUG.SEQ WHEN 2 THEN CFU.FNM ELSE '' END) as DOWN_PATH
+			FROM
+			    TBL_FAQ FAQ,
+			    TBL_COMM_FILE_UPLOAD_GRP CFUG,
+			    TBL_COMM_FILE_UPLOAD CFU
+			WHERE 
+				FAQ.CTGR_CD = #ctgrCd#
+				AND FAQ.GID = CFUG.GID(+)
+				AND CFUG.FID = CFU.FID(+)
+				AND FAQ.DEL_YN = 'N'
+				AND FAQ.OPEN_YN = 'Y'
+			) TBL
+		GROUP BY TBL.FAQID, TBL.TITLE, TBL.DSCR, TBL.CTGRCD, TBL.SORT, TBL.INS_DTTM
+		ORDER BY TO_NUMBER(TBL.SORT) ASC, TBL.INS_DTTM DESC
+	</select>
+	
+	<update id="Community_Faq.updateHitNumber" parameterClass="faq">
+		UPDATE TBL_FAQ
+		   SET HIT = HIT + 1
+		 WHERE FAQ_ID = #faqId#
+		   AND CTGR_CD = #ctgrCd#
+		   AND DEL_YN = 'N'   
+	</update>
+
+</sqlMap>
