@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import net.sf.dozer.util.mapping.Mapper;
 import net.sf.dozer.util.mapping.MappingException;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import com.resttemplate.rejoiceAPI.bean.ItemBean;
 import com.resttemplate.sample.bean.SampleBean;
 import com.resttemplate.sample.bean.TestBean;
+import com.resttemplate.sample.bean.TestBean.Agreement;
 
 @Controller
 @RequestMapping(value="/sample")
@@ -147,4 +144,40 @@ public class SampleController {
 
 	@RequestMapping(value="/file.do")
 	public void file(){ }
+
+	@RequestMapping(value="/testMethod.do")
+	@ResponseBody
+	public TestBean testMethod(){
+		TestBean testBean = new TestBean();
+
+		TestBean.SubTestBean subTestBean = testBean.new SubTestBean();
+        subTestBean.setC("12");
+        subTestBean.setD("34");
+
+        List<Agreement> agreementList = new ArrayList<Agreement>();
+		TestBean.Agreement agreement = testBean.new Agreement();
+		agreementList.add(agreement);
+        
+        
+        testBean.setSubTestBean(subTestBean);
+        testBean.setAgreementList(agreementList);
+		
+		return testBean;
+	}
+	
+    public static void main(String[] args){
+        
+        TestBean testBean = new TestBean();
+        TestBean.SubTestBean subTestBean = testBean.new SubTestBean();
+        
+        subTestBean.setC("12");
+        subTestBean.setD("34");
+        
+        testBean.setSubTestBean(subTestBean);
+//        
+        System.out.println(testBean.getSubTestBean().getC());
+//    	TestBean.SubTestBean subTestBean = new TestBean().new SubTestBean();
+//    	System.out.println(subTestBean.getC());
+     
+    }
 }
